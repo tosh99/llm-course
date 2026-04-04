@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun *)",
+      "Bash(c:\\users\\gtx\\documents\\projects\\personal\\deep-learn\\node_modules\\.bin\\tsc *)"
+    ]
+  },
+  "$version": 3
+}
