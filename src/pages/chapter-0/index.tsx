@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { Link } from "react-router"
 import "./chapter-0.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
 import { INFORMATION_THEORY_TABS } from "./topics/information-theory/tabs"
@@ -48,7 +49,7 @@ export function Chapter0Page() {
                 <span className="ch0-header-chapter">Ch. 0</span>
                 <div className="ch0-header-sep" />
                 <span className="ch0-header-title">Prerequisites &amp; Foundations</span>
-                <span className="ch0-header-badge">ML → LLM Course</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch0-header-badge">ML → LLM Course</span></Link>
             </header>
 
             {/* ── Sidebar ── */}

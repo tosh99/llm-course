@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router"
-import "./chapter-2.css"
+import "./chapter-7.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { LINEAR_REGRESSION_TABS } from "./topics/linear-regression/tabs"
-import { DECISION_TREES_TABS } from "./topics/decision-trees/tabs"
-import { SVM_TABS } from "./topics/svm/tabs"
-import { ENSEMBLES_TABS } from "./topics/ensembles/tabs"
-import { REGULARIZATION_TABS } from "./topics/regularization/tabs"
+import { DEEP_BELIEF_NETWORKS_TABS } from "./topics/deep-belief-networks/tabs"
+import { RELU_TABS } from "./topics/relu/tabs"
+import { DROPOUT_TABS } from "./topics/dropout/tabs"
+import { INITIALIZATION_TABS } from "./topics/initialization/tabs"
+import { ALEXNET_TABS } from "./topics/alexnet/tabs"
 import type { TabId, TopicId } from "./types"
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export function Chapter2Page() {
-    const [activeTopic, setActiveTopic] = useState<TopicId>("linear-regression")
+export function Chapter7Page() {
+    const [activeTopic, setActiveTopic] = useState<TopicId>("deep-belief-networks")
     const [activeTab, setActiveTab] = useState<TabId>("history")
     const contentRef = useRef<HTMLDivElement>(null)
 
@@ -34,41 +34,41 @@ export function Chapter2Page() {
     const categories = [...new Set(TOPICS.map((t) => t.category))]
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        "linear-regression": LINEAR_REGRESSION_TABS[activeTab],
-        "decision-trees": DECISION_TREES_TABS[activeTab],
-        svm: SVM_TABS[activeTab],
-        ensembles: ENSEMBLES_TABS[activeTab],
-        regularization: REGULARIZATION_TABS[activeTab],
+        "deep-belief-networks": DEEP_BELIEF_NETWORKS_TABS[activeTab],
+        "relu": RELU_TABS[activeTab],
+        "dropout": DROPOUT_TABS[activeTab],
+        "initialization": INITIALIZATION_TABS[activeTab],
+        "alexnet": ALEXNET_TABS[activeTab],
     }
 
     return (
-        <div className="ch2">
+        <div className="ch7">
             {/* ── Header ── */}
-            <header className="ch2-header">
-                <span className="ch2-header-chapter">Ch. 2</span>
-                <div className="ch2-header-sep" />
-                <span className="ch2-header-title">Classical ML Algorithms</span>
-                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch2-header-badge">ML → LLM Course</span></Link>
+            <header className="ch7-header">
+                <span className="ch7-header-chapter">Ch. 7</span>
+                <div className="ch7-header-sep" />
+                <span className="ch7-header-title">Deep Learning Reignition</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch7-header-badge">ML → LLM Course</span></Link>
             </header>
 
             {/* ── Sidebar ── */}
-            <nav className="ch2-sidebar">
+            <nav className="ch7-sidebar">
                 {categories.map((cat, ci) => (
                     <div key={cat}>
-                        {ci > 0 && <div className="ch2-sidebar-divider" />}
-                        <div className="ch2-sidebar-label">{cat}</div>
+                        {ci > 0 && <div className="ch7-sidebar-divider" />}
+                        <div className="ch7-sidebar-label">{cat}</div>
                         {TOPICS.filter((t) => t.category === cat).map((topic) => (
                             <div
                                 key={topic.id}
-                                className={`ch2-nav-item${activeTopic === topic.id ? " active" : ""}`}
+                                className={`ch7-nav-item${activeTopic === topic.id ? " active" : ""}`}
                                 onClick={() => {
                                     setActiveTopic(topic.id)
                                     setActiveTab("history")
                                 }}
                             >
-                                <span className="ch2-nav-icon">{topic.icon}</span>
+                                <span className="ch7-nav-icon">{topic.icon}</span>
                                 {topic.label}
-                                <span className="ch2-nav-dot" />
+                                <span className="ch7-nav-dot" />
                             </div>
                         ))}
                     </div>
@@ -76,19 +76,19 @@ export function Chapter2Page() {
             </nav>
 
             {/* ── Main ── */}
-            <main className="ch2-main">
+            <main className="ch7-main">
                 {/* Topic header */}
-                <div className="ch2-topic-header">
-                    <div className="ch2-eyebrow">{topic.eyebrow}</div>
-                    <div className="ch2-topic-title">{topicLabel}</div>
-                    <div className="ch2-topic-subtitle">{topic.subtitle}</div>
+                <div className="ch7-topic-header">
+                    <div className="ch7-eyebrow">{topic.eyebrow}</div>
+                    <div className="ch7-topic-title">{topicLabel}</div>
+                    <div className="ch7-topic-subtitle">{topic.subtitle}</div>
 
                     {/* Tabs */}
-                    <div className="ch2-tabs">
+                    <div className="ch7-tabs">
                         {TABS.map((tab) => (
                             <button
                                 key={tab.id}
-                                className={`ch2-tab-btn${activeTab === tab.id ? " active" : ""}`}
+                                className={`ch7-tab-btn${activeTab === tab.id ? " active" : ""}`}
                                 onClick={() => setActiveTab(tab.id)}
                             >
                                 {tab.label}
@@ -98,15 +98,15 @@ export function Chapter2Page() {
                 </div>
 
                 {/* Content */}
-                <div className="ch2-content ch2-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`}>
+                <div className="ch7-content ch7-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (
-                            <div className="ch2-coming-soon">
+                            <div className="ch7-coming-soon">
                                 Content for <strong>{topicLabel}</strong> is coming soon.
                             </div>
                         )
                     ) : (
-                        <div className="ch2-coming-soon">
+                        <div className="ch7-coming-soon">
                             Content for <strong>{topicLabel}</strong> is coming soon.
                         </div>
                     )}
