@@ -1,4 +1,4 @@
-import { Analogy } from "../../shared"
+import { Analogy, CodeBlock } from "../../shared"
 import type { TabId } from "../../types"
 
 // ── Tab content ────────────────────────────────────────────────────────────────
@@ -359,6 +359,7 @@ function PythonTab() {
                 This code demonstrates two key barriers: vanishing gradients with old activations
                 and the computational explosion of training on large datasets.
             </p>
+            <CodeBlock code={PY_CODE} filename="cnn_barriers.py" lang="python" langLabel="Python" />
             <div className="ch6-callout">
                 <strong>Key insight:</strong> ReLU maintains gradients for positive values, enabling
                 deep networks. Meanwhile, ImageNet-scale datasets require 20× more compute than
@@ -494,6 +495,7 @@ function CodeTab() {
                 This simulation shows why CNNs couldn't work in the 2000s: vanishing gradients
                 killed deep networks, and compute scaled linearly with dataset size.
             </p>
+            <CodeBlock code={TS_CODE} filename="cnn_barriers.ts" lang="typescript" langLabel="TypeScript" />
             <div className="ch6-callout">
                 <strong>2012 was the inflection point:</strong> GPUs + ReLU + ImageNet + dropout
                 broke all four barriers simultaneously, enabling AlexNet's breakthrough.

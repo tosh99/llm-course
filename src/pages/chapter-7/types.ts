@@ -6,7 +6,6 @@ export type TopicId =
     | "relu"
     | "dropout"
     | "initialization"
-    | "alexnet"
 
 declare global {
     interface Window {

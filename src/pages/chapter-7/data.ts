@@ -22,7 +22,7 @@ type TopicMeta = {
 
 export const TABS: TabConfig[] = [
     { id: "history", label: "History" },
-    { id: "kid", label: "For Kids" },
+    { id: "kid", label: "Kid Explanation" },
     { id: "highschool", label: "High School" },
     { id: "maths", label: "Maths" },
     { id: "python", label: "Python" },
@@ -34,35 +34,28 @@ export const TOPICS: TopicConfig[] = [
         id: "deep-belief-networks",
         label: "Deep Belief Networks",
         category: "Pretraining",
-        icon: "🎯",
+        icon: "⬡",
         ready: true,
     },
     {
         id: "relu",
         label: "ReLU Activation",
         category: "Activation",
-        icon: "⚡",
+        icon: "∧",
         ready: true,
     },
     {
         id: "dropout",
         label: "Dropout Regularization",
         category: "Regularization",
-        icon: "🛡️",
+        icon: "⊘",
         ready: true,
     },
     {
         id: "initialization",
         label: "Weight Initialization",
         category: "Training",
-        icon: "⚖️",
-        ready: true,
-    },
-    {
-        id: "alexnet",
-        label: "AlexNet",
-        category: "Breakthrough",
-        icon: "🏆",
+        icon: "∇",
         ready: true,
     },
 ]
@@ -85,9 +78,5 @@ export const TOPIC_META: Record<TopicId, TopicMeta> = {
     "initialization": {
         eyebrow: "2010",
         subtitle: "Xavier and He initialization strategies for stable gradient flow in deep networks",
-    },
-    "alexnet": {
-        eyebrow: "2012",
-        subtitle: "The ImageNet victory that announced the deep learning revolution to the world",
     },
 }

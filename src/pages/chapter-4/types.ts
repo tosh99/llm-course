@@ -7,6 +7,7 @@ export type TopicId =
     | "activation-functions"
     | "gradient-descent"
     | "vanishing-gradients"
+    | "autoencoders"
 
 declare global {
     interface Window {

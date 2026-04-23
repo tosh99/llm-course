@@ -1,4 +1,4 @@
-import { Analogy, CodeBlock, DiagramBlock } from "../../shared"
+import { Analogy, CodeBlock } from "../../shared"
 import type { TabId } from "../../types"
 
 // ── Tab content ────────────────────────────────────────────────────────────────

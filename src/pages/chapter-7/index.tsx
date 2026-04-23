@@ -6,7 +6,6 @@ import { DEEP_BELIEF_NETWORKS_TABS } from "./topics/deep-belief-networks/tabs"
 import { RELU_TABS } from "./topics/relu/tabs"
 import { DROPOUT_TABS } from "./topics/dropout/tabs"
 import { INITIALIZATION_TABS } from "./topics/initialization/tabs"
-import { ALEXNET_TABS } from "./topics/alexnet/tabs"
 import type { TabId, TopicId } from "./types"
 
 // ── Main component ────────────────────────────────────────────────────────────
@@ -38,7 +37,6 @@ export function Chapter7Page() {
         "relu": RELU_TABS[activeTab],
         "dropout": DROPOUT_TABS[activeTab],
         "initialization": INITIALIZATION_TABS[activeTab],
-        "alexnet": ALEXNET_TABS[activeTab],
     }
 
     return (

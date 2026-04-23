@@ -13,11 +13,13 @@ export interface TopicMeta {
 }
 
 export const TOPICS: TopicMeta[] = [
-    { id: "alexnet", label: "AlexNet", icon: "🎯", category: "Breakthrough Architectures", eyebrow: "2012 · ImageNet Winner", subtitle: "The deep learning revolution begins", ready: true },
-    { id: "vggnet", label: "VGGNet", icon: "📚", category: "Breakthrough Architectures", eyebrow: "2014 · Simplicity", subtitle: "Depth through repetition", ready: true },
-    { id: "googlenet", label: "GoogLeNet", icon: "🔬", category: "Efficiency", eyebrow: "2014 · Inception", subtitle: "Multi-scale processing", ready: true },
-    { id: "resnet", label: "ResNet", icon: "⛓️", category: "Efficiency", eyebrow: "2015 · Residual Learning", subtitle: "Skip connections enable 152+ layers", ready: true },
-    { id: "densenet", label: "DenseNet", icon: "🕸️", category: "Advanced Architectures", eyebrow: "2017 · Dense Connections", subtitle: "Extreme feature reuse", ready: true },
+    { id: "alexnet", label: "AlexNet", icon: "◆", category: "Breakthrough Architectures", eyebrow: "2012 · ImageNet Winner", subtitle: "The deep learning revolution begins", ready: true },
+    { id: "vggnet", label: "VGGNet", icon: "≡", category: "Breakthrough Architectures", eyebrow: "2014 · Simplicity", subtitle: "Depth through repetition", ready: true },
+    { id: "googlenet", label: "GoogLeNet", icon: "⊛", category: "Efficiency", eyebrow: "2014 · Inception", subtitle: "Multi-scale processing", ready: true },
+    { id: "resnet", label: "ResNet", icon: "⊃", category: "Efficiency", eyebrow: "2015 · Residual Learning", subtitle: "Skip connections enable 152+ layers", ready: true },
+    { id: "densenet", label: "DenseNet", icon: "⊠", category: "Advanced Architectures", eyebrow: "2017 · Dense Connections", subtitle: "Extreme feature reuse", ready: true },
+    { id: "gans", label: "GANs", icon: "⚡", category: "Generative Models", eyebrow: "2014 · Adversarial Training", subtitle: "The forger and the detective", ready: true },
+    { id: "vit", label: "ViT", icon: "◈", category: "Modern Architectures", eyebrow: "2020 · Transformers for Vision", subtitle: "An image is worth 16×16 words", ready: true },
 ]
 
 export const TOPIC_META: Record<string, { eyebrow: string; subtitle: string }> = {
@@ -40,6 +42,14 @@ export const TOPIC_META: Record<string, { eyebrow: string; subtitle: string }> =
     densenet: {
         eyebrow: "2017 · Dense Connections",
         subtitle: "Extreme feature reuse",
+    },
+    gans: {
+        eyebrow: "2014 · Adversarial Training",
+        subtitle: "The forger and the detective",
+    },
+    vit: {
+        eyebrow: "2020 · Transformers for Vision",
+        subtitle: "An image is worth 16×16 words",
     },
 }
 

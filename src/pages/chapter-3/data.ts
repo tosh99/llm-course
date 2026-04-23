@@ -7,7 +7,6 @@ export const TOPICS: { id: TopicId; label: string; icon: string; category: strin
     { id: "hierarchical", label: "Hierarchical Clustering",      icon: "⋈", category: "Clustering",              ready: true },
     { id: "pca",          label: "Principal Component Analysis", icon: "↗", category: "Dimensionality Reduction", ready: true },
     { id: "gmm-em",       label: "Gaussian Mixtures & EM",       icon: "≋", category: "Density Estimation",      ready: true },
-    { id: "autoencoders", label: "Autoencoders",                 icon: "⊃", category: "Representation Learning", ready: true },
 ]
 
 export const TOPIC_META: Record<TopicId, { eyebrow: string; subtitle: string }> = {
@@ -26,10 +25,6 @@ export const TOPIC_META: Record<TopicId, { eyebrow: string; subtitle: string }> 
     "gmm-em": {
         eyebrow: "Unsupervised Learning · Density Estimation",
         subtitle: "Model data as a mixture of Gaussians and learn them with the EM algorithm",
-    },
-    autoencoders: {
-        eyebrow: "Unsupervised Learning · Representation Learning",
-        subtitle: "Force a network to compress and reconstruct its input — learning structure for free",
     },
 }
 

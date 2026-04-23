@@ -7,6 +7,9 @@ function HistoryTab() {
     return (
         <>
             <h2>Why RNNs forget: the mathematical inevitability of gradient decay</h2>
+            <div className="ch5-callout">
+                <strong>Building on Ch. 4:</strong> Vanishing gradients in deep feedforward networks were introduced in Ch. 4. This topic covers the <em>same phenomenon as it specifically manifests in RNNs</em> — where sequence length, not layer count, determines depth. The problem is structurally identical but exponentially worse because the unrolled network can be hundreds of steps deep.
+            </div>
             <p>
                 The vanishing gradient problem is not a bug in any particular implementation — it is
                 a mathematical consequence of how RNNs are structured. It was precisely identified and

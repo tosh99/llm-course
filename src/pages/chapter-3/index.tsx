@@ -6,7 +6,6 @@ import { KMEANS_TABS } from "./topics/kmeans/tabs"
 import { HIERARCHICAL_TABS } from "./topics/hierarchical/tabs"
 import { PCA_TABS } from "./topics/pca/tabs"
 import { GMM_EM_TABS } from "./topics/gmm-em/tabs"
-import { AUTOENCODERS_TABS } from "./topics/autoencoders/tabs"
 import type { TabId, TopicId } from "./types"
 
 // ── Main component ────────────────────────────────────────────────────────────
@@ -38,7 +37,6 @@ export function Chapter3Page() {
         hierarchical: HIERARCHICAL_TABS[activeTab],
         pca:          PCA_TABS[activeTab],
         "gmm-em":     GMM_EM_TABS[activeTab],
-        autoencoders: AUTOENCODERS_TABS[activeTab],
     }
 
     return (

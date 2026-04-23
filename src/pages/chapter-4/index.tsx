@@ -7,6 +7,7 @@ import { MLP_TABS } from "./topics/mlp/tabs"
 import { ACTIVATION_FUNCTIONS_TABS } from "./topics/activation-functions/tabs"
 import { GRADIENT_DESCENT_TABS } from "./topics/gradient-descent/tabs"
 import { VANISHING_GRADIENTS_TABS } from "./topics/vanishing-gradients/tabs"
+import { AUTOENCODERS_TABS } from "./topics/autoencoders/tabs"
 import type { TabId, TopicId } from "./types"
 
 // ── Main component ────────────────────────────────────────────────────────────
@@ -39,6 +40,7 @@ export function Chapter4Page() {
         "activation-functions": ACTIVATION_FUNCTIONS_TABS[activeTab],
         "gradient-descent": GRADIENT_DESCENT_TABS[activeTab],
         "vanishing-gradients": VANISHING_GRADIENTS_TABS[activeTab],
+        autoencoders: AUTOENCODERS_TABS[activeTab],
     }
 
     return (

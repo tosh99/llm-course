@@ -6,7 +6,6 @@ export type TopicId =
     | "hierarchical"
     | "pca"
     | "gmm-em"
-    | "autoencoders"
 
 declare global {
     interface Window {

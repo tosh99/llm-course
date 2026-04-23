@@ -5,8 +5,8 @@ import type { TabId, TopicId } from "./types"
 export const TOPICS: { id: TopicId; label: string; icon: string; category: string; ready: boolean }[] = [
     { id: "simple-rnn", label: "Simple RNNs", icon: "⟳", category: "Architecture", ready: true },
     { id: "bptt", label: "Backpropagation Through Time", icon: "⤵", category: "Training", ready: true },
-    { id: "vanishing-gradient", label: "Vanishing Gradient Problem", icon: "📉", category: "Training", ready: true },
-    { id: "lstm", label: "Long Short-Term Memory", icon: "🧠", category: "Architecture", ready: true },
+    { id: "vanishing-gradient", label: "Vanishing Gradient Problem", icon: "↘", category: "Training", ready: true },
+    { id: "lstm", label: "Long Short-Term Memory", icon: "⊡", category: "Architecture", ready: true },
 ]
 
 export const TOPIC_META: Record<TopicId, { eyebrow: string; subtitle: string }> = {

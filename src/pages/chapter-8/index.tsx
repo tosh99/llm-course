@@ -7,6 +7,8 @@ import { VGGNET_TABS } from "./topics/vggnet/tabs"
 import { GOOGLENET_TABS } from "./topics/googlenet/tabs"
 import { RESNET_TABS } from "./topics/resnet/tabs"
 import { DENSENET_TABS } from "./topics/densenet/tabs"
+import { GAN_TABS } from "./topics/gans/tabs"
+import { VIT_TABS } from "./topics/vit/tabs"
 import type { TabId } from "./types"
 
 // ── Main component ────────────────────────────────────────────────────────────
@@ -39,6 +41,8 @@ export function Chapter8Page() {
         googlenet: GOOGLENET_TABS[activeTab],
         resnet: RESNET_TABS[activeTab],
         densenet: DENSENET_TABS[activeTab],
+        gans: GAN_TABS[activeTab],
+        vit: VIT_TABS[activeTab],
     }
 
     return (

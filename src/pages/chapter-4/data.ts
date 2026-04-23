@@ -8,6 +8,7 @@ export const TOPICS: { id: TopicId; label: string; icon: string; category: strin
     { id: "activation-functions", label: "Activation Functions", icon: "∿", category: "Architecture", ready: true },
     { id: "gradient-descent", label: "Gradient Descent", icon: "∇", category: "Training", ready: true },
     { id: "vanishing-gradients", label: "Vanishing / Exploding Gradients", icon: "↘", category: "Training", ready: true },
+    { id: "autoencoders",        label: "Autoencoders",                    icon: "⊃", category: "Application", ready: true },
 ]
 
 export const TOPIC_META: Record<TopicId, { eyebrow: string; subtitle: string }> = {
@@ -30,6 +31,10 @@ export const TOPIC_META: Record<TopicId, { eyebrow: string; subtitle: string }> 
     "vanishing-gradients": {
         eyebrow: "Chapter 4 · Training",
         subtitle: "The training instability that stalled deep networks for two decades",
+    },
+    autoencoders: {
+        eyebrow: "Chapter 4 · Application",
+        subtitle: "Train an MLP to compress and reconstruct its input — unsupervised representation learning",
     },
 }
 

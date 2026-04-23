@@ -325,3 +325,51 @@
   padding: 6px 14px;
   border-radius: 4px;
 }
+
+/* ── Mobile responsive ── */
+@media (max-width: 640px) {
+  .hp-header-sep,
+  .hp-header-sub {
+    display: none;
+  }
+
+  .hp-hero {
+    padding: 28px 20px 28px;
+  }
+
+  .hp-hero-title {
+    font-size: 26px;
+  }
+
+  .hp-hero-desc {
+    font-size: 16px;
+  }
+
+  .hp-hero-stats {
+    gap: 20px;
+  }
+
+  .hp-toc {
+    padding: 0 20px 60px;
+  }
+
+  .hp-part-header {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .hp-part-title {
+    font-size: 17px;
+  }
+
+  .hp-part-era {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .hp-chapter.available:hover {
+    margin: 0 -8px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}

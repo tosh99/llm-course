@@ -1,4 +1,4 @@
-import { Analogy } from "../../shared"
+import { Analogy, CodeBlock } from "../../shared"
 import type { TabId } from "../../types"
 
 // ── Tab content ────────────────────────────────────────────────────────────────
@@ -321,17 +321,7 @@ function PythonTab() {
                 layer outputs. Notice the pattern: increasing channels, decreasing spatial
                 dimensions, growing receptive fields.
             </p>
-            <div style={{ background: '#111115', padding: '12px', borderRadius: '4px', margin: '12px 0' }}>
-                <pre style={{ margin: 0, fontFamily: 'JetBrains Mono', fontSize: '12px', color: '#cdc9c0' }}>
-{`# Progression:
-Input:   1×32×32   (raw image)
-Conv1:   3×32×32   (3 edge detectors)
-Pool1:   3×16×16   (downsampled edges)
-Conv2:   6×16×16   (6 texture patterns)
-Pool2:   6×8×8     (downsampled textures)
-Conv3:   12×8×8    (12 complex patterns)`}
-                </pre>
-            </div>
+            <CodeBlock code={PY_CODE} filename="feature_hierarchies.py" lang="python" langLabel="Python" />
             <div className="ch6-callout">
                 <strong>Key insight:</strong> Channels increase as complexity increases, while
                 spatial resolution decreases. This trade-off is fundamental to how CNNs work.
@@ -435,20 +425,7 @@ function CodeTab() {
                 This TypeScript example shows how features compose hierarchically: edges combine
                 into corners, corners combine into patterns, patterns combine into objects.
             </p>
-            <div style={{ background: '#111115', padding: '12px', borderRadius: '4px', margin: '12px 0' }}>
-                <pre style={{ margin: 0, fontFamily: 'JetBrains Mono', fontSize: '12px', color: '#cdc9c0' }}>
-{`Hierarchy:
-  Layer 1: Edges (3×3 patterns)
-     ↓
-  Layer 2: Corners (edges + edges)
-     ↓
-  Layer 3: Textures (corners + corners)
-     ↓
-  Layer 4+: Object parts (many patterns)
-     ↓
-  Final: Complete objects`}
-                </pre>
-            </div>
+            <CodeBlock code={TS_CODE} filename="feature_hierarchies.ts" lang="typescript" langLabel="TypeScript" />
         </>
     )
 }
