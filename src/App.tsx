@@ -15,6 +15,12 @@ import { Chapter11Page } from "@/pages/chapter-11"
 import { Chapter12Page } from "@/pages/chapter-12"
 import { Chapter13Page } from "@/pages/chapter-13"
 import { Chapter14Page } from "@/pages/chapter-14"
+import { Chapter16Page } from "@/pages/chapter-16"
+import { Chapter17Page } from "@/pages/chapter-17"
+import { Chapter18Page } from "@/pages/chapter-18"
+import { Chapter19Page } from "@/pages/chapter-19"
+import { Chapter20Page } from "@/pages/chapter-20"
+import { Chapter21Page } from "@/pages/chapter-21"
 
 function Layout() {
     return (
@@ -36,6 +42,12 @@ function Layout() {
                 <Route path="/chapter/12" element={<Chapter12Page />} />
                 <Route path="/chapter/13" element={<Chapter13Page />} />
                 <Route path="/chapter/14" element={<Chapter14Page />} />
+                <Route path="/chapter/16" element={<Chapter16Page />} />
+                <Route path="/chapter/17" element={<Chapter17Page />} />
+                <Route path="/chapter/18" element={<Chapter18Page />} />
+                <Route path="/chapter/19" element={<Chapter19Page />} />
+                <Route path="/chapter/20" element={<Chapter20Page />} />
+                <Route path="/chapter/21" element={<Chapter21Page />} />
             </Routes>
         </>
     )
