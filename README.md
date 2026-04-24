@@ -1,21 +1,14 @@
-# React + TypeScript + Vite + shadcn/ui
+# DeepLearn
 
-This is a template for a new Vite project with React, TypeScript, and shadcn/ui.
+A self-study curriculum tracing the historical development of machine learning and large language models.
 
-## Adding components
+Work through chapters covering the key breakthroughs, researchers, and ideas that shaped the field — from early neural networks to modern transformer architectures.
 
-To add components to your app, run the following command:
+## Getting Started
 
 ```bash
-npx shadcn@latest add button
+bun install
+bun run dev
 ```
 
-This will place the ui components in the `src/components` directory.
-
-## Using components
-
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button"
-```
+Open [http://localhost:5173](http://localhost:5173) to begin.
