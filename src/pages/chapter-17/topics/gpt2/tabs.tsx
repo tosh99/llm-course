@@ -270,62 +270,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── GPT-2 Sampling — TypeScript ──────────────────────────────────────────────
 
-function topKSample(logits: number[], k = 40, temperature = 1.0): number {
-    // Temperature scaling
-    const scaled = logits.map((l) => l / temperature)
-    // Select top-k indices
-    const indices = scaled
-        .map((v, i) => ({ v, i }))
-        .sort((a, b) => b.v - a.v)
-        .slice(0, k)
-        .map((x) => x.i)
-    const topKLogits = indices.map((i) => scaled[i])
-    // Softmax
-    const maxLogit = Math.max(...topKLogits)
-    const exps = topKLogits.map((l) => Math.exp(l - maxLogit))
-    const sum = exps.reduce((a, b) => a + b, 0)
-    const probs = exps.map((e) => e / sum)
-    // Sample
-    let r = Math.random()
-    for (let j = 0; j < k; j++) {
-        r -= probs[j]
-        if (r <= 0) return indices[j]
-    }
-    return indices[indices.length - 1]
-}
 
-function perplexity(logProbs: number[]): number {
-    const mean = logProbs.reduce((a, b) => a + b, 0) / logProbs.length
-    return Math.exp(-mean)
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const logits = [2.0, 1.5, 0.1, -0.5, 3.2, 0.8, -1.2, 1.0]
-
-console.log("Top-k Sampling Demo")
-console.log("=".repeat(40))
-for (let i = 0; i < 5; i++) {
-    const token = topKSample(logits, 3, 0.8)
-    console.log(\`  Sampled token index: \${token}\`)
-}
-
-const logProbs = [-2.1, -1.8, -3.5, -2.0, -1.9]
-console.log(\`\\nPerplexity: \${perplexity(logProbs).toFixed(2)}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of top-k sampling with temperature, plus perplexity
-                computation — the core generation metrics for GPT-2.
-            </p>
-            <CodeBlock code={TS_CODE} filename="gpt2_sampling.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -335,5 +281,4 @@ export const GPT2_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

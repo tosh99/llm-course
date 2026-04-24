@@ -241,48 +241,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Quantization Utilities — TypeScript ──────────────────────────────────────
 
-function quantizeSymmetric(w: number[], bits: number): { q: number[]; scale: number } {
-    const maxVal = Math.max(...w.map(Math.abs))
-    if (maxVal === 0) return { q: w.map(() => 0), scale: 1 }
-    const qmax = 2 ** (bits - 1) - 1
-    const scale = maxVal / qmax
-    const q = w.map(v => Math.round(v / scale))
-    return { q, scale }
-}
 
-function dequantizeSymmetric(q: number[], scale: number): number[] {
-    return q.map(v => v * scale)
-}
-
-function quantizeMSE(w: number[], bits: number): { q: number[]; scale: number; rmse: number } {
-    const { q, scale } = quantizeSymmetric(w, bits)
-    const wHat = dequantizeSymmetric(q, scale)
-    const rmse = Math.sqrt(w.reduce((s, v, i) => s + (v - wHat[i]) ** 2, 0) / w.length)
-    return { q, scale, rmse }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const weights = Array.from({ length: 256 }, () => (Math.random() - 0.5) * 0.5)
-
-const int8 = quantizeMSE(weights, 8)
-console.log("INT8 RMSE:", int8.rmse.toFixed(6))
-
-const int4 = quantizeMSE(weights, 4)
-console.log("INT4 RMSE:", int4.rmse.toFixed(6))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of symmetric quantization with MSE evaluation.
-            </p>
-            <CodeBlock code={TS_CODE} filename="quantization.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -292,5 +252,4 @@ export const QUANTIZATION_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

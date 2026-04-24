@@ -276,119 +276,13 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── ReLU Activation in TypeScript ──────────────────────────────────────────
 
-function relu(x: number): number {
-  return Math.max(0, x);
-}
 
-function reluDerivative(x: number): number {
-  return x > 0 ? 1 : 0;
-}
-
-function leakyRelu(x: number, alpha = 0.01): number {
-  return x > 0 ? x : alpha * x;
-}
-
-function leakyReluDerivative(x: number, alpha = 0.01): number {
-  return x > 0 ? 1 : alpha;
-}
-
-// ── Vectorized versions ──────────────────────────────────────────────────────
-function reluVec(x: number[]): number[] {
-  return x.map(v => Math.max(0, v));
-}
-
-function reluDerivativeVec(x: number[]): number[] {
-  return x.map(v => v > 0 ? 1 : 0);
-}
-
-// ── Compare with Sigmoid ─────────────────────────────────────────────────────
-function sigmoid(x: number): number {
-  return 1 / (1 + Math.exp(-Math.max(-500, Math.min(500, x))));
-}
-
-function sigmoidDerivative(x: number): number {
-  const s = sigmoid(x);
-  return s * (1 - s);
-}
-
-// Demonstrate vanishing gradient problem
-console.log("Vanishing gradient comparison:");
-console.log("Input | Sigmoid' | ReLU'");
-console.log("-".repeat(30));
-
-const testInputs = [-5, -2, -1, 0, 1, 2, 5];
-for (const x of testInputs) {
-  const sigGrad = sigmoidDerivative(x);
-  const reluGrad = reluDerivative(x);
-  console.log(\`\${x.toString().padStart(5)} | \${sigGrad.toFixed(4).padStart(8)} | \${reluGrad.toString().padStart(5)}\`);
-}
-
-// ── Forward pass through a layer ────────────────────────────────────────────
-type Vec = number[];
-type Mat = number[][];
-
-function matVecMul(A: Mat, v: Vec): Vec {
-  return A.map(row => row.reduce((sum, a, i) => sum + a * v[i], 0));
-}
-
-function vecAdd(a: Vec, b: Vec): Vec {
-  return a.map((x, i) => x + b[i]);
-}
-
-function layerForward(x: Vec, W: Mat, b: Vec): { z: Vec; a: Vec } {
-  const z = vecAdd(matVecMul(W, x), b);
-  const a = reluVec(z);
-  return { z, a };
-}
-
-// Example: 5 inputs → 3 outputs
-const W: Mat = [[0.1, -0.2, 0.3, 0.0, -0.1],
-                [-0.3, 0.2, 0.1, -0.2, 0.3],
-                [0.2, 0.1, -0.1, 0.3, -0.2]];
-const b: Vec = [0.1, -0.1, 0.0];
-const x: Vec = [1.0, -0.5, 0.3, -0.2, 0.8];
-
-const { z, a } = layerForward(x, W, b);
-console.log("\nLayer forward pass:");
-console.log("Pre-activation (z):", z.map(v => v.toFixed(3)));
-console.log("Post-ReLU (a):   ", a.map(v => v.toFixed(3)));
-console.log(\`Sparsity: \${a.filter(v => v === 0).length}/\${a.length} neurons inactive\`);
-
-// ── Backward pass ───────────────────────────────────────────────────────────
-function layerBackward(dL_da: Vec, z: Vec): Vec {
-  // dL_dz = dL_da * relu'(z)
-  return dL_da.map((grad, i) => grad * reluDerivative(z[i]));
-}
-
-const dL_da: Vec = [0.5, -0.3, 0.8];
-const dL_dz = layerBackward(dL_da, z);
-console.log("\nBackward pass (gradient flow):");
-console.log("dL/da from next layer:", dL_da);
-console.log("dL/dz after ReLU:    ", dL_dz);
-console.log("Note: Gradients only flow where z > 0");`;
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript implementation of ReLU and variants.
-            </p>
-            <CodeBlock code={TS_CODE} filename="relu.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Simplicity is power:</strong> ReLU's implementation is just
-                Math.max(0, x), yet it solved one of deep learning's biggest obstacles.
-            </div>
-        </>
-    )
-}
 
 export const RELU_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

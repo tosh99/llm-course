@@ -334,109 +334,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Linear Regression in TypeScript ──────────────────────────
 
-type Vec = number[];
-type Mat = number[][];
 
-// Vector helpers
-const vecAdd  = (a: Vec, b: Vec): Vec => a.map((v, i) => v + b[i]);
-const vecSub  = (a: Vec, b: Vec): Vec => a.map((v, i) => v - b[i]);
-const vecScale = (a: Vec, s: number): Vec => a.map(v => v * s);
-const dot = (a: Vec, b: Vec): number => a.reduce((sum, v, i) => sum + v * b[i], 0);
-const norm = (a: Vec): number => Math.sqrt(a.reduce((s, v) => s + v * v, 0));
-
-// Matrix helpers
-const matT   = (A: Mat): Mat => A[0].map((_, j) => A.map(r => r[j]));
-const matMul = (A: Mat, B: Mat): Mat =>
-  Array.from({ length: A.length }, (_, i) =>
-    Array.from({ length: B[0].length }, (_, j) =>
-      dot(A[i], B.map(r => r[j]))
-    )
-  );
-
-/** OLS: β̂ = (XᵀX)⁻¹ Xᵀy  */
-function ols(X: Mat, y: Vec): Vec {
-  const Xt = matT(X);
-  const XtX = matMul(Xt, X);
-  const XtX_inv = invert(XtX);          // naive cofactor adjugate (small matrices)
-  const Xty = matMul(Xt, y.map(v => [v]));
-  return matMul(XtX_inv, Xty).flat();
-}
-
-/** Ridge: β̂ = (XᵀX + λI)⁻¹ Xᵀy  */
-function ridge(X: Mat, y: Vec, lambda: number): Vec {
-  const Xt = matT(X);
-  const XtX = matMul(Xt, X);
-  // Add λ to diagonal (skip intercept column at index 0)
-  const XtX_ridge = XtX.map((row, i) =>
-    row.map((v, j) => i === j ? v + (i > 0 ? lambda : 0) : v)
-  );
-  const XtX_inv = invert(XtX_ridge);
-  const Xty = matMul(Xt, y.map(v => [v]));
-  return matMul(XtX_inv, Xty).flat();
-}
-
-/** Predict: ŷ = X @ β */
-function predict(X: Mat, beta: Vec): Vec {
-  return X.map(row => dot(row, beta));
-}
-
-/** R² score */
-function r2Score(yTrue: Vec, yPred: Vec): number {
-  const mean = yTrue.reduce((s, v) => s + v, 0) / yTrue.length;
-  const ssRes = yTrue.reduce((s, yt, i) => s + (yt - yPred[i])**2, 0);
-  const ssTot = yTrue.reduce((s, yt) => s + (yt - mean)**2, 0);
-  return 1 - ssRes / ssTot;
-}
-
-/** Naive 2×2 / 3×3 matrix inverse (educational — use a lib for production) */
-function invert(A: Mat): Mat {
-  const n = A.length;
-  const det = A[0][0] * (A[1][1]*A[2]?.[2] - A[1][2]*A[2]?.[1])
-            - A[0][1] * (A[1][0]*A[2]?.[2] - A[1][2]*A[2]?.[0])
-            + A[0][2] * (A[1][0]*A[2]?.[1] - A[1][1]*A[2]?.[0]);
-  if (Math.abs(det) < 1e-12) throw new Error("Singular matrix");
-  const adj = [
-    [ A[1][1], -A[0][1],  0  ],
-    [-A[1][0],  A[0][0],  0  ],
-    [ 0,        0,        1  ],
-  ];
-  return adj.map(row => row.map(v => v / det));
-}
-
-// ── Demo ──────────────────────────────────────────────────────
-const X: Mat = [
-  [1, 1.0, 2.0],
-  [1, 2.0, 4.0],
-  [1, 3.0, 1.5],
-  [1, 4.0, 3.0],
-  [1, 5.0, 2.5],
-  [1, 6.0, 5.0],
-];
-const y: Vec = [3.2, 5.1, 4.3, 6.8, 7.1, 9.4];
-
-const beta_ols   = ols(X, y);
-const beta_ridge = ridge(X, y, 1.5);
-
-console.log("OLS:", beta_ols);
-console.log("Ridge (λ=1.5):", beta_ridge);
-console.log("OLS  R²:", r2Score(y, predict(X, beta_ols)));
-console.log("Ridge R²:", r2Score(y, predict(X, beta_ridge)));`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript — no libraries needed. The OLS and Ridge implementations use the same normal equations Gauss derived in 1809, now running in a browser.
-            </p>
-            <CodeBlock code={TS_CODE} filename="linear-regression.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Production note:</strong> Use a proper linear algebra library (<code>math.js</code>, <code>ndarray</code>) for matrix inversion — the naive implementation here is O(n³) with numerical instability. In practice, use QR decomposition (<code>np.linalg.qr</code> in Python) for better numerical behaviour.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ─────────────────────────────────────────────────────────
 
@@ -445,6 +344,5 @@ export const LINEAR_REGRESSION_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

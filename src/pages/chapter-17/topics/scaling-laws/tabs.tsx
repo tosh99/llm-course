@@ -287,54 +287,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Scaling Laws — TypeScript ────────────────────────────────────────────────
 
-function lossFromParams(N: number, Nc = 1.4e14, alphaN = 0.076, Linf = 1.69): number {
-    return (Nc / N) ** alphaN + Linf
-}
 
-function lossFromData(D: number, Dc = 5.4e13, alphaD = 0.095, Linf = 1.69): number {
-    return (Dc / D) ** alphaD + Linf
-}
-
-function computeOptimal(C: number, tau = 6): { N: number; D: number } {
-    const opt = Math.sqrt(C / tau)
-    return { N: opt, D: opt }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const sizes = [1e6, 1e8, 1e9, 1e10, 1.5e9]
-console.log("Loss vs Model Size")
-console.log("=".repeat(40))
-for (const N of sizes) {
-    console.log(\`  N = \${N.toExponential(0)}  →  L ≈ \${lossFromParams(N).toFixed(3)}\`)
-}
-
-console.log("\\nLoss vs Dataset Size")
-console.log("=".repeat(40))
-const dataSizes = [1e8, 1e9, 1e10, 1e11, 1e12]
-for (const D of dataSizes) {
-    console.log(\`  D = \${D.toExponential(0)}  →  L ≈ \${lossFromData(D).toFixed(3)}\`)
-}
-
-const C = 1e21
-const { N, D } = computeOptimal(C)
-console.log(\`\\nCompute Budget: \${C.toExponential(0)} FLOPs\`)
-console.log(\`  Optimal N ≈ \${N.toExponential(2)} params\`)
-console.log(\`  Optimal D ≈ \${D.toExponential(2)} tokens\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of the Kaplan scaling laws and Chinchilla-optimal compute
-                allocation. Useful for back-of-the-envelope training budgets.
-            </p>
-            <CodeBlock code={TS_CODE} filename="scaling_laws.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -344,5 +298,4 @@ export const SCALING_LAWS_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

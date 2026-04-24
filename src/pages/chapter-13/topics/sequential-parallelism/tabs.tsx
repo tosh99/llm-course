@@ -357,93 +357,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Sequential vs Parallel Scan — TypeScript ────────────────────────────────
 
-type Vec = number[]
 
-function sequentialScan(a: Vec, b: Vec): Vec {
-  const h: Vec = []
-  let prev = 0
-  for (let t = 0; t < a.length; t++) {
-    prev = a[t] * prev + b[t]
-    h.push(prev)
-  }
-  return h
-}
-
-function parallelScan(a: Vec, b: Vec): Vec {
-  const T = a.length
-  let n = 1
-  while (n < T) n *= 2
-
-  const A = Array(n).fill(1)
-  const B = Array(n).fill(0)
-  for (let i = 0; i < T; i++) { A[i] = a[i]; B[i] = b[i] }
-
-  // Up-sweep
-  for (let d = n >> 1; d > 0; d >>= 1) {
-    for (let i = 0; i < n; i += 2 * d) {
-      const idx = i + 2 * d - 1
-      if (idx < n) {
-        const aid = i + d - 1
-        A[idx] = A[idx] * A[aid]
-        B[idx] = A[idx] * B[aid] + B[idx]
-      }
-    }
-  }
-
-  // Down-sweep
-  A[n - 1] = 1
-  B[n - 1] = 0
-  for (let d = 1; d < n; d <<= 1) {
-    for (let i = 0; i < n; i += 2 * d) {
-      const idx = i + 2 * d - 1
-      if (idx < n) {
-        const leftA = A[i + d - 1]
-        const leftB = B[i + d - 1]
-        A[i + d - 1] = A[idx]
-        B[i + d - 1] = B[idx]
-        A[idx] = A[idx] * leftA
-        B[idx] = A[idx] * leftB + B[idx]
-      }
-    }
-  }
-
-  return B.slice(0, T)
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const T = 8
-const a: Vec = Array.from({ length: T }, (_, i) => 0.5 + i * 0.02)
-const b: Vec = Array.from({ length: T }, () => Math.random() - 0.5)
-
-const hSeq = sequentialScan(a, b)
-const hPar = parallelScan(a, b)
-
-console.log("Parallel Scan — TypeScript")
-console.log("─".repeat(40))
-let maxDiff = 0
-hSeq.forEach((hs, t) => {
-  const diff = Math.abs(hs - hPar[t])
-  maxDiff = Math.max(maxDiff, diff)
-  console.log(\`  t=\${t}: seq=\${hs.toFixed(4)}  par=\${hPar[t].toFixed(4)}  diff=\${diff.toFixed(2e)}\`)
-})
-console.log(\`Max difference: \${maxDiff.toFixed(2e)}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of both sequential and parallel scan for a linear
-                recurrence. The parallel version uses the Blelloch algorithm with O(log T) depth,
-                demonstrating that the same recurrence can be computed with far fewer sequential
-                steps.
-            </p>
-            <CodeBlock code={TS_CODE} filename="parallel_scan.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -453,5 +368,4 @@ export const SEQUENTIAL_PARALLELISM_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

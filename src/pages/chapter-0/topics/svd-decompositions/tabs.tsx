@@ -101,12 +101,12 @@ function HighSchoolTab() {
 
             <h3>The Decomposition</h3>
             <p>
-                Any matrix A in <InlineMath tex="\\mathbb{R}^{m \\times n}" /> can be written as:
+                Any matrix A in <InlineMath tex="\mathbb{R}^{m \times n}" /> can be written as:
             </p>
-            <MathBlock tex="A = U \\Sigma V^T" />
+            <MathBlock tex="A = U \Sigma V^T" />
             <p>
-                where U in <InlineMath tex="\\mathbb{R}^{m \\times m}" /> and V in <InlineMath tex="\\mathbb{R}^{n \\times n}" /> are <strong>orthogonal matrices</strong> (their columns{" "}
-                are unit vectors at right angles to each other), and Sigma in <InlineMath tex="\\mathbb{R}^{m \\times n}" /> is a diagonal matrix{" "}
+                where U in <InlineMath tex="\mathbb{R}^{m \times m}" /> and V in <InlineMath tex="\mathbb{R}^{n \times n}" /> are <strong>orthogonal matrices</strong> (their columns{" "}
+                are unit vectors at right angles to each other), and Sigma in <InlineMath tex="\mathbb{R}^{m \times n}" /> is a diagonal matrix{" "}
                 with non-negative entries sigma_1 &gt;= sigma_2 &gt;= ... &gt;= 0 called the{" "}
                 <strong>singular values</strong>.
             </p>
@@ -128,7 +128,7 @@ function HighSchoolTab() {
                 The <strong>rank</strong> of a matrix is the number of non-zero singular values. If we keep
                 only the top k singular values and set the rest to zero, we get a rank-k approximation:
             </p>
-            <MathBlock tex="A \\approx U_k \\Sigma_k V_k^T" />
+            <MathBlock tex="A \approx U_k \Sigma_k V_k^T" />
             <p>
                 The Eckart-Young theorem says this is the <strong>best possible</strong> rank-k approximation
                 of A (in both spectral and Frobenius norm). This is incredibly useful:
@@ -156,8 +156,8 @@ function MathsTab() {
             <h2>Formal Definitions</h2>
 
             <DefBlock label="Definition — Singular Value Decomposition">
-                For any matrix A in <InlineMath tex="\\mathbb{R}^{m \\times n}" />, there exist orthogonal matrices U in <InlineMath tex="\\mathbb{R}^{m \\times m}" /> and{" "}
-                V in <InlineMath tex="\\mathbb{R}^{n \\times n}" /> such that A = U Sigma V^T, where Sigma in <InlineMath tex="\\mathbb{R}^{m \\times n}" /> has non-negative{" "}
+                For any matrix A in <InlineMath tex="\mathbb{R}^{m \times n}" />, there exist orthogonal matrices U in <InlineMath tex="\mathbb{R}^{m \times m}" /> and{" "}
+                V in <InlineMath tex="\mathbb{R}^{n \times n}" /> such that A = U Sigma V^T, where Sigma in <InlineMath tex="\mathbb{R}^{m \times n}" /> has non-negative{" "}
                 diagonal entries sigma_1 &gt;= sigma_2 &gt;= ... &gt;= 0 (singular values) and zeros{" "}
                 elsewhere. The columns of U are left singular vectors; the columns of V are right{" "}
                 singular vectors.
@@ -168,11 +168,11 @@ function MathsTab() {
                 Let A have rank r. For any k &lt; r, the best rank-k approximation of A in both spectral
                 and Frobenius norm is given by the truncated SVD:
             </p>
-            <MathBlock tex="A_k = \\sum_{i=1}^k \\sigma_i \\mathbf{u}_i \\mathbf{v}_i^T = U_k \\Sigma_k V_k^T" />
+            <MathBlock tex="A_k = \sum_{i=1}^k \sigma_i \mathbf{u}_i \mathbf{v}_i^T = U_k \Sigma_k V_k^T" />
             <p>
                 The approximation error is:
             </p>
-            <MathBlock tex="\\|A - A_k\\|_F^2 = \\sum_{i=k+1}^r \\sigma_i^2" />
+            <MathBlock tex="\|A - A_k\|_F^2 = \sum_{i=k+1}^r \sigma_i^2" />
             <p>
                 This means the singular values tell you exactly how much information you lose by keeping
                 only k components. If the first few singular values are large and the rest are tiny, a
@@ -191,7 +191,7 @@ function MathsTab() {
                 </li>
                 <li>
                     <strong>LoRA (2022)</strong> — fine-tune LLMs efficiently by learning a low-rank{" "}
-                    update Delta W = BA where B in <InlineMath tex="\\mathbb{R}^{m \\times r}" />, A in <InlineMath tex="\\mathbb{R}^{r \\times n}" />, r much less than min(m,n)
+                    update Delta W = BA where B in <InlineMath tex="\mathbb{R}^{m \times r}" />, A in <InlineMath tex="\mathbb{R}^{r \times n}" />, r much less than min(m,n)
                 </li>
                 <li>
                     <strong>Matrix factorisation for recommendations</strong> — decompose a sparse
@@ -258,70 +258,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Types ────────────────────────────────────────────────
-type Mat = number[][];
-type Vec = number[];
 
-// ── Naive SVD approximation (truncated rank-k) ────────────
-// In production, use a proper linear algebra library.
-// This builds intuition for how truncation works.
 
-function transpose(A: Mat): Mat {
-  return A[0].map((_, j) => A.map(row => row[j]));
-}
-
-function dot(a: Vec, b: Vec): number {
-  return a.reduce((s, v, i) => s + v * b[i], 0);
-}
-
-function matMul(A: Mat, B: Mat): Mat {
-  const rows = A.length;
-  const cols = B[0].length;
-  const inner = B.length;
-  return Array.from({ length: rows }, (_, i) =>
-    Array.from({ length: cols }, (_, j) =>
-      Array.from({ length: inner }, (_, k) => A[i][k] * B[k][j])
-           .reduce((s, v) => s + v, 0)
-    )
-  );
-}
-
-function diag(v: Vec): Mat {
-  return v.map((val, i) =>
-    Array.from({ length: v.length }, (_, j) => (i === j ? val : 0))
-  );
-}
-
-// Simulate a low-rank matrix: product of two skinny matrices
-const m = 6, n = 5, r = 2;
-const A = matMul(
-  Array.from({ length: m }, () => Array.from({ length: r }, () => Math.random())),
-  Array.from({ length: r }, () => Array.from({ length: n }, () => Math.random()))
-);
-
-console.log("Original shape:", A.length, "x", A[0].length);
-console.log("Rank:", r);  // True rank is 2
-
-// In real code: const { U, S, Vt } = svd(A);
-// Then reconstruct with top-k singular values.`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript lacks a built-in SVD, but the concept is clear: decompose, truncate, reconstruct.
-                For real work, use <code>math.js</code>, <code>ml-matrix</code>, or call Python via a server.
-            </p>
-            <CodeBlock code={TS_CODE} filename="svd.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Production note:</strong> Implementing SVD from scratch in TypeScript is
-                educational but impractical. The algorithm involves Householder reflections or
-                Golub-Kahan bidiagonalisation — hundreds of lines of numerically sensitive code. Use
-                battle-tested libraries.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -331,5 +269,4 @@ export const SVD_DECOMPOSITIONS_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
     python: <PythonTab />,
-    code: <CodeTab />,
 }

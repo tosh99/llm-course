@@ -256,76 +256,13 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Gini Impurity & Best Split (TypeScript) ─────────────────
 
-type Vec = number[];
 
-function giniImpurity(labels: Vec): number {
-  const n = labels.length;
-  if (n === 0) return 0;
-  const counts: Record<number, number> = {};
-  for (const l of labels) counts[l] = (counts[l] ?? 0) + 1;
-  return 1 - Object.values(counts).reduce(
-    (sum, c) => sum + (c / n) ** 2, 0
-  );
-}
-
-/** Information Gain from splitting labels into left/right */
-function infoGain(parent: Vec, left: Vec, right: Vec): number {
-  const n = parent.length;
-  const gParent = giniImpurity(parent);
-  const gLeft   = giniImpurity(left);
-  const gRight  = giniImpurity(right);
-  return gParent - (left.length / n) * gLeft - (right.length / n) * gRight;
-}
-
-/** Find best split for a 1D feature */
-function bestSplit(feature: Vec, labels: Vec): { threshold: number; gain: number } {
-  const sorted = feature.map((v, i) => [v, labels[i]] as [number, number])
-    .sort((a, b) => a[0] - b[0]);
-
-  let best = { threshold: 0, gain: -Infinity };
-  const uniqVals = [...new Set(feature)].sort((a, b) => a - b);
-
-  for (let i = 0; i < uniqVals.length - 1; i++) {
-    const t = (uniqVals[i] + uniqVals[i + 1]) / 2;
-    const left  = sorted.filter(([v]) => v <= t).map(([, l]) => l);
-    const right = sorted.filter(([v]) => v >  t).map(([, l]) => l);
-    const gain  = infoGain(labels, left, right);
-    if (gain > best.gain) best = { threshold: t, gain };
-  }
-  return best;
-}
-
-// ── Demo ──────────────────────────────────────────────────────
-const features = [1.2, 1.8, 2.1, 2.5, 3.0, 3.8, 4.1, 4.5, 5.0, 5.5];
-const labels   = [0,   0,   0,   0,   1,   1,   1,   1,   1,   1];
-
-const result = bestSplit(features, labels);
-console.log(\`Best threshold: x ≤ \${result.threshold.toFixed(2)}\`);
-console.log(\`Information gain: \${result.gain.toFixed(4)}\`);
-console.log(\`Gini before split: \${giniImpurity(labels).toFixed(4)}\`);
-// Best threshold: x ≤ 4.55, Information gain: 0.4800`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Gini impurity and information gain are the core splitting criteria used by CART, C4.5, and every decision tree variant. This implementation shows the mechanics — scikit-learn's <code>DecisionTreeClassifier</code> handles multi-dimensional features and recursive tree construction.
-            </p>
-            <CodeBlock code={TS_CODE} filename="decision-trees.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Next step:</strong> A full recursive tree builder would call <code>bestSplit</code> on every feature, pick the best (feature, threshold) pair, split the data, and recurse on each child. Stop when <code>max_depth</code> is reached, <code>giniImpurity</code> is zero, or <code>n_samples &lt; min_samples_leaf</code>.
-            </div>
-        </>
-    )
-}
 
 export const DECISION_TREES_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

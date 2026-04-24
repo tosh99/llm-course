@@ -310,80 +310,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Scaled Dot-Product Attention — TypeScript ───────────────────────────────
 
-type Mat = number[][]
 
-function matMul(A: Mat, B: Mat): Mat {
-  const n = A.length, m = B[0].length, p = B.length
-  const C: Mat = Array.from({ length: n }, () => Array(m).fill(0))
-  for (let i = 0; i < n; i++)
-    for (let k = 0; k < p; k++)
-      for (let j = 0; j < m; j++)
-        C[i][j] += A[i][k] * B[k][j]
-  return C
-}
-
-function transpose(A: Mat): Mat {
-  return A[0].map((_, j) => A.map(row => row[j]))
-}
-
-function softmaxRows(M: Mat): Mat {
-  return M.map(row => {
-    const max = Math.max(...row)
-    const exps = row.map(v => Math.exp(v - max))
-    const sum = exps.reduce((a, b) => a + b, 0)
-    return exps.map(e => e / sum)
-  })
-}
-
-function scale(M: Mat, s: number): Mat {
-  return M.map(row => row.map(v => v * s))
-}
-
-function scaledDotProductAttention(
-  Q: Mat, K: Mat, V: Mat
-): { output: Mat; attn: Mat } {
-  const d_k = Q[0].length
-  const scores = matMul(Q, transpose(K))
-  const scaled = scale(scores, 1 / Math.sqrt(d_k))
-  const attn = softmaxRows(scaled)
-  const output = matMul(attn, V)
-  return { output, attn }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-function randMat(rows: number, cols: number): Mat {
-  return Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => (Math.random() - 0.5) * 2))
-}
-
-const n = 6, d_k = 4, d_v = 4
-const Q = randMat(n, d_k)
-const K = randMat(n, d_k)
-const V = randMat(n, d_v)
-
-const { output, attn } = scaledDotProductAttention(Q, K, V)
-
-console.log("Scaled Dot-Product Attention — TypeScript")
-console.log("─".repeat(40))
-console.log("Attention weights (row 0):", attn[0].map(v => v.toFixed(3)))
-console.log("Row sum:", attn[0].reduce((a, b) => a + b, 0).toFixed(4))
-console.log("Output shape:", output.length, "x", output[0].length)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation with naive matrix multiplication. Useful for
-                understanding the data flow; production code should use a GPU-accelerated
-                linear algebra library.
-            </p>
-            <CodeBlock code={TS_CODE} filename="attention.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -393,5 +321,4 @@ export const SCALED_DOT_PRODUCT_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

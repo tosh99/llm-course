@@ -289,64 +289,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── T5 Span Corruption — TypeScript ──────────────────────────────────────────
 
-function spanCorruption(
-    tokens: string[],
-    meanSpanLen = 3,
-    maskRate = 0.15
-): { input: string[]; target: string[] } {
-    const n = tokens.length
-    const numMasked = Math.floor(n * maskRate)
-    const spans: { sid: number; start: number; len: number }[] = []
-    let covered = 0
-    let sentinelId = 0
 
-    while (covered < numMasked) {
-        const spanLen = Math.max(1, Math.round(meanSpanLen)) // simplified poisson
-        const start = Math.floor(Math.random() * (n - spanLen + 1))
-        spans.push({ sid: sentinelId, start, len: spanLen })
-        sentinelId++
-        covered += spanLen
-    }
-
-    spans.sort((a, b) => a.start - b.start)
-
-    const inputParts: string[] = []
-    const targetParts: string[] = []
-    let prev = 0
-    for (const { sid, start, len } of spans) {
-        inputParts.push(...tokens.slice(prev, start))
-        inputParts.push(\`<X\${sid}>\`)
-        targetParts.push(\`<X\${sid}>\`)
-        targetParts.push(...tokens.slice(start, start + len))
-        prev = start + len
-    }
-    inputParts.push(...tokens.slice(prev))
-
-    return { input: inputParts, target: targetParts }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const tokens = "The quick brown fox jumps over the lazy dog".split(" ")
-const { input, target } = spanCorruption(tokens, 2, 0.3)
-
-console.log("Original:", tokens.join(" "))
-console.log("Input:   ", input.join(" "))
-console.log("Target:  ", target.join(" "))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of T5 span corruption, showing how input and target
-                sequences are constructed for the denoising pretraining objective.
-            </p>
-            <CodeBlock code={TS_CODE} filename="t5_span_corruption.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -356,5 +300,4 @@ export const T5_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

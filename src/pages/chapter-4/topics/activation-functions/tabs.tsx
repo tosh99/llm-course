@@ -196,60 +196,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Activation functions and their derivatives ──────────────────────────────
-type Fn = (x: number) => number;
 
-const sigmoid: Fn = x => 1 / (1 + Math.exp(-Math.max(-700, Math.min(700, x))));
-const tanh: Fn    = x => {
-  const ep = Math.exp(Math.min(700, x)), em = Math.exp(Math.max(-700, -x));
-  return (ep - em) / (ep + em);
-};
-const relu: Fn    = x => Math.max(0, x);
-const leakyRelu: Fn = (x, alpha = 0.01) => x > 0 ? x : alpha * x;
 
-// Derivatives
-const dSigmoid: Fn = x => { const s = sigmoid(x); return s * (1 - s); };
-const dTanh: Fn    = x => { const t = tanh(x); return 1 - t * t; };
-const dRelu: Fn    = x => x > 0 ? 1 : 0;
-const dLeakyRelu: Fn = (x, alpha = 0.01) => x > 0 ? 1 : alpha;
-
-// Print gradient values at key points
-const points = [-5, -2, -0.5, 0, 0.5, 2, 5];
-const headers = ["x", "σ(x)", "σ'(x)", "tanh(x)", "tanh'(x)", "ReLU(x)", "ReLU'(x)"];
-
-console.log(headers.join(" | "));
-console.log("-".repeat(80));
-points.forEach(x => {
-  const row = [
-    x.toFixed(1),
-    sigmoid(x).toFixed(4),
-    dSigmoid(x).toFixed(4),
-    tanh(x).toFixed(4),
-    dTanh(x).toFixed(4),
-    relu(x).toFixed(4),
-    dRelu(x).toFixed(1),
-  ];
-  console.log(row.join(" | "));
-});
-
-console.log("\\nNote how sigmoid gradient → 0 for large |x| (vanishing gradient)");`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript implementation of all four activation functions and their derivatives.
-                No libraries — just elementary math.
-            </p>
-            <CodeBlock code={TS_CODE} filename="activations.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Key observation:</strong> for x = 5, sigmoid's gradient is ~0.0067 — 67× smaller
-                than ReLU's gradient of 1. In a 10-layer network, that 0.0067<sup>10</sup> ≈ 10<sup>−18</sup>
-                — effectively zero, making the first layers essentially untrainable with sigmoid.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ──────────────────────────────────────────────────────────
 
@@ -258,6 +206,5 @@ export const ACTIVATION_FUNCTIONS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

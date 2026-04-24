@@ -328,100 +328,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Manual LSTM Cell — TypeScript ────────────────────────────────────────────
-// Shows the four gates and cell state computation step by step.
 
-type Vec = number[]
-type Mat = number[][]
 
-function sigmoid(x: number): number {
-  return 1 / (1 + Math.exp(-Math.max(-500, Math.min(500, x))))
-}
-
-function matVec(W: Mat, x: Vec): Vec {
-  return W.map(row => row.reduce((s, w, j) => s + w * x[j], 0))
-}
-
-function vecAdd(a: Vec, b: Vec): Vec { return a.map((v, i) => v + b[i]) }
-function concat(a: Vec, b: Vec): Vec { return [...a, ...b] }
-
-// ── LSTM Cell ─────────────────────────────────────────────────────────────────
-
-interface LSTMState { h: Vec; c: Vec }
-
-interface LSTMWeights {
-  Wf: Mat; Wi: Mat; Wg: Mat; Wo: Mat   // gate weight matrices
-  bf: Vec; bi: Vec; bg: Vec; bo: Vec   // gate biases
-}
-
-function lstmCell(x: Vec, state: LSTMState, W: LSTMWeights): LSTMState {
-  const { h, c } = state
-  const xh = concat(h, x)
-
-  const f = vecAdd(matVec(W.Wf, xh), W.bf).map(sigmoid)   // forget gate
-  const i = vecAdd(matVec(W.Wi, xh), W.bi).map(sigmoid)   // input gate
-  const g = vecAdd(matVec(W.Wg, xh), W.bg).map(Math.tanh) // candidate
-  const o = vecAdd(matVec(W.Wo, xh), W.bo).map(sigmoid)   // output gate
-
-  const cNew = c.map((ci, j) => f[j] * ci + i[j] * g[j]) // cell update
-  const hNew = cNew.map((cj, j) => o[j] * Math.tanh(cj)) // hidden state
-
-  return { h: hNew, c: cNew }
-}
-
-// ── Encoder Forward Pass ──────────────────────────────────────────────────────
-
-function makeRandomWeights(hidDim: number, inDim: number): LSTMWeights {
-  const mat = (rows: number, cols: number): Mat =>
-    Array.from({ length: rows }, () =>
-      Array.from({ length: cols }, () => (Math.random() - 0.5) * 0.1))
-  const vec = (n: number): Vec => new Array(n).fill(0)
-  const d = hidDim + inDim
-  return {
-    Wf: mat(hidDim, d), Wi: mat(hidDim, d),
-    Wg: mat(hidDim, d), Wo: mat(hidDim, d),
-    bf: vec(hidDim), bi: vec(hidDim), bg: vec(hidDim), bo: vec(hidDim),
-  }
-}
-
-const HID = 4, EMB = 4
-const weights = makeRandomWeights(HID, EMB)
-
-const source = [2, 5, 1, 7, 3]  // token IDs
-let state: LSTMState = { h: new Array(HID).fill(0), c: new Array(HID).fill(0) }
-
-console.log("Encoding source sequence:", source)
-for (const tok of source) {
-  const x: Vec = new Array(EMB).fill(0)
-  x[tok % EMB] = 1.0
-  state = lstmCell(x, state, weights)
-  console.log("  After token", tok, "→ h:", state.h.map(v => v.toFixed(3)))
-}
-
-console.log()
-console.log("Context (h_T):", state.h.map(v => v.toFixed(4)))
-console.log("Context (c_T):", state.c.map(v => v.toFixed(4)))
-console.log()
-console.log("The decoder starts from this (h_T, c_T) state.")`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                A from-scratch TypeScript implementation of the LSTM cell, showing all four
-                gates explicitly. The encoder forward pass demonstrates how (h, c) evolves
-                token by token, producing the final context that initializes the decoder.
-            </p>
-            <CodeBlock code={TS_CODE} filename="lstm_encoder_decoder.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Cell state vs hidden state:</strong> notice how <code>c</code> accumulates
-                information multiplicatively (forget gate) while <code>h</code> is always squeezed
-                through a tanh + output gate. Passing both to the decoder gives it access to raw
-                accumulated information (c) as well as the output-gated summary (h).
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -431,5 +339,4 @@ export const LSTM_ENCODER_DECODER_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

@@ -348,105 +348,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Learning Rate Schedules — TypeScript ────────────────────────────────────
 
-// ── Step Decay ────────────────────────────────────────────────────────────────
-function stepDecay(step: number, lr0: number, gamma: number, dropEvery: number): number {
-  return lr0 * Math.pow(gamma, Math.floor(step / dropEvery))
-}
 
-// ── Cosine Annealing ──────────────────────────────────────────────────────────
-function cosineAnnealing(step: number, lrMax: number, lrMin: number, T: number): number {
-  return lrMin + 0.5 * (lrMax - lrMin) * (1 + Math.cos(Math.PI * step / T))
-}
-
-// ── Linear Warmup + Cosine Decay ─────────────────────────────────────────────
-function warmupCosine(
-  step: number,
-  lrMax: number,
-  lrMin: number,
-  Twarm: number,
-  Ttotal: number
-): number {
-  if (step <= Twarm) {
-    return lrMax * step / Twarm
-  }
-  const progress = (step - Twarm) / (Ttotal - Twarm)
-  return lrMin + 0.5 * (lrMax - lrMin) * (1 + Math.cos(Math.PI * progress))
-}
-
-// ── Transformer Schedule (Vaswani et al., 2017) ───────────────────────────────
-function transformerSchedule(step: number, dModel: number, warmupSteps: number): number {
-  step = Math.max(step, 1)
-  return Math.pow(dModel, -0.5) * Math.min(
-    Math.pow(step, -0.5),
-    step * Math.pow(warmupSteps, -1.5)
-  )
-}
-
-// ── Cyclical LR (Smith, 2016) ─────────────────────────────────────────────────
-function cyclicalLR(step: number, lrMin: number, lrMax: number, stepSize: number): number {
-  const cycle = Math.floor(1 + step / (2 * stepSize))
-  const x = Math.abs(step / stepSize - 2 * cycle + 1)
-  return lrMin + (lrMax - lrMin) * Math.max(0, 1 - x)
-}
-
-// ── Simulator: track LR over training ────────────────────────────────────────
-interface ScheduleConfig {
-  name: string
-  fn: (step: number) => number
-}
-
-const Ttotal = 1000
-const Twarm  = 100
-const lrMax  = 1e-3
-const lrMin  = 1e-4
-
-const schedules: ScheduleConfig[] = [
-  { name: "Step Decay",   fn: s => stepDecay(s, lrMax, 0.5, 200) },
-  { name: "Cosine",       fn: s => cosineAnnealing(s, lrMax, lrMin, Ttotal) },
-  { name: "Warmup+Cos",   fn: s => warmupCosine(s, lrMax, lrMin, Twarm, Ttotal) },
-  { name: "Cyclical",     fn: s => cyclicalLR(s, lrMin, lrMax, 200) },
-]
-
-const checkpoints = [0, 50, 100, 200, 400, 700, 1000]
-
-console.log("Learning Rate Schedule Comparison")
-console.log("─".repeat(70))
-const header = "Step".padEnd(6) + schedules.map(s => s.name.padEnd(14)).join("")
-console.log(header)
-console.log("─".repeat(70))
-
-for (const step of checkpoints) {
-  const row = String(step).padEnd(6) + schedules
-    .map(s => s.fn(step).toExponential(3).padEnd(14))
-    .join("")
-  console.log(row)
-}
-
-// ── Key properties ────────────────────────────────────────────────────────────
-console.log()
-console.log("Warmup+Cosine properties:")
-console.log(\`  At step 0   (start of warmup): \${warmupCosine(0, lrMax, lrMin, Twarm, Ttotal).toExponential(3)}\`)
-console.log(\`  At step 100 (peak LR):         \${warmupCosine(100, lrMax, lrMin, Twarm, Ttotal).toExponential(3)}\`)
-console.log(\`  At step 500 (mid decay):        \${warmupCosine(500, lrMax, lrMin, Twarm, Ttotal).toExponential(3)}\`)
-console.log(\`  At step 1000 (end):             \${warmupCosine(1000, lrMax, lrMin, Twarm, Ttotal).toExponential(3)}\`)
-console.log()
-console.log(\`lrMin/lrMax ratio: \${(lrMin/lrMax).toFixed(2)} (10% — typical for LLM training)\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of all major learning rate schedules: step decay,
-                cosine annealing, warmup+cosine (modern LLM standard), and cyclical LR.
-                A tabular comparison shows how each schedule evolves over 1000 training steps.
-            </p>
-            <CodeBlock code={TS_CODE} filename="lr_schedules.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -455,6 +358,5 @@ export const LR_SCHEDULES_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

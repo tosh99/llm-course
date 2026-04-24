@@ -189,72 +189,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── SGD vs Momentum comparison ─────────────────────────────────────────────
-type Fn = (x: number) => number;
 
-const loss = (theta: number) =>
-  theta**4 - 14*theta**3 + 60*theta**2 - 70*theta;
 
-const grad = (theta: number) =>
-  4*theta**3 - 42*theta**2 + 120*theta - 70;
-
-// ── Batch GD ─────────────────────────────────────────────────────────────────
-const eta = 0.001;
-let thetaBgd = 3.0;
-for (let i = 0; i < 2000; i++)
-  thetaBgd -= eta * grad(thetaBgd);
-
-// ── SGD with noise ───────────────────────────────────────────────────────────
-let thetaSgd = 3.0;
-for (let i = 0; i < 2000; i++) {
-  const noise = (Math.random() - 0.5) * 1.0;  // unbiased noise
-  thetaSgd -= eta * (grad(thetaSgd) + noise);
-}
-
-// ── Momentum SGD ─────────────────────────────────────────────────────────────
-let thetaMom = 3.0, v = 0.0;
-const beta = 0.9;
-for (let i = 0; i < 2000; i++) {
-  const g = grad(thetaMom);
-  v = beta * v + (1 - beta) * g;
-  thetaMom -= eta * v;
-}
-
-console.log("Final θ values (after 2000 steps from θ=3.0):");
-console.log(\`  Batch GD:     θ = \${thetaBgd.toFixed(6)}  L = \${loss(thetaBgd).toFixed(4)}\`);
-console.log(\`  SGD:          θ = \${thetaSgd.toFixed(6)}  L = \${loss(thetaSgd).toFixed(4)}\`);
-console.log(\`  Momentum SGD: θ = \${thetaMom.toFixed(6)}  L = \${loss(thetaMom).toFixed(4)}\`);
-console.log(\`  (True minimum near θ ≈ 1.0, L ≈ −19.6)\`);
-
-// ── Step-by-step trajectory (every 100 steps) ───────────────────────────────
-let tB = 3.0, tS = 3.0, tM = 3.0, vM = 0.0;
-console.log("\\nStep  |  Batch GD  |  SGD   |  Momentum");
-console.log("-".repeat(45));
-for (let s = 0; s <= 2000; s += 400) {
-  for (let i = 0; i < 400; i++) {
-    tB -= eta * grad(tB);
-    tS -= eta * (grad(tS) + (Math.random()-0.5));
-    const g = grad(tM); vM = beta*vM + (1-beta)*g; tM -= eta*vM;
-  }
-  console.log(\`\${String(s).padStart(4)}  |  \${tB.toFixed(4)}   | \${tS.toFixed(4)} | \${tM.toFixed(4)}\`);
-}`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript comparison of batch GD, SGD, and momentum SGD on the same 1D loss
-                landscape. Pure math — no libraries needed.
-            </p>
-            <CodeBlock code={TS_CODE} filename="gradient_descent.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>What to observe:</strong> momentum SGD converges much faster than vanilla SGD
-                (the momentum term carries it through flat regions), while batch GD converges most
-                smoothly but is slowest per step.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ──────────────────────────────────────────────────────────
 
@@ -263,6 +199,5 @@ export const GRADIENT_DESCENT_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

@@ -275,77 +275,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── ELMo-style Layer Weighting — TypeScript ──────────────────────────────────
 
-type Vec = number[]
 
-function softmax(x: number[]): number[] {
-    const maxVal = Math.max(...x)
-    const exp = x.map(v => Math.exp(v - maxVal))
-    const sum = exp.reduce((a, b) => a + b, 0)
-    return exp.map(v => v / sum)
-}
-
-function vecScale(v: Vec, s: number): Vec {
-    return v.map(x => x * s)
-}
-
-function vecAdd(a: Vec, b: Vec): Vec {
-    return a.map((ai, i) => ai + b[i])
-}
-
-function elmoVector(
-    layerReps: Vec[],
-    taskWeights: number[],
-    gamma = 1.0
-): Vec {
-    const s = softmax(taskWeights)
-    let result = Array(layerReps[0].length).fill(0)
-    for (let k = 0; k < layerReps.length; k++) {
-        result = vecAdd(result, vecScale(layerReps[k], s[k] * gamma))
-    }
-    return result
-}
-
-function vecNorm(v: Vec): number {
-    return Math.sqrt(v.reduce((s, x) => s + x * x, 0))
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const rng = () => (Math.random() - 0.5) * 2
-
-const layerReps: Vec[] = [
-    Array.from({ length: 128 }, rng),  // char CNN
-    Array.from({ length: 256 }, rng),  // LSTM 1
-    Array.from({ length: 256 }, rng),  // LSTM 2
-]
-
-const weightsSyntax = [2.0, 0.5, 0.1]
-const weightsSemantic = [0.1, 0.8, 2.0]
-
-const elmoSyntax = elmoVector(layerReps, weightsSyntax, 0.8)
-const elmoSemantic = elmoVector(layerReps, weightsSemantic, 1.2)
-
-console.log("ELMo Layer Weighting Demo")
-console.log("─".repeat(45))
-console.log(\`Syntax weights:    [\${softmax(weightsSyntax).map(v => v.toFixed(3)).join(", ")}]\`)
-console.log(\`Semantic weights:  [\${softmax(weightsSemantic).map(v => v.toFixed(3)).join(", ")}]\`)
-console.log(\`Syntax norm:       \${vecNorm(elmoSyntax).toFixed(4)}\`)
-console.log(\`Semantic norm:     \${vecNorm(elmoSemantic).toFixed(4)}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of ELMo's weighted layer combination. The demo generates random
-                layer representations and shows how syntax-favoring vs. semantics-favoring tasks produce
-                different weighted combinations.
-            </p>
-            <CodeBlock code={TS_CODE} filename="elmo_weights.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -355,5 +286,4 @@ export const ELMO_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

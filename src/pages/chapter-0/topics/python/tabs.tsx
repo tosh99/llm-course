@@ -445,131 +445,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Array & Linear Algebra primitives ─────────────────────
-// What NumPy does in C, we can express in TypeScript
 
-type Vec = number[];
-type Mat = Vec[];  // row-major: mat[row][col]
 
-// ── Vector operations ────────────────────────────────────
-
-function vecAdd(a: Vec, b: Vec): Vec {
-  return a.map((v, i) => v + b[i]);
-}
-
-function vecScale(a: Vec, s: number): Vec {
-  return a.map((v) => v * s);
-}
-
-function dot(a: Vec, b: Vec): number {
-  return a.reduce((s, v, i) => s + v * b[i], 0);
-}
-
-function vecMul(a: Vec, b: Vec): Vec {
-  return a.map((v, i) => v * b[i]); // element-wise
-}
-
-// ── Matrix operations ────────────────────────────────────
-
-function matMul(A: Mat, B: Mat): Mat {
-  const rows = A.length;
-  const cols = B[0].length;
-  const inner = B.length;
-  const C: Mat = Array.from({ length: rows }, () => Array(cols).fill(0));
-  for (let i = 0; i < rows; i++)
-    for (let j = 0; j < cols; j++)
-      for (let k = 0; k < inner; k++)
-        C[i][j] += A[i][k] * B[k][j];
-  return C;
-}
-
-function transpose(A: Mat): Mat {
-  return A[0].map((_, j) => A.map((row) => row[j]));
-}
-
-// ── Reductions ───────────────────────────────────────────
-
-function sum(a: Vec): number {
-  return a.reduce((s, v) => s + v, 0);
-}
-
-function mean(a: Vec): number {
-  return sum(a) / a.length;
-}
-
-function max(a: Vec): number {
-  return Math.max(...a);
-}
-
-function argmax(a: Vec): number {
-  return a.indexOf(max(a));
-}
-
-// ── Broadcasting (simple 1D cases) ───────────────────────
-
-function broadcastAdd(a: Vec, scalar: number): Vec {
-  return a.map((v) => v + scalar);
-}
-
-function broadcastMul(mat: Mat, vec: Vec): Mat {
-  // Each row of mat * vec (element-wise)
-  return mat.map((row) => vecMul(row, vec));
-}
-
-// ── Softmax (the function that turns logits into probabilities) ─
-
-function softmax(logits: Vec): Vec {
-  const maxVal = max(logits);
-  const exps = logits.map((x) => Math.exp(x - maxVal));
-  const total = sum(exps);
-  return exps.map((e) => e / total);
-}
-
-// ── Demo ─────────────────────────────────────────────────
-
-const a: Vec = [1, 2, 3, 4];
-const b: Vec = [5, 6, 7, 8];
-
-console.log("Vector operations:");
-console.log(\`  a + b   = [\${vecAdd(a, b)}]\`);
-console.log(\`  a · b   = \${dot(a, b)}\`);
-console.log(\`  a * b   = [\${vecMul(a, b)}]\`);
-
-const A: Mat = [
-  [1, 2],
-  [3, 4],
-];
-const B: Mat = [
-  [5, 6],
-  [7, 8],
-];
-
-console.log("\\nMatrix multiply:");
-console.log(\`  A @ B = \${JSON.stringify(matMul(A, B))}\`);
-console.log(\`  A^T   = \${JSON.stringify(transpose(A))}\`);
-
-const logits: Vec = [2.0, 1.0, 0.1];
-console.log(\`\\nSoftmax([\${logits}]) = [\${softmax(logits).map((p) => p.toFixed(3))}]\`);
-console.log(\`  argmax = \${argmax(logits)} (predicted class)\`);`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of the core array and linear algebra primitives that NumPy
-                provides. Understanding these from scratch shows exactly what happens under the hood
-                when you call <code>np.dot()</code> or <code>torch.matmul()</code>.
-            </p>
-            <CodeBlock code={TS_CODE} filename="array_basics.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Next step:</strong> In PyTorch, all of these operations are GPU-accelerated and
-                autograd-tracked. <code>torch.matmul(A, B)</code> runs on GPU, and calling
-                <code>loss.backward()</code> computes ∂loss/∂A and ∂loss/∂B automatically via reverse-mode
-                autodiff. NumPy is the conceptual model; PyTorch is the production engine.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -578,6 +455,5 @@ export const PYTHON_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

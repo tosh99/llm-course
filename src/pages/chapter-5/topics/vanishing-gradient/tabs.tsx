@@ -298,113 +298,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Vanishing Gradient Experiments in TypeScript ────────────────────────────
 
-/** Multiply two n×n matrices */
-function matMul(A: number[][], B: number[][]): number[][] {
-  const n = A.length
-  const C: number[][] = Array.from({ length: n }, () => new Array(n).fill(0))
-  for (let i = 0; i < n; i++)
-    for (let j = 0; j < n; j++)
-      for (let k = 0; k < n; k++)
-        C[i][j] += A[i][k] * B[k][j]
-  return C
-}
 
-/** Spectral radius = largest absolute eigenvalue (power iteration) */
-function spectralRadius(W: number[][], steps = 100): number {
-  const n = W.length
-  let v = new Array(n).fill(1 / Math.sqrt(n))  // unit vector
-  for (let i = 0; i < steps; i++) {
-    // wv = W @ v
-    const wv = W.map(row => row.reduce((s, wij, j) => s + wij * v[j], 0))
-    const norm = Math.sqrt(wv.reduce((s, vi) => s + vi * vi, 0))
-    v = wv.map(vi => vi / norm)
-  }
-  const wv = W.map(row => row.reduce((s, wij, j) => s + wij * v[j], 0))
-  return Math.sqrt(wv.reduce((s, vi, i) => s + vi * v[i], 0))
-}
-
-/** Compute the norm of the product of k Jacobian matrices */
-function jacobianProductNorm(W: number[][], k: number): number {
-  // Simplified: J = W^T (tanh' ≈ 1 near origin)
-  const JT = W[0].map((_, i) => W.map(row => row[i]))
-  let P = JT  // Start with J
-  for (let i = 1; i < k; i++) {
-    P = matMul(JT, P)
-  }
-  // Return spectral norm of P (approximated by largest singular value)
-  return spectralRadius(P)
-}
-
-// ── Experiment 1: Vanishing with distance ─────────────────────────────────────
-console.log("Experiment 1: Gradient norm decays with lag k")
-console.log("─".repeat(50))
-
-const n = 8
-// Random W with spectral radius < 1
-const W = Array.from({ length: n }, () =>
-  Array.from({ length: n }, () => (Math.random() - 0.5) * 0.6))
-
-const sr = spectralRadius(W)
-console.log(\`W spectral radius: \${sr.toFixed(3)}\`)
-for (const k of [1, 5, 10, 20, 50]) {
-  const norm = jacobianProductNorm(W, k)
-  console.log(\`  k=\${k.toString().padStart(2)}: ‖∂hₜ₊ₖ/∂hₜ‖ = \${norm.toExponential(3)}\`)
-}
-
-console.log()
-console.log("Result: norm decays exponentially with k!")
-console.log()
-
-// ── Experiment 2: Spectral radius determines fate ───────────────────────────────
-console.log("Experiment 2: Spectral radius controls gradient behavior")
-console.log("─".repeat(50))
-
-for (const scale of [0.3, 0.6, 0.9, 1.1, 1.5]) {
-  const Ws = Array.from({ length: n }, () =>
-    Array.from({ length: n }, () => (Math.random() - 0.5) * scale))
-  const sr2 = spectralRadius(Ws)
-  const norm20 = jacobianProductNorm(Ws, 20)
-  const label = norm20 < 1e-6 ? "VANISH" : norm20 > 1e3 ? "EXPLODE" : "OK"
-  console.log(\`scale=\${scale}: ρ(W)=\${sr2.toFixed(3)}, ‖J²⁰‖=\${norm20.toExponential(3)} → \${label}\`)
-}
-
-console.log()
-console.log("Conclusion: ρ(W) < 1 → vanish; ρ(W) > 1 → explode")
-console.log()
-
-// ── Experiment 3: LSTM constant error carousel ────────────────────────────────
-console.log("Experiment 3: LSTM constant error carousel")
-console.log("─".repeat(50))
-console.log("LSTM cell state: c_t = f·c_{t-1} + i·c̃")
-console.log("If f=1, i=0:")
-console.log("  c_10 = c_0")
-console.log("  ∂c_10/∂c_0 = 1.0 (gradient = 1.0, no vanishing!)")
-console.log()
-console.log("This is the key innovation: a linear path (weight=1) through time")
-console.log("bypasses the multiplicative dynamics that cause vanishing gradients.");`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript experiments demonstrating vanishing gradients empirically: computing
-                gradient norm decay with lag k, the effect of spectral radius on gradient
-                behaviour, and confirming that the LSTM cell state's linear self-loop
-                produces a constant gradient of 1.0.
-            </p>
-            <CodeBlock code={TS_CODE} filename="vanishing_gradient.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Historical note:</strong> Hochreiter's 1991 identification of the vanishing
-                gradient was remarkable because he diagnosed the problem mathematically before
-                building a solution. The LSTM was designed specifically to address each mathematical
-                failure mode he identified. This is a template for good engineering: understand the
-                root cause precisely, then design to fix it.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -413,6 +308,5 @@ export const VANISHING_GRADIENT_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

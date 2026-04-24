@@ -305,132 +305,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── LSTM Cell in TypeScript ──────────────────────────────────────────────────
 
-type Vec = number[]
-type Mat = number[][]
 
-function matVecMul(W: Mat, x: Vec): Vec {
-  return W.map(row => row.reduce((s, wij, j) => s + wij * x[j], 0))
-}
-function sigmoid(z: number): number {
-  return 1 / (1 + Math.exp(-Math.max(-500, Math.min(500, z))))
-}
-function sigmoidVec(z: Vec): Vec { return z.map(sigmoid) }
-function tanhVec(z: Vec): Vec    { return z.map(Math.tanh) }
-
-// ── LSTM Cell ─────────────────────────────────────────────────────────────────
-interface LSTMCell {
-  h: Vec   // hidden state
-  c: Vec   // cell state
-}
-
-function lstmCell(
-  x: Vec, hPrev: Vec, cPrev: Vec,
- Wf: Mat, Wi: Mat, Wc: Mat, Wo: Mat,  // hidden→hidden
-  Uf: Mat, Ui: Mat, Uc: Mat, Uo: Mat,  // input→hidden
-  bf: Vec, bi: Vec, bc: Vec, bo: Vec   // biases
-): LSTMCell {
-  const n = hPrev.length
-
-  // Gates: sigmoid → [0,1]
-  const f = sigmoidVec(matVecMul(Wf, hPrev).map((v, i) => v + matVecMul(Uf, x)[i] + bf[i]))
-  const i = sigmoidVec(matVecMul(Wi, hPrev).map((v, i) => v + matVecMul(Ui, x)[i] + bi[i]))
-  const o = sigmoidVec(matVecMul(Wo, hPrev).map((v, i) => v + matVecMul(Uo, x)[i] + bo[i]))
-
-  // Candidate cell state: tanh → [-1,1]
-  const cTilde = tanhVec(matVecMul(Wc, hPrev).map((v, i) => v + matVecMul(Uc, x)[i] + bc[i]))
-
-  // Cell state update: the constant error carousel
-  // If f=1, i=0 → c_t = c_{t-1} → gradient ∂c_t/∂c_{t-1} = 1 always
-  const c = f.map((fk, k) => fk * cPrev[k] + i[k] * cTilde[k])
-
-  // Hidden state: output gate controls what's exposed
-  const h = o.map((ok, k) => ok * Math.tanh(c[k]))
-
-  return { h, c }
-}
-
-// ── Full LSTM Sequence Forward Pass ────────────────────────────────────────────
-function lstmForward(
-  X: Vec[],
- Wf: Mat, Wi: Mat, Wc: Mat, Wo: Mat,
-  Uf: Mat, Ui: Mat, Uc: Mat, Uo: Mat,
-  bf: Vec, bi: Vec, bc: Vec, bo: Vec,
-  h0?: Vec, c0?: Vec
-): { H: Vec[]; C: Vec[] } {
-  const n = (Wf as Mat).length
-  const H: Vec[] = [h0 ?? new Array(n).fill(0)]
-  const C: Vec[] = [c0 ?? new Array(n).fill(0)]
-
-  for (let t = 0; t < X.length; t++) {
-    const { h, c } = lstmCell(
-      X[t], H[t], C[t],
-     Wf, Wi, Wc, Wo, Uf, Ui, Uc, Uo,
-      bf, bi, bc, bo
-    )
-    H.push(h)
-    C.push(c)
-  }
-
-  return { H: H.slice(1), C: C.slice(1) }
-}
-
-// ── Gradient Flow Demo ──────────────────────────────────────────────────────────
-// ∂c_t/∂c_{t-1} = f_t
-// If f_t ≈ 1 → gradient flows unchanged
-// If f_t ≈ 0 → gradient is cut (network "forgets")
-
-console.log("LSTM Gradient Flow Analysis")
-console.log("─".repeat(50))
-console.log()
-
-// Simulate: mostly-open forget gate (f ≈ 0.98)
-const f = new Array(4).fill(0).map(() => sigmoid(4.0))   // ≈ 0.982
-const i = new Array(4).fill(0).map(() => sigmoid(-4.0))   // ≈ 0.018
-
-console.log(\`Forget gate f ≈ \${f[0].toFixed(4)} (open — keep memory)\`)
-console.log(\`Input gate  i ≈ \${i[0].toFixed(4)} (mostly closed — new input small)\`)
-console.log()
-
-// c_t = f * c_{t-1} + i * c_tilde
-// If c_tilde ≈ 0 (no strong new signal):
-// c_t ≈ f * c_{t-1} ≈ 0.982 * c_{t-1}
-console.log("Cell state update: c_t = f*c_{t-1} + i*c_tilde")
-console.log("If c_tilde ≈ 0: c_t ≈ f * c_{t-1}")
-console.log()
-
-// After k steps:
-for (const k of [1, 10, 50, 100, 1000]) {
-  const retention = Math.pow(f[0], k)
-  console.log(\`  After \${k.toString().padStart(4)} steps: retention = \${retention.toFixed(6)}\`)
-}
-console.log()
-console.log("∂c_t/∂c_{t-k} = f^k")
-console.log("With f≈0.98: gradient retained even after 1000 steps!")
-console.log()
-console.log("Key: network LEARNS f values. For important long-range")
-console.log("dependencies, it sets f≈1. For irrelevant info, f≈0.");`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Full TypeScript implementation of the LSTM cell and sequence forward pass.
-                The gradient flow analysis shows exactly how the forget gate controls
-                long-range dependency learning: the network learns to open f ≈ 1 for
-                relevant memory and close it for irrelevant information.
-            </p>
-            <CodeBlock code={TS_CODE} filename="lstm_cell.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Architecture note:</strong> Modern LSTM implementations (PyTorch
-                <code>torch.nn.LSTM</code>) use a more efficient fused computation that evaluates
-                all four gate equations in a single matrix multiplication, which is ~4× faster
-                than computing them separately. The equations are mathematically identical.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -439,6 +315,5 @@ export const LSTM_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

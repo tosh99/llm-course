@@ -383,81 +383,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Entropy ────────────────────────────────────────────────────
-/** Shannon entropy H(X) = -Σ p(x) log₂ p(x) */
-function entropy(p: number[]): number {
-  return p.reduce((h, pi) => {
-    if (pi <= 0) return h
-    return h - pi * Math.log2(pi)
-  }, 0)
-}
 
-// Fair coin: 1 bit
-const fairCoin = entropy([0.5, 0.5])
-console.log("Fair coin:", fairCoin.toFixed(4), "bits") // → 1.0000
 
-// Biased coin: less entropy
-const biasedCoin = entropy([0.9, 0.1])
-console.log("Biased coin:", biasedCoin.toFixed(4), "bits") // → 0.4690
-
-// ── Cross-Entropy and KL Divergence ──────────────────────────────
-/** Cross-entropy H(P, Q) = -Σ p(x) log₂ q(x) */
-function crossEntropy(p: number[], q: number[]): number {
-  return p.reduce((h, pi, i) => {
-    if (pi <= 0 || q[i] <= 0) return h
-    return h - pi * Math.log2(q[i])
-  }, 0)
-}
-
-/** KL divergence D_KL(P || Q) = Σ p(x) log₂(p(x)/q(x)) */
-function klDivergence(p: number[], q: number[]): number {
-  return p.reduce((d, pi, i) => {
-    if (pi <= 0) return d
-    return d + pi * Math.log2(pi / q[i])
-  }, 0)
-}
-
-const pTrue  = [0.7, 0.2, 0.1]
-const pModel = [0.6, 0.25, 0.15]
-
-const H_pe = crossEntropy(pTrue, pModel)
-const H_pr = entropy(pTrue)
-const D_kl = klDivergence(pTrue, pModel)
-
-console.log("Cross-entropy:",  H_pe.toFixed(4), "bits")
-console.log("KL divergence:", D_kl.toFixed(4), "bits", D_kl >= 0 ? "✓ ≥ 0" : "✗ ERROR")
-
-// Cross-entropy = entropy + KL (decomposition)
-console.log("H(P) + D_KL:", (H_pr + D_kl).toFixed(4), "bits")
-console.log("H(P,Q):     ", H_pe.toFixed(4), "bits", Math.abs(H_pe - (H_pr + D_kl)) < 1e-10 ? "✓" : "✗")
-
-// ── Perplexity ──────────────────────────────────────────────────
-// perplexity = 2^{H}  — effective branching factor of the model
-function perplexity(crossEntropyLoss: number): number {
-  return Math.pow(2, crossEntropyLoss)
-}
-
-// Cross-entropy loss of 2.1 nats on a language model's test set
-console.log("Perplexity:", perplexity(2.1).toFixed(1))
-// → 8.6 — the model is as uncertain as an 8.6-sided die`;
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript with no external dependencies. These implementations build direct intuition
-                for the formulas before reaching for libraries.
-            </p>
-            <CodeBlock code={TS_CODE} filename="entropy_kl_divergence.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Key insight:</strong> All three quantities — entropy, KL divergence, and the
-                cross-entropy loss — are built from the same primitive: a weighted sum of
-                p(x)·log(q(x)). The asymmetry of KL (P‖Q ≠ Q‖P) is the reason that KL as a loss
-                always minimises from the model's perspective toward the data distribution.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -466,6 +393,5 @@ export const ENTROPY_KL_DIVERGENCE_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

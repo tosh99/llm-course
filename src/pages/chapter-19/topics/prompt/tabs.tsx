@@ -271,60 +271,7 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Prompt Engineering Utilities — TypeScript ────────────────────────────────
 
-function rolePrompt(role: string, instruction: string): string {
-    return \`You are \${role}.\\n\\n\${instruction}\`
-}
-
-function chainOfThoughtPrompt(question: string): string {
-    return \`\${question}\\n\\nLet's work through this step by step.\`
-}
-
-function fewShotPrompt(
-    description: string,
-    examples: [string, string][],
-    query: string
-): string {
-    const parts = [\`### Instruction\\n\${description}\`, "### Examples"]
-    for (const [inp, out] of examples) {
-        parts.push(\`Input: \${inp}\\nOutput: \${out}\`)
-    }
-    parts.push("### Query")
-    parts.push(\`Input: \${query}\\nOutput:\`)
-    return parts.join("\\n\\n")
-}
-
-function selfConsistencyPrompt(question: string, nSamples = 5): string[] {
-    return Array.from({ length: nSamples }, (_, i) =>
-        \`\${question}\\nReasoning path \${i + 1}: Let's think step by step.\`
-    )
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-console.log(rolePrompt("an expert mathematician", "Solve: 15 * 24"))
-console.log()
-console.log(chainOfThoughtPrompt("What is 15 multiplied by 24?"))
-console.log()
-console.log(fewShotPrompt(
-    "Classify the sentiment as positive or negative.",
-    [["I love this!", "positive"], ["Terrible experience.", "negative"]],
-    "It was okay, nothing special."
-))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of core prompt engineering utilities. These functions
-                demonstrate how production systems construct structured prompts for role-based
-                reasoning, chain-of-thought elicitation, and few-shot classification.
-            </p>
-            <CodeBlock code={TS_CODE} filename="prompt_engineering.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -334,5 +281,4 @@ export const PROMPT_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

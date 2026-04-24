@@ -291,76 +291,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── NSP / SOP Pair Construction — TypeScript ─────────────────────────────────
 
-type SentencePair = [string, string, number]
 
-function buildSentencePairs(
-    sentences: string[],
-    task: "nsp" | "sop" = "nsp"
-): SentencePair[] {
-    const pairs: SentencePair[] = []
-    for (let i = 0; i < sentences.length - 1; i++) {
-        const a = sentences[i]
-        const bTrue = sentences[i + 1]
-        pairs.push([a, bTrue, 1])
-
-        if (task === "nsp") {
-            let j = Math.floor(Math.random() * sentences.length)
-            while (j === i || j === i + 1) {
-                j = Math.floor(Math.random() * sentences.length)
-            }
-            pairs.push([a, sentences[j], 0])
-        } else {
-            pairs.push([bTrue, a, 0])
-        }
-    }
-    return pairs
-}
-
-function bceLoss(logits: number[], labels: number[]): number {
-    let total = 0
-    for (let i = 0; i < logits.length; i++) {
-        const prob = 1 / (1 + Math.exp(-logits[i]))
-        total += -(labels[i] * Math.log(prob + 1e-10) +
-                   (1 - labels[i]) * Math.log(1 - prob + 1e-10))
-    }
-    return total / logits.length
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const sentences = Array.from({ length: 10 },
-    (_, i) => \`Sentence number <InlineMath tex="{i} about topic \\" />{i % 3}.\`)
-
-const nspPairs = buildSentencePairs(sentences, "nsp")
-const sopPairs = buildSentencePairs(sentences, "sop")
-
-console.log("NSP Pairs")
-console.log("─".repeat(50))
-nspPairs.slice(0, 4).forEach(([a, b, label]) => {
-    const marker = label === 1 ? "IsNext" : "NotNext"
-    console.log(\`[<InlineMath tex="{marker}] A: \\" />{a.slice(0, 30).padEnd(30)} | B: \${b.slice(0, 30)}\`)
-})
-
-console.log("\nSOP Pairs")
-console.log("─".repeat(50))
-sopPairs.slice(0, 4).forEach(([a, b, label]) => {
-    const marker = label === 1 ? "Correct" : "Swapped"
-    console.log(\`[<InlineMath tex="{marker}] A: \\" />{a.slice(0, 30).padEnd(30)} | B: \${b.slice(0, 30)}\`)
-})
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of NSP and SOP pair construction. The comparison shows
-                why SOP is a harder task: both sentences in a negative pair are semantically related.
-            </p>
-            <CodeBlock code={TS_CODE} filename="nsp_sop_pairs.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -370,5 +302,4 @@ export const NSP_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

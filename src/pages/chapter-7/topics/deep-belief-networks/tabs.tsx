@@ -253,101 +253,13 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Restricted Boltzmann Machine in TypeScript ─────────────────────────────
 
-type Vec = number[];
-type Mat = number[][];
 
-function sigmoid(x: number): number {
-  return 1 / (1 + Math.exp(-Math.max(-250, Math.min(250, x))));
-}
-
-class RBM {
-  W: Mat;
-  vBias: Vec;
-  hBias: Vec;
-  lr: number;
-
-  constructor(nVisible: number, nHidden: number, lr = 0.1) {
-    this.lr = lr;
-    this.W = Array.from({length: nHidden}, () =>
-      Array.from({length: nVisible}, () => (Math.random() - 0.5) * 0.02)
-    );
-    this.vBias = new Array(nVisible).fill(0);
-    this.hBias = new Array(nHidden).fill(0);
-  }
-
-  sampleH(v: Vec): [Vec, Vec] {
-    const hProb = this.hBias.map((b, i) =>
-      b + this.W[i].reduce((sum, w, j) => sum + w * v[j], 0)
-    ).map(sigmoid);
-    const hSample = hProb.map(p => Math.random() < p ? 1 : 0);
-    return [hProb, hSample];
-  }
-
-  sampleV(h: Vec): [Vec, Vec] {
-    const vProb = this.vBias.map((b, i) =>
-      b + this.W.reduce((sum, w, j) => sum + w[i] * h[j], 0)
-    ).map(sigmoid);
-    const vSample = vProb.map(p => Math.random() < p ? 1 : 0);
-    return [vProb, vSample];
-  }
-
-  contrastiveDivergence(v0: Vec, k: number): number {
-    let vk = [...v0];
-    const [h0Prob, h0] = this.sampleH(v0);
-    let hk = [...h0];
-    for (let step = 0; step < k; step++) {
-      const [, vSample] = this.sampleV(hk);
-      vk = vSample;
-      const [, hSample] = this.sampleH(vk);
-      hk = hSample;
-    }
-    const [hkProb] = this.sampleH(vk);
-
-    for (let i = 0; i < this.W.length; i++) {
-      for (let j = 0; j < this.W[0].length; j++) {
-        this.W[i][j] += this.lr * (h0Prob[i] * v0[j] - hkProb[i] * vk[j]);
-      }
-    }
-    for (let j = 0; j < this.vBias.length; j++) {
-      this.vBias[j] += this.lr * (v0[j] - vk[j]);
-    }
-    for (let i = 0; i < this.hBias.length; i++) {
-      this.hBias[i] += this.lr * (h0Prob[i] - hkProb[i]);
-    }
-    return v0.reduce((sum, v, i) => sum + (v - vk[i]) ** 2, 0);
-  }
-}
-
-const rbm = new RBM(784, 500, 0.1);
-const sample = Array.from({length: 784}, () => Math.random() < 0.3 ? 1 : 0);
-for (let epoch = 0; epoch < 1000; epoch++) {
-  if (epoch % 200 === 0) {
-    console.log(\`Epoch \${epoch}, error: \${rbm.contrastiveDivergence(sample, 1).toFixed(4)}\`);
-  }
-}`;
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript implementation of an RBM with Contrastive Divergence.
-            </p>
-            <CodeBlock code={TS_CODE} filename="rbm.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Historical note:</strong> This CD-1 algorithm was crucial for making
-                RBMs practical.
-            </div>
-        </>
-    )
-}
 
 export const DEEP_BELIEF_NETWORKS_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

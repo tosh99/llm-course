@@ -274,67 +274,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Nucleus (Top-p) Sampling — TypeScript ───────────────────────────────────
 
-function softmax(x: number[], temperature = 1.0): number[] {
-    const scaled = x.map(v => v / temperature)
-    const maxVal = Math.max(...scaled)
-    const exp = scaled.map(v => Math.exp(v - maxVal))
-    const sum = exp.reduce((a, b) => a + b, 0)
-    return exp.map(v => v / sum)
-}
 
-function topPFilter(logits: number[], p = 0.9): number[] {
-    const indexed = logits.map((v, i) => ({ v, i }))
-    indexed.sort((a, b) => b.v - a.v)
-    const probs = softmax(indexed.map(x => x.v))
-    let cumsum = 0
-    let cutoff = 0
-    for (let i = 0; i < probs.length; i++) {
-        cumsum += probs[i]
-        if (cumsum > p) { cutoff = i + 1; break }
-    }
-    const keep = new Set(indexed.slice(0, cutoff).map(x => x.i))
-    return logits.map((v, i) => keep.has(i) ? v : -1e9)
-}
-
-function sampleToken(logits: number[], temperature = 1.0, topP = 0.9): number {
-    const filtered = topPFilter(logits, topP)
-    const probs = softmax(filtered, temperature)
-    const r = Math.random()
-    let acc = 0
-    for (let i = 0; i < probs.length; i++) {
-        acc += probs[i]
-        if (r < acc) return i
-    }
-    return probs.length - 1
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const vocabSize = 50257
-const logits = Array.from({ length: vocabSize }, () => (Math.random() - 0.5) * 4)
-
-const greedyId = logits.indexOf(Math.max(...logits))
-const sampledId = sampleToken(logits, 0.8, 0.9)
-
-console.log("Autoregressive Sampling Demo")
-console.log("─".repeat(40))
-console.log(\`Greedy ID: \${greedyId}\`)
-console.log(\`Sampled ID: \${sampledId}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of nucleus sampling for GPT-style autoregressive generation.
-                The algorithm filters the probability distribution to the smallest set of tokens whose
-                cumulative probability exceeds p, then samples from that truncated distribution.
-            </p>
-            <CodeBlock code={TS_CODE} filename="gpt3_sampling.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -344,5 +285,4 @@ export const GPT3_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

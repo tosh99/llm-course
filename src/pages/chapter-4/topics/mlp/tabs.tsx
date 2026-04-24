@@ -208,103 +208,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── MLP: 2 → hidden → 1 ──────────────────────────────────────────────────
-type Vec = number[];
-type Mat = number[][];
 
-function sigmoid(x: number): number {
-  const c = Math.max(-500, Math.min(500, x));
-  return 1 / (1 + Math.exp(-c));
-}
 
-function sigmoidPrime(x: number): number {
-  const s = sigmoid(x);
-  return s * (1 - s);
-}
-
-class MLP {
-  W1: Mat; b1: Vec; W2: Mat; b2: Vec;
-  private z1: Vec = []; private a1: Vec = [];
-
-  constructor(
-    private nIn: number,
-    private nHidden: number,
-    private nOut: number,
-    private lr = 0.5
-  ) {
-    const s1 = Math.sqrt(2 / nIn);
-    this.W1 = Array.from({ length: nHidden }, () =>
-      Array.from({ length: nIn }, () => (Math.random() * 2 - 1) * s1));
-    this.b1 = new Array(nHidden).fill(0);
-
-    const s2 = Math.sqrt(2 / nHidden);
-    this.W2 = Array.from({ length: nOut }, () =>
-      Array.from({ length: nHidden }, () => (Math.random() * 2 - 1) * s2));
-    this.b2 = new Array(nOut).fill(0);
-  }
-
-  private dotVec(A: Mat, x: Vec): Vec {
-    return A.map(row => row.reduce((s, a, i) => s + a * x[i], 0));
-  }
-
-  private addVec(a: Vec, b: Vec): Vec { return a.map((x, i) => x + b[i]); }
-
-  forward(x: Vec): Vec {
-    this.z1 = this.addVec(this.dotVec(this.W1, x), this.b1);
-    this.a1 = this.z1.map(sigmoid);
-    const z2 = this.addVec(this.dotVec(this.W2, this.a1), this.b2);
-    return z2.map(sigmoid);
-  }
-
-  backward(x: Vec, y: number): void {
-    const yHat = this.forward(x);
-    const outErr = yHat.map((p, i) => (p - y) * sigmoidPrime(yHat[i]));
-    const hErr = this.W2[0].map((w, i) => outErr[0] * w * sigmoidPrime(this.z1[i]));
-
-    for (let j = 0; j < this.nHidden; j++) {
-      this.W1[j] = this.W1[j].map((w, k) => w - this.lr * hErr[j] * x[k]);
-      this.b1[j] -= this.lr * hErr[j];
-    }
-    for (let j = 0; j < this.nHidden; j++) {
-      this.W2[0][j] -= this.lr * outErr[0] * this.a1[j];
-      this.b2[0] -= this.lr * outErr[0];
-    }
-  }
-
-  train(X: Vec[], y: number[], epochs = 10000): void {
-    for (let epoch = 0; epoch < epochs; epoch++) {
-      for (let i = 0; i < X.length; i++) this.backward(X[i], y[i]);
-      if (epoch % 2000 === 0) {
-        const loss = X.reduce((s, xi, i) => {
-          const p = this.forward(xi)[0];
-          return s + 0.5 * (p - y[i]) ** 2;
-        }, 0) / X.length;
-        console.log(\`Epoch \${epoch} | Loss: \${loss.toFixed(6)}\`);
-      }
-    }
-  }
-}
-
-// ── Train on XOR ─────────────────────────────────────────────────────────────
-const mlp = new MLP(2, 4, 1, 1.5);
-const X: Vec[] = [[0,0],[0,1],[1,0],[1,1]];
-const y: number[] = [0, 1, 1, 0];
-mlp.train(X, y, 15000);
-
-console.log("\\nFinal:");
-X.forEach((xi, i) => console.log(\`  [\${xi}] -> \${mlp.forward(xi)[0].toFixed(4)} (target: \${y[i]})\`));`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript MLP class for XOR. The architecture mirrors the 1986 Rumelhart
-                et al. paper: one hidden layer with sigmoid activations, trained by backpropagation.
-            </p>
-            <CodeBlock code={TS_CODE} filename="mlp.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ──────────────────────────────────────────────────────────
 
@@ -313,6 +218,5 @@ export const MLP_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

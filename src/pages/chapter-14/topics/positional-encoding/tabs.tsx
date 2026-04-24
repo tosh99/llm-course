@@ -307,55 +307,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Positional Encoding — TypeScript ────────────────────────────────────────
 
-function sinusoidalPE(n: number, dModel: number): number[][] {
-  const pe: number[][] = Array.from({ length: n }, () => Array(dModel).fill(0))
-  for (let pos = 0; pos < n; pos++) {
-    for (let i = 0; i < dModel; i++) {
-      const angle = pos / Math.pow(10000, (2 * Math.floor(i / 2)) / dModel)
-      pe[pos][i] = i % 2 === 0 ? Math.sin(angle) : Math.cos(angle)
-    }
-  }
-  return pe
-}
 
-function dot(a: number[], b: number[]): number {
-  return a.reduce((s, v, i) => s + v * b[i], 0)
-}
-
-function norm(v: number[]): number {
-  return Math.sqrt(v.reduce((s, x) => s + x * x, 0))
-}
-
-// ── Demo ─────────────────────────────────────────────────────────────────────-
-const n = 16, dModel = 64
-const pe = sinusoidalPE(n, dModel)
-
-console.log("Positional Encoding — TypeScript")
-console.log("─".repeat(40))
-console.log("PE shape:", pe.length, "x", pe[0].length)
-
-const pos = 5
-console.log("Cosine similarities for offsets 1..4:")
-for (let off = 1; off <= 4; off++) {
-  const a = pe[pos], b = pe[pos + off]
-  const sim = dot(a, b) / (norm(a) * norm(b))
-  console.log(\`  offset \${off}: \${sim.toFixed(4)}\`)
-}
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of sinusoidal positional encoding with cosine
-                similarity analysis between position vectors.
-            </p>
-            <CodeBlock code={TS_CODE} filename="positional_encoding.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -365,5 +318,4 @@ export const POSITIONAL_ENCODING_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

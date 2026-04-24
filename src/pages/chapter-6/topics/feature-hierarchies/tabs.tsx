@@ -330,105 +330,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Feature Hierarchies in Code ───────────────────────────────────────────────
 
-// Simulating how features compose hierarchically
-type FeatureMap = number[][];
 
-// ── Layer 1: Edge Detectors ─────────────────────────────────────────────────────
-
-function horizontalEdgeDetector(): FeatureMap {
-    // Detects horizontal edges (gradient up-down)
-    return [
-        [-1, -1, -1],
-        [ 0,  0,  0],
-        [ 1,  1,  1]
-    ];
-}
-
-function verticalEdgeDetector(): FeatureMap {
-    // Detects vertical edges (gradient left-right)
-    return [
-        [-1, 0, 1],
-        [-1, 0, 1],
-        [-1, 0, 1]
-    ];
-}
-
-// ── Layer 2: Composing into Corners ──────────────────────────────────────────
-
-function cornerDetector(horizResponse: FeatureMap, vertResponse: FeatureMap): FeatureMap {
-    // A corner has both horizontal AND vertical components
-    const result: FeatureMap = [];
-    for (let i = 0; i < horizResponse.length; i++) {
-        const row: number[] = [];
-        for (let j = 0; j < horizResponse[0].length; j++) {
-            // Combine: strong response in both = corner
-            row.push(horizResponse[i][j] * vertResponse[i][j]);
-        }
-        result.push(row);
-    }
-    return result;
-}
-
-// ── Layer 3: Composing into Patterns ───────────────────────────────────────────
-
-function texturePattern(...corners: FeatureMap[]): FeatureMap {
-    // A texture is multiple corners in a pattern
-    // (simplified: just sum for demonstration)
-    const result: FeatureMap = corners[0].map(row => [...row]);
-    
-    for (const corner of corners.slice(1)) {
-        for (let i = 0; i < result.length; i++) {
-            for (let j = 0; j < result[0].length; j++) {
-                result[i][j] += corner[i][j];
-            }
-        }
-    }
-    
-    return result;
-}
-
-// ── Demonstration ───────────────────────────────────────────────────────────────
-
-// Simple test image (has horizontal and vertical edges)
-const testImage: FeatureMap = [
-    [0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 0],
-    [0, 1, 0, 1, 0],
-    [0, 1, 1, 1, 0],
-    [0, 0, 0, 0, 0]
-];
-
-console.log("Input:", testImage);
-
-// Layer 1: Detect edges (would use convolution in real code)
-console.log("\\nLayer 1: Edge detection (simplified)");
-console.log("  Horizontal filter detected at middle rows");
-console.log("  Vertical filter detected at middle columns");
-
-// Layer 2: Combine into corners
-console.log("\\nLayer 2: Corner detection");
-console.log("  Intersection of H and V edges = corners");
-
-// Layer 3: Combine corners into shape
-console.log("\\nLayer 3: Pattern recognition");
-console.log("  Four corners in specific arrangement = SQUARE");
-
-// This shows the hierarchical composition principle!
-console.log("\\nHierarchy: Edges → Corners → Square");`;
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                This TypeScript example shows how features compose hierarchically: edges combine
-                into corners, corners combine into patterns, patterns combine into objects.
-            </p>
-            <CodeBlock code={TS_CODE} filename="feature_hierarchies.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ─────────────────────────────────────────────────────────────
 
@@ -437,6 +340,5 @@ export const FEATURE_HIERARCHIES_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

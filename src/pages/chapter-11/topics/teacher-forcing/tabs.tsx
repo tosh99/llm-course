@@ -328,108 +328,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Teacher Forcing vs Free Running — TypeScript ─────────────────────────────
-// Simulates the training/inference discrepancy and shows error compounding.
 
-/** Simulated decoder: returns a "predicted" token and confidence */
-function decoderStep(prevToken: number, targetToken: number, step: number): {
-  predicted: number;
-  confidence: number;
-} {
-  // Simulate a partially trained model: correct with probability that
-  // increases as training progresses (more steps = better model)
-  const accuracy = Math.min(0.9, 0.3 + step * 0.01)
-  const isCorrect = Math.random() < accuracy
-  return {
-    predicted: isCorrect ? targetToken : (targetToken + 1) % 20,
-    confidence: accuracy,
-  }
-}
 
-// ── Simulate teacher-forced vs free-running decoding ─────────────────────────
-
-function simulateDecode(
-  targets: number[],
-  teacherForcingRatio: number,
-  trainingStep: number,
-): { tokens: number[]; errors: number } {
-  let prevToken = 0  // <SOS>
-  let errors = 0
-  const output: number[] = []
-
-  for (let t = 0; t < targets.length; t++) {
-    const { predicted } = decoderStep(prevToken, targets[t], trainingStep)
-    output.push(predicted)
-
-    if (predicted !== targets[t]) errors++
-
-    // Teacher forcing: use ground truth or model prediction?
-    const useTeacher = Math.random() < teacherForcingRatio
-    prevToken = useTeacher ? targets[t] : predicted  // ← the key decision
-  }
-  return { tokens: output, errors }
-}
-
-// ── Compare across different teacher forcing ratios and training stages ───────
-
-const target = [3, 7, 2, 9, 5, 1, 8, 4, 6, 2]  // 10-token target sequence
-const NUM_TRIALS = 200
-
-console.log("Simulating teacher forcing effects (averaged over", NUM_TRIALS, "trials):")
-console.log()
-console.log("Training step 1000 (early training — model is poor):")
-console.log("─".repeat(55))
-
-for (const ratio of [1.0, 0.75, 0.5, 0.25, 0.0]) {
-  let totalErrors = 0
-  for (let trial = 0; trial < NUM_TRIALS; trial++) {
-    totalErrors += simulateDecode(target, ratio, 1000).errors
-  }
-  const avgErrors = (totalErrors / NUM_TRIALS).toFixed(2)
-  const bar = "█".repeat(Math.round(Number(avgErrors)))
-  console.log(\`  ratio=\${ratio.toFixed(2)}: avg errors = \${avgErrors.padStart(5)} \${bar}\`)
-}
-
-console.log()
-console.log("Training step 8000 (late training — model is good):")
-console.log("─".repeat(55))
-
-for (const ratio of [1.0, 0.75, 0.5, 0.25, 0.0]) {
-  let totalErrors = 0
-  for (let trial = 0; trial < NUM_TRIALS; trial++) {
-    totalErrors += simulateDecode(target, ratio, 8000).errors
-  }
-  const avgErrors = (totalErrors / NUM_TRIALS).toFixed(2)
-  const bar = "█".repeat(Math.round(Number(avgErrors)))
-  console.log(\`  ratio=\${ratio.toFixed(2)}: avg errors = \${avgErrors.padStart(5)} \${bar}\`)
-}
-
-console.log()
-console.log("Key observations:")
-console.log("  Early training: high teacher forcing → far fewer errors (training stability)")
-console.log("  Late training:  lower ratio works fine (model is now good enough)")
-console.log("  Scheduled sampling bridges these two regimes.")`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript simulation comparing teacher forcing ratios at two stages of training
-                — early (poor model) and late (good model). Demonstrates why high teacher forcing
-                ratios are critical early in training, and why they can be relaxed as the model
-                improves.
-            </p>
-            <CodeBlock code={TS_CODE} filename="teacher_forcing.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>The Transformer's bypass:</strong> The Transformer eliminates this problem
-                during <em>training</em> by attending to all positions in parallel using masked
-                self-attention. There's no autoregressive loop during training — the model processes
-                the full target sequence simultaneously. At inference it's still autoregressive,
-                but the training objective is always computed with perfect teacher-forced context.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -439,5 +339,4 @@ export const TEACHER_FORCING_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

@@ -233,93 +233,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── EM for 1D Gaussian Mixture Model ─────────────────────────────
-// Simpler than full multivariate, but shows all EM mechanics
 
-interface Component { pi: number; mu: number; sigma: number }
 
-function gaussian(x: number, mu: number, sigma: number): number {
-  return Math.exp(-0.5 * ((x - mu) / sigma) ** 2) / (sigma * Math.sqrt(2 * Math.PI))
-}
-
-/** One E-step: compute responsibilities r[n][k] */
-function eStep(data: number[], comps: Component[]): number[][] {
-  return data.map(x => {
-    const raw = comps.map(c => c.pi * gaussian(x, c.mu, c.sigma))
-    const sum = raw.reduce((s, v) => s + v, 0)
-    return raw.map(v => v / (sum + 1e-300))
-  })
-}
-
-/** One M-step: update parameters given responsibilities */
-function mStep(data: number[], r: number[][]): Component[] {
-  const K = r[0].length
-  const n = data.length
-  return Array.from({ length: K }, (_, k) => {
-    const Nk = r.reduce((s, rn) => s + rn[k], 0)
-    const mu = r.reduce((s, rn, i) => s + rn[k] * data[i], 0) / Nk
-    const sigma = Math.sqrt(
-      r.reduce((s, rn, i) => s + rn[k] * (data[i] - mu) ** 2, 0) / Nk
-    )
-    return { pi: Nk / n, mu, sigma: Math.max(sigma, 1e-6) }
-  })
-}
-
-function logLikelihood(data: number[], comps: Component[]): number {
-  return data.reduce((sum, x) => {
-    const p = comps.reduce((s, c) => s + c.pi * gaussian(x, c.mu, c.sigma), 0)
-    return sum + Math.log(p + 1e-300)
-  }, 0)
-}
-
-export function fitGMM(
-  data: number[],
-  K: number,
-  maxIter = 100,
-  tol = 1e-6
-): Component[] {
-  // Initialise with k-means-like spread
-  const sorted = [...data].sort((a, b) => a - b)
-  let comps: Component[] = Array.from({ length: K }, (_, k) => ({
-    pi: 1 / K,
-    mu: sorted[Math.floor((k + 0.5) * data.length / K)],
-    sigma: 1.0,
-  }))
-
-  let prevLL = -Infinity
-  for (let iter = 0; iter < maxIter; iter++) {
-    const r = eStep(data, comps)
-    comps = mStep(data, r)
-    const ll = logLikelihood(data, comps)
-    if (Math.abs(ll - prevLL) < tol) break
-    prevLL = ll
-  }
-  return comps
-}
-
-// ── Demo ──────────────────────────────────────────────────────────
-const data = [
-  ...Array.from({length:20}, () => 1.5 + Math.random()*0.5),
-  ...Array.from({length:20}, () => 4.0 + Math.random()*0.6),
-]
-const comps = fitGMM(data, 2)
-comps.forEach((c, k) =>
-  console.log(\`Component \${k}: π=\${c.pi.toFixed(3)} μ=\${c.mu.toFixed(2)} σ=\${c.sigma.toFixed(2)}\`)
-)`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                A complete 1D Gaussian Mixture Model trained with EM. The alternating E-step (computing responsibilities) and M-step (updating means, variances, mixing weights) is the core of the algorithm — all in about 40 lines.
-            </p>
-            <CodeBlock code={TS_CODE} filename="gmm_em.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Extension to multivariate:</strong> Replace the scalar Gaussian with the multivariate form (requires matrix inverse and determinant). The E-step formula is unchanged. The M-step adds the outer product sum for the covariance update: Σₖ = (1/Nₖ) Σₙ rₙₖ (xₙ−μₖ)(xₙ−μₖ)ᵀ.
-            </div>
-        </>
-    )
-}
 
 export const GMM_EM_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
@@ -327,5 +242,4 @@ export const GMM_EM_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

@@ -2,41 +2,126 @@ import type { TabId, TopicId } from "./types"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
-export const TOPICS: { id: TopicId; label: string; icon: string; category: string; ready: boolean }[] = [
-    { id: "vectors-matrices", label: "Vectors & Matrices", icon: "⟨⟩", category: "Mathematics", ready: true },
-    { id: "systems-equations", label: "Systems of Equations", icon: "∑", category: "Mathematics", ready: true },
-    { id: "eigenvalues", label: "Eigenvalues & Eigenvectors", icon: "λ", category: "Mathematics", ready: true },
-    { id: "svd-decompositions", label: "SVD & Decompositions", icon: "Σ", category: "Mathematics", ready: true },
-    { id: "derivatives-gradients", label: "Derivatives & Gradients", icon: "∂", category: "Mathematics", ready: true },
-    { id: "integral-calculus", label: "Integral Calculus", icon: "∫", category: "Mathematics", ready: true },
-    { id: "probability-foundations", label: "Probability Foundations", icon: "∼", category: "Mathematics", ready: true },
-    { id: "statistical-inference", label: "Statistical Inference", icon: "σ", category: "Mathematics", ready: true },
-    { id: "entropy-kl-divergence", label: "Entropy & KL Divergence", icon: "ℍ", category: "Mathematics", ready: true },
-    { id: "mutual-information", label: "Mutual Information", icon: "I", category: "Mathematics", ready: true },
-    { id: "python", label: "Python", icon: "🐍", category: "Programming", ready: true },
-    { id: "computing", label: "Computing", icon: "⚙", category: "Computing", ready: false },
+export const TOPICS: {
+    id: TopicId
+    label: string
+    icon: string
+    category: string
+    ready: boolean
+}[] = [
+    {
+        id: "vectors-matrices",
+        label: "Vectors & Matrices",
+        icon: "⟨⟩",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "systems-equations",
+        label: "Systems of Equations",
+        icon: "∑",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "eigenvalues",
+        label: "Eigenvalues & Eigenvectors",
+        icon: "λ",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "svd-decompositions",
+        label: "SVD & Decompositions",
+        icon: "Σ",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "derivatives-gradients",
+        label: "Derivatives & Gradients",
+        icon: "∂",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "integral-calculus",
+        label: "Integral Calculus",
+        icon: "∫",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "probability-foundations",
+        label: "Probability Foundations",
+        icon: "∼",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "statistical-inference",
+        label: "Statistical Inference",
+        icon: "σ",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "entropy-kl-divergence",
+        label: "Entropy & KL Divergence",
+        icon: "ℍ",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "mutual-information",
+        label: "Mutual Information",
+        icon: "I",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "python",
+        label: "Python",
+        icon: "🐍",
+        category: "Programming",
+        ready: true,
+    },
+    {
+        id: "computing",
+        label: "Computing",
+        icon: "⚙",
+        category: "Computing",
+        ready: true,
+    },
 ]
 
-export const TOPIC_META: Record<TopicId, { eyebrow: string; subtitle: string }> = {
+export const TOPIC_META: Record<
+    TopicId,
+    { eyebrow: string; subtitle: string }
+> = {
     "vectors-matrices": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Vectors, matrices, dot products, and transformations — the language of data",
+        subtitle:
+            "Vectors, matrices, dot products, and transformations — the language of data",
     },
     "systems-equations": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Gaussian elimination, determinants, and solving linear systems",
+        subtitle:
+            "Gaussian elimination, determinants, and solving linear systems",
     },
-    "eigenvalues": {
+    eigenvalues: {
         eyebrow: "Prerequisites · Mathematics",
         subtitle: "Eigenvalues, eigenvectors, and the geometry of linear maps",
     },
     "svd-decompositions": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Singular value decomposition and low-rank matrix approximations",
+        subtitle:
+            "Singular value decomposition and low-rank matrix approximations",
     },
     "derivatives-gradients": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Derivatives, chain rule, gradients, and the mechanics of learning",
+        subtitle:
+            "Derivatives, chain rule, gradients, and the mechanics of learning",
     },
     "integral-calculus": {
         eyebrow: "Prerequisites · Mathematics",
@@ -48,15 +133,18 @@ export const TOPIC_META: Record<TopicId, { eyebrow: string; subtitle: string }> 
     },
     "statistical-inference": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Estimation, hypothesis testing, and connecting statistics to ML",
+        subtitle:
+            "Estimation, hypothesis testing, and connecting statistics to ML",
     },
     "entropy-kl-divergence": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Entropy, cross-entropy, KL divergence, and measuring distributional distance",
+        subtitle:
+            "Entropy, cross-entropy, KL divergence, and measuring distributional distance",
     },
     "mutual-information": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Shared information, channel capacity, and applications in ML",
+        subtitle:
+            "Shared information, channel capacity, and applications in ML",
     },
     python: {
         eyebrow: "Prerequisites · Programming",
@@ -73,6 +161,5 @@ export const TABS: { id: TabId; label: string }[] = [
     { id: "kid", label: "Kid Explanation" },
     { id: "highschool", label: "High School" },
     { id: "maths", label: "Maths" },
-    { id: "python", label: "Python / NumPy" },
-    { id: "code", label: "TypeScript" },
+    { id: "python", label: "Sample Code" },
 ]

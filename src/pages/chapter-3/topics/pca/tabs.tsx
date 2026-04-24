@@ -214,96 +214,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── PCA via Covariance Matrix Eigendecomposition ─────────────────
-// (Uses power iteration for the top eigenvector — educational only;
-//  production code should use a proper LAPACK SVD binding)
 
-type Matrix = number[][]
 
-function matMul(A: Matrix, B: Matrix): Matrix {
-  const m = A.length, k = A[0].length, n = B[0].length
-  const C: Matrix = Array.from({length: m}, () => new Array(n).fill(0))
-  for (let i = 0; i < m; i++)
-    for (let j = 0; j < n; j++)
-      for (let l = 0; l < k; l++)
-        C[i][j] += A[i][l] * B[l][j]
-  return C
-}
-
-function transpose(A: Matrix): Matrix {
-  return A[0].map((_, j) => A.map(row => row[j]))
-}
-
-function norm(v: number[]): number {
-  return Math.sqrt(v.reduce((s, x) => s + x * x, 0))
-}
-
-/** Power iteration — finds the top eigenvector of a symmetric matrix */
-function powerIterate(C: Matrix, iters = 200): number[] {
-  let v = C[0].map(() => Math.random())
-  for (let i = 0; i < iters; i++) {
-    v = C.map(row => row.reduce((s, cij, j) => s + cij * v[j], 0))
-    const n = norm(v)
-    v = v.map(x => x / n)
-  }
-  return v
-}
-
-export function pca(X: Matrix, k: number): { components: Matrix; projected: Matrix } {
-  const n = X.length, d = X[0].length
-
-  // 1. Centre
-  const mean = X[0].map((_, j) => X.reduce((s, row) => s + row[j], 0) / n)
-  const Xc = X.map(row => row.map((v, j) => v - mean[j]))
-
-  // 2. Covariance
-  const Xt = transpose(Xc)
-  const C = matMul(Xt, Xc).map(row => row.map(v => v / n))
-
-  // 3. Extract k components via deflation
-  const components: Matrix = []
-  const Cwork: Matrix = C.map(row => [...row])
-  for (let c = 0; c < k; c++) {
-    const v = powerIterate(Cwork)
-    components.push(v)
-    // Deflate: C = C − λvvᵀ
-    const lam = Cwork.reduce((s, row, i) => s + row[i] * v[i] * v[i], 0)
-    // simplified: subtract outer product
-    for (let i = 0; i < d; i++)
-      for (let j = 0; j < d; j++)
-        Cwork[i][j] -= lam * v[i] * v[j]
-  }
-
-  // 4. Project
-  const projected = Xc.map(row =>
-    components.map(pc => row.reduce((s, x, j) => s + x * pc[j], 0))
-  )
-
-  return { components, projected }
-}
-
-// ── Demo (2D data with strong correlation) ───────────────────────
-const data: Matrix = [
-  [1,1.2],[1.5,1.8],[2,2.1],[2.5,2.6],[3,3.0],
-  [3.5,3.4],[4,4.1],[1.2,0.9],[2.8,3.2],[3.8,3.6],
-]
-const { components, projected } = pca(data, 1)
-console.log("PC1:", components[0].map(v => v.toFixed(3)))
-console.log("Projected 1D:", projected.map(([v]) => v.toFixed(2)))`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                PCA via power iteration and deflation — the method used before SVD algorithms were available. Each eigenvector is found by repeatedly multiplying a random vector by the covariance matrix and normalising. Deflation removes the found eigenvector's contribution so the next iteration finds the second eigenvector.
-            </p>
-            <CodeBlock code={TS_CODE} filename="pca.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Production note:</strong> Power iteration is slow and numerically unstable for finding multiple eigenvectors. Real implementations use LAPACK's <code>dsyevd</code> (full eigendecomposition) or ARPACK's Lanczos algorithm for the top-k eigenvectors only (O(nkd) vs O(d³) for full decomposition).
-            </div>
-        </>
-    )
-}
 
 export const PCA_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
@@ -311,5 +223,4 @@ export const PCA_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

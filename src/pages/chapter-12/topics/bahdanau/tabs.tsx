@@ -361,109 +361,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Bahdanau Attention — TypeScript ──────────────────────────────────────────
 
-type Vec = number[]
-type Mat = number[][]
 
-function dot(a: Vec, b: Vec): number {
-  return a.reduce((s, ai, i) => s + ai * b[i], 0)
-}
-
-function matVec(M: Mat, v: Vec): Vec {
-  return M.map(row => dot(row, v))
-}
-
-function vecAdd(a: Vec, b: Vec): Vec {
-  return a.map((ai, i) => ai + b[i])
-}
-
-function tanhVec(v: Vec): Vec {
-  return v.map(x => Math.tanh(x))
-}
-
-function softmax(scores: Vec): Vec {
-  const max = Math.max(...scores)
-  const exps = scores.map(x => Math.exp(x - max))
-  const sum  = exps.reduce((a, b) => a + b, 0)
-  return exps.map(x => x / sum)
-}
-
-// score(s_prev, h_j) = v_a · tanh(W_a s_prev + U_a h_j)
-function bahdanauScore(
-  sPrev: Vec, hJ: Vec,
-  Wa: Mat, Ua: Mat, va: Vec
-): number {
-  const Ws = matVec(Wa, sPrev)
-  const Uh = matVec(Ua, hJ)
-  return dot(va, tanhVec(vecAdd(Ws, Uh)))
-}
-
-// Full attention step: returns context vector and attention weights
-function bahdanauAttention(
-  sPrev: Vec,
-  H: Mat,          // (T_enc, enc_dim)
-  Wa: Mat, Ua: Mat, va: Vec
-): { context: Vec; alphas: Vec } {
-  const energies = H.map(hJ => bahdanauScore(sPrev, hJ, Wa, Ua, va))
-  const alphas   = softmax(energies)
-  const dim      = H[0].length
-  const context  = Array.from({ length: dim }, (_, d) =>
-    H.reduce((sum, hJ, j) => sum + alphas[j] * hJ[d], 0)
-  )
-  return { context, alphas }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-// Toy embeddings: each encoder state encodes one word in 4D
-// Dimensions: [subject, verb, object, location]
-const H: Mat = [
-  [0.9,  0.1,  0.1,  0.0],   // "The"
-  [0.8,  0.1,  0.0,  0.0],   // "cat"
-  [0.0,  0.9,  0.0,  0.0],   // "sat"
-  [0.0,  0.1,  0.8,  0.0],   // "on"
-  [0.0,  0.0,  0.1,  0.9],   // "the mat"
-]
-
-const ENC_DIM = 4, DEC_DIM = 4, ATTN_DIM = 3
-const rand = (r: number, c: number): Mat =>
-  Array.from({ length: r }, () =>
-    Array.from({ length: c }, () => (Math.random() - 0.5) * 0.3)
-  )
-
-const Wa = rand(ATTN_DIM, DEC_DIM)
-const Ua = rand(ATTN_DIM, ENC_DIM)
-const va: Vec = Array.from({ length: ATTN_DIM }, () => (Math.random() - 0.5) * 0.3)
-
-// Decoder is "looking for the subject" — high subject dimension
-const sPrev: Vec = [0.8, 0.0, 0.0, 0.0]
-
-const { context, alphas } = bahdanauAttention(sPrev, H, Wa, Ua, va)
-
-const words = ["The", "cat", "sat", "on", "the mat"]
-console.log("Bahdanau Attention — TypeScript")
-console.log("─".repeat(42))
-console.log("Decoder looking for subject-related content:")
-alphas.forEach((a, j) => {
-  const bar = "█".repeat(Math.floor(a * 35))
-  console.log(\`  \${words[j].padEnd(8)} α=\${a.toFixed(4)}  \${bar}\`)
-})
-console.log(\`\\nContext: [\${context.map(x => x.toFixed(3)).join(", ")}]\`)
-console.log(\`α sum:   \${alphas.reduce((a, b) => a + b, 0).toFixed(6)}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript Bahdanau attention over a toy 5-word sequence. The decoder state
-                is set to emphasize the subject dimension — observe how the alignment
-                concentrates on subject-related encoder positions.
-            </p>
-            <CodeBlock code={TS_CODE} filename="bahdanau.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -473,5 +372,4 @@ export const BAHDANAU_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

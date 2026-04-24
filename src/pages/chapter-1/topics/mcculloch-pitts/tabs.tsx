@@ -337,114 +337,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── McCulloch-Pitts Neuron ───────────────────────────────────────────────
-type Vec = number[];
 
-/** Fires if sum(w_i * x_i) >= threshold */
-function mpNeuron(inputs: Vec, weights: Vec, threshold: number): number {
-  const sum = inputs.reduce((acc, x, i) => acc + weights[i] * x, 0);
-  return sum >= threshold ? 1 : 0;
-}
 
-// AND gate: w=[1,1], θ=2
-console.log("AND:", mpNeuron([0,0],[1,1],2),  // 0
-                 mpNeuron([0,1],[1,1],2),   // 0
-                 mpNeuron([1,0],[1,1],2),   // 0
-                 mpNeuron([1,1],[1,1],2));  // 1
-
-// OR gate: w=[1,1], θ=1
-console.log("OR:",  mpNeuron([0,0],[1,1],1),  // 0
-                 mpNeuron([0,1],[1,1],1),   // 1
-                 mpNeuron([1,0],[1,1],1),   // 1
-                 mpNeuron([1,1],[1,1],1));  // 1
-
-// ── Perceptron (Rosenblatt, 1957) ──────────────────────────────────────────
-
-interface DataPoint { x: Vec; y: number } // y ∈ {+1, -1}
-
-function sign(z: number): number { return z >= 0 ? 1 : -1; }
-
-function perceptronStep(
-  point: DataPoint, w: Vec, b: number, lr: number
-): { w: Vec; b: number; updated: boolean } {
-  const z = point.x.reduce((s, xi, i) => s + w[i] * xi, 0) + b;
-  const yHat = sign(z);
-
-  if (point.y * yHat <= 0) {          // misclassified → update
-    return {
-      w: w.map((wi, i) => wi + lr * point.y * point.x[i]),
-      b: b + lr * point.y,
-      updated: true,
-    };
-  }
-  return { w, b, updated: false };
-}
-
-function trainPerceptron(
-  data: DataPoint[], lr = 0.1, epochs = 200
-): { w: Vec; b: number } {
-  const n = data[0].x.length;
-  let w = new Array(n).fill(0);
-  let b = 0;
-
-  for (let e = 0; e < epochs; e++) {
-    let mistakes = 0;
-    for (const pt of data) {
-      const { w: w2, b: b2, updated } = perceptronStep(pt, w, b, lr);
-      w = w2; b = b2;
-      if (updated) mistakes++;
-    }
-    if (mistakes === 0) { console.log(\`Converged at epoch \${e}\`); break; }
-  }
-  return { w, b };
-}
-
-function predict(w: Vec, b: number, x: Vec): number {
-  const z = x.reduce((s, xi, i) => s + w[i] * xi, 0) + b;
-  return sign(z);
-}
-
-// ── AND is linearly separable ───────────────────────────────────────────────
-const andData: DataPoint[] = [
-  { x: [0,0], y: -1 },
-  { x: [0,1], y: -1 },
-  { x: [1,0], y: -1 },
-  { x: [1,1], y:  1 },
-];
-
-const { w: wAnd, b: bAnd } = trainPerceptron(andData);
-console.log("AND predictions:", andData.map(p => predict(wAnd, bAnd, p.x)));
-// → [-1, -1, -1, 1] ✓
-
-// ── XOR is NOT linearly separable ──────────────────────────────────────────
-const xorData: DataPoint[] = [
-  { x: [0,0], y: -1 },
-  { x: [0,1], y:  1 },
-  { x: [1,0], y:  1 },
-  { x: [1,1], y: -1 },
-];
-
-const { w: wXor, b: bXor } = trainPerceptron(xorData, 0.1, 200);
-console.log("XOR predictions:", xorData.map(p => predict(wXor, bXor, p.x)));
-// → oscillates, never gets all 4 right — no separating hyperplane exists!`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript implementations of the McCulloch-Pitts neuron and perceptron.
-                No libraries — just arrays and math, matching the 1957 paper exactly.
-            </p>
-            <CodeBlock code={TS_CODE} filename="mcp-perceptron.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Historical note:</strong> In 1957, Rosenblatt implemented the perceptron in
-                hardware (the Mark I) using potentiometers and motors. The weights were literally
-                turned by electric motors when mistakes were made. Today's equivalent runs on a GPU
-                in microseconds.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -453,6 +347,5 @@ export const MCCULLOCH_PITTS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

@@ -328,109 +328,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Soft vs Hard Attention — TypeScript ──────────────────────────────────────
 
-type Vec = number[]
-type Mat = number[][]
 
-const dot = (a: Vec, b: Vec) => a.reduce((s, ai, i) => s + ai * b[i], 0)
-
-function softmax(scores: Vec): Vec {
-  const max = Math.max(...scores)
-  const ex  = scores.map(x => Math.exp(x - max))
-  const sum = ex.reduce((a, b) => a + b, 0)
-  return ex.map(x => x / sum)
-}
-
-// ── Soft attention ─────────────────────────────────────────────────────────────
-function softAttend(query: Vec, features: Mat): { context: Vec; alphas: Vec } {
-  const energies = features.map(f => dot(query, f))
-  const alphas   = softmax(energies)
-  const dim      = features[0].length
-  const context  = Array.from({ length: dim }, (_, d) =>
-    features.reduce((sum, f, j) => sum + alphas[j] * f[d], 0)
-  )
-  return { context, alphas }
-}
-
-// ── Hard attention ─────────────────────────────────────────────────────────────
-function categoricalSample(probs: Vec): number {
-  const r = Math.random()
-  let acc = 0
-  for (let i = 0; i < probs.length; i++) {
-    acc += probs[i]
-    if (r < acc) return i
-  }
-  return probs.length - 1
-}
-
-function hardAttend(query: Vec, features: Mat): { context: Vec; selected: number; alphas: Vec } {
-  const energies = features.map(f => dot(query, f))
-  const alphas   = softmax(energies)
-  const selected = categoricalSample(alphas)
-  return { context: features[selected], selected, alphas }
-}
-
-// ── Gumbel-Softmax ─────────────────────────────────────────────────────────────
-function gumbelSample(): number {
-  return -Math.log(-Math.log(Math.random() + 1e-10) + 1e-10)
-}
-
-function gumbelSoftmax(logits: Vec, tau: number): Vec {
-  const noisy = logits.map(e => e + gumbelSample())
-  return softmax(noisy.map(x => x / tau))
-}
-
-// ── Demo ───────────────────────────────────────────────────────────────────────
-// 6 image-region feature vectors (3D for readability)
-const features: Mat = [
-  [0.8, 0.1, 0.0],   // sky
-  [0.1, 0.9, 0.0],   // cat
-  [0.0, 0.1, 0.8],   // mat
-  [0.3, 0.3, 0.3],   // background1
-  [0.2, 0.7, 0.1],   // cat-like region
-  [0.0, 0.0, 0.9],   // floor
-]
-const regionNames = ["sky", "cat", "mat", "bg1", "cat2", "floor"]
-
-// Decoder query focused on "animal"
-const query: Vec = [0.1, 0.9, 0.0]
-
-const { alphas: softAlphas, context: softCtx } = softAttend(query, features)
-console.log("Soft Attention:")
-softAlphas.forEach((a, j) => {
-  console.log(\`  \${regionNames[j].padEnd(5)} α=\${a.toFixed(4)}  \${"█".repeat(Math.floor(a * 35))}\`)
-})
-console.log(\`  context=[\${softCtx.map(x => x.toFixed(3)).join(", ")}]\\n\`)
-
-console.log("Hard Attention (3 samples):")
-for (let t = 0; t < 3; t++) {
-  const { selected, alphas } = hardAttend(query, features)
-  console.log(\`  sample \${t}: → \${regionNames[selected]}  (p=\${alphas[selected].toFixed(4)})\`)
-}
-console.log()
-
-console.log("Gumbel-Softmax temperature sweep:")
-const logits = features.map(f => dot(query, f))
-for (const tau of [2.0, 0.5, 0.1]) {
-  const y = gumbelSoftmax(logits, tau)
-  const peak = y.indexOf(Math.max(...y))
-  console.log(\`  τ=\${tau}: peak=\${regionNames[peak]}  max=\${Math.max(...y).toFixed(4)}\`)
-}
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of soft, hard, and Gumbel-Softmax attention over
-                a toy image-captioning scenario with 6 named feature regions. The temperature
-                sweep shows Gumbel-Softmax transitioning from diffuse to sharp selection.
-            </p>
-            <CodeBlock code={TS_CODE} filename="soft_hard.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -440,5 +339,4 @@ export const SOFT_HARD_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

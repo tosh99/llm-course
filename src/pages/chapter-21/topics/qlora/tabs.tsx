@@ -239,60 +239,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── QLoRA Memory Estimator — TypeScript ──────────────────────────────────────
 
-function memoryEstimateGB(
-    params: number,
-    bits = 4,
-    loraR = 64,
-    hidden = 4096,
-    layers = 80
-): Record<string, number> {
-    const baseGB = (params * bits) / 8 / 1e9
-    const loraParams = layers * 2 * 2 * hidden * loraR
-    const loraGB = (loraParams * 2) / 1e9
-    const adamGB = (loraParams * 2 * 4) / 1e9
-    return {
-        base: Math.round(baseGB * 10) / 10,
-        lora: Math.round(loraGB * 10) / 10,
-        adam: Math.round(adamGB * 10) / 10,
-        total: Math.round((baseGB + loraGB + adamGB) * 10) / 10,
-    }
-}
 
-function uniformQuantize(w: number[], levels: number): { idx: number[]; scale: number } {
-    const maxVal = Math.max(...w.map(Math.abs))
-    const scale = maxVal / ((levels - 1) / 2)
-    const idx = w.map(v => Math.round(v / scale) + Math.floor(levels / 2))
-    return { idx, scale }
-}
-
-function dequantize(idx: number[], scale: number, levels: number): number[] {
-    const offset = Math.floor(levels / 2)
-    return idx.map(i => (i - offset) * scale)
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const est = memoryEstimateGB(65e9, 4, 64)
-console.log("QLoRA memory (GB):", est)
-
-const w = Array.from({ length: 64 }, () => (Math.random() - 0.5) * 2)
-const q = uniformQuantize(w, 16)
-const wHat = dequantize(q.idx, q.scale, 16)
-const rmse = Math.sqrt(w.reduce((s, v, i) => s + (v - wHat[i]) ** 2, 0) / w.length)
-console.log("Uniform 4-bit RMSE:", rmse.toFixed(6))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of QLoRA memory estimation and uniform quantization.
-            </p>
-            <CodeBlock code={TS_CODE} filename="qlora_quant.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -302,5 +250,4 @@ export const QLORA_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

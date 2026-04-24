@@ -352,106 +352,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Manual GRU Cell — TypeScript ─────────────────────────────────────────────
 
-type Vec = number[]
-type Mat = number[][]
 
-function sigmoid(x: number): number {
-  return 1 / (1 + Math.exp(-Math.max(-500, Math.min(500, x))))
-}
-
-function matVec(W: Mat, x: Vec): Vec {
-  return W.map(row => row.reduce((s, w, j) => s + w * x[j], 0))
-}
-
-function vecAdd(a: Vec, b: Vec): Vec {
-  return a.map((v, i) => v + b[i])
-}
-
-function concat(a: Vec, b: Vec): Vec {
-  return [...a, ...b]
-}
-
-// ── GRU Cell ─────────────────────────────────────────────────────────────────
-interface GRUWeights {
-  Wr: Mat; Wz: Mat; W: Mat   // (hidden_dim × [hidden_dim + input_dim])
-  br: Vec; bz: Vec; b: Vec   // (hidden_dim,)
-}
-
-function gruCell(xT: Vec, hPrev: Vec, weights: GRUWeights): Vec {
-  const { Wr, Wz, W, br, bz, b } = weights
-
-  // Concatenate [h_prev, x_t] for reset and update gates
-  const xh = concat(hPrev, xT)
-
-  // Reset gate: r = σ(W_r · [h_{t-1}, x_t] + b_r)
-  const r = vecAdd(matVec(Wr, xh), br).map(sigmoid)
-
-  // Update gate: z = σ(W_z · [h_{t-1}, x_t] + b_z)
-  const z = vecAdd(matVec(Wz, xh), bz).map(sigmoid)
-
-  // Candidate: h̃ = tanh(W · [r ⊙ h_{t-1}, x_t] + b)
-  const rHPrev = hPrev.map((h, i) => r[i] * h)          // reset-gated past
-  const xhReset = concat(rHPrev, xT)
-  const hTilde = vecAdd(matVec(W, xhReset), b).map(Math.tanh)
-
-  // Interpolation: h_t = (1-z) ⊙ h_{t-1} + z ⊙ h̃_t
-  const h = z.map((zi, i) => (1 - zi) * hPrev[i] + zi * hTilde[i])
-
-  return h
-}
-
-// ── Sequence Forward Pass ─────────────────────────────────────────────────────
-function gruForward(X: Vec[], weights: GRUWeights, h0?: Vec): Vec[] {
-  const hiddenDim = weights.br.length
-  let h = h0 ?? new Array(hiddenDim).fill(0)
-  const outputs: Vec[] = []
-
-  for (const xT of X) {
-    h = gruCell(xT, h, weights)
-    outputs.push(h)
-  }
-  return outputs
-}
-
-// ── Update gate demo: z controls interpolation ────────────────────────────────
-console.log("GRU Update Gate — Interpolation Demo")
-console.log("─".repeat(50))
-
-const hPrev = new Array(4).fill(0.9)          // strong existing memory
-const hTilde = new Array(4).fill(0.0)          // candidate = zero
-
-for (const zVal of [0.0, 0.1, 0.5, 0.9, 1.0]) {
-  const hNew = hPrev.map((h, i) => (1 - zVal) * h + zVal * hTilde[i])
-  const label = zVal < 0.3 ? "preserves past" : zVal > 0.7 ? "replaces with candidate" : "mixes both"
-  console.log(\`z=\${zVal.toFixed(1)}: h_new[0]=\${hNew[0].toFixed(3)} (\${label})\`)
-}
-
-console.log()
-console.log("Key: the network learns z values from data.")
-console.log("z≈0 at timesteps where memory should persist.")
-console.log("z≈1 at timesteps with important new information.")
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of the complete GRU cell forward pass and sequence
-                forward pass. The demo explicitly shows how the update gate interpolates between
-                preserving the previous hidden state and updating with the candidate.
-            </p>
-            <CodeBlock code={TS_CODE} filename="gru_cell.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Implementation note:</strong> In PyTorch's <code>nn.GRU</code>, the weight
-                matrices W<sub>r</sub>, W<sub>z</sub>, and W are packed into two fused matrices
-                (one for the input, one for the hidden state) for efficient BLAS operations.
-                The computation is mathematically identical to the cell-by-cell formulation above.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -460,6 +362,5 @@ export const GRU_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

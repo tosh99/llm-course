@@ -1,6 +1,6 @@
 // ── Types ────────────────────────────────────────────────────────────────────
 
-export type TabId = "history" | "kid" | "highschool" | "maths" | "python" | "code"
+export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
 export type TopicId = "alexnet" | "vggnet" | "googlenet" | "resnet" | "densenet" | "gans" | "vit"
 
 declare global {

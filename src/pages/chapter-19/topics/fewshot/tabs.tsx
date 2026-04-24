@@ -264,57 +264,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Few-Shot Prompt Formatter — TypeScript ───────────────────────────────────
 
-function formatFewShotPrompt(
-    description: string,
-    examples: [string, string][],
-    query: string,
-    k?: number
-): string {
-    const selected = k !== undefined ? examples.slice(0, k) : examples
-    const parts: string[] = [description.trim(), ""]
-    
-    for (const [inp, out] of selected) {
-        parts.push(\`Input: \${inp}\`)
-        parts.push(\`Output: \${out}\`)
-        parts.push("")
-    }
-    parts.push(\`Input: \${query}\`)
-    parts.push("Output:")
-    
-    return parts.join("\\n")
-}
 
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const description = "Translate English to French."
-const examples: [string, string][] = [
-    ["Hello", "Bonjour"],
-    ["Thank you", "Merci"],
-    ["Good night", "Bonne nuit"],
-]
-const query = "How are you?"
-
-for (const k of [0, 1, 2, 3]) {
-    const prompt = formatFewShotPrompt(description, examples, query, k)
-    console.log(\`--- \${k}-shot prompt ---\`)
-    console.log(prompt)
-    console.log()
-}
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of a few-shot prompt formatter. The function constructs
-                standardized prompts for zero-shot through k-shot evaluation, demonstrating how
-                evaluation frameworks like HELM and BIG-Bench format their inputs.
-            </p>
-            <CodeBlock code={TS_CODE} filename="fewshot_prompt.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -324,5 +275,4 @@ export const FEWSHOT_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

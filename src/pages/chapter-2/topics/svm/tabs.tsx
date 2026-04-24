@@ -228,75 +228,7 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Hard-margin SVM geometry (TypeScript) ────────────────────
-// Note: full SVM training requires quadratic programming.
-// This illustrates the geometry and dual formulation.
 
-type Vec = number[];
-type Point = { x: Vec; y: number }; // y ∈ {+1, -1}
-
-function dot(a: Vec, b: Vec): number { return a.reduce((s, v, i) => s + v * b[i], 0); }
-function norm(a: Vec): number { return Math.sqrt(a.reduce((s, v) => s + v * v, 0)); }
-
-/** Signed distance from point x to hyperplane w·x + b = 0 */
-function margin(x: Vec, w: Vec, b: number): number {
-  return (dot(w, x) + b) / norm(w);
-}
-
-/** Given N support vectors xi with dual weights αi, compute w = Σ αi yi xi */
-function computeNormal(svs: Point[], alphas: number[]): Vec {
-  const dim = svs[0].x.length;
-  return Array.from({ length: dim }, (_, d) =>
-    svs.reduce((sum, sv, i) => sum + alphas[i] * sv.y * sv.x[d], 0)
-  );
-}
-
-/** Predict: sign(w·x + b) */
-function predict(x: Vec, w: Vec, b: number): number {
-  return dot(w, x) + b >= 0 ? 1 : -1;
-}
-
-// ── Example: 2D linearly separable data ───────────────────────
-const data: Point[] = [
-  { x: [1.0, 1.5], y:  1 },
-  { x: [1.5, 2.0], y:  1 },
-  { x: [2.0, 1.0], y:  1 },
-  { x: [3.0, 3.5], y: -1 },
-  { x: [3.5, 3.0], y: -1 },
-  { x: [4.0, 4.0], y: -1 },
-];
-
-// Optimal SVM hyperplane for this data (computed externally):
-// w ≈ [−1.0, 0.8],  b ≈ 0.7  →  decision boundary
-const w = [-1.0, 0.8];
-const b = 0.7;
-
-// Verify margin for each point
-for (const pt of data) {
-  const m = margin(pt.x, w, b);
-  const pred = predict(pt.x, w, b);
-  console.log(
-    \`y=\${pt.y}  margin=\${m.toFixed(3)}  pred=\${pred}  \${pred === pt.y ? '✓' : '✗'}\`
-  );
-}
-// y=1  margin=0.28  pred=1  ✓
-// y=1  margin=0.55  pred=1  ✓
-// y=1  margin=0.36  pred=1  ✓
-// y=-1 margin=0.42  pred=-1 ✓
-// y=-1 margin=0.71  pred=-1 ✓
-// y=-1 margin=0.85  pred=-1 ✓
-// Margin = (y·(w·x+b))/|w|  →  minimum is 0.28`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Full SVM training requires solving a quadratic program (QP) — use <code>LIBSVM</code> or <code>sklearn.svm</code> in practice. This shows the geometry: the decision boundary is w·x + b = 0, the signed distance of point x is (w·x + b)/||w||, and only support vectors (points with αᵢ &gt; 0) determine w.
-            </p>
-            <CodeBlock code={TS_CODE} filename="svm-geometry.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 export const SVM_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
@@ -304,5 +236,4 @@ export const SVM_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
     python: <PythonTab />,
-    code: <CodeTab />,
 }

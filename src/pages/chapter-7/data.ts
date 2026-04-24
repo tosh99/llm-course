@@ -26,7 +26,6 @@ export const TABS: TabConfig[] = [
     { id: "highschool", label: "High School" },
     { id: "maths", label: "Maths" },
     { id: "python", label: "Python" },
-    { id: "code", label: "Code" },
 ]
 
 export const TOPICS: TopicConfig[] = [

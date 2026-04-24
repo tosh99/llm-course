@@ -346,68 +346,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Chinchilla Compute-Optimal Calculator — TypeScript ──────────────────────
 
-interface ChinchillaConstants {
-  A: number
-  B: number
-  alpha: number
-  beta: number
-  E: number
-}
 
-const CHINCHILLA: ChinchillaConstants = {
-  A: 406.4,
-  B: 410.7,
-  alpha: 0.34,
-  beta: 0.28,
-  E: 1.69,
-}
-
-function lossChinchilla(N: number, D: number, c: ChinchillaConstants = CHINCHILLA): number {
-  return c.E + c.A / N ** c.alpha + c.B / D ** c.beta
-}
-
-function optimalND(C: number, ratio = 20): { N: number; D: number } {
-  const N = Math.sqrt(C / (6 * ratio))
-  const D = ratio * N
-  return { N, D }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-console.log("Chinchilla Compute-Optimal Plans")
-console.log("-".repeat(55))
-
-const budgets = [1e18, 1e19, 1e20, 1e21, 1e22]
-for (const C of budgets) {
-  const { N, D } = optimalND(C)
-  const L = lossChinchilla(N, D)
-  console.log(\`C=\${C.toExponential(0)}  N=\${N.toExponential(2)}  D=\${D.toExponential(2)}  L=\${L.toFixed(3)}\`)
-}
-
-// Comparison
-const C = 1e21
-const N_kaplan = C ** 0.73 / 6 ** 0.73
-const D_kaplan = C / (6 * N_kaplan)
-
-const { N: N_chin, D: D_chin } = optimalND(C)
-
-console.log(\`\\nComparison @ C=1e21:\`)
-console.log(\`  Kaplan:     N=\${N_kaplan.toExponential(2)} D=\${D_kaplan.toExponential(2)} L=\${lossChinchilla(N_kaplan, D_kaplan).toFixed(3)}\`)
-console.log(\`  Chinchilla: N=\${N_chin.toExponential(2)} D=\${D_chin.toExponential(2)} L=\${lossChinchilla(N_chin, D_chin).toFixed(3)}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of the Chinchilla compute-optimal calculator with
-                typed constants and comparison against Kaplan-style allocation.
-            </p>
-            <CodeBlock code={TS_CODE} filename="chinchilla.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -417,5 +357,4 @@ export const CHINCHILLA_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

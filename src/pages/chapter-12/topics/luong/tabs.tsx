@@ -331,96 +331,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Luong Global Attention — TypeScript ─────────────────────────────────────
 
-type Vec = number[]
-type Mat = number[][]
 
-const dot = (a: Vec, b: Vec) => a.reduce((s, ai, i) => s + ai * b[i], 0)
-const matVec = (M: Mat, v: Vec): Vec => M.map(row => dot(row, v))
-const tanhVec = (v: Vec): Vec => v.map(Math.tanh)
-const concat = (a: Vec, b: Vec): Vec => [...a, ...b]
-
-function softmax(scores: Vec): Vec {
-  const max = Math.max(...scores)
-  const ex  = scores.map(x => Math.exp(x - max))
-  const sum = ex.reduce((a, b) => a + b, 0)
-  return ex.map(x => x / sum)
-}
-
-// ── Luong global attention (general scoring) ──────────────────────────────────
-interface LuongWeights {
-  Wa: Mat   // (dec_dim, enc_dim)  — bilinear scoring
-  Wc: Mat   // (dec_dim, dec_dim + enc_dim)  — combine projection
-}
-
-function luongAttend(
-  ht: Vec,
-  H: Mat,      // (T_enc, enc_dim) encoder states
-  w: LuongWeights
-): { hTilde: Vec; alphas: Vec; context: Vec } {
-  // General score: h_t^T W_a h_s  for all s
-  const Wht = matVec(w.Wa, ht)                          // (enc_dim,)  — no, wait:
-  // W_a is (dec_dim, enc_dim), so W_a^T h_t = (enc_dim,), then dot with each h_s
-  // Equivalently: energies[s] = h_t · (W_a^T h_s) = h_t · W_a^T h_s
-  const energies = H.map(hs => dot(ht, matVec(w.Wa, hs)))  // (T_enc,)
-  const alphas   = softmax(energies)
-
-  const encDim = H[0].length
-  const context: Vec = Array.from({ length: encDim }, (_, d) =>
-    H.reduce((sum, hs, j) => sum + alphas[j] * hs[d], 0)
-  )
-
-  // h̃_t = tanh(W_c [c_t; h_t])
-  const hTilde = tanhVec(matVec(w.Wc, concat(context, ht)))
-  return { hTilde, alphas, context }
-}
-
-// ── Demo: "the cat sat on the mat" ───────────────────────────────────────────
-// Toy encoder: 4D states, dimensions = [animal, action, location, filler]
-const H: Mat = [
-  [0.1, 0.0, 0.0, 0.9],   // "the"
-  [0.9, 0.0, 0.0, 0.1],   // "cat"   ← subject
-  [0.0, 0.9, 0.0, 0.1],   // "sat"   ← verb
-  [0.0, 0.1, 0.1, 0.8],   // "on"
-  [0.1, 0.0, 0.9, 0.1],   // "the mat" ← location
-]
-
-const ENC = 4, DEC = 4
-const rand = (r: number, c: number): Mat =>
-  Array.from({ length: r }, () =>
-    Array.from({ length: c }, () => (Math.random() - 0.5) * 0.3)
-  )
-
-const weights: LuongWeights = { Wa: rand(DEC, ENC), Wc: rand(DEC, DEC + ENC) }
-
-// Decoder focused on action (verb) dimension
-const htVerb: Vec = [0.0, 0.9, 0.0, 0.0]
-
-const { alphas, hTilde } = luongAttend(htVerb, H, weights)
-
-const words = ["the", "cat", "sat", "on", "the mat"]
-console.log("Luong Attention (decoder looking for verb)")
-console.log("─".repeat(42))
-alphas.forEach((a, j) => {
-  const bar = "█".repeat(Math.floor(a * 35))
-  console.log(\`  \${words[j].padEnd(9)} α=\${a.toFixed(4)}  \${bar}\`)
-})
-console.log(\`\\nh̃_t = [\${hTilde.map(x => x.toFixed(3)).join(", ")}]\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript Luong global attention with general (bilinear) scoring.
-                A toy 5-word sequence with interpretable 4D encoder states demonstrates
-                how the decoder's attention concentrates when seeking specific content types.
-            </p>
-            <CodeBlock code={TS_CODE} filename="luong.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -430,5 +342,4 @@ export const LUONG_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

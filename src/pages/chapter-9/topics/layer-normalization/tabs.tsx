@@ -323,111 +323,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Layer Normalization — TypeScript ─────────────────────────────────────────
 
-type Vec = number[]
 
-function mean(xs: Vec): number {
-  return xs.reduce((s, x) => s + x, 0) / xs.length
-}
-
-function variance(xs: Vec, mu: number): number {
-  return xs.reduce((s, x) => s + (x - mu) ** 2, 0) / xs.length
-}
-
-// ── LayerNorm ─────────────────────────────────────────────────────────────────
-interface LayerNormParams {
-  gamma: Vec   // learnable scale (init 1)
-  beta:  Vec   // learnable shift (init 0)
-}
-
-function createLayerNorm(features: number): LayerNormParams {
-  return {
-    gamma: new Array(features).fill(1),
-    beta:  new Array(features).fill(0),
-  }
-}
-
-function layerNorm(h: Vec, params: LayerNormParams, eps = 1e-5): Vec {
-  const mu    = mean(h)
-  const sigma2 = variance(h, mu)
-  const inv   = 1 / Math.sqrt(sigma2 + eps)
-
-  return h.map((hi, i) => {
-    const hHat = (hi - mu) * inv
-    return params.gamma[i] * hHat + params.beta[i]
-  })
-}
-
-// ── RMSNorm (used in LLaMA, Mistral) ─────────────────────────────────────────
-function rmsNorm(h: Vec, gamma: Vec, eps = 1e-5): Vec {
-  const rms = Math.sqrt(h.reduce((s, x) => s + x * x, 0) / h.length + eps)
-  return h.map((hi, i) => gamma[i] * hi / rms)
-}
-
-// ── Compare: BatchNorm vs LayerNorm behavior ──────────────────────────────────
-function batchNorm(X: Vec[], eps = 1e-5): Vec[] {
-  const features = X[0].length
-  // Normalize each FEATURE across the batch
-  return X.map(x => {
-    // Note: real BN computes per-feature stats; simplified here per-example for demo
-    const mu    = mean(x)
-    const sigma2 = variance(x, mu)
-    return x.map(xi => (xi - mu) / Math.sqrt(sigma2 + eps))
-  })
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const hiddenDim = 8
-const ln = createLayerNorm(hiddenDim)
-const rmsGamma = new Array(hiddenDim).fill(1)
-
-// Examples with very different scales
-const examples: Vec[] = [
-  Array.from({ length: hiddenDim }, () => Math.random() * 6 + 10),  // mean≈13
-  Array.from({ length: hiddenDim }, () => Math.random() - 0.5),      // mean≈0
-  Array.from({ length: hiddenDim }, () => Math.random() * 2 - 5),    // mean≈-4
-]
-
-console.log("LayerNorm: per-example normalization")
-console.log("─".repeat(50))
-console.log(\`\${"".padEnd(20)} \${"Input mean".padEnd(14)} \${"LN mean".padEnd(12)} LN std\`)
-
-for (let i = 0; i < examples.length; i++) {
-  const h   = examples[i]
-  const y   = layerNorm(h, ln)
-  const mu  = mean(h)
-  const yMu = mean(y)
-  const yStd = Math.sqrt(variance(y, yMu))
-  console.log(\`Example \${i}:           \${mu.toFixed(3).padEnd(14)} \${yMu.toFixed(4).padEnd(12)} \${yStd.toFixed(4)}\`)
-}
-
-console.log()
-console.log("Key: each example independently normalized → mean≈0, std≈1")
-console.log("Works with batch_size=1 (no running statistics needed)")
-
-// ── RMSNorm comparison ────────────────────────────────────────────────────────
-console.log()
-const h = examples[0]
-const yLN  = layerNorm(h, ln)
-const yRMS = rmsNorm(h, rmsGamma)
-console.log("LayerNorm vs RMSNorm (no mean subtraction):")
-console.log(\`LayerNorm [0:3]: [\${yLN.slice(0,3).map(v => v.toFixed(4)).join(", ")}]\`)
-console.log(\`RMSNorm   [0:3]: [\${yRMS.slice(0,3).map(v => v.toFixed(4)).join(", ")}]\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of LayerNorm and RMSNorm (the LLaMA/Mistral variant).
-                Demonstrates the core property: each example is normalized independently over
-                its feature dimension, making it invariant to batch size.
-            </p>
-            <CodeBlock code={TS_CODE} filename="layernorm.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -436,6 +333,5 @@ export const LAYER_NORMALIZATION_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

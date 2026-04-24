@@ -357,121 +357,7 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Simple RNN ─────────────────────────────────────────────────────────────
-type Vec = number[]
 
-function tanh(z: number): number {
-  const e2 = Math.exp(2 * z)
-  return (e2 - 1) / (e2 + 1)
-}
-
-function sigmoid(z: number): number {
-  return 1 / (1 + Math.exp(-Math.max(-500, Math.min(500, z))))
-}
-
-/** Single RNN step: h_t = tanh(W_xh*x_t + W_hh*h_{t-1} + b) */
-function rnnStep(
-  x_t: Vec, hPrev: Vec, Wxh: number[][], Whh: number[][], b: Vec
-): Vec {
-  const n = hPrev.length
-  // z = Wxh*x_t + Whh*hPrev + b
-  const z = new Array(n).fill(0)
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < x_t.length; j++) z[i] += Wxh[i][j] * x_t[j]
-    for (let j = 0; j < n; j++) z[i] += Whh[i][j] * hPrev[j]
-    z[i] += b[i]
-  }
-  return z.map(tanh)
-}
-
-/** Forward pass over entire sequence */
-function rnnForward(
-  X: Vec[], Whh: number[][], Wxh: number[][], b: Vec
-): Vec[] {
-  const H: Vec[] = [new Array(Whh.length).fill(0)] // h_0 = 0
-  for (let t = 0; t < X.length; t++) {
-    H.push(rnnStep(X[t], H[H.length - 1], Wxh, Whh, b))
-  }
-  return H
-}
-
-// ── LSTM Cell ─────────────────────────────────────────────────────────────────
-interface LstmParams {
-  Wf: number[][]; bf: Vec  // forget gate
-  Wi: number[][]; bi: Vec  // input gate
-  Wc: number[][]; bc: Vec  // cell candidate
-  Wo: number[][]; bo: Vec  // output gate
-  Wy: number[][]; by: Vec  // output projection
-}
-
-function lstmStep(
-  x_t: Vec, hPrev: Vec, cPrev: Vec, p: LstmParams
-): { h: Vec; c: Vec } {
-  const n = hPrev.length
-
-  // Gate activations (all use sigmoid → [0,1])
-  const f = sigmoidVec(matVecMul(p.Wf, hPrev).map((v, i) => v + p.bf[i]))
-  const i = sigmoidVec(matVecMul(p.Wi, hPrev).map((v, i) => v + p.bi[i]))
-  const o = sigmoidVec(matVecMul(p.Wo, hPrev).map((v, i) => v + p.bo[i]))
-
-  // Candidate cell state (tanh → [-1, 1])
-  const cTilde = tanhVec(matVecMul(p.Wc, hPrev).map((v, i) => v + p.bc[i]))
-
-  // Cell state: the constant error carousel
-  // If f=1, i=0 → c_t = c_{t-1} → gradient flows unchanged!
-  const c = f.map((fj, k) => fj * cPrev[k] + i[k] * cTilde[k])
-
-  // Hidden state: output gate controls what's exposed
-  const h = o.map((ok, k) => ok * Math.tanh(c[k]))
-
-  return { h, c }
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-function matVecMul(W: number[][], x: Vec): Vec {
-  return W.map(row => row.reduce((s, wij, j) => s + wij * x[j], 0))
-}
-function sigmoidVec(z: Vec): Vec { return z.map(sigmoid) }
-function tanhVec(z: Vec): Vec   { return z.map(tanh) }
-
-// ── Gradient Vanishing Demo ───────────────────────────────────────────────────
-// For a simple RNN with tanh activation, gradient after k steps scales as λ^k
-// where λ = largest eigenvalue of Whh^T * diag(tanh'(z))
-// If λ < 1, gradient vanishes exponentially
-
-console.log(\`
-Simple RNN: h_t = tanh(W_hh * h_{t-1} + W_xh * x_t)
-Gradient after k steps: scales as λ^k where λ < 1
-→ After 10 steps with λ=0.8: 0.8^10 ≈ 0.107 (11% of true gradient!)
-→ After 20 steps with λ=0.8: 0.8^20 ≈ 0.012 (1.2%!)
-→ After 50 steps: ≈ 0.00014 (essentially zero)
-
-LSTM: c_t = f_t ⊙ c_{t-1} + i_t ⊙ c̃_t
-If f_t=1, i_t=0 → c_t = c_{t-1} → ∂c_t/∂c_{t-k} = 1 always!
-No exponential decay — gradients propagate unchanged across time.
-\`)
-
-console.log("RNN and LSTM implementations ready.");`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript implementations of the Simple RNN forward pass and
-                LSTM cell. No libraries — just vector math. The gradient vanishing
-                demo shows exactly why LSTMs solve what plain RNNs cannot.
-            </p>
-            <CodeBlock code={TS_CODE} filename="rnn_lstm.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Historical note:</strong> In 1997, Hochreiter &amp; Schmidhuber implemented
-                LSTM in C on specialized hardware. Training a model that today runs in milliseconds
-                on a phone took days on a workstation. The key mathematical insight — a linear
-                self-loop with weight exactly 1.0 — was so elegant that it required no hardware tricks
-                to work; it just needed the right architecture.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -481,5 +367,4 @@ export const SIMPLE_RNN_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
     python: <PythonTab />,
-    code: <CodeTab />,
 }

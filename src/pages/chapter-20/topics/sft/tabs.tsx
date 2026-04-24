@@ -232,56 +232,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── SFT Loss with Prompt Masking — TypeScript ────────────────────────────────
 
-function softmax(logits: number[]): number[] {
-    const maxVal = Math.max(...logits)
-    const exps = logits.map(v => Math.exp(v - maxVal))
-    const sum = exps.reduce((a, b) => a + b, 0)
-    return exps.map(v => v / sum)
-}
 
-function sftLoss(
-    logits: number[][],
-    targets: number[],
-    mask: number[]
-): number {
-    let totalLoss = 0
-    let tokenCount = 0
-
-    for (let t = 0; t < targets.length; t++) {
-        if (mask[t] === 0) continue
-        const probs = softmax(logits[t])
-        const targetProb = probs[targets[t]]
-        totalLoss += -Math.log(targetProb + 1e-10)
-        tokenCount++
-    }
-
-    return totalLoss / (tokenCount || 1)
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const seqLen = 10
-const vocabSize = 1000
-const logits = Array.from({ length: seqLen }, () =>
-    Array.from({ length: vocabSize }, () => (Math.random() - 0.5) * 2))
-const targets = Array.from({ length: seqLen }, () =>
-    Math.floor(Math.random() * vocabSize))
-const mask = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1]
-
-console.log("SFT Loss:", sftLoss(logits, targets, mask).toFixed(4))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of masked SFT loss for instruction tuning.
-            </p>
-            <CodeBlock code={TS_CODE} filename="sft_loss.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -291,5 +243,4 @@ export const SFT_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

@@ -282,76 +282,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Kaplan Scaling Laws — TypeScript ────────────────────────────────────────
 
-interface ScalingConstants {
-  Nc: number
-  Dc: number
-  L_inf: number
-  alphaN: number
-  alphaD: number
-}
 
-const KAPLAN: ScalingConstants = {
-  Nc: 8.8e13,
-  Dc: 5.4e13,
-  L_inf: 1.69,
-  alphaN: 0.076,
-  alphaD: 0.095,
-}
-
-function lossFromParams(N: number, c: ScalingConstants = KAPLAN): number {
-  return (c.Nc / N) ** c.alphaN + c.L_inf
-}
-
-function lossFromData(D: number, c: ScalingConstants = KAPLAN): number {
-  return (c.Dc / D) ** c.alphaD + c.L_inf
-}
-
-function lossJoint(N: number, D: number, c: ScalingConstants = KAPLAN): number {
-  return (c.Nc / N) ** c.alphaN + (c.Dc / D) ** c.alphaD + c.L_inf
-}
-
-function computeOptimal(C: number, c: ScalingConstants = KAPLAN) {
-  // Kaplan approximation: N_opt ∝ C^0.27, D_opt ∝ C^0.73
-  const N_opt = C ** 0.27 / (6 ** 0.27 * c.Dc ** 0.73)
-  const D_opt = C / (6 * N_opt)
-  return { N_opt, D_opt, loss: lossJoint(N_opt, D_opt, c) }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-console.log("Kaplan Scaling Laws — TypeScript")
-console.log("─".repeat(40))
-
-const sizes = [
-  { n: 1e8, label: "100M" },
-  { n: 1e9, label: "1B" },
-  { n: 1e10, label: "10B" },
-  { n: 1e11, label: "100B" },
-]
-
-for (const { n, label } of sizes) {
-  console.log(\`Loss @ \${label} params: \${lossFromParams(n).toFixed(3)}\`)
-}
-
-const result = computeOptimal(1e21)
-console.log(\`\\nCompute-optimal for 1e21 FLOPs:\`)
-console.log(\`  N_opt = \${result.N_opt.toExponential(2)}\`)
-console.log(\`  D_opt = \${result.D_opt.toExponential(2)}\`)
-console.log(\`  Loss  = \${result.loss.toFixed(3)}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of Kaplan's scaling laws with typed constants
-                and compute-optimal derivation.
-            </p>
-            <CodeBlock code={TS_CODE} filename="scaling_laws.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -361,5 +293,4 @@ export const SCALING_LAWS_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

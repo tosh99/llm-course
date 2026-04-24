@@ -307,92 +307,7 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Perplexity from a probability array (TypeScript) ─────────────────────────
 
-/**
- * Compute perplexity from an array of conditional probabilities.
- * Each prob[i] is P(token_i | token_0 ... token_{i-1}).
- * Perplexity = exp(-1/N * sum(log(prob_i)))
- */
-function perplexity(probs: number[]): number {
-  const n = probs.length
-  if (n === 0) return NaN
-
-  let logSum = 0
-  for (const p of probs) {
-    if (p <= 0 || p > 1) {
-      throw new Error(
-        \`Invalid probability \${p}. Must be in (0, 1].\`
-      )
-    }
-    logSum += Math.log(p)
-  }
-
-  const avgLogProb = logSum / n
-  return Math.exp(-avgLogProb)
-}
-
-// ── Demo ─────────────────────────────────────────────────────────────────────
-
-// A "perfect" model assigns probability 1.0 to every true token
-const perfectProbs = [1.0, 1.0, 1.0, 1.0, 1.0]
-console.log("Perfect model PP:", perplexity(perfectProbs).toFixed(4))
-// → 1.0000
-
-// A decent model assigns moderate probabilities
-const decentProbs = [0.8, 0.6, 0.7, 0.5, 0.9]
-console.log("Decent model PP:", perplexity(decentProbs).toFixed(4))
-// → 1.7100
-
-// A confused model assigns very low probabilities
-const confusedProbs = [0.01, 0.02, 0.005, 0.01, 0.015]
-console.log("Confused model PP:", perplexity(confusedProbs).toFixed(4))
-// → 109.9472
-
-// Uniform random over a vocabulary of 10,000 words
-const vocabSize = 10000
-const uniformProbs = new Array(10).fill(1 / vocabSize)
-console.log("Uniform random PP:", perplexity(uniformProbs).toFixed(4))
-// → 10000.0000
-
-// ── Perplexity from log-probabilities ────────────────────────────────────────
-
-function perplexityFromLogits(logits: number[]): number {
-  const n = logits.length
-  if (n === 0) return NaN
-
-  // Numerically stable softmax
-  const maxLogit = Math.max(...logits)
-  const expShifted = logits.map(x => Math.exp(x - maxLogit))
-  const sumExp = expShifted.reduce((a, b) => a + b, 0)
-  const probs = expShifted.map(x => x / sumExp)
-
-  // Assume the true token is at index 0 (for demonstration)
-  const trueTokenProb = probs[0]
-  return perplexity([trueTokenProb])
-}
-
-const exampleLogits = [2.5, 1.2, 0.3, -0.8, -1.5]
-console.log("PP from logits:", perplexityFromLogits(exampleLogits).toFixed(4))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of perplexity from an array of conditional probabilities,
-                plus a numerically stable softmax helper and demonstrations of perfect, decent,
-                confused, and uniform-random models.
-            </p>
-            <CodeBlock code={TS_CODE} filename="perplexity.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Key property:</strong> Perplexity is sensitive to very low probabilities.
-                A single token predicted with probability 0.001 can dominate the average and spike
-                the perplexity — which is why smoothing and good out-of-vocabulary handling matter.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -402,5 +317,4 @@ export const PERPLEXITY_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
     python: <PythonTab />,
-    code: <CodeTab />,
 }

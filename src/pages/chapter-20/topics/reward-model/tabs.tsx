@@ -252,42 +252,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Reward Model Utilities — TypeScript ─────────────────────────────────────
 
-function sigmoid(x: number): number {
-    return 1 / (1 + Math.exp(-x))
-}
 
-function btLossScalar(rW: number, rL: number): number {
-    return -Math.log(sigmoid(rW - rL))
-}
-
-function btLossBatch(rewards: number[], winners: number[], losers: number[]): number {
-    let total = 0
-    for (let i = 0; i < winners.length; i++) {
-        total += btLossScalar(rewards[winners[i]], rewards[losers[i]])
-    }
-    return total / winners.length
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const rewards = Array.from({ length: 8 }, () => (Math.random() - 0.5) * 2)
-const winners = [0, 2, 3, 1, 5, 6, 4, 7]
-const losers  = [1, 0, 2, 3, 4, 5, 6, 7]
-
-console.log("Batch BT Loss:", btLossBatch(rewards, winners, losers).toFixed(4))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of reward model Bradley-Terry loss.
-            </p>
-            <CodeBlock code={TS_CODE} filename="reward_model.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -297,5 +263,4 @@ export const REWARD_MODEL_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

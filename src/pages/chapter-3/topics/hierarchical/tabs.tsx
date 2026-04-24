@@ -293,80 +293,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Agglomerative Clustering (Complete Linkage) ───────────────────
 
-type Matrix = number[][]
 
-/** Euclidean distance between two points */
-function dist(a: number[], b: number[]): number {
-  return Math.sqrt(a.reduce((s, ai, i) => s + (ai - b[i]) ** 2, 0))
-}
-
-/** Complete-linkage distance between two clusters */
-function completeLinkage(ci: number[][], cj: number[][]): number {
-  let max = -Infinity
-  for (const a of ci)
-    for (const b of cj)
-      max = Math.max(max, dist(a, b))
-  return max
-}
-
-interface Merge { left: number; right: number; distance: number; size: number }
-
-/** Build agglomerative dendrogram; returns merge sequence */
-export function agglomerative(data: number[][]): Merge[] {
-  const n = data.length
-  const clusters: Map<number, number[][]> = new Map(
-    data.map((p, i) => [i, [p]])
-  )
-  const merges: Merge[] = []
-  let nextId = n
-
-  while (clusters.size > 1) {
-    const ids = [...clusters.keys()]
-    let best = { i: 0, j: 1, d: Infinity }
-
-    for (let a = 0; a < ids.length; a++) {
-      for (let b = a + 1; b < ids.length; b++) {
-        const d = completeLinkage(
-          clusters.get(ids[a])!,
-          clusters.get(ids[b])!
-        )
-        if (d < best.d) best = { i: ids[a], j: ids[b], d }
-      }
-    }
-
-    // Merge best pair into a new cluster
-    const merged = [...clusters.get(best.i)!, ...clusters.get(best.j)!]
-    merges.push({ left: best.i, right: best.j, distance: best.d, size: merged.length })
-    clusters.delete(best.i)
-    clusters.delete(best.j)
-    clusters.set(nextId++, merged)
-  }
-
-  return merges
-}
-
-// ── Demo ──────────────────────────────────────────────────────────
-const data = [[1,2],[1.5,1.8],[5,8],[8,8],[1,0.6],[9,11]]
-const tree = agglomerative(data)
-tree.forEach(m =>
-  console.log(\`Merge \${m.left}+\${m.right} at distance \${m.distance.toFixed(2)}\`)
-)`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                A complete agglomerative clustering implementation using complete linkage. The algorithm is O(n³) — at each of the n−1 merge steps, we scan all remaining pairs to find the minimum-distance pair.
-            </p>
-            <CodeBlock code={TS_CODE} filename="hierarchical.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Optimisation path:</strong> Replace the O(n²) pair scan with a priority queue (min-heap of distances). For Ward's and average linkage, use the Lance-Williams formula to update distances in O(n) after each merge instead of recomputing from scratch. This brings total complexity to O(n² log n).
-            </div>
-        </>
-    )
-}
 
 export const HIERARCHICAL_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
@@ -374,5 +302,4 @@ export const HIERARCHICAL_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

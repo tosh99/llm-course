@@ -316,82 +316,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Deep RNN — TypeScript ───────────────────────────────────────────────────
 
-type Vec = number[]
-type Mat = number[][]
 
-const tanhVec = (v: Vec): Vec => v.map(Math.tanh)
-const dot = (a: Vec, b: Vec) => a.reduce((s, ai, i) => s + ai * b[i], 0)
-const matVec = (M: Mat, v: Vec): Vec => M.map(row => dot(row, v))
-const vecAdd = (a: Vec, b: Vec): Vec => a.map((ai, i) => ai + b[i])
-
-interface LayerParams {
-  W: Mat; U: Mat; b: Vec
-}
-
-function rnnLayer(X: Mat, h0: Vec, p: LayerParams): Mat {
-  const H: Mat = []
-  let h = [...h0]
-  for (const x of X) {
-    h = tanhVec(vecAdd(vecAdd(matVec(p.W, x), matVec(p.U, h)), p.b))
-    H.push([...h])
-  }
-  return H
-}
-
-function deepRNN(X: Mat, layers: LayerParams[]): Mat[] {
-  const H_all: Mat[] = []
-  let inp = X
-  for (const p of layers) {
-    const h0 = Array(p.b.length).fill(0)
-    const H = rnnLayer(inp, h0, p)
-    H_all.push(H)
-    inp = H
-  }
-  return H_all
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const INPUT_DIM = 3
-const HIDDEN = 4
-const T = 6
-
-const randMat = (r: number, c: number): Mat =>
-  Array.from({ length: r }, () =>
-    Array.from({ length: c }, () => (Math.random() - 0.5) * 0.3))
-const zeroVec = (n: number): Vec => Array(n).fill(0)
-
-const layers: LayerParams[] = [
-  { W: randMat(HIDDEN, INPUT_DIM), U: randMat(HIDDEN, HIDDEN), b: zeroVec(HIDDEN) },
-  { W: randMat(HIDDEN, HIDDEN),    U: randMat(HIDDEN, HIDDEN), b: zeroVec(HIDDEN) },
-]
-
-const X: Mat = Array.from({ length: T }, () =>
-  Array.from({ length: INPUT_DIM }, () => (Math.random() - 0.5) * 0.5))
-
-const H_all = deepRNN(X, layers)
-
-console.log("Deep RNN — TypeScript (2 layers)")
-console.log("─".repeat(40))
-H_all.forEach((H, l) => {
-  const avgNorm = Math.sqrt(H.reduce((s, h) => s + h.reduce((t, v) => t + v*v, 0), 0) / H.length)
-  console.log(\`Layer \${l + 1}: avg ||h|| = \${avgNorm.toFixed(4)}\`)
-})
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript deep RNN with layer-wise sequential computation. The demo stacks
-                two RNN layers and reports average hidden norms, showing how representations
-                transform as they propagate upward through the stack.
-            </p>
-            <CodeBlock code={TS_CODE} filename="deep_rnn.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -401,5 +327,4 @@ export const DEEP_RNNS_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

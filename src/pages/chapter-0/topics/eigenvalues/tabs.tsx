@@ -128,7 +128,7 @@ function HighSchoolTab() {
                 do not change direction at all. These are called <strong>eigenvectors</strong>, and the
                 stretch factor is the <strong>eigenvalue</strong> lambda:
             </p>
-            <MathBlock tex="A\\mathbf{v} = \\lambda\\mathbf{v}" />
+            <MathBlock tex="A\mathbf{v} = \lambda\mathbf{v}" />
             <p>
                 Read this as: "applying matrix A to vector <strong>v</strong> is the same as just scaling
                 <strong>v</strong> by the number lambda." The direction is preserved; only the magnitude
@@ -137,20 +137,20 @@ function HighSchoolTab() {
 
             <h3>Finding Eigenvalues — the characteristic equation</h3>
             <p>
-                To find the eigenvalues, rearrange <InlineMath tex="A\\mathbf{v} = \\lambda\\mathbf{v}" /> as
-                <InlineMath tex="(A - \\lambda I)\\mathbf{v} = \\mathbf{0}" />. For this to have a non-zero
-                solution, the matrix <InlineMath tex="(A - \\lambda I)" /> must be singular — meaning its
+                To find the eigenvalues, rearrange <InlineMath tex="A\mathbf{v} = \lambda\mathbf{v}" /> as
+                <InlineMath tex="(A - \lambda I)\mathbf{v} = \mathbf{0}" />. For this to have a non-zero
+                solution, the matrix <InlineMath tex="(A - \lambda I)" /> must be singular — meaning its
                 determinant is zero:
             </p>
-            <MathBlock tex="\\det(A - \\lambda I) = 0" />
+            <MathBlock tex="\det(A - \lambda I) = 0" />
             <p>
                 This is the <strong>characteristic equation</strong>. For a 2x2 matrix it gives a
                 quadratic in lambda. The roots are the eigenvalues. For example:
             </p>
-            <MathBlock tex="A = \\begin{pmatrix} 3 & 1 \\ 0 & 2 \\end{pmatrix} \\implies \\det\\begin{pmatrix} 3-\\lambda & 1 \\ 0 & 2-\\lambda \\end{pmatrix} = (3-\\lambda)(2-\\lambda) = 0" />
+            <MathBlock tex="A = \begin{pmatrix} 3 & 1 \\ 0 & 2 \end{pmatrix} \implies \det\begin{pmatrix} 3-\lambda & 1 \\ 0 & 2-\lambda \end{pmatrix} = (3-\lambda)(2-\lambda) = 0" />
             <p>
                 So lambda_1 = 3 and lambda_2 = 2. Then for each eigenvalue, solve
-                <InlineMath tex="(A - \\lambda I)\\mathbf{v} = \\mathbf{0}" /> to find the corresponding
+                <InlineMath tex="(A - \lambda I)\mathbf{v} = \mathbf{0}" /> to find the corresponding
                 eigenvector. For lambda_1 = 3: the eigenvector is (1, 0) — the x-axis is preserved. For
                 lambda_2 = 2: the eigenvector is (1, -1).
             </p>
@@ -171,7 +171,7 @@ function HighSchoolTab() {
             <p>
                 <strong>PCA (Principal Component Analysis)</strong> is built entirely on eigendecomposition.
                 Given a dataset of n samples with d features, form the covariance matrix
-                <InlineMath tex="\\Sigma \\in \\mathbb{R}^{d \\times d}" />. Its eigenvectors point in the
+                <InlineMath tex="\Sigma \in \mathbb{R}^{d \times d}" />. Its eigenvectors point in the
                 directions of greatest variance in the data; its eigenvalues tell you
                 <em>how much</em> variance lies along each direction.
             </p>
@@ -189,7 +189,7 @@ function HighSchoolTab() {
                 data by subtracting the mean of each feature. Then the <strong>sample covariance
                 matrix</strong> is:
             </p>
-            <MathBlock tex="\\Sigma = \\frac{1}{n} X^\\top X \\in \\mathbb{R}^{d \\times d}" />
+            <MathBlock tex="\Sigma = \frac{1}{n} X^\top X \in \mathbb{R}^{d \times d}" />
             <p>
                 The entry Sigma_ij captures how features i and j vary together across your samples:
             </p>
@@ -234,7 +234,7 @@ function MathsTab() {
             <h2>Formal Definitions</h2>
 
             <DefBlock label="Definition — Eigenvalue &amp; Eigenvector">
-                For a square matrix A in <InlineMath tex="\\mathbb{R}^{n \\times n}" />, a non-zero vector <strong>v</strong> is an{" "}
+                For a square matrix A in <InlineMath tex="\mathbb{R}^{n \times n}" />, a non-zero vector <strong>v</strong> is an{" "}
                 <strong>eigenvector</strong> with corresponding <strong>eigenvalue</strong> lambda if{" "}
                 A<strong>v</strong> = lambda<strong>v</strong>. Geometrically, A transforms all of space,
                 but eigenvectors are the special axes that do not rotate — they just stretch{" "}
@@ -245,11 +245,11 @@ function MathsTab() {
             <p>
                 To find eigenvalues, solve the <strong>characteristic equation</strong>:
             </p>
-            <MathBlock tex="\\det(A - \\lambda I) = 0" />
+            <MathBlock tex="\det(A - \lambda I) = 0" />
             <p>
                 This yields a degree-n polynomial in lambda whose n roots are the eigenvalues. For each
                 eigenvalue lambda_i, the corresponding eigenvector solves
-                <InlineMath tex="(A - \\lambda_i I)\\mathbf{v}_i = \\mathbf{0}" />.
+                <InlineMath tex="(A - \lambda_i I)\mathbf{v}_i = \mathbf{0}" />.
             </p>
 
             <h3>Eigendecomposition</h3>
@@ -257,13 +257,13 @@ function MathsTab() {
                 When A is symmetric (A = A^T) — as covariance matrices always are — its eigenvectors are
                 orthogonal and its eigenvalues are real. This enables the clean decomposition:
             </p>
-            <MathBlock tex="A = Q\\,\\Lambda\\,Q^\\top" />
+            <MathBlock tex="A = Q\,\Lambda\,Q^\top" />
             <p>
-                Here Q in <InlineMath tex="\\mathbb{R}^{n \\times n}" /> has orthonormal eigenvectors as columns, and
-                <InlineMath tex="\\Lambda = \\text{diag}(\\lambda_1,\\ldots,\\lambda_n)" /> holds the
+                Here Q in <InlineMath tex="\mathbb{R}^{n \times n}" /> has orthonormal eigenvectors as columns, and
+                <InlineMath tex="\Lambda = \text{diag}(\lambda_1,\ldots,\lambda_n)" /> holds the
                 eigenvalues sorted largest-first. This is the mathematical engine of
                 <strong>PCA</strong>: eigendecompose the sample covariance matrix
-                <InlineMath tex="\\Sigma = \\frac{1}{n}X^\\top X" />, project data onto the top-k
+                <InlineMath tex="\Sigma = \frac{1}{n}X^\top X" />, project data onto the top-k
                 eigenvectors (principal components), and you have found the k directions of maximum
                 variance. The eigenvalue lambda_i tells you exactly how much variance the i-th component
                 explains.
@@ -280,7 +280,7 @@ function MathsTab() {
             <h3>Eigenvalues in Optimisation</h3>
             <p>
                 In optimisation, the eigenvalues of the <strong>loss Hessian</strong>
-                <InlineMath tex="\\nabla^2 \\mathcal{L}" /> govern training dynamics. Large eigenvalues
+                <InlineMath tex="\nabla^2 \mathcal{L}" /> govern training dynamics. Large eigenvalues
                 mean sharp curvature — learning rate must be small or training diverges. Small eigenvalues
                 mean flat directions — training is slow. Adaptive optimisers like Adam implicitly rescale
                 gradients to compensate for this spectrum.
@@ -344,63 +344,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Types ────────────────────────────────────────────────
-type Vec = number[];
-type Mat = number[][];
 
-// ── Matrix * Vector ───────────────────────────────────────
-function matVecMul(W: Mat, x: Vec): Vec {
-  return W.map(row => row.reduce((s, v, i) => s + v * x[i], 0));
-}
 
-// ── Power Iteration (finds dominant eigenvector) ──────────
-// Repeatedly apply A to a random vector and normalise.
-// The result converges to the eigenvector with the largest |lambda|.
-
-function powerIteration(A: Mat, steps = 40): { eigenvalue: number; eigenvector: Vec } {
-  let v = A[0].map(() => Math.random());
-  const norm = (x: Vec) => Math.sqrt(x.reduce((s, a) => s + a * a, 0));
-
-  for (let i = 0; i < steps; i++) {
-    v = matVecMul(A, v);
-    const n = norm(v);
-    v = v.map(x => x / n);
-  }
-
-  // Rayleigh quotient gives the eigenvalue: v^T A v / (v^T v)
-  const Av = matVecMul(A, v);
-  const eigenvalue = v.reduce((s, vi, i) => s + vi * Av[i], 0);
-  return { eigenvalue, eigenvector: v };
-}
-
-// ── Demo ──────────────────────────────────────────────────
-const cov: Mat = [
-  [3.0, 1.0],
-  [1.0, 2.0],
-];
-
-const { eigenvalue, eigenvector } = powerIteration(cov);
-console.log("Dominant eigenvalue:", eigenvalue.toFixed(4));       // -> ~3.618
-console.log("Dominant eigenvector:", eigenvector.map(v => v.toFixed(4)));
-// -> [0.8507, 0.5257]  (direction of maximum variance)`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Power iteration is the simplest iterative algorithm for finding the dominant eigenvector.
-                Modern libraries use the QR algorithm or divide-and-conquer methods, but power iteration
-                builds intuition and is the basis for algorithms like PageRank.
-            </p>
-            <CodeBlock code={TS_CODE} filename="eigenvalues.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Next step:</strong> In production, always use <code>numpy.linalg.eigh</code> or
-                <code>torch.linalg.eigh</code>. These call optimised LAPACK routines that handle numerical
-                edge cases (close eigenvalues, ill-conditioned matrices) far better than hand-rolled code.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -410,5 +355,4 @@ export const EIGENVALUES_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
     python: <PythonTab />,
-    code: <CodeTab />,
 }

@@ -369,140 +369,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Demonstrating Training Barriers in TypeScript ────────────────────────────
 
-// ── Vanishing Gradients ───────────────────────────────────────────────────────
 
-function sigmoid(x: number): number {
-    return 1 / (1 + Math.exp(-x));
-}
-
-function sigmoidDerivative(x: number): number {
-    const s = sigmoid(x);
-    return s * (1 - s);  // Maximum 0.25 at x=0!
-}
-
-function relu(x: number): number {
-    return Math.max(0, x);
-}
-
-function reluDerivative(x: number): number {
-    return x > 0 ? 1 : 0;  // Either 1 or 0 — no decay!
-}
-
-// Simulate gradient flow through network
-function simulateGradientFlow(
-    depth: number,
-    activation: (x: number) => number,
-    derivative: (x: number) => number
-): number {
-    let gradient = 1.0;  // Initial gradient
-    
-    for (let i = 0; i < depth; i++) {
-        // Simulate random input
-        const x = Math.random() * 2 - 1;  // -1 to 1
-        
-        // Chain rule: multiply by local derivative
-        gradient *= derivative(x);
-        
-        // Early exit if effectively zero
-        if (gradient < 1e-10) {
-            console.log(\`  Gradient vanished at layer \${i + 1}\`);
-            return 0;
-        }
-    }
-    
-    return gradient;
-}
-
-console.log("Gradient Flow Simulation:");
-console.log("=" .repeat(40));
-
-for (const depth of [5, 10, 20]) {
-    console.log(\`\\nDepth: \${depth} layers\`);
-    
-    // Sigmoid: should show exponential decay
-    const sigGrad = simulateGradientFlow(depth, sigmoid, sigmoidDerivative);
-    console.log(\`  Sigmoid: \${sigGrad.toExponential(2)}\`);
-    
-    // Tanh: similar to sigmoid (derivative = 1 - tanh², max 1)
-    const tanhGrad = simulateGradientFlow(depth, Math.tanh, (x) => 1 - Math.tanh(x)**2);
-    console.log(\`  Tanh:    \${tanhGrad.toExponential(2)}\`);
-    
-    // ReLU: should maintain gradient (or hit zero, but not vanish slowly)
-    const reluGrad = simulateGradientFlow(depth, relu, reluDerivative);
-    console.log(\`  ReLU:    \${reluGrad.toFixed(4)}\`);
-}
-
-// ── Compute Scaling ─────────────────────────────────────────────────────────────
-
-interface LayerConfig {
-    h: number;
-    w: number;
-    c_in: number;
-    c_out: number;
-    k: number;
-}
-
-function estimateFlops(layers: LayerConfig[], images: number, epochs: number): number {
-    let totalFlops = 0;
-    
-    for (const layer of layers) {
-        const { h, w, c_in, c_out, k } = layer;
-        const out_h = h - k + 1;
-        const out_w = w - k + 1;
-        
-        // Each output pixel requires k*k*c_in muls + (k*k*c_in-1) adds
-        const opsPerPixel = 2 * k * k * c_in;
-        const layerFlops = out_h * out_w * c_out * opsPerPixel;
-        
-        totalFlops += layerFlops;
-    }
-    
-    // Forward + 2 backward passes ≈ 3x
-    return totalFlops * images * epochs * 3;
-}
-
-// Example CNN
-const simpleCNN: LayerConfig[] = [
-    { h: 32, w: 32, c_in: 3, c_out: 16, k: 3 },
-    { h: 30, w: 30, c_in: 16, c_out: 32, k: 3 },
-    { h: 28, w: 28, c_in: 32, c_out: 64, k: 3 },
-];
-
-const flopsSmall = estimateFlops(simpleCNN, 60000, 10);    // MNIST scale
-const flopsLarge = estimateFlops(simpleCNN, 1200000, 10);  // ImageNet scale
-
-console.log("\\n" + "=".repeat(40));
-console.log("Compute Estimate:");
-console.log(\`Small dataset: \${flopsSmall.toExponential(2)} FLOPs\`);
-console.log(\`Large dataset: \${flopsLarge.toExponential(2)} FLOPs\`);
-console.log(\`Ratio: \${flopsLarge / flopsSmall:.0f}x more compute\`);
-
-// ── Summary ─────────────────────────────────────────────────────────────────────
-
-console.log("\\n" + "=".repeat(40));
-console.log("Key Barriers in 2000s:");
-console.log("1. Vanishing gradients with sigmoid/tanh");
-console.log("2. Compute: 20x more data = 20x more time");
-console.log("3. No GPUs, no CUDA, no ImageNet");
-console.log("4. Dominance of hand-crafted features");`;
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                This simulation shows why CNNs couldn't work in the 2000s: vanishing gradients
-                killed deep networks, and compute scaled linearly with dataset size.
-            </p>
-            <CodeBlock code={TS_CODE} filename="cnn_barriers.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>2012 was the inflection point:</strong> GPUs + ReLU + ImageNet + dropout
-                broke all four barriers simultaneously, enabling AlexNet's breakthrough.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ─────────────────────────────────────────────────────────────
 
@@ -511,6 +379,5 @@ export const WHY_CNNS_STALLED_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

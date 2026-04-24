@@ -259,52 +259,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── LLaMA Core Ops — TypeScript ─────────────────────────────────────────────
 
-function rmsnorm(x: Float32Array, gamma: Float32Array, eps = 1e-6): Float32Array {
-    const meanSq = x.reduce((s, v) => s + v * v, 0) / x.length
-    const scale = 1 / Math.sqrt(meanSq + eps)
-    return new Float32Array(x.length).map((_, i) => x[i] * scale * gamma[i])
-}
 
-function swish(x: number, beta = 1.0): number {
-    return x * (1 / (1 + Math.exp(-beta * x)))
-}
-
-function applyRoPE(x: Float32Array, pos: number, thetaBase = 10000.0): Float32Array {
-    const d = x.length
-    const out = new Float32Array(d)
-    for (let i = 0; i < d; i += 2) {
-        const theta = thetaBase ** (-i / d)
-        const angle = pos * theta
-        const cos = Math.cos(angle)
-        const sin = Math.sin(angle)
-        out[i] = x[i] * cos - x[i + 1] * sin
-        out[i + 1] = x[i] * sin + x[i + 1] * cos
-    }
-    return out
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const x = new Float32Array(512).map(() => Math.random() * 2 - 1)
-const gamma = new Float32Array(512).fill(1.0)
-const normed = rmsnorm(x, gamma)
-console.log("RMSNorm sample:", normed.slice(0, 4).map(v => v.toFixed(4)))
-
-const rotated = applyRoPE(new Float32Array([1, 0, 1, 0, 1, 0, 1, 0]), 42)
-console.log("RoPE rotated:", Array.from(rotated).map(v => v.toFixed(4)))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of LLaMA's RMSNorm, Swish activation, and RoPE.
-            </p>
-            <CodeBlock code={TS_CODE} filename="llama_ops.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -314,5 +270,4 @@ export const LLAMA_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

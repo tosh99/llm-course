@@ -276,102 +276,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Oja's Rule (stable Hebbian learning) ─────────────────────────────────
-// Finds the first principal component of input data.
 
-type Vec = number[];
 
-function dot(a: Vec, b: Vec): number {
-  return a.reduce((s, v, i) => s + v * b[i], 0);
-}
-
-function scale(v: Vec, s: number): Vec {
-  return v.map(x => x * s);
-}
-
-function sub(a: Vec, b: Vec): Vec {
-  return a.map((x, i) => x - b[i]);
-}
-
-function norm(v: Vec): number {
-  return Math.sqrt(dot(v, v));
-}
-
-function normalise(v: Vec): Vec {
-  return scale(v, 1 / norm(v));
-}
-
-function ojaUpdate(w: Vec, x: Vec, y: number, lr: number): Vec {
-  // Δw = η * y * (x - y * w)
-  const dw = scale(sub(x, scale(w, y)), lr * y);
-  return normalise(sub(w, scale(dw, -1)));
-}
-
-function trainOja(
-  X: Vec[], nIter = 200, lr = 0.02
-): Vec {
-  const n = X[0].length;
-  let w = normalise(new Array(n).fill(0).map(() => Math.random() - 0.5));
-
-  for (let iter = 0; iter < nIter; iter++) {
-    const x = X[iter % X.length];     // cycle through data
-    const y = dot(w, x);              // scalar projection
-    w = ojaUpdate(w, x, y, lr);
-  }
-  return w;
-}
-
-// ── Test on synthetic data ─────────────────────────────────────────────────
-// Data stretched 3× more along [0.707, 0.707] than perpendicular
-
-const raw: Vec[] = [];
-for (let i = 0; i < 200; i++) {
-  const t1 = Math.random() * 3;
-  const t2 = Math.random();
-  raw.push([
-    0.707 * t1 + (-0.707) * t2,
-    0.707 * t1 +  0.707 * t2,
-  ]);
-}
-
-// Centre the data
-const mean = (v: Vec) => v.reduce((s, x) => s + x, 0) / v.length;
-const mu = [mean(raw.map(v => v[0])), mean(raw.map(v => v[1]))];
-const X = raw.map(([x, y]) => [x - mu[0], y - mu[1]]);
-
-const w = trainOja(X, 300, 0.02);
-const truePC = [0.707, 0.707];
-const cosSim = dot(w, truePC) / (norm(w) * norm(truePC));
-
-console.log(\`Learned direction: [\${w[0].toFixed(4)}, \${w[1].toFixed(4)}]\`);
-console.log(\`Cosine similarity to true PC: \${cosSim.toFixed(4)}\`);
-// → ~0.99 — recovered the dominant axis of the data!
-
-// ── Anti-Hebbian Update ─────────────────────────────────────────────────────
-// Δw = -η * x * y  (weakens correlated pairs)
-
-function antiHebbian(w: Vec, x: Vec, y: number, lr: number): Vec {
-  return sub(w, scale(x, lr * y));
-}
-
-console.log("Hebbian & Anti-Hebbian implemented.")`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript Oja's rule — Hebbian learning with a normalisation term that prevents
-                weight explosion and automatically discovers the principal axis of input data.
-            </p>
-            <CodeBlock code={TS_CODE} filename="hebbian-oja.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Note:</strong> Modern contrastive learning (SimCLR, BYOL) can be viewed as
-                Hebbian learning on two different "views" of the same input, with explicit engineering
-                to prevent collapse. The principle — reinforce correlated representations — is pure Hebb.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -380,6 +286,5 @@ export const HEBBIAN_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

@@ -296,133 +296,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Backpropagation for a tiny 2→4→1 MLP ──────────────────────────────────
-type Mat = number[][];
-type Vec = number[];
 
-function sigmoid(z: number): number {
-  const clipped = Math.max(-500, Math.min(500, z));
-  return 1 / (1 + Math.exp(-clipped));
-}
 
-function sigmoidGrad(z: number): number {
-  const s = sigmoid(z);
-  return s * (1 - s);
-}
-
-function matMul(A: Mat, B: Mat): Mat {
-  return A.map(row => B[0].map((_, j) =>
-    row.reduce((sum, a, i) => sum + a * B[i][j], 0)
-  ));
-}
-
-function matVecMul(A: Mat, v: Vec): Vec {
-  return A.map(row => row.reduce((s, a, i) => s + a * v[i], 0));
-}
-
-function vecAdd(a: Vec, b: Vec): Vec { return a.map((x, i) => x + b[i]); }
-function vecSub(a: Vec, b: Vec): Vec { return a.map((x, i) => x - b[i]); }
-function vecScale(v: Vec, s: number): Vec { return v.map(x => x * s); }
-
-function transpose(A: Mat): Mat {
-  return A[0].map((_, j) => A.map(row => row[j]));
-}
-
-// ── Forward pass ─────────────────────────────────────────────────────────────
-function forward(
-  x: Vec, W1: Mat, b1: Vec, W2: Mat, b2: Vec
-): { z1: Vec; a1: Vec; z2: Vec; a2: Vec } {
-  const z1 = vecAdd(matVecMul(W1, x), b1);
-  const a1 = z1.map(sigmoid);
-  const z2 = [vecAdd(matVecMul(W2, a1), b2)[0]];
-  const a2 = [sigmoid(z2[0])];
-  return { z1, a1, z2, a2 };
-}
-
-// ── Backward pass ────────────────────────────────────────────────────────────
-function backward(
-  x: Vec, y: number,
-  { z1, a1, z2, a2 }: { z1: Vec; a1: Vec; z2: Vec; a2: Vec },
-  W2: Mat
-): { gW1: Mat; gb1: Vec; gW2: Mat; gb2: Vec } {
-  // Output delta: δ^(L) = (ŷ - y) ⊙ σ'(z^(L))
-  const delta2 = [(a2[0] - y) * sigmoidGrad(z2[0])];
-
-  // Gradient w.r.t. W2, b2
-  const gW2 = transpose([delta2.map(d => d * a1[0]),
-                          delta2.map(d => d * a1[1]),
-                          delta2.map(d => d * a1[2]),
-                          delta2.map(d => d * a1[3])]);
-  const gb2 = delta2;
-
-  // Hidden delta: δ^(l) = (W^(l+1))ᵀ δ^(l+1) ⊙ σ'(z^(l))
-  const W2t = transpose(W2);
-  const delta1 = z1.map((z, i) => sigmoidGrad(z) * (W2t[i][0] * delta2[0]));
-
-  // Gradient w.r.t. W1, b1
-  const gW1 = transpose(delta1.map(d => [d * x[0], d * x[1]]));
-  const gb1 = delta1;
-
-  return { gW1, gb1, gW2, gb2 };
-}
-
-function addMat(A: Mat, B: Mat, lr: number): Mat {
-  return A.map((row, i) => row.map((a, j) => a - lr * B[i][j]));
-}
-function addVec(a: Vec, b: Vec, lr: number): Vec {
-  return a.map((x, i) => x - lr * b[i]);
-}
-
-// ── Training ──────────────────────────────────────────────────────────────────
-const W1: Mat = [[0.5,-0.3],[0.1,0.2],[-0.4,0.5],[0.3,-0.2]];
-const b1: Vec = [0, 0, 0, 0];
-const W2: Mat = [[0.3,-0.1,0.2,0.1]];
-const b2: Vec = [0];
-
-const X: Vec[] = [[0,0],[0,1],[1,0],[1,1]];
-const y: number[] = [0, 1, 1, 0];
-const lr = 1.0;
-
-for (let epoch = 0; epoch < 15000; epoch++) {
-  for (let i = 0; i < 4; i++) {
-    const { z1, a1, z2, a2 } = forward(X[i], W1, b1, W2, b2);
-    const { gW1, gb1, gW2, gb2 } = backward(X[i], y[i], { z1, a1, z2, a2 }, W2);
-    // Update weights
-    for (let r = 0; r < 4; r++) for (let c = 0; c < 2; c++) W1[r][c] -= lr * gW1[r][c];
-    for (let r = 0; r < 4; r++) b1[r] -= lr * gb1[r];
-    for (let c = 0; c < 4; c++) W2[0][c] -= lr * gW2[0][c];
-    b2[0] -= lr * gb2[0];
-  }
-  if (epoch % 3000 === 0) {
-    const preds = X.map(xi => forward(xi, W1, b1, W2, b2).a2[0]);
-    const loss = preds.reduce((s, p, i) => s + 0.5*(p-y[i])**2, 0) / 4;
-    console.log(\`Epoch \${epoch} | Loss: \${loss.toFixed(5)}\`);
-  }
-}
-
-// ── Final predictions ───────────────────────────────────────────────────────
-console.log("\\nFinal predictions:");
-X.forEach((xi, i) => {
-  const { a2 } = forward(xi, W1, b1, W2, b2);
-  console.log(\`  [\${xi}] -> \${a2[0].toFixed(4)} (target: \${y[i]})\`);
-});`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript backpropagation for a 2→4→1 MLP on XOR.
-                No libraries — just arrays, elementary calculus, and the chain rule.
-            </p>
-            <CodeBlock code={TS_CODE} filename="backprop.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Historical note:</strong> the original 1986 paper computed gradients by hand
-                for small networks. Modern frameworks (PyTorch, JAX) compute backprop automatically
-                via computational graphs — but they all use the same chain-rule mathematics.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ──────────────────────────────────────────────────────────
 
@@ -431,6 +306,5 @@ export const BACKPROPAGATION_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

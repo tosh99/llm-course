@@ -124,7 +124,7 @@ function HighSchoolTab() {
                 A <strong>system of linear equations</strong> is a set of equations with the same variables.
                 For example, two equations in two unknowns:
             </p>
-            <MathBlock tex="\\begin{cases} 2x + 3y = 8 \\ x - y = 1 \\end{cases}" />
+            <MathBlock tex="\begin{cases} 2x + 3y = 8 \\ x - y = 1 \end{cases}" />
             <p>
                 The goal is to find values of x and y that satisfy <em>both</em> equations simultaneously.
                 Geometrically, each equation represents a line, and the solution is their intersection point.
@@ -135,7 +135,7 @@ function HighSchoolTab() {
                 The idea is simple: use one equation to eliminate a variable from the others. Write the
                 system as an <strong>augmented matrix</strong> — coefficients on the left, constants on the right:
             </p>
-            <MathBlock tex="\\left(\\begin{array}{cc|c} 2 & 3 & 8 \\ 1 & -1 & 1 \\end{array}\\right)" />
+            <MathBlock tex="\left(\begin{array}{cc|c} 2 & 3 & 8 \\ 1 & -1 & 1 \end{array}\right)" />
             <p>
                 Perform <strong>row operations</strong>: swap rows, multiply a row by a constant, or add a
                 multiple of one row to another. The goal is <strong>row echelon form</strong> — a staircase
@@ -148,7 +148,7 @@ function HighSchoolTab() {
                 The <strong>determinant</strong> of a square matrix is a single number that encodes whether
                 the matrix is invertible. For a 2x2 matrix:
             </p>
-            <MathBlock tex="\\det\\begin{pmatrix} a & b \\ c & d \\end{pmatrix} = ad - bc" />
+            <MathBlock tex="\det\begin{pmatrix} a & b \\ c & d \end{pmatrix} = ad - bc" />
             <p>
                 For a 3x3 matrix, the determinant expands along a row or column using <strong>minors</strong>
                 and <strong>cofactors</strong>. The general pattern: sum over permutations, each term being
@@ -167,7 +167,7 @@ function HighSchoolTab() {
             <p>
                 If det(A) != 0, each variable x_i can be computed directly as a ratio of determinants:
             </p>
-            <MathBlock tex="x_i = \\frac{\\det(A_i)}{\\det(A)}" />
+            <MathBlock tex="x_i = \frac{\det(A_i)}{\det(A)}" />
             <p>
                 where A_i is A with its i-th column replaced by the vector b. Cramer's Rule is beautiful
                 in theory but impractical for large systems — computing n+1 determinants of size n is
@@ -180,16 +180,16 @@ function HighSchoolTab() {
                 overdetermined system). No exact solution exists because the data is noisy. Least squares
                 finds the <strong>x</strong> that minimises the sum of squared residuals:
             </p>
-            <MathBlock tex="\\min_x \\|Ax - b\\|_2^2" />
+            <MathBlock tex="\min_x \|Ax - b\|_2^2" />
             <p>
                 Take the derivative with respect to x and set it to zero. This yields the <strong>normal
                 equations</strong>:
             </p>
-            <MathBlock tex="A^\\top A \\mathbf{x} = A^\\top \\mathbf{b}" />
+            <MathBlock tex="A^\top A \mathbf{x} = A^\top \mathbf{b}" />
             <p>
                 If A^T A is invertible, the unique least-squares solution is:
             </p>
-            <MathBlock tex="\\mathbf{x} = (A^\\top A)^{-1} A^\\top \\mathbf{b}" />
+            <MathBlock tex="\mathbf{x} = (A^\top A)^{-1} A^\top \mathbf{b}" />
             <p>
                 This is the mathematical foundation of <strong>linear regression</strong>. Every time you
                 fit a line to scattered data points, you are solving a least-squares problem. Modern deep
@@ -208,8 +208,8 @@ function MathsTab() {
 
             <DefBlock label="Definition — Linear System">
                 A system of m linear equations in n unknowns can be written as A<strong>x</strong> = <strong>b</strong>{" "}
-                where A in <InlineMath tex="\\mathbb{R}^{m \\times n}" /> is the coefficient matrix, <strong>x</strong> in <InlineMath tex="\\mathbb{R}^n" /> is the vector of unknowns,{" "}
-                and <strong>b</strong> in <InlineMath tex="\\mathbb{R}^m" /> is the constant vector. The system is:{" "}
+                where A in <InlineMath tex="\mathbb{R}^{m \times n}" /> is the coefficient matrix, <strong>x</strong> in <InlineMath tex="\mathbb{R}^n" /> is the vector of unknowns,{" "}
+                and <strong>b</strong> in <InlineMath tex="\mathbb{R}^m" /> is the constant vector. The system is:{" "}
                 <em>consistent</em> if at least one solution exists; <em>inconsistent</em> otherwise.
             </DefBlock>
 
@@ -232,9 +232,9 @@ function MathsTab() {
 
             <h3>The Determinant</h3>
             <p>
-                For A in <InlineMath tex="\\mathbb{R}^{n \\times n}" />, the determinant is defined as:
+                For A in <InlineMath tex="\mathbb{R}^{n \times n}" />, the determinant is defined as:
             </p>
-            <MathBlock tex="\\det(A) = \\sum_{\\sigma \\in S_n} \\text{sgn}(\\sigma) \\prod_{i=1}^n a_{i, \\sigma(i)}" />
+            <MathBlock tex="\det(A) = \sum_{\sigma \in S_n} \text{sgn}(\sigma) \prod_{i=1}^n a_{i, \sigma(i)}" />
             <p>
                 where S_n is the set of all permutations of {'{1, ..., n}'} and sgn(sigma) is the permutation's{" "}
                 parity (+1 for even, -1 for odd). Key properties:
@@ -252,7 +252,7 @@ function MathsTab() {
                 For an overdetermined system (m &gt; n) with full-rank A, the least-squares problem
                 min ||Ax - b||_2^2 has the closed-form solution via the normal equations:
             </p>
-            <MathBlock tex="\\mathbf{x} = (A^\\top A)^{-1} A^\\top \\mathbf{b}" />
+            <MathBlock tex="\mathbf{x} = (A^\top A)^{-1} A^\top \mathbf{b}" />
             <p>
                 The matrix (A^T A)^{-1} A^T is the <strong>Moore-Penrose pseudoinverse</strong> A^+.
                 In practice, solving via QR decomposition or SVD is numerically stabler than forming
@@ -312,81 +312,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Solving a 2x2 system (Cramer's Rule) ─────────────────
-// ax + by = e
-// cx + dy = f
 
-function solve2x2(a: number, b: number, c: number, d: number, e: number, f: number): [number, number] | null {
-  const det = a * d - b * c;
-  if (Math.abs(det) < 1e-12) return null;  // singular (no unique solution)
-  const detX = e * d - b * f;
-  const detY = a * f - e * c;
-  return [detX / det, detY / det];
-}
 
-const sol = solve2x2(2, 3, 1, -1, 8, 1);
-console.log("Solution:", sol);   // -> [2.2, 1.2]
-
-// ── Naive Gaussian Elimination (for intuition only) ──────
-// In production, use a library like math.js or ndarray.
-
-type Mat = number[][];
-unction gaussianEliminate(A: Mat, b: number[]): number[] | null {
-  const n = A.length;
-  // Build augmented matrix
-  const M = A.map((row, i) => [...row, b[i]]);
-
-  for (let col = 0; col < n; col++) {
-    // Partial pivoting: find row with largest absolute value in this column
-    let pivotRow = col;
-    for (let row = col + 1; row < n; row++) {
-      if (Math.abs(M[row][col]) > Math.abs(M[pivotRow][col])) {
-        pivotRow = row;
-      }
-    }
-    if (Math.abs(M[pivotRow][col]) < 1e-12) return null; // singular
-    [M[col], M[pivotRow]] = [M[pivotRow], M[col]];
-
-    // Eliminate rows below
-    for (let row = col + 1; row < n; row++) {
-      const factor = M[row][col] / M[col][col];
-      for (let j = col; j <= n; j++) {
-        M[row][j] -= factor * M[col][j];
-      }
-    }
-  }
-
-  // Back substitution
-  const x = new Array(n).fill(0);
-  for (let i = n - 1; i >= 0; i--) {
-    let sum = M[i][n];
-    for (let j = i + 1; j < n; j++) sum -= M[i][j] * x[j];
-    x[i] = sum / M[i][i];
-  }
-  return x;
-}
-
-const A: Mat = [[2, 3], [1, -1]];
-const b = [8, 1];
-console.log("Gauss:", gaussianEliminate(A, b));
-// -> [2.2, 1.2]`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript implementations build intuition for what happens under the hood in
-                production linear algebra libraries.
-            </p>
-            <CodeBlock code={TS_CODE} filename="systems-equations.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Note:</strong> The TypeScript Gaussian elimination above includes partial pivoting
-                (swapping rows to put the largest element on the diagonal), which dramatically improves
-                numerical stability. Without it, small pivot values can amplify rounding errors.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -396,5 +323,4 @@ export const SYSTEMS_EQUATIONS_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
     python: <PythonTab />,
-    code: <CodeTab />,
 }

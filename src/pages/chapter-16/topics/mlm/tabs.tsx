@@ -292,77 +292,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── MLM Masking Strategy — TypeScript ────────────────────────────────────────
 
-function mlmMask(
-    tokenIds: number[],
-    vocabSize: number,
-    maskId = 103,
-    maskProb = 0.15
-): { masked: number[]; labels: number[] } {
-    const masked = [...tokenIds]
-    const labels = Array(tokenIds.length).fill(-100)
 
-    const candidates = tokenIds
-        .map((t, i) => ({ t, i }))
-        .filter(({ t }) => t !== 0 && t !== 101 && t !== 102)
-        .map(({ i }) => i)
-
-    const nMask = Math.max(1, Math.round(candidates.length * maskProb))
-    const shuffled = candidates.sort(() => Math.random() - 0.5)
-    const selected = shuffled.slice(0, nMask)
-
-    for (const i of selected) {
-        labels[i] = tokenIds[i]
-        const r = Math.random()
-        if (r < 0.8) {
-            masked[i] = maskId
-        } else if (r < 0.9) {
-            masked[i] = Math.floor(Math.random() * vocabSize)
-        }
-    }
-    return { masked, labels }
-}
-
-function softmax(logits: number[]): number[] {
-    const maxVal = Math.max(...logits)
-    const exps = logits.map(v => Math.exp(v - maxVal))
-    const sum = exps.reduce((a, b) => a + b, 0)
-    return exps.map(v => v / sum)
-}
-
-function mlmLoss(logits: number[][], labels: number[]): number {
-    const active = labels.map((l, i) => ({ l, i })).filter(({ l }) => l !== -100)
-    let total = 0
-    for (const { l, i } of active) {
-        const probs = softmax(logits[i])
-        total += -Math.log(probs[l] + 1e-10)
-    }
-    return total / active.length
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const tokens = [101, 2023, 2003, 1037, 3231, 102, 0, 0]
-const { masked, labels } = mlmMask(tokens, 30522)
-
-console.log("MLM Masking Demo")
-console.log("─".repeat(40))
-console.log("Original:", tokens.join(" "))
-console.log("Masked:  ", masked.join(" "))
-console.log("Labels:  ", labels.join(" "))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of BERT's MLM masking strategy. The function applies the
-                80/10/10 rule and returns masked tokens with labels for the selected positions.
-            </p>
-            <CodeBlock code={TS_CODE} filename="mlm_masking.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -372,5 +303,4 @@ export const MLM_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

@@ -346,96 +346,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── BLEU Score — TypeScript ───────────────────────────────────────────────────
 
-type Ngram = string
 
-function getNgrams(tokens: string[], n: number): Map<Ngram, number> {
-  const counts = new Map<Ngram, number>()
-  for (let i = 0; i <= tokens.length - n; i++) {
-    const key = tokens.slice(i, i + n).join(" ")
-    counts.set(key, (counts.get(key) ?? 0) + 1)
-  }
-  return counts
-}
-
-function modifiedPrecision(candidate: string[], references: string[][], n: number): number {
-  const candCounts = getNgrams(candidate, n)
-  if (candCounts.size === 0) return 0
-
-  // Max count of each n-gram across all references
-  const maxRefCounts = new Map<Ngram, number>()
-  for (const ref of references) {
-    const refCounts = getNgrams(ref, n)
-    for (const [ngram] of candCounts) {
-      const prev = maxRefCounts.get(ngram) ?? 0
-      maxRefCounts.set(ngram, Math.max(prev, refCounts.get(ngram) ?? 0))
-    }
-  }
-
-  let clipped = 0
-  let total = 0
-  for (const [ngram, cnt] of candCounts) {
-    clipped += Math.min(cnt, maxRefCounts.get(ngram) ?? 0)
-    total += cnt
-  }
-  return total === 0 ? 0 : clipped / total
-}
-
-function brevityPenalty(candidate: string[], references: string[][]): number {
-  const c = candidate.length
-  const r = references.map(ref => ref.length).reduce((best, rLen) =>
-    Math.abs(rLen - c) < Math.abs(best - c) ? rLen : best
-  )
-  return c >= r ? 1.0 : Math.exp(1 - r / c)
-}
-
-function bleu(candidate: string[], references: string[][], maxN = 4): number {
-  const weights = Array(maxN).fill(1 / maxN)
-  const precisions = Array.from({ length: maxN }, (_, i) =>
-    modifiedPrecision(candidate, references, i + 1))
-
-  if (precisions.some(p => p === 0)) return 0
-
-  const logAvg = precisions.reduce((s, p, i) => s + weights[i] * Math.log(p), 0)
-  return brevityPenalty(candidate, references) * Math.exp(logAvg)
-}
-
-// ── Examples ─────────────────────────────────────────────────────────────────
-
-const ref = "the cat sat on the mat".split(" ")
-
-const tests: Array<{ label: string; cand: string[] }> = [
-  { label: "Perfect match",     cand: "the cat sat on the mat".split(" ") },
-  { label: "One word different", cand: "the cat sat on a mat".split(" ") },
-  { label: "Two words different",cand: "a cat sat on a rug".split(" ") },
-  { label: "Wrong translation",  cand: "the dog runs fast near house".split(" ") },
-]
-
-for (const { label, cand } of tests) {
-  const score = bleu(cand, [ref])
-  console.log(\`\${label.padEnd(22)} BLEU = \${(score * 100).toFixed(1)}\`)
-}`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript BLEU score implementation with modified n-gram precision, clipping,
-                and brevity penalty. Run against four candidate translations to see how the
-                score degrades as the translation quality decreases.
-            </p>
-            <CodeBlock code={TS_CODE} filename="bleu_score.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>BLEU in context:</strong> A score of 30 BLEU on WMT14 En→Fr was roughly
-                equivalent to a strong phrase-based system in 2014. By 2018, Transformer-based
-                models exceeded 41 BLEU on the same benchmark. Human-level performance is estimated
-                at around 60+ BLEU — but even this is uncertain since human translators often
-                differ from each other by 5–10 BLEU points.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -445,5 +357,4 @@ export const MACHINE_TRANSLATION_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

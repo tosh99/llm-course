@@ -317,134 +317,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Weight Sharing in TypeScript ────────────────────────────────────────────
 
-// Simple 1D convolution showing weight sharing
-type Vec = number[];
-type Mat = number[][];
 
-// ── Without Weight Sharing (Dense) ─────────────────────────────────────────────
-
-function denseLayer(x: Vec, W: Mat, b: Vec): Vec {
-    // Each output has its own weights
-    return W.map((row, i) => 
-        row.reduce((sum, w, j) => sum + w * x[j], 0) + b[i]
-    );
-}
-
-// Input: 10 elements, Output: 10 elements
-// W would be 10×10 = 100 parameters
-const denseW: Mat = Array(10).fill(0).map(() => 
-    Array(10).fill(0).map(() => Math.random() - 0.5)
-);
-const denseB: Vec = Array(10).fill(0).map(() => Math.random() - 0.5);
-
-const input1: Vec = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const output1 = denseLayer(input1, denseW, denseB);
-console.log("Dense output:", output1.slice(0, 3));
-
-// ── With Weight Sharing (Conv) ───────────────────────────────────────────────
-
-function conv1dShared(x: Vec, kernel: Vec, bias: number, stride: number = 1): Vec {
-    // SAME kernel used for every position!
-    const k = kernel.length;
-    const output: Vec = [];
-    
-    for (let i = 0; i <= x.length - k; i += stride) {
-        // Extract window
-        const window = x.slice(i, i + k);
-        
-        // SAME kernel weights for every position
-        const sum = window.reduce((acc, val, j) => acc + val * kernel[j], 0) + bias;
-        output.push(sum);
-    }
-    
-    return output;
-}
-
-// With weight sharing:
-// Kernel size 3, Output: 8 elements (10 - 3 + 1)
-// Only 3 + 1 = 4 parameters!
-
-const sharedKernel: Vec = [0.1, 0.2, 0.1];  // Simple smoothing filter (3 params)
-const sharedBias = 0.0;  // 1 param
-
-const output2 = conv1dShared(input1, sharedKernel, sharedBias);
-console.log("\\nConv output:", output2);
-
-// ── The Savings ─────────────────────────────────────────────────────────────────
-
-const inputSize = 10;
-const outputSize = 10;  // Dense
-const convOutputSize = input1.length - sharedKernel.length + 1;  // Conv
-
-const denseParams = (inputSize + 1) * outputSize;  // (10 + 1) × 10 = 110
-const convParams = sharedKernel.length + 1;  // 3 + 1 = 4
-
-console.log("\\nDense parameters:", denseParams);
-console.log("Conv parameters:  ", convParams);
-console.log("Savings:", denseParams / convParams, "times!");
-
-// ── 2D Convolution with Weight Sharing ───────────────────────────────────────────
-
-function conv2d(
-    input: number[][][], // [channels, height, width]
-    weight: number[][][], // [out_ch, in_ch, k, k]
-    bias: number[]
-): number[][][] {
-    const [out_ch, in_ch, k, _] = [
-        weight.length,
-        weight[0].length,
-        weight[0][0].length,
-        weight[0][0][0].length
-    ];
-    const [_, h, w] = [input.length, input[0].length, input[0][0].length];
-    const out_h = h - k + 1;
-    const out_w = w - k + 1;
-    
-    // Output: [out_ch, out_h, out_w]
-    const output: number[][][] = Array(out_ch).fill(0).map(() =>
-        Array(out_h).fill(0).map(() =>
-            Array(out_w).fill(0)
-        )
-    );
-    
-    for (let oc = 0; oc < out_ch; oc++) {
-        for (let oh = 0; oh < out_h; oh++) {
-            for (let ow = 0; ow < out_w; ow++) {
-                let sum = bias[oc];
-                
-                // SAME weights[oc] for EVERY (oh, ow) position!
-                for (let ic = 0; ic < in_ch; ic++) {
-                    for (let ky = 0; ky < k; ky++) {
-                        for (let kx = 0; kx < k; kx++) {
-                            sum += input[ic][oh + ky][ow + kx] * weight[oc][ic][ky][kx];
-                        }
-                    }
-                }
-                
-                output[oc][oh][ow] = sum;
-            }
-        }
-    }
-    
-    return output;
-}
-
-// The same weight[oc][ic] is used regardless of (oh, ow) — that's weight sharing!`;
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Implementing convolution with weight sharing in TypeScript clearly shows
-                the parameter savings. In the 2D version, notice how the same{' '}
-                <code>weight[oc][ic]</code> is used for every output position (oh, ow).
-            </p>
-            <CodeBlock code={TS_CODE} filename="weight-sharing.ts" lang="typescript" />
-        </>
-    )
-}
 
 // ── Tab content map ─────────────────────────────────────────────────────────────
 
@@ -453,6 +327,5 @@ export const WEIGHT_SHARING_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

@@ -244,76 +244,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── LoRA Linear Layer — TypeScript ───────────────────────────────────────────
 
-class LoRALinear {
-    private W0: number[][]
-    private A: number[][]
-    private B: number[][]
-    private r: number
-    private alpha: number
 
-    constructor(W0: number[][], r: number, alpha = 1.0) {
-        this.W0 = W0.map(row => [...row])
-        this.r = r
-        this.alpha = alpha
-        const d = W0.length
-        const k = W0[0].length
-        this.A = Array.from({ length: r }, () =>
-            Array.from({ length: k }, () => (Math.random() - 0.5) * 0.02)
-        )
-        this.B = Array.from({ length: d }, () => Array(r).fill(0))
-    }
-
-    private matVec(M: number[][], v: number[]): number[] {
-        return M.map(row => row.reduce((s, w, i) => s + w * v[i], 0))
-    }
-
-    forward(x: number[]): number[] {
-        const base = this.matVec(this.W0, x)
-        const Ax = this.matVec(this.A, x)
-        const BAx = this.matVec(this.B, Ax)
-        const scale = this.alpha / this.r
-        return base.map((b, i) => b + scale * BAx[i])
-    }
-
-    merge(): this {
-        const scale = this.alpha / this.r
-        for (let i = 0; i < this.W0.length; i++) {
-            for (let j = 0; j < this.W0[0].length; j++) {
-                let delta = 0
-                for (let k = 0; k < this.r; k++) {
-                    delta += this.B[i][k] * this.A[k][j]
-                }
-                this.W0[i][j] += scale * delta
-            }
-        }
-        this.A = []
-        this.B = []
-        return this
-    }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const W0 = Array.from({ length: 256 }, () =>
-    Array.from({ length: 256 }, () => Math.random() * 0.1)
-)
-const layer = new LoRALinear(W0, 8, 16)
-const x = Array.from({ length: 256 }, () => Math.random())
-const h = layer.forward(x)
-console.log("LoRA output sample:", h.slice(0, 4).map(v => v.toFixed(4)))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of a LoRA linear layer with forward pass and merge.
-            </p>
-            <CodeBlock code={TS_CODE} filename="lora_layer.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -323,5 +255,4 @@ export const LORA_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

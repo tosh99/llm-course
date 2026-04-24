@@ -286,79 +286,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Dynamic Masking & Scaling — TypeScript ───────────────────────────────────
 
-function dynamicMaskBatch(
-    batch: number[][],
-    vocabSize: number,
-    maskId = 103,
-    maskProb = 0.15
-): { masked: number[][]; labels: number[][] } {
-    const bsz = batch.length
-    const seqLen = batch[0].length
-    const masked: number[][] = batch.map(row => [...row])
-    const labels: number[][] = Array.from({ length: bsz }, () => Array(seqLen).fill(-100))
 
-    for (let b = 0; b < bsz; b++) {
-        const candidates = batch[b]
-            .map((t, i) => ({ t, i }))
-            .filter(({ t }) => t !== 0 && t !== 101 && t !== 102)
-            .map(({ i }) => i)
-
-        const nMask = Math.max(1, Math.round(candidates.length * maskProb))
-        const selected = candidates.sort(() => Math.random() - 0.5).slice(0, nMask)
-
-        for (const i of selected) {
-            labels[b][i] = batch[b][i]
-            const r = Math.random()
-            if (r < 0.8) {
-                masked[b][i] = maskId
-            } else if (r < 0.9) {
-                masked[b][i] = Math.floor(Math.random() * vocabSize)
-            }
-        }
-    }
-    return { masked, labels }
-}
-
-function scaledLR(baseLR: number, baseBatch: number, newBatch: number): number {
-    return baseLR * (newBatch / baseBatch)
-}
-
-function trainingFLOPs(numParams: number, numTokens: number): number {
-    return 6 * numParams * numTokens
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const batch = Array.from({ length: 8 }, () =>
-    Array.from({ length: 16 }, () => Math.floor(Math.random() * 30522)))
-
-batch.forEach(row => { row[0] = 101; row[row.length - 1] = 102 })
-
-const { masked, labels } = dynamicMaskBatch(batch, 30522)
-const active = labels.flat().filter(l => l !== -100).length
-
-console.log("Dynamic Masking & Scaling Demo")
-console.log("─".repeat(40))
-console.log(\`Batch shape: \<InlineMath tex="{batch.length}x\\" />{batch[0].length}\`)
-console.log(\`Active mask positions: \${active}\`)
-console.log(\`BERT LR: \${(1e-4).toExponential()}\`)
-console.log(\`RoBERTa scaled LR: \${scaledLR(1e-4, 256, 8192).toExponential(2)}\`)
-console.log(\`BERT FLOPs: \${trainingFLOPs(340e6, 256e9).toExponential(2)}\`)
-console.log(\`RoBERTa FLOPs: \${trainingFLOPs(340e6, 4e12).toExponential(2)}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of dynamic masking, learning rate scaling, and compute estimation.
-                The demo shows how RoBERTa's larger scale translates to more training FLOPs.
-            </p>
-            <CodeBlock code={TS_CODE} filename="roberta_scaling.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -368,5 +297,4 @@ export const ROBERTA_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

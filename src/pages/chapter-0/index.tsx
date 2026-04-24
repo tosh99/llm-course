@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router"
 import "./chapter-0.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
+import { COMPUTING_TABS } from "./topics/computing/tabs"
 import { MUTUAL_INFORMATION_TABS } from "./topics/mutual-information/tabs"
 import { PYTHON_TABS } from "./topics/python/tabs"
 import { VECTORS_MATRICES_TABS } from "./topics/vectors-matrices/tabs"
@@ -59,7 +60,7 @@ export function Chapter0Page() {
         "entropy-kl-divergence": ENTROPY_KL_DIVERGENCE_TABS[activeTab],
         "mutual-information": MUTUAL_INFORMATION_TABS[activeTab],
         python: PYTHON_TABS[activeTab],
-        computing: null,
+        computing: COMPUTING_TABS[activeTab],
     }
 
     return (

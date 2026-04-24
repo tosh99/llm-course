@@ -270,55 +270,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── RLHF Core Utilities — TypeScript ─────────────────────────────────────────
 
-function sigmoid(x: number): number {
-    return 1 / (1 + Math.exp(-x))
-}
 
-function bradleyTerryLoss(rewardW: number, rewardL: number): number {
-    return -Math.log(sigmoid(rewardW - rewardL))
-}
-
-function clip(value: number, min: number, max: number): number {
-    return Math.max(min, Math.min(max, value))
-}
-
-function ppoClipLoss(ratios: number[], advantages: number[], epsilon = 0.2): number {
-    let total = 0
-    for (let i = 0; i < ratios.length; i++) {
-        const clipped = clip(ratios[i], 1 - epsilon, 1 + epsilon)
-        total += Math.min(ratios[i] * advantages[i], clipped * advantages[i])
-    }
-    return total / ratios.length
-}
-
-function klDivergence(logPNew: number[], logPOld: number[]): number {
-    let kl = 0
-    for (let i = 0; i < logPNew.length; i++) {
-        kl += Math.exp(logPOld[i]) * (logPOld[i] - logPNew[i])
-    }
-    return kl / logPNew.length
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const bt = bradleyTerryLoss(2.5, 1.2)
-const ppo = ppoClipLoss([1.1, 0.95, 1.3, 0.8], [0.5, -0.3, 1.2, -0.8])
-
-console.log("Bradley-Terry Loss:", bt.toFixed(4))
-console.log("PPO Clipped Objective:", ppo.toFixed(4))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of the core RLHF loss functions used in InstructGPT.
-            </p>
-            <CodeBlock code={TS_CODE} filename="rlhf_losses.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -328,5 +281,4 @@ export const INSTRUCTGPT_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

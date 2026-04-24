@@ -358,103 +358,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── SGD with Momentum and Nesterov — TypeScript ─────────────────────────────
 
-type Vec = number[]
 
-function vecSub(a: Vec, b: Vec): Vec { return a.map((v, i) => v - b[i]) }
-function vecAdd(a: Vec, b: Vec): Vec { return a.map((v, i) => v + b[i]) }
-function vecScale(s: number, a: Vec): Vec { return a.map(v => v * s) }
-
-// ── Narrow valley loss: f(x, y) = 0.1x² + 10y² ───────────────────────────────
-function loss(p: Vec): number {
-  return 0.1 * p[0] ** 2 + 10 * p[1] ** 2
-}
-
-function gradFn(p: Vec): Vec {
-  return [0.2 * p[0], 20 * p[1]]
-}
-
-// ── Plain SGD ─────────────────────────────────────────────────────────────────
-function sgd(lr: number, steps: number): Vec[] {
-  let theta: Vec = [10, 1]
-  const path: Vec[] = [theta]
-  for (let t = 0; t < steps; t++) {
-    const g = gradFn(theta)
-    theta = vecSub(theta, vecScale(lr, g))
-    path.push([...theta])
-  }
-  return path
-}
-
-// ── SGD with Momentum ─────────────────────────────────────────────────────────
-function sgdMomentum(lr: number, gamma: number, steps: number): Vec[] {
-  let theta: Vec = [10, 1]
-  let v: Vec = [0, 0]
-  const path: Vec[] = [theta]
-
-  for (let t = 0; t < steps; t++) {
-    const g = gradFn(theta)
-    v = vecAdd(vecScale(gamma, v), vecScale(lr, g))     // v = γv + η∇L
-    theta = vecSub(theta, v)                              // θ = θ - v
-    path.push([...theta])
-  }
-  return path
-}
-
-// ── Nesterov Accelerated Gradient ─────────────────────────────────────────────
-function nesterov(lr: number, gamma: number, steps: number): Vec[] {
-  let theta: Vec = [10, 1]
-  let v: Vec = [0, 0]
-  const path: Vec[] = [theta]
-
-  for (let t = 0; t < steps; t++) {
-    const lookahead = vecSub(theta, vecScale(gamma, v)) // θ - γv
-    const g = gradFn(lookahead)                          // gradient at lookahead
-    v = vecAdd(vecScale(gamma, v), vecScale(lr, g))
-    theta = vecSub(theta, v)
-    path.push([...theta])
-  }
-  return path
-}
-
-// ── Compare convergence ───────────────────────────────────────────────────────
-const pathSGD  = sgd(0.09, 50)
-const pathMom  = sgdMomentum(0.09, 0.9, 50)
-const pathNest = nesterov(0.09, 0.9, 50)
-
-console.log("Convergence on narrow valley f(x,y) = 0.1x² + 10y²")
-console.log("─".repeat(55))
-console.log(\`\${"Step".padEnd(6)} | \${"SGD".padEnd(12)} | \${"Momentum".padEnd(12)} | Nesterov\`)
-console.log("─".repeat(55))
-
-for (const step of [0, 5, 10, 20, 30, 49]) {
-  const lSGD  = loss(pathSGD[step]).toExponential(3)
-  const lMom  = loss(pathMom[step]).toExponential(3)
-  const lNest = loss(pathNest[step]).toExponential(3)
-  console.log(\`\${String(step).padEnd(6)} | \${lSGD.padEnd(12)} | \${lMom.padEnd(12)} | \${lNest}\`)
-}
-
-console.log()
-console.log("Effective LR = η / (1-γ):")
-for (const gamma of [0.5, 0.9, 0.95, 0.99]) {
-  const eff = 0.01 / (1 - gamma)
-  console.log(\`  γ=\${gamma}: η_eff = \${eff.toFixed(3)}  (×\${Math.round(eff/0.01)} speedup)\`)
-}
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of plain SGD, SGD with momentum, and Nesterov momentum.
-                Applied to a narrow valley quadratic that mimics the ill-conditioning typical
-                in neural network loss surfaces.
-            </p>
-            <CodeBlock code={TS_CODE} filename="momentum.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -463,6 +368,5 @@ export const MOMENTUM_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

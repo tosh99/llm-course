@@ -286,54 +286,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Zero-Shot Classification — TypeScript ────────────────────────────────────
 
-function zeroShotClassify(
-    prompt: string,
-    choices: string[],
-    scoreFn: (prompt: string, choice: string) => number
-): { best: string; scores: number[] } {
-    const scores = choices.map((c) => scoreFn(prompt, c))
-    const bestIdx = scores.indexOf(Math.max(...scores))
-    return { best: choices[bestIdx], scores }
-}
 
-// Dummy scorer for demo
-function dummyScore(prompt: string, choice: string): number {
-    const pWords = new Set(prompt.toLowerCase().split(/\\s+/))
-    const cWords = new Set(choice.toLowerCase().split(/\\s+/))
-    let overlap = 0
-    for (const w of cWords) if (pWords.has(w)) overlap++
-    return overlap + (Math.random() - 0.5) * 0.2
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const prompt = "The movie was absolutely wonderful and inspiring."
-const choices = ["positive", "negative", "neutral"]
-
-const { best, scores } = zeroShotClassify(prompt, choices, dummyScore)
-
-console.log("Zero-Shot Classification Demo")
-console.log("=".repeat(40))
-console.log(\`Prompt: \${prompt}\`)
-choices.forEach((c, i) => {
-    const marker = c === best ? " <--" : ""
-    console.log(\`  \${c.padEnd(10)} score=\${scores[i].toFixed(3)}\${marker}\`)
-})
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of zero-shot classification via prompt scoring, with a
-                pluggable scoring function that can be swapped for a real language model inference
-                call.
-            </p>
-            <CodeBlock code={TS_CODE} filename="zero_shot.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -343,5 +297,4 @@ export const ZERO_SHOT_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

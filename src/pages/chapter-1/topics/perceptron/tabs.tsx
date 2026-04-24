@@ -340,103 +340,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Rosenblatt Perceptron ────────────────────────────────────────────────────
 
-type Vec = number[];
-type Mat = number[][];
 
-interface Perceptron {
-  w: Vec;      // weights
-  b: number;   // bias
-}
-
-function predict({ w, b }: Perceptron, x: Vec): number {
-  const z = w.reduce((s, wi, i) => s + wi * x[i], 0) + b;
-  return z >= 0 ? 1 : -1;
-}
-
-function train(
-  X: Vec[], y: number[], lr = 0.1, maxEpochs = 200
-): Perceptron {
-  const n = X[0].length;
-  let w = new Array(n).fill(0);
-  let b = 0;
-
-  for (let epoch = 0; epoch < maxEpochs; epoch++) {
-    let mistakes = 0;
-    for (let i = 0; i < X.length; i++) {
-      const x = X[i], yi = y[i];
-      const yHat = predict({ w, b }, x);
-      if (yi * yHat <= 0) {       // misclassified
-        for (let j = 0; j < n; j++) w[j] += lr * yi * x[j];
-        b += lr * yi;
-        mistakes++;
-      }
-    }
-    if (mistakes === 0) {
-      console.log(\`Converged at epoch \${epoch}\`);
-      break;
-    }
-  }
-  return { w, b };
-}
-
-// ── AND: linearly separable ─────────────────────────────────────────────────
-const X_and = [[0,0],[0,1],[1,0],[1,1]];
-const y_and = [-1, -1, -1, 1];
-const pAnd = train(X_and, y_and);
-console.log("AND:", X_and.map(x => predict(pAnd, x)));
-// → [-1, -1, -1, 1] ✓
-
-// ── XOR: NOT linearly separable ─────────────────────────────────────────────
-const X_xor = [[0,0],[0,1],[1,0],[1,1]];
-const y_xor = [-1, 1, 1, -1];
-const pXor = train(X_xor, y_xor, 0.1, 500);
-console.log("XOR (500 epochs):", X_xor.map(x => predict(pXor, x)));
-// → always at least 1 misclassification — no hyperplane exists!
-
-// ── Visualise the decision boundary ────────────────────────────────────────
-function plotBoundary(
-  X: Vec[], y: number[], { w, b }: Perceptron, label: string
-) {
-  const pts = X.map((x, i) => ({ x, y: y[i] }));
-  const xs = pts.map(p => p.x);
-  const ys = pts.map(p => p.x);
-
-  console.log(\`\\n=== \${label} ===\`);
-  pts.forEach(({ x, y: yi }) => {
-    const pred = predict({ w, b }, x);
-    console.log(\`  [\${x}] → pred=\${pred} (true=\${yi}) \${pred === yi ? "✓" : "✗"}\`);
-  });
-
-  if (Math.abs(w[1]) > 1e-9) {
-    const x0 = Math.min(...xs) - 0.5;
-    const x1 = Math.max(...xs) + 0.5;
-    const yAt0 = -(w[0] * x0 + b) / w[1];
-    const yAt1 = -(w[0] * x1 + b) / w[1];
-    console.log(\`  Boundary: y = \${(-w[0]/w[1]).toFixed(2)}x + \${(-b/w[1]).toFixed(2)}\`);
-  }
-}
-
-plotBoundary(X_and, y_and, pAnd, "AND");
-plotBoundary(X_xor, y_xor, pXor, "XOR");`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript perceptron — the exact Rosenblatt algorithm, 60+ lines, no dependencies.
-                Run it and observe: AND converges perfectly, XOR oscillates indefinitely.
-            </p>
-            <CodeBlock code={TS_CODE} filename="perceptron.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>The crucial difference:</strong> AND separates into two classes by a straight line.
-                XOR's positive and negative examples interleave — to separate them, you need at least two
-                intersecting lines, which requires a hidden layer.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -445,6 +350,5 @@ export const PERCEPTRON_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

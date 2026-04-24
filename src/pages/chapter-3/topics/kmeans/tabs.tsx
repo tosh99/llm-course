@@ -237,93 +237,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── k-Means implementation (TypeScript) ──────────────────────────
 
-type Point = number[]
 
-function distance(a: Point, b: Point): number {
-  return Math.sqrt(a.reduce((sum, ai, i) => sum + (ai - b[i]) ** 2, 0))
-}
-
-function mean(points: Point[]): Point {
-  const d = points[0].length
-  const sum = new Array(d).fill(0)
-  for (const p of points) p.forEach((v, i) => { sum[i] += v })
-  return sum.map(v => v / points.length)
-}
-
-/** Assign each point to its nearest centroid */
-function assign(points: Point[], centroids: Point[]): number[] {
-  return points.map(p =>
-    centroids.reduce(
-      (best, c, ci) =>
-        distance(p, c) < distance(p, centroids[best]) ? ci : best,
-      0
-    )
-  )
-}
-
-export function kMeans(
-  data: Point[],
-  k: number,
-  maxIter = 100
-): { labels: number[]; centroids: Point[]; inertia: number } {
-  // k-means++ initialisation
-  const centroids: Point[] = [data[Math.floor(Math.random() * data.length)]]
-  while (centroids.length < k) {
-    const dists = data.map(p =>
-      Math.min(...centroids.map(c => distance(p, c) ** 2))
-    )
-    const total = dists.reduce((s, d) => s + d, 0)
-    let r = Math.random() * total
-    for (let i = 0; i < data.length; i++) {
-      r -= dists[i]
-      if (r <= 0) { centroids.push(data[i]); break }
-    }
-  }
-
-  let labels = assign(data, centroids)
-
-  for (let iter = 0; iter < maxIter; iter++) {
-    // Update centroids
-    for (let ci = 0; ci < k; ci++) {
-      const cluster = data.filter((_, i) => labels[i] === ci)
-      if (cluster.length > 0) centroids[ci] = mean(cluster)
-    }
-    const newLabels = assign(data, centroids)
-    // Converged?
-    if (newLabels.every((l, i) => l === labels[i])) break
-    labels = newLabels
-  }
-
-  const inertia = data.reduce(
-    (sum, p, i) => sum + distance(p, centroids[labels[i]]) ** 2, 0
-  )
-  return { labels, centroids, inertia }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────
-const data: Point[] = [
-  [1,4],[1.5,5],[2,4.5],[4,4],[5,4.5],[4.5,5],
-  [3,1],[3.5,2],[2.5,1.5],[3.8,1.2],
-]
-const result = kMeans(data, 3)
-console.log("Labels:", result.labels)
-console.log("Inertia:", result.inertia.toFixed(2))`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                A complete k-means implementation with k-means++ initialisation. The key insight: the outer loop alternates assignment and centroid update until convergence — this is guaranteed to terminate because there are only finitely many possible assignments.
-            </p>
-            <CodeBlock code={TS_CODE} filename="kmeans.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Complexity note:</strong> The <code>assign</code> function is O(nK) per call. For large datasets, use a k-d tree (O(n log K) average) or approximate nearest-neighbour structures. For very large K, consider hierarchical k-means or FAISS.
-            </div>
-        </>
-    )
-}
 
 export const KMEANS_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
@@ -331,5 +246,4 @@ export const KMEANS_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

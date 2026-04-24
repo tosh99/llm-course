@@ -536,129 +536,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Numerical derivative (finite difference) ─────────────
-type ScalarFn = (x: number) => number;
 
-function numericalDerivative(f: ScalarFn, x: number, h = 1e-5): number {
-  return (f(x + h) - f(x - h)) / (2 * h);
-}
 
-// Example: f(x) = x³ + 2x + 1
-// True derivative: f'(x) = 3x² + 2
-const f: ScalarFn = (x) => x**3 + 2 * x + 1;
-const x = 2.0;
-console.log(\`f(\${x}) = \${f(x)}\`);
-console.log(\`f'\${x}) ≈ \${numericalDerivative(f, x)}\`);
-console.log(\`True f'(\${x}) = \${3 * x**2 + 2}\`);
-
-// ── Gradient computation via finite differences ─────────────────
-type Vec = number[];
-type VecFn = (theta: Vec) => number;
-
-function computeGradients(f: VecFn, theta: Vec, h = 1e-5): Vec {
-  const grad: Vec = new Array(theta.length).fill(0);
-
-  for (let i = 0; i < theta.length; i++) {
-    const deltaPlus = [...theta];
-    const deltaMinus = [...theta];
-    deltaPlus[i] += h;
-    deltaMinus[i] -= h;
-    grad[i] = (f(deltaPlus) - f(deltaMinus)) / (2 * h);
-  }
-
-  return grad;
-}
-
-// Loss function: L(θ) = θ₁² + θ₂² + 2θ₁θ₂
-const lossFn: VecFn = ([x, y]) => x**2 + y**2 + 2 * x * y;
-
-const theta = [1.0, 2.0];
-const grad = computeGradients(lossFn, theta);
-console.log(\`\\nGradient at θ = [\${theta}]:\`);
-console.log(\`∇L(θ) = [\${grad.map((v) => v.toFixed(4)).join(", ")}]\`);
-
-// ── Gradient descent optimisation ───────────────────────────────
-type ScalarDerivative = (x: number) => number;
-
-function gradientDescent(
-  f: ScalarFn,
-  df: ScalarDerivative,
-  x0: number,
-  lr = 0.1,
-  steps = 10
-): number {
-  let x = x0;
-  console.log(\`\\nGradient descent: optimising f(x) = x²\`);
-  console.log(\`Initial x = \${x}, f(x) = \${f(x)}\`);
-
-  for (let t = 0; t < steps; t++) {
-    const g = df(x);      // gradient = f'(x)
-    x = x - lr * g;       // step opposite to gradient
-    if (t % 2 === 0) {
-      console.log(\`Step \${t}: x = \${x.toFixed(6)}, f(x) = \${f(x).toFixed(6)}\`);
-    }
-  }
-
-  return x;
-}
-
-const objective: ScalarFn = (x) => x**2;
-const derivative: ScalarDerivative = (x) => 2 * x;
-
-const xFinal = gradientDescent(objective, derivative, 3.0, 0.1, 10);
-console.log(\`\\nConverged to x = \${xFinal.toFixed(6)} (should be ~0)\`);
-
-// ── Chain rule illustration ───────────────────────────────────────
-// For a composition y = f(g(x)), the derivative is:
-// dy/dx = dy/dg * dg/dx
-
-function g(x: number): number {
-  return x**2 + 1;
-}
-
-function f(u: number): number {
-  return 2 * u;
-}
-
-function dg_dx(x: number): number {
-  return 2 * x;
-}
-
-function df_du(u: number): number {
-  return 2;
-}
-
-// Compute dg/dx at x = 3, then df/dg at g(3) = 10
-const x_val = 3.0;
-const g_val = g(x_val);
-const dg_dx_val = dg_dx(x_val);
-const df_du_val = df_du(g_val);
-
-const dy_dx = df_du_val * dg_dx_val;
-console.log(\`\\nChain rule: y = f(g(x)) where g(x)=x²+1, f(u)=2u\`);
-console.log(\`At x = \${x_val}: g(x) = \${g_val}\`);
-console.log(\`dg/dx = \${dg_dx_val}, df/du = \${df_du_val}\`);
-console.log(\`dy/dx = (df/du) * (dg/dx) = \${dy_dx}\`);
-
-// Direct computation: y = 2(x² + 1) = 2x² + 2
-// dy/dx = 4x = 12 at x = 3 ✓`;
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript implementations of numerical derivatives and gradient descent. These build
-                intuition for what autodiff frameworks compute automatically.
-            </p>
-            <CodeBlock code={TS_CODE} filename="calculus.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Next step:</strong> Use PyTorch or TensorFlow for real ML. Their autodiff engines
-                compute exact gradients via computational graphs, not finite differences. The chain rule
-                still applies — you just see it through the <code>loss.backward()</code> API.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -667,6 +546,5 @@ export const CALCULUS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

@@ -301,128 +301,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── BPTT in TypeScript ──────────────────────────────────────────────────────
-type Vec = number[]
-type Mat = number[][]
 
-function matVecMul(W: Mat, x: Vec): Vec {
-  return W.map(row => row.reduce((s, wij, j) => s + wij * x[j], 0))
-}
-function vecOuter(a: Vec, b: Vec): Mat {
-  return a.map(ai => b.map(bj => ai * bj))
-}
-function tanhPrime(h: Vec): Vec { return h.map(hi => 1 - hi * hi) }
 
-interface Grads {
-  dWhh: Mat; dWxh: Mat; dbh: Vec
-  dWhy: Mat; dby: Vec
-}
-
-function bptt(
-  X: Vec[], yTarget: Vec[],
-  Whh: Mat, Wxh: Mat, bh: Vec, Why: Mat, by: Vec,
-  k: number = 20,   // truncation window
-): Grads {
-  const T = X.length
-  const hiddenDim = Whh.length
-  const inputDim = Wxh[0].length
-
-  // ── Forward pass ────────────────────────────────────────────────────────────
-  const H: Vec[] = [new Array(hiddenDim).fill(0)]
-  const Z: Vec[] = []
-  for (let t = 0; t < T; t++) {
-    const z = matVecMul(Wxh, X[t]).map((v, i) => v + matVecMul(Whh, H[t])[i] + bh[i])
-    const h = z.map(Math.tanh)
-    Z.push(z)
-    H.push(h)
-  }
-
-  // ── Backward pass (truncated) ──────────────────────────────────────────────
-  const dWhh = makeZeros(hiddenDim, hiddenDim)
-  const dWxh = makeZeros(hiddenDim, inputDim)
-  const dbh  = new Array(hiddenDim).fill(0)
-  const dWhy = makeZeros(Why.length, hiddenDim)
-  const dby  = new Array(Why.length).fill(0)
-
-  // Start from final time step
-  const start = Math.max(0, T - k)
-
-  // δ_h at each step (backprop state)
-  let deltaH = new Array(hiddenDim).fill(0)
-
-  // Propagate loss from output back to hidden at t = T
-  // y_T = softmax(Why @ H[T] + by)  →  ∂L/∂H[T] = Why^T @ (y - y_target)
-  // Simplified: backprop from last output (cross-entropy → delta_out = y_pred - y_target)
-  const yPred = softmax(matVecMul(Why, H[T]))
-  const deltaOut = yPred.map((yp, i) => yp - (yTarget[T-1]?.[i] ?? 0))
-  deltaH = matVecMul(Why, deltaOut).map((v, i) => v)  // Why^T @ delta_out
-
-  // Backprop from T-1 down to start
-  for (let t = T - 1; t >= start; t--) {
-    // δ_t^h = Whh^T @ δ_{t+1}^h * tanh'(z_t)
-    const th = tanhPrime(Z[t])
-    deltaH = matVecMul(Whh, deltaH).map((v, i) => v * th[i])
-
-    // Accumulate gradients
-    const dWhh_t = vecOuter(H[t], deltaH)
-    const dWxh_t = vecOuter(X[t], deltaH)
-    for (let i = 0; i < hiddenDim; i++) {
-      for (let j = 0; j < hiddenDim; j++) dWhh[i][j] += dWhh_t[i][j]
-      for (let j = 0; j < inputDim; j++)   dWxh[i][j] += dWxh_t[i][j]
-      dbh[i] += deltaH[i]
-    }
-  }
-
-  // Gradient clipping: prevent exploding gradients
-  const clipVal = 5.0
-  for (const grad of [dWhh, dWxh, dbh]) {
-    const norm = Math.sqrt((grad as Mat).reduce ? (grad as Mat).reduce((s, r) =>
-      s + r.reduce((a, v) => a + v * v, 0), 0) : (grad as Vec).reduce((s, v) => s + v * v, 0))
-    if (norm > clipVal) {
-      const scale = clipVal / norm
-      if (Array.isArray(grad[0])) {
-        for (const row of grad as Mat) for (let j = 0; j < row.length; j++) row[j] *= scale
-      } else {
-        for (let i = 0; i < (grad as Vec).length; i++) (grad as Vec)[i] *= scale
-      }
-    }
-  }
-
-  return { dWhh, dWxh, dbh, dWhy, dby }
-}
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
-function makeZeros(r: number, c: number): Mat {
-  return Array.from({ length: r }, () => new Array(c).fill(0))
-}
-function softmax(z: Vec): Vec {
-  const max = Math.max(...z)
-  const e = z.map(v => Math.exp(v - max))
-  const sum = e.reduce((a, b) => a + b, 0)
-  return e.map(v => v / sum)
-}
-
-console.log("BPTT with gradient clipping implemented.")
-console.log("Truncated window k=20: backprops through 20 most recent steps only.");`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of truncated BPTT with gradient clipping.
-                Shows the full forward/backward pass with cached activations, the
-                Jacobian chain rule through time, and gradient accumulation.
-            </p>
-            <CodeBlock code={TS_CODE} filename="bptt.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Key insight:</strong> BPTT is simply the standard backpropagation algorithm
-                applied to an unrolled computational graph. The only difference from training a
-                feedforward network is that the same weight matrix appears at every time step — so
-                the gradient at each occurrence is accumulated, giving a single averaged update.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -431,6 +311,5 @@ export const BPTT_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

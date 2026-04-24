@@ -314,93 +314,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Alignment scoring functions — TypeScript ────────────────────────────────
 
-type Vec = number[]
-type Mat = number[][]
 
-const dot = (a: Vec, b: Vec) => a.reduce((s, ai, i) => s + ai * b[i], 0)
-const matVec = (M: Mat, v: Vec): Vec => M.map(row => dot(row, v))
-const vecAdd = (a: Vec, b: Vec): Vec => a.map((ai, i) => ai + b[i])
-const tanhVec = (v: Vec): Vec => v.map(Math.tanh)
-
-function softmax(scores: Vec): Vec {
-  const max = Math.max(...scores)
-  const ex  = scores.map(x => Math.exp(x - max))
-  const sum = ex.reduce((a, b) => a + b, 0)
-  return ex.map(x => x / sum)
-}
-
-// ── Four scoring functions ────────────────────────────────────────────────────
-
-const scoreAdditive = (s: Vec, h: Vec, Wa: Mat, Ua: Mat, va: Vec): number =>
-  dot(va, tanhVec(vecAdd(matVec(Wa, s), matVec(Ua, h))))
-
-const scoreDot = (s: Vec, h: Vec): number =>
-  dot(s, h)
-
-const scoreGeneral = (s: Vec, h: Vec, Wa: Mat): number =>
-  dot(s, matVec(Wa, h))
-
-const scoreScaledDot = (q: Vec, k: Vec): number =>
-  dot(q, k) / Math.sqrt(q.length)
-
-// ── Attention head using any scoring function ─────────────────────────────────
-function attend(
-  query: Vec,
-  keys: Mat,
-  scoreFn: (q: Vec, k: Vec) => number
-): { alphas: Vec; context: Vec } {
-  const energies = keys.map(k => scoreFn(query, k))
-  const alphas   = softmax(energies)
-  const dim      = keys[0].length
-  const context  = Array.from({ length: dim }, (_, d) =>
-    keys.reduce((sum, k, j) => sum + alphas[j] * k[d], 0)
-  )
-  return { alphas, context }
-}
-
-// ── Saturation demo: shows dot-product without scaling collapses ──────────────
-function entropy(dist: Vec): number {
-  return -dist.reduce((s, p) => s + (p > 1e-10 ? p * Math.log(p) : 0), 0)
-}
-
-console.log("Scoring functions — saturation with dimension")
-console.log("─".repeat(52))
-console.log("dim    unscaled_peak  scaled_peak  entropy_unscaled  entropy_scaled")
-
-for (const d of [4, 16, 64, 256]) {
-  // Random query and 8 keys
-  const q: Vec = Array.from({ length: d }, () => (Math.random() - 0.5) * 2)
-  const keys: Mat = Array.from({ length: 8 }, () =>
-    Array.from({ length: d }, () => (Math.random() - 0.5) * 2)
-  )
-
-  const { alphas: aUnscaled } = attend(q, keys, scoreDot)
-  const { alphas: aScaled   } = attend(q, keys, scoreScaledDot)
-
-  const peakU = Math.max(...aUnscaled)
-  const peakS = Math.max(...aScaled)
-  const hU    = entropy(aUnscaled).toFixed(3)
-  const hS    = entropy(aScaled).toFixed(3)
-
-  console.log(\`\${String(d).padEnd(6)} \${peakU.toFixed(4).padEnd(14)} \${peakS.toFixed(4).padEnd(13)} \${hU.padEnd(18)} \${hS}\`)
-}
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of all four scoring functions, unified under a
-                generic <code>attend()</code> that accepts any scoring function. The saturation
-                demo shows how unscaled dot-product attention collapses to near-one-hot
-                distributions as dimensionality grows.
-            </p>
-            <CodeBlock code={TS_CODE} filename="scoring_functions.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -410,5 +325,4 @@ export const ALIGNMENT_SCORES_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

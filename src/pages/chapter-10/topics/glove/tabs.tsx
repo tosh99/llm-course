@@ -347,114 +347,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── GloVe — TypeScript: Co-occurrence matrix and objective ───────────────────
 
-type CoOccurrence = Map<string, Map<string, number>>
 
-// ── Build co-occurrence matrix ────────────────────────────────────────────────
-function buildCooccurrence(sentences: string[][], window: number): CoOccurrence {
-  const X: CoOccurrence = new Map()
-
-  for (const sent of sentences) {
-    for (let i = 0; i < sent.length; i++) {
-      const wi = sent[i]
-      if (!X.has(wi)) X.set(wi, new Map())
-
-      for (let j = Math.max(0, i - window); j <= Math.min(sent.length - 1, i + window); j++) {
-        if (i === j) continue
-        const wj = sent[j]
-        const count = X.get(wi)!.get(wj) ?? 0
-        X.get(wi)!.set(wj, count + 1)
-      }
-    }
-  }
-  return X
-}
-
-// ── GloVe weighting function ──────────────────────────────────────────────────
-function fWeight(x: number, xMax = 100, alpha = 0.75): number {
-  return x < xMax ? Math.pow(x / xMax, alpha) : 1
-}
-
-// ── GloVe loss for a single (i, j) pair ───────────────────────────────────────
-function glovePairLoss(
-  wi: number[],
-  wj: number[],
-  bi: number,
-  bj: number,
-  xij: number
-): number {
-  const dot = wi.reduce((s, v, k) => s + v * wj[k], 0)
-  const diff = dot + bi + bj - Math.log(xij + 1e-8)
-  return fWeight(xij) * diff * diff
-}
-
-// ── Log-PMI: what GloVe implicitly computes ───────────────────────────────────
-function logPMI(X: CoOccurrence, wi: string, wj: string): number {
-  const Xij = X.get(wi)?.get(wj) ?? 0
-  if (Xij === 0) return -Infinity
-
-  const Xi = Array.from(X.get(wi)!.values()).reduce((s, v) => s + v, 0)
-  const Xj = Array.from(X.entries()).reduce((s, [, row]) => s + (row.get(wj) ?? 0), 0)
-  const total = Array.from(X.values()).reduce(
-    (s, row) => s + Array.from(row.values()).reduce((rs, v) => rs + v, 0),
-    0
-  )
-
-  const pij = Xij / total
-  const pi  = Xi  / total
-  const pj  = Xj  / total
-
-  return Math.log(pij / (pi * pj))
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const corpus = [
-  ["ice", "is", "cold", "and", "solid"],
-  ["steam", "is", "hot", "and", "gas"],
-  ["water", "is", "liquid", "not", "solid", "not", "gas"],
-  ["ice", "melts", "into", "water"],
-  ["water", "evaporates", "into", "steam"],
-]
-
-const X = buildCooccurrence(corpus, 2)
-
-console.log("Co-occurrence counts for 'ice':")
-console.log("─".repeat(35))
-const iceRow = X.get("ice")
-if (iceRow) {
-  const sorted = Array.from(iceRow.entries()).sort((a, b) => b[1] - a[1])
-  for (const [word, count] of sorted) {
-    console.log(\`  X[ice, \${word.padEnd(10)}] = \${count}\`)
-  }
-}
-
-console.log()
-console.log("Log-PMI values (w.r.t. 'water'):")
-console.log("─".repeat(40))
-for (const word of ["ice", "steam", "cold", "hot", "liquid", "gas"]) {
-  const pmi = logPMI(X, "water", word)
-  const bar = pmi > 0 ? "+".repeat(Math.min(10, Math.floor(pmi))) : "-".repeat(Math.min(10, Math.floor(-pmi)))
-  console.log(\`  PMI(water, \${word.padEnd(8)}) = \${pmi.toFixed(3).padEnd(8)} |\${bar}\`)
-}
-
-console.log()
-console.log("GloVe trains embeddings to approximate these PMI values")
-console.log("so that w_i · w_j ≈ PMI(i, j)")
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of co-occurrence matrix construction, the GloVe weighting
-                function, and log-PMI computation. Demonstrates the core GloVe relationship:
-                trained embeddings approximate the pointwise mutual information matrix.
-            </p>
-            <CodeBlock code={TS_CODE} filename="glove.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -463,6 +357,5 @@ export const GLOVE_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

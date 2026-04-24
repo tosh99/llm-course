@@ -331,70 +331,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Simple Autoencoder — forward pass (no autograd) ──────────────
-// Demonstrates the architecture; training would use backpropagation
 
-type Matrix = number[][]
-type Vec = number[]
 
-function relu(x: number): number { return Math.max(0, x) }
-function sigmoid(x: number): number { return 1 / (1 + Math.exp(-x)) }
-
-function matVec(W: Matrix, b: Vec, x: Vec, act: (v: number) => number): Vec {
-  return W.map((row, i) =>
-    act(row.reduce((s, wij, j) => s + wij * x[j], 0) + b[i])
-  )
-}
-
-interface AEWeights {
-  encW1: Matrix; encB1: Vec   // input_dim → hidden_dim
-  encW2: Matrix; encB2: Vec   // hidden_dim → latent_dim
-  decW1: Matrix; decB1: Vec   // latent_dim → hidden_dim
-  decW2: Matrix; decB2: Vec   // hidden_dim → input_dim
-}
-
-export function encode(x: Vec, w: AEWeights): Vec {
-  const h = matVec(w.encW1, w.encB1, x, relu)
-  return matVec(w.encW2, w.encB2, h, (v) => v) // linear bottleneck
-}
-
-export function decode(z: Vec, w: AEWeights): Vec {
-  const h = matVec(w.decW1, w.decB1, z, relu)
-  return matVec(w.decW2, w.decB2, h, sigmoid)  // sigmoid for [0,1] outputs
-}
-
-export function reconstruct(x: Vec, w: AEWeights): Vec {
-  return decode(encode(x, w), w)
-}
-
-/** MSE reconstruction loss */
-export function mseLoss(x: Vec, xHat: Vec): number {
-  return x.reduce((s, xi, i) => s + (xi - xHat[i]) ** 2, 0) / x.length
-}
-
-// ── Anomaly detection: high reconstruction error → anomaly ────────
-function isAnomaly(x: Vec, w: AEWeights, threshold: number): boolean {
-  return mseLoss(x, reconstruct(x, w)) > threshold
-}
-
-// Demo with a tiny toy example (3D input → 1D bottleneck → 3D output)
-// In practice, train the weights with backpropagation (PyTorch/TF)
-console.log("Autoencoder forward pass defined.")
-console.log("Use PyTorch or TF for gradient-based training.")`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                The autoencoder forward pass: encoder compresses x to z, decoder reconstructs x̂ from z. In TypeScript we can implement the forward pass cleanly; training requires backpropagation — use PyTorch or TensorFlow for that. The anomaly detection pattern (high reconstruction error = anomaly) is widely used in production monitoring.
-            </p>
-            <CodeBlock code={TS_CODE} filename="autoencoder.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Connecting to the next chapter:</strong> Autoencoders with non-linear activations are the gateway to deep unsupervised learning. The encoder-decoder pattern reappears everywhere: sequence-to-sequence models (Ch. 11), the Transformer (Ch. 14), BERT (Ch. 16), and diffusion models all use variants of this compress-then-reconstruct idea.
-            </div>
-        </>
-    )
-}
 
 export const AUTOENCODERS_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
@@ -402,5 +340,4 @@ export const AUTOENCODERS_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

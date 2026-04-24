@@ -276,74 +276,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Simulated In-Context Learning — TypeScript ───────────────────────────────
 
-function cosineSim(a: number[], b: number[]): number {
-    const dot = a.reduce((s, v, i) => s + v * b[i], 0)
-    const normA = Math.sqrt(a.reduce((s, v) => s + v * v, 0))
-    const normB = Math.sqrt(b.reduce((s, v) => s + v * v, 0))
-    return dot / (normA * normB)
-}
 
-function softmax(x: number[], temperature = 1.0): number[] {
-    const scaled = x.map(v => v / temperature)
-    const maxVal = Math.max(...scaled)
-    const exp = scaled.map(v => Math.exp(v - maxVal))
-    const sum = exp.reduce((a, b) => a + b, 0)
-    return exp.map(v => v / sum)
-}
-
-function inContextPredict(
-    query: number[],
-    examples: [number[], number[]][],
-    temperature = 1.0
-): { prediction: number[]; weights: number[] } {
-    const sims = examples.map(([inp]) => cosineSim(query, inp))
-    const weights = softmax(sims, temperature)
-    
-    const dim = query.length
-    const prediction = Array(dim).fill(0)
-    for (let i = 0; i < examples.length; i++) {
-        for (let j = 0; j < dim; j++) {
-            prediction[j] += weights[i] * examples[i][1][j]
-        }
-    }
-    return { prediction, weights }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const dim = 64
-function randVec(d: number): number[] {
-    return Array.from({ length: d }, () => (Math.random() - 0.5) * 2)
-}
-
-const examples: [number[], number[]][] = [
-    [randVec(dim), randVec(dim)],
-    [randVec(dim), randVec(dim)],
-    [randVec(dim), randVec(dim)],
-]
-
-const query = randVec(dim)
-const { prediction, weights } = inContextPredict(query, examples, 0.5)
-
-console.log("In-Context Learning Simulation")
-console.log("─".repeat(40))
-console.log(\`Weights: [\${weights.map(w => w.toFixed(3)).join(", ")}]\`)
-console.log(\`Prediction norm: \${Math.sqrt(prediction.reduce((s, v) => s + v * v, 0)).toFixed(4)}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript simulation of in-context learning via similarity-weighted aggregation.
-                Each example contributes to the prediction proportional to its input's similarity to
-                the query, approximating the attention mechanism's role in few-shot adaptation.
-            </p>
-            <CodeBlock code={TS_CODE} filename="incontext_learning.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -353,5 +287,4 @@ export const INCONTEXT_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

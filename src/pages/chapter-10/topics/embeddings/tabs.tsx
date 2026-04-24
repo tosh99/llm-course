@@ -335,114 +335,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Geometry of Embeddings — TypeScript ──────────────────────────────────────
 
-type Vec = number[]
-type WordVec = { word: string; vec: Vec }
 
-// ── Vector operations ─────────────────────────────────────────────────────────
-function dot(a: Vec, b: Vec): number { return a.reduce((s, v, i) => s + v * b[i], 0) }
-function norm(v: Vec): number { return Math.sqrt(dot(v, v)) }
-function scale(s: number, v: Vec): Vec { return v.map(x => x * s) }
-function add(a: Vec, b: Vec): Vec { return a.map((x, i) => x + b[i]) }
-function sub(a: Vec, b: Vec): Vec { return a.map((x, i) => x - b[i]) }
-
-function cosineSim(a: Vec, b: Vec): number {
-  const d = norm(a) * norm(b)
-  return d === 0 ? 0 : dot(a, b) / d
-}
-
-// ── Nearest neighbors ─────────────────────────────────────────────────────────
-function nearestNeighbors(
-  query: Vec,
-  vocabulary: WordVec[],
-  topN = 5,
-  exclude: string[] = []
-): { word: string; sim: number }[] {
-  return vocabulary
-    .filter(({ word }) => !exclude.includes(word))
-    .map(({ word, vec }) => ({ word, sim: cosineSim(query, vec) }))
-    .sort((a, b) => b.sim - a.sim)
-    .slice(0, topN)
-}
-
-// ── Analogy ───────────────────────────────────────────────────────────────────
-function analogy(
-  vocabulary: WordVec[],
-  positive: string[],
-  negative: string[]
-): { word: string; sim: number }[] {
-  const getVec = (w: string) => vocabulary.find(v => v.word === w)!.vec
-  const dim = vocabulary[0].vec.length
-  let q: Vec = new Array(dim).fill(0)
-  for (const w of positive) q = add(q, getVec(w))
-  for (const w of negative) q = sub(q, getVec(w))
-  return nearestNeighbors(q, vocabulary, 3, [...positive, ...negative])
-}
-
-// ── Gender debiasing ──────────────────────────────────────────────────────────
-function projectOut(v: Vec, direction: Vec): Vec {
-  // Remove component along direction: v - (v·d/||d||²)d
-  const coeff = dot(v, direction) / dot(direction, direction)
-  return sub(v, scale(coeff, direction))
-}
-
-function genderDirection(pairs: [string, string][], vocabulary: WordVec[]): Vec {
-  const getVec = (w: string) => vocabulary.find(v => v.word === w)!.vec
-  const diffs = pairs.map(([m, f]) => sub(getVec(m), getVec(f)))
-  const mean = diffs[0].map((_, j) => diffs.reduce((s, d) => s + d[j], 0) / diffs.length)
-  const n = norm(mean)
-  return mean.map(v => v / n)
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const vocabulary: WordVec[] = [
-  { word: "king",     vec: [1.0,  0.9, -0.1, 1.0] },
-  { word: "queen",    vec: [1.0, -0.1,  0.9, 1.0] },
-  { word: "man",      vec: [0.0,  0.9, -0.1, 1.0] },
-  { word: "woman",    vec: [0.0, -0.1,  0.9, 1.0] },
-  { word: "prince",   vec: [0.8,  0.9,  0.0, 1.0] },
-  { word: "princess", vec: [0.8,  0.0,  0.9, 1.0] },
-  { word: "france",   vec: [0.0,  0.0,  0.0, 0.0] },
-  { word: "paris",    vec: [0.1,  0.0,  0.0, 1.0] },
-]
-
-console.log("Analogy: king - man + woman = ?")
-const result = analogy(vocabulary, ["king", "woman"], ["man"])
-result.forEach(r => console.log(\`  \${r.word}: \${r.sim.toFixed(4)}\`))
-
-console.log()
-console.log("Gender projection before/after debiasing:")
-const gDir = genderDirection([["king", "queen"], ["man", "woman"]], vocabulary)
-for (const { word, vec } of vocabulary.filter(v => !["king","queen","man","woman"].includes(v.word))) {
-  const projBefore = dot(vec, gDir)
-  const debiased   = projectOut(vec, gDir)
-  const projAfter  = dot(debiased, gDir)
-  console.log(\`  \${word.padEnd(10)}: before=\${projBefore.toFixed(4)}, after=\${projAfter.toFixed(4)}\`)
-}
-
-console.log()
-console.log("Cosine similarities:")
-const pairs = [["king","queen"],["king","man"],["man","woman"],["king","france"]]
-for (const [a, b] of pairs) {
-  const va = vocabulary.find(v => v.word === a)!.vec
-  const vb = vocabulary.find(v => v.word === b)!.vec
-  console.log(\`  sim(\${a},\${b}) = \${cosineSim(va,vb).toFixed(4)}\`)
-}
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of the full embedding geometry toolkit: cosine similarity,
-                nearest neighbor search, analogy solving, gender direction extraction, and geometric
-                debiasing. All demonstrated on a 4-dimensional toy embedding space.
-            </p>
-            <CodeBlock code={TS_CODE} filename="embedding_geometry.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -451,6 +345,5 @@ export const EMBEDDINGS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

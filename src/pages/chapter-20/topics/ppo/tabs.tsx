@@ -280,57 +280,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── PPO Core Functions — TypeScript ───────────────────────────────────────────
 
-function clip(value: number, min: number, max: number): number {
-    return Math.max(min, Math.min(max, value))
-}
 
-function ppoLoss(ratios: number[], advantages: number[], epsilon = 0.2): number {
-    let total = 0
-    for (let i = 0; i < ratios.length; i++) {
-        const clipped = clip(ratios[i], 1 - epsilon, 1 + epsilon)
-        total += Math.min(ratios[i] * advantages[i], clipped * advantages[i])
-    }
-    return total / ratios.length
-}
-
-function gae(rewards: number[], values: number[], gamma = 0.99, lambda = 0.95): number[] {
-    const T = rewards.length
-    const advantages = new Array(T).fill(0)
-    let gae_t = 0
-
-    for (let t = T - 1; t >= 0; t--) {
-        const delta = rewards[t] + gamma * values[t + 1] - values[t]
-        gae_t = delta + gamma * lambda * gae_t
-        advantages[t] = gae_t
-    }
-
-    return advantages
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const T = 20
-const ratios = Array.from({ length: T }, () => 0.8 + Math.random() * 0.4)
-const advantages = Array.from({ length: T }, () => (Math.random() - 0.5) * 2)
-const rewards = new Array(T).fill(0)
-rewards[T - 1] = 1.0
-const values = Array.from({ length: T + 1 }, () => (Math.random() - 0.5) * 2)
-
-console.log("PPO Objective:", ppoLoss(ratios, advantages).toFixed(4))
-console.log("GAE:", gae(rewards, values).map(v => v.toFixed(2)))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of PPO clipped loss and GAE for language model alignment.
-            </p>
-            <CodeBlock code={TS_CODE} filename="ppo.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -340,5 +291,4 @@ export const PPO_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

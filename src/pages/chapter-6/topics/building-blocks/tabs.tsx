@@ -319,127 +319,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── CNN Building Blocks in TypeScript ─────────────────────────────────────────
 
-type Tensor4D = number[][][][];
-type Vec = number[];
 
-// ── Block Functions ───────────────────────────────────────────────────────────
-
-function relu(x: number): number {
-    return Math.max(0, x);
-}
-
-function convBlock(
-    input: Tensor4D,
-    weight: number[][][],
-    bias: number[],
-    stride: number = 1
-): Tensor4D {
-    const [batch, in_ch, in_h, in_w] = [input.length, input[0].length, input[0][0].length, input[0][0][0].length];
-    const [out_ch, _, k, _] = [weight.length, weight[0].length, weight[0][0].length, weight[0][0][0].length];
-    
-    const out_h = Math.floor((in_h - k) / stride) + 1;
-    const out_w = Math.floor((in_w - k) / stride) + 1;
-    
-    const output: Tensor4D = Array(batch).fill(0).map(() =>
-        Array(out_ch).fill(0).map(() =>
-            Array(out_h).fill(0).map(() => Array(out_w).fill(0))
-        )
-    );
-    
-    for (let b = 0; b < batch; b++) {
-        for (let oc = 0; oc < out_ch; oc++) {
-            for (let oh = 0; oh < out_h; oh++) {
-                for (let ow = 0; ow < out_w; ow++) {
-                    let sum = bias[oc];
-                    for (let ic = 0; ic < in_ch; ic++) {
-                        for (let kh = 0; kh < k; kh++) {
-                            for (let kw = 0; kw < k; kw++) {
-                                const ih = oh * stride + kh;
-                                const iw = ow * stride + kw;
-                                sum += input[b][ic][ih][iw] * weight[oc][ic][kh][kw];
-                            }
-                        }
-                    }
-                    output[b][oc][oh][ow] = relu(sum);
-                }
-            }
-        }
-    }
-    
-    return output;
-}
-
-function maxPoolBlock(input: Tensor4D, poolSize: number = 2, stride: number = 2): Tensor4D {
-    const [batch, ch, h, w] = [input.length, input[0].length, input[0][0].length, input[0][0][0].length];
-    const out_h = Math.floor((h - poolSize) / stride) + 1;
-    const out_w = Math.floor((w - poolSize) / stride) + 1;
-    
-    const output: Tensor4D = Array(batch).fill(0).map(() =>
-        Array(ch).fill(0).map(() =>
-            Array(out_h).fill(0).map(() => Array(out_w).fill(0))
-        )
-    );
-    
-    for (let b = 0; b < batch; b++) {
-        for (let c = 0; c < ch; c++) {
-            for (let oh = 0; oh < out_h; oh++) {
-                for (let ow = 0; ow < out_w; ow++) {
-                    let max = -Infinity;
-                    for (let ph = 0; ph < poolSize; ph++) {
-                        for (let pw = 0; pw < poolSize; pw++) {
-                            const val = input[b][c][oh * stride + ph][ow * stride + pw];
-                            max = Math.max(max, val);
-                        }
-                    }
-                    output[b][c][oh][ow] = max;
-                }
-            }
-        }
-    }
-    
-    return output;
-}
-
-// ── Chain Blocks Together ─────────────────────────────────────────────────────
-
-function cnnForward(input: Tensor4D, layers: any[]): Tensor4D {
-    let x = input;
-    for (const layer of layers) {
-        if (layer.type === 'conv') {
-            x = convBlock(x, layer.weight, layer.bias, layer.stride);
-        } else if (layer.type === 'pool') {
-            x = maxPoolBlock(x, layer.size, layer.stride);
-        }
-    }
-    return x;
-}
-
-// ── Example Block Configuration ───────────────────────────────────────────────
-
-const layers = [
-    { type: 'conv', weight: [], bias: [], stride: 1 },   // Block 1
-    { type: 'conv', weight: [], bias: [], stride: 1 },   // Block 1
-    { type: 'pool', size: 2, stride: 2 },               // Block 1
-    { type: 'conv', weight: [], bias: [], stride: 1 },   // Block 2
-    { type: 'pool', size: 2, stride: 2 },               // Block 2
-];
-
-// This modular design matches PyTorch nn.Sequential!`;
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Building CNNs from blocks in TypeScript shows the modularity clearly.
-                Each block transforms dimensions predictably, making network design
-                systematic.
-            </p>
-            <CodeBlock code={TS_CODE} filename="building-blocks.ts" lang="typescript" />
-        </>
-    )
-}
 
 // ── Tab content map ─────────────────────────────────────────────────────────────
 
@@ -448,6 +329,5 @@ export const BUILDING_BLOCKS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

@@ -263,105 +263,13 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Ridge and Lasso Regression in TypeScript ─────────────────
 
-type Vec = number[]
-type Mat = number[][]
 
-const dot  = (a: Vec, b: Vec): number => a.reduce((s, v, i) => s + v * b[i], 0)
-const matT = (A: Mat): Mat => A[0].map((_, j) => A.map(r => r[j]))
-const matMul = (A: Mat, B: Mat): Mat =>
-  A.map(row => B[0].map((_, j) => dot(row, B.map(r => r[j]))))
-
-/** Scalar * matrix */
-const matScale = (A: Mat, s: number): Mat => A.map(r => r.map(v => v * s))
-
-/** Add λI to matrix */
-const addRidge = (A: Mat, lam: number): Mat =>
-  A.map((row, i) => row.map((v, j) => v + (i === j ? lam : 0)))
-
-/** Naive matrix inverse (2×2 only, for demo) */
-function inv2(A: Mat): Mat {
-  const det = A[0][0]*A[1][1] - A[0][1]*A[1][0]
-  return matScale([[A[1][1], -A[0][1]], [-A[1][0], A[0][0]]], 1/det)
-}
-
-/** Ridge regression: β = (XᵀX + λI)⁻¹ Xᵀy  (2-feature demo) */
-function ridgeRegression(X: Mat, y: Vec, lambda: number): Vec {
-  const Xt   = matT(X)
-  const XtX  = matMul(Xt, X)
-  const XtXr = addRidge(XtX, lambda)
-  const XtXr_inv = inv2(XtXr)           // works for 2×2 only
-  const Xty  = Xt.map(row => dot(row, y))
-  return XtXr_inv.map(row => dot(row, Xty))
-}
-
-/** Soft-thresholding (Lasso update for one coordinate) */
-const softThreshold = (z: number, lam: number): number =>
-  Math.sign(z) * Math.max(0, Math.abs(z) - lam)
-
-/** Lasso via coordinate descent */
-function lassoCD(
-  X: Mat, y: Vec, lambda: number, maxIter = 1000, tol = 1e-6
-): Vec {
-  const n = X.length, p = X[0].length
-  let beta: Vec = Array(p).fill(0)
-
-  for (let iter = 0; iter < maxIter; iter++) {
-    const betaOld = [...beta]
-
-    for (let j = 0; j < p; j++) {
-      // Partial residual
-      const r = y.map((yi, i) =>
-        yi - X[i].reduce((s, xij, k) => s + (k !== j ? xij * beta[k] : 0), 0)
-      )
-      // Ordinary LS for this coordinate
-      const Xj = X.map(row => row[j])
-      const XjX = dot(Xj, Xj)
-      const z = dot(Xj, r) / XjX
-      beta[j] = softThreshold(z, lambda / XjX)
-    }
-
-    // Check convergence
-    const delta = beta.reduce((s, b, i) => s + (b - betaOld[i])**2, 0)
-    if (Math.sqrt(delta) < tol) break
-  }
-  return beta
-}
-
-// ── Demo ──────────────────────────────────────────────────────
-const X: Mat = [[1,2],[2,3],[3,4],[4,5],[5,6],[6,7]]
-const y: Vec = [1.5, 3.2, 4.8, 6.1, 8.2, 9.5]
-
-for (const lam of [0, 0.5, 2.0, 10.0]) {
-  const b = ridgeRegression(X, y, lam)
-  console.log(\`Ridge λ=\${lam.toFixed(1)}: β = [\${b.map(v=>v.toFixed(3)).join(", ")}]\`)
-}
-
-for (const lam of [0, 0.3, 1.0, 3.0]) {
-  const b = lassoCD(X, y, lam)
-  console.log(\`Lasso λ=\${lam.toFixed(1)}: β = [\${b.map(v=>v.toFixed(3)).join(", ")}]\`)
-}`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Ridge regression has a closed-form solution via the normal equations. Lasso requires iterative coordinate descent — the soft-thresholding operator is the key step that sets small coefficients to exactly zero.
-            </p>
-            <CodeBlock code={TS_CODE} filename="regularization.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Why coordinate descent for Lasso?</strong> The L1 penalty makes the objective non-differentiable at zero, so gradient descent doesn't work directly. Coordinate descent cycles through each feature, optimising one coefficient at a time (holding others fixed) — and the single-coordinate update has a closed-form soft-threshold solution.
-            </div>
-        </>
-    )
-}
 
 export const REGULARIZATION_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

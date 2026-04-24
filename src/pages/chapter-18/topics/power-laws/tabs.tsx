@@ -281,73 +281,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Power-Law Utilities — TypeScript ────────────────────────────────────────
 
-interface PowerLawFit {
-  alpha: number
-  A: number
-  L_inf: number
-}
 
-function fitPowerLaw(
-  xs: number[],
-  ys: number[],
-  L_inf: number
-): PowerLawFit {
-  const n = xs.length
-  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0
-
-  for (let i = 0; i < n; i++) {
-    const lx = Math.log(xs[i])
-    const ly = Math.log(ys[i] - L_inf)
-    sumX += lx
-    sumY += ly
-    sumXY += lx * ly
-    sumX2 += lx * lx
-  }
-
-  const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)
-  const intercept = (sumY - slope * sumX) / n
-
-  return {
-    alpha: -slope,
-    A: Math.exp(intercept),
-    L_inf,
-  }
-}
-
-function predictLoss(x: number, fit: PowerLawFit): number {
-  return fit.A * x ** (-fit.alpha) + fit.L_inf
-}
-
-function requiredX(targetLoss: number, fit: PowerLawFit): number {
-  return (fit.A / (targetLoss - fit.L_inf)) ** (1 / fit.alpha)
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const sizes = [1e6, 1e7, 1e8, 1e9, 1e10, 1e11]
-const losses = sizes.map(n => 1.69 + 0.5 * (8.8e13 / n) ** 0.076)
-
-const fit = fitPowerLaw(sizes, losses, 1.69)
-console.log("Fitted power law:")
-console.log(\`  α = \${fit.alpha.toFixed(4)}\`)
-console.log(\`  A = \${fit.A.toExponential(2)}\`)
-
-console.log(\`\\nPredicted @ 1T params: \${predictLoss(1e12, fit).toFixed(3)}\`)
-console.log(\`Needed for loss=1.80:  \${requiredX(1.80, fit).toExponential(2)} params\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of log-log linear regression for power-law fitting,
-                with prediction and inverse-prediction utilities.
-            </p>
-            <CodeBlock code={TS_CODE} filename="power_law.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -357,5 +292,4 @@ export const POWER_LAWS_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

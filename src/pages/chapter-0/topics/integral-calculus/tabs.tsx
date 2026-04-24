@@ -375,141 +375,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Riemann sum ──────────────────────────────────────────────
-function riemannSum(f: (x: number) => number, a: number, b: number, n = 10000): number {
-  const dx = (b - a) / n;
-  let sum = 0;
-  for (let i = 0; i < n; i++) {
-    const xi = a + (i + 0.5) * dx; // midpoint
-    sum += f(xi) * dx;
-  }
-  return sum;
-}
 
-// ∫₀² x² dx = [x³/3]⁰₂ = 8/3
-const f = (x: number) => x ** 2;
-const approx = riemannSum(f, 0, 2);
-const exact = 8 / 3;
-console.log(\`Riemann sum (n=10000): \${approx.toFixed(6)}\`);
-console.log(\`Exact:                 \${exact.toFixed(6)}\`);
-console.log(\`Error:                 \${Math.abs(approx - exact).toExponential(4)}\`);
 
-// ── Trapezoidal rule ──────────────────────────────────────────
-function trapezoidal(
-  f: (x: number) => number,
-  a: number,
-  b: number,
-  n = 1000
-): number {
-  const dx = (b - a) / n;
-  let sum = 0;
-  for (let i = 0; i < n; i++) {
-    const x0 = a + i * dx;
-    const x1 = a + (i + 1) * dx;
-    sum += 0.5 * (f(x0) + f(x1)) * dx; // area of trapezoid
-  }
-  return sum;
-}
-
-console.log(\`\\nTrapezoidal (n=1000): \${trapezoidal(f, 0, 2).toFixed(6)}\`);
-
-// ── Simpson's rule (requires even n) ──────────────────────────
-function simpson(
-  f: (x: number) => number,
-  a: number,
-  b: number,
-  n = 1000
-): number {
-  if (n % 2 !== 0) n++; // must be even
-  const dx = (b - a) / n;
-  let sum = f(a) + f(b); // endpoints
-
-  for (let i = 1; i < n; i++) {
-    const x = a + i * dx;
-    sum += (i % 2 === 0 ? 2 : 4) * f(x); // even i → 2, odd i → 4
-  }
-
-  return (dx / 3) * sum;
-}
-
-console.log(\`Simpson (n=1000):      \${simpson(f, 0, 2).toFixed(6)}\`);
-
-// ── Monte Carlo integration ───────────────────────────────────
-function monteCarlo(
-  f: (x: number) => number,
-  a: number,
-  b: number,
-  n = 100000
-): { estimate: number; stderr: number } {
-  let sum = 0;
-  let sumSq = 0;
-
-  for (let i = 0; i < n; i++) {
-    const xi = a + Math.random() * (b - a);
-    const fx = f(xi);
-    sum += fx;
-    sumSq += fx * fx;
-  }
-
-  const volume = b - a;
-  const mean = sum / n;
-  const variance = sumSq / n - mean * mean;
-  const stderr = Math.sqrt(variance / n);
-
-  return { estimate: volume * mean, stderr };
-}
-
-const mc = monteCarlo(f, 0, 2, 100000);
-console.log(\`\\nMonte Carlo (n=100k):  \${mc.estimate.toFixed(6)} ± \${mc.stderr.toFixed(4)}\`);
-
-// ── 2D Monte Carlo ─────────────────────────────────────────────
-function mc2D(
-  f: (x: number, y: number) => number,
-  a: number,
-  b: number,
-  n = 50000
-): number {
-  let sum = 0;
-  for (let i = 0; i < n; i++) {
-    const x = a + Math.random() * (b - a);
-    const y = a + Math.random() * (b - a);
-    sum += f(x, y);
-  }
-  return (b - a) ** 2 * (sum / n);
-}
-
-// ∫∫ exp(-x² - y²) dx dy over [-1,1]²
-const f2d = (x: number, y: number) => Math.exp(-x * x - y * y);
-console.log(\`\\nMC 2D integral:         \${mc2D(f2d, -1, 1, 100000).toFixed(4)}\`);
-
-// ── Why grid methods fail in high dimensions ─────────────────
-// A 10D unit hypercube with 2 points per dimension = 2^10 = 1024 points
-// With 10 points per dimension: 10^10 = 10 billion points
-// Monte Carlo: still just n samples regardless of dimension
-
-console.log(\`\\nGrid: 2^10 = \${Math.pow(2, 10)} points (too few)\`);
-console.log(\`Grid: 10^10 = \${Math.pow(10, 10)} points (impossible)\`);
-console.log(\`Monte Carlo: \${100000} samples at any dimension ✓\`);`;
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript implementations of Riemann sums, trapezoidal rule, Simpson's rule,
-                and Monte Carlo integration. These show exactly how numerical approximation works
-                before reaching for libraries.
-            </p>
-            <CodeBlock code={TS_CODE} filename="integral_calculus.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Key insight:</strong> The curse of dimensionality means grid-based
-                integration becomes intractable in high dimensions (n^d points). Monte Carlo's
-                O(1/√n) convergence is dimension-independent — which is why it's the only
-                viable approach for integrating over the billions of parameters in a neural
-                network's weight space.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -518,6 +385,5 @@ export const INTEGRAL_CALCULUS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

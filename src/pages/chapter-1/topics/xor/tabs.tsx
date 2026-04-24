@@ -336,85 +336,7 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── XOR with a Two-Layer Network (hand-coded weights) ──────────────────────
-// Architecture: 2 inputs → 2 hidden (NAND, OR) → 1 output (AND)
 
-function sigmoid(z: number): number {
-  return 1 / (1 + Math.exp(-Math.max(-500, Math.min(500, z))));
-}
-
-type Vec = number[];
-type Mat = number[][];
-
-const W1: Mat = [    // Layer 1: NAND row, OR row
-  [ 2, -2],          // NAND: w=[2,-2], b=-1
-  [ 1,  1],          // OR:   w=[1, 1], b=-0.5
-];
-const b1: Vec = [-1, -0.5];
-
-const W2: Vec = [1, 1];  // AND of NAND and OR
-const b2 = -1.5;
-
-function forward(x: Vec): number {
-  // Hidden layer
-  const h1 = sigmoid(x[0]*W1[0][0] + x[1]*W1[0][1] + b1[0]); // NAND
-  const h2 = sigmoid(x[0]*W1[1][0] + x[1]*W1[1][1] + b1[1]); // OR
-  // Output layer
-  const out = sigmoid(h1*W2[0] + h2*W2[1] + b2);              // AND
-  return out >= 0.5 ? 1 : 0;
-}
-
-const X: Vec[] = [[0,0],[0,1],[1,0],[1,1]];
-const y: number[] = [0,    1,    1,    0];
-
-console.log("XOR with 2-layer network:");
-X.forEach((x, i) => {
-  const h1 = sigmoid(x[0]*2 + x[1]*(-2) - 1);   // NAND
-  const h2 = sigmoid(x[0]*1 + x[1]*1 - 0.5);    // OR
-  const pred = forward(x);
-  console.log(
-    \`  [\${x}] NAND=\${h1.toFixed(3)}, OR=\${h2.toFixed(3)} → \${pred} (true=\${y[i]}) \${pred === y[i] ? "✓" : "✗"}\`
-  );
-});
-
-// ── One hidden unit: still fails ─────────────────────────────────────────────
-console.log("\\n1 hidden unit (still linear in feature space):");
-function forward1(x: Vec): number {
-  const h = sigmoid(x[0]*1 + x[1]*(-1) - 0.5);
-  return sigmoid(h*1 + (-0.5)) >= 0.5 ? 1 : 0;
-}
-console.log("  1-unit predictions:", X.map(x => forward1(x)));
-// → never gets all 4 right — one hidden dimension = linear classifier in 2D
-
-// ── Geometric interpretation ─────────────────────────────────────────────────
-console.log("\\nGeometric picture:");
-console.log("  Hidden space (h1=NAND, h2=OR):");
-X.forEach((x, i) => {
-  const h1 = sigmoid(x[0]*2 + x[1]*(-2) - 1);
-  const h2 = sigmoid(x[0]*1 + x[1]*1 - 0.5);
-  console.log(\`    x=\${x} → (NAND=\${h1.toFixed(2)}, OR=\${h2.toFixed(2)}) → label=\${y[i]}\`);
-});
-console.log("  XOR=0: (0,0)→(0.38,0.62), (1,1)→(0.62,0.95)");
-console.log("  XOR=1: (0,1)→(0.88,0.82), (1,0)→(0.88,0.82)");
-console.log("  These can be separated by a line in hidden space → single-layer classifier works here!");`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Two-layer TypeScript network for XOR. The hand-coded weights encode the NAND + OR → AND
-                decomposition. No backpropagation needed — the insight is purely architectural.
-            </p>
-            <CodeBlock code={TS_CODE} filename="xor-twolayer.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Deep insight:</strong> The hidden layer maps the original 2D space to a
-                <em> new 2D space</em> (hidden activations). In that new space, XOR points are
-                linearly separable. The hidden layer is a <em>feature transformation</em> — it
-                remaps the problem into a space where a single hyperplane suffices.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -424,5 +346,4 @@ export const XOR_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
     python: <PythonTab />,
-    code: <CodeTab />,
 }

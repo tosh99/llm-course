@@ -291,96 +291,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Bidirectional RNN — TypeScript ──────────────────────────────────────────
 
-type Vec = number[]
-type Mat = number[][]
 
-const tanhVec = (v: Vec): Vec => v.map(Math.tanh)
-const dot = (a: Vec, b: Vec) => a.reduce((s, ai, i) => s + ai * b[i], 0)
-const matVec = (M: Mat, v: Vec): Vec => M.map(row => dot(row, v))
-const vecAdd = (a: Vec, b: Vec): Vec => a.map((ai, i) => ai + b[i])
-
-interface RNNParams {
-  W: Mat; U: Mat; b: Vec
-}
-
-function rnnForward(X: Mat, p: RNNParams): Vec[] {
-  const H: Vec[] = []
-  let h: Vec = Array(X[0].length).fill(0)   // wrong dim, fixed below
-  // Actually h should be hidden_dim; we'll initialize per-call
-  return H
-}
-
-// Correct implementation with explicit hidden dim
-function rnnStep(x: Vec, h: Vec, p: RNNParams): Vec {
-  return tanhVec(vecAdd(vecAdd(matVec(p.W, x), matVec(p.U, h)), p.b))
-}
-
-function runRNN(X: Mat, h0: Vec, p: RNNParams): Vec[] {
-  const H: Vec[] = []
-  let h = h0
-  for (const x of X) {
-    h = rnnStep(x, h, p)
-    H.push([...h])
-  }
-  return H
-}
-
-function biRNN(
-  X: Mat,
-  hiddenDim: number,
-  fwd: RNNParams,
-  bwd: RNNParams
-): Vec[] {
-  const h0 = Array(hiddenDim).fill(0)
-  const Hf = runRNN(X, h0, fwd)
-  const HbRev = runRNN([...X].reverse(), h0, bwd)
-  const Hb = HbRev.reverse()
-
-  return Hf.map((hf, i) => [...hf, ...Hb[i]])
-}
-
-// ── Demo: detecting a "phrase boundary" ──────────────────────────────────────
-// X[t] = [left_context, center, right_context, bias]
-const X: Mat = [
-  [1, 0, 0, 1],
-  [1, 0, 0, 1],
-  [0, 1, 0, 1],   // phrase center
-  [0, 0, 1, 1],
-  [0, 0, 1, 1],
-]
-
-const randMat = (r: number, c: number): Mat =>
-  Array.from({ length: r }, () =>
-    Array.from({ length: c }, () => (Math.random() - 0.5) * 0.3))
-const randVec = (n: number): Vec => Array(n).fill(0)
-
-const HIDDEN = 3
-const fwd: RNNParams = { W: randMat(HIDDEN, 4), U: randMat(HIDDEN, HIDDEN), b: randVec(HIDDEN) }
-const bwd: RNNParams = { W: randMat(HIDDEN, 4), U: randMat(HIDDEN, HIDDEN), b: randVec(HIDDEN) }
-
-const H = biRNN(X, HIDDEN, fwd, bwd)
-
-console.log("Bidirectional RNN — TypeScript")
-console.log("─".repeat(40))
-H.forEach((h, t) => {
-  console.log(\`  t=\${t}: [\${h.map(v => v.toFixed(3)).join(", ")}]\`)
-})
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript bidirectional RNN with reusable directional runner. The demo uses
-                a 5-step sequence where step 2 is a phrase center, demonstrating how both
-                directions contribute to the concatenated state.
-            </p>
-            <CodeBlock code={TS_CODE} filename="birnn.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -390,5 +302,4 @@ export const BIDIRECTIONAL_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

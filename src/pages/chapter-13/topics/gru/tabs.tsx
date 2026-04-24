@@ -325,95 +325,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── GRU Cell — TypeScript ───────────────────────────────────────────────────
 
-type Vec = number[]
-type Mat = number[][]
 
-const sigmoid = (x: number) => 1 / (1 + Math.exp(-x))
-const tanh    = (x: number) => Math.tanh(x)
-const vecOp   = (a: Vec, b: Vec, f: (x: number, y: number) => number): Vec =>
-  a.map((ai, i) => f(ai, b[i]))
-const vecScale = (v: Vec, s: number): Vec => v.map(x => x * s)
-const dot = (a: Vec, b: Vec) => a.reduce((s, ai, i) => s + ai * b[i], 0)
-const matVec = (M: Mat, v: Vec): Vec => M.map(row => dot(row, v))
-
-interface GRUParams {
-  Wr: Mat; Wz: Mat; Wh: Mat
-  Ur: Mat; Uz: Mat; Uh: Mat
-  br: Vec; bz: Vec; bh: Vec
-}
-
-function gruStep(x: Vec, hPrev: Vec, p: GRUParams): Vec {
-  const r = vecOp(matVec(p.Wr, x), matVec(p.Ur, hPrev), (a, b) => a + b)
-    .map((v, i) => sigmoid(v + p.br[i]))
-  const z = vecOp(matVec(p.Wz, x), matVec(p.Uz, hPrev), (a, b) => a + b)
-    .map((v, i) => sigmoid(v + p.bz[i]))
-
-  const rH = vecOp(r, hPrev, (ri, hi) => ri * hi)
-  const hTilde = vecOp(matVec(p.Wh, x), matVec(p.Uh, rH), (a, b) => a + b)
-    .map((v, i) => tanh(v + p.bh[i]))
-
-  // h = (1 - z) * hPrev + z * hTilde
-  return hPrev.map((hp, i) => (1 - z[i]) * hp + z[i] * hTilde[i])
-}
-
-function gruSequence(X: Mat, h0: Vec, p: GRUParams): Vec[] {
-  const H: Vec[] = []
-  let h = h0
-  for (const x of X) {
-    h = gruStep(x, h, p)
-    H.push([...h])
-  }
-  return H
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const INPUT_DIM = 3, HIDDEN = 5
-const randMat = (r: number, c: number): Mat =>
-  Array.from({ length: r }, () =>
-    Array.from({ length: c }, () => (Math.random() - 0.5) * 0.2))
-const randVec = (n: number): Vec =>
-  Array.from({ length: n }, () => (Math.random() - 0.5) * 0.2)
-
-const params: GRUParams = {
-  Wr: randMat(HIDDEN, INPUT_DIM), Wz: randMat(HIDDEN, INPUT_DIM), Wh: randMat(HIDDEN, INPUT_DIM),
-  Ur: randMat(HIDDEN, HIDDEN),    Uz: randMat(HIDDEN, HIDDEN),    Uh: randMat(HIDDEN, HIDDEN),
-  br: randVec(HIDDEN),            bz: randVec(HIDDEN),            bh: randVec(HIDDEN),
-}
-
-// A sentence where word 3 is a "signal" word (high magnitude)
-const X: Mat = [
-  [0.1, 0.0, 0.0],
-  [0.2, 0.0, 0.0],
-  [0.9, 0.8, 0.7],   // signal
-  [0.1, 0.0, 0.0],
-  [0.1, 0.0, 0.0],
-]
-
-const h0 = randVec(HIDDEN)
-const H = gruSequence(X, h0, params)
-
-console.log("GRU Sequence — TypeScript")
-console.log("─".repeat(40))
-H.forEach((h, t) => {
-  const norm = Math.sqrt(h.reduce((s, v) => s + v * v, 0))
-  console.log(\`  t=\${t}: ||h|| = \${norm.toFixed(4)}\`)
-})
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript GRU cell with explicit gate computation. The demo runs a 5-step
-                sequence where step 2 carries a strong signal, showing how the hidden state
-                norm responds to salient inputs.
-            </p>
-            <CodeBlock code={TS_CODE} filename="gru.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -423,5 +336,4 @@ export const GRU_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

@@ -311,111 +311,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Multi-Head Attention — TypeScript ───────────────────────────────────────
 
-type Mat = number[][]
 
-function matMul(A: Mat, B: Mat): Mat {
-  const n = A.length, m = B[0].length, p = B.length
-  const C: Mat = Array.from({ length: n }, () => Array(m).fill(0))
-  for (let i = 0; i < n; i++)
-    for (let k = 0; k < p; k++)
-      for (let j = 0; j < m; j++)
-        C[i][j] += A[i][k] * B[k][j]
-  return C
-}
-
-function transpose(A: Mat): Mat {
-  return A[0].map((_, j) => A.map(row => row[j]))
-}
-
-function softmaxRows(M: Mat): Mat {
-  return M.map(row => {
-    const max = Math.max(...row)
-    const exps = row.map(v => Math.exp(v - max))
-    const sum = exps.reduce((a, b) => a + b, 0)
-    return exps.map(e => e / sum)
-  })
-}
-
-function scale(M: Mat, s: number): Mat {
-  return M.map(row => row.map(v => v * s))
-}
-
-function scaledDotProductAttention(Q: Mat, K: Mat, V: Mat): Mat {
-  const d_k = Q[0].length
-  const scores = matMul(Q, transpose(K))
-  const scaled = scale(scores, 1 / Math.sqrt(d_k))
-  const attn = softmaxRows(scaled)
-  return matMul(attn, V)
-}
-
-class MultiHeadAttention {
-  constructor(
-    public dModel: number,
-    public numHeads: number,
-    private Wq: Mat,
-    private Wk: Mat,
-    private Wv: Mat,
-    private Wo: Mat
-  ) {}
-
-  forward(X: Mat): Mat {
-    const n = X.length
-    const dk = this.dModel / this.numHeads
-
-    const Q = matMul(X, this.Wq)
-    const K = matMul(X, this.Wk)
-    const V = matMul(X, this.Wv)
-
-    const heads: Mat[] = []
-    for (let h = 0; h < this.numHeads; h++) {
-      const sliceQ = Q.map(row => row.slice(h * dk, (h + 1) * dk))
-      const sliceK = K.map(row => row.slice(h * dk, (h + 1) * dk))
-      const sliceV = V.map(row => row.slice(h * dk, (h + 1) * dk))
-      heads.push(scaledDotProductAttention(sliceQ, sliceK, sliceV))
-    }
-
-    // Concatenate heads: each head is (n, dk); concat across columns
-    const concat: Mat = heads[0].map((_, i) =>
-      heads.flatMap(head => head[i])
-    )
-    return matMul(concat, this.Wo)
-  }
-}
-
-// ── Demo ─────────────────────────────────────────────────────────────────────-
-function randMat(r: number, c: number): Mat {
-  return Array.from({ length: r }, () =>
-    Array.from({ length: c }, () => (Math.random() - 0.5) * 0.2))
-}
-
-const dModel = 64, numHeads = 8
-const X = randMat(6, dModel)
-const mha = new MultiHeadAttention(
-  dModel, numHeads,
-  randMat(dModel, dModel), randMat(dModel, dModel),
-  randMat(dModel, dModel), randMat(dModel, dModel)
-)
-
-const out = mha.forward(X)
-console.log("Multi-Head Attention — TypeScript")
-console.log("─".repeat(40))
-console.log("Input shape :", X.length, "x", X[0].length)
-console.log("Output shape:", out.length, "x", out[0].length)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript multi-head attention with manual slicing into per-head matrices.
-                Illustrates the reshape-then-compute logic that frameworks handle automatically.
-            </p>
-            <CodeBlock code={TS_CODE} filename="multi_head_attention.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -425,5 +322,4 @@ export const MULTI_HEAD_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

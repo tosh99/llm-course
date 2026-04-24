@@ -280,88 +280,13 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Bagging (Bootstrap Aggregating) in TypeScript ────────────
-// Demonstrates the core variance-reduction idea with numeric regression
 
-type Sample = { x: number[]; y: number }
-type Prediction = (x: number[]) => number
 
-/** Draw N samples with replacement */
-function bootstrap(data: Sample[]): Sample[] {
-  return Array.from({ length: data.length }, () =>
-    data[Math.floor(Math.random() * data.length)]
-  )
-}
-
-/** Simple mean prediction — stand-in for any base learner */
-function trainMean(data: Sample[]): Prediction {
-  const mu = data.reduce((s, d) => s + d.y, 0) / data.length
-  return () => mu
-}
-
-/** Bag B base learners, return averaging ensemble */
-function bag(data: Sample[], B: number): Prediction {
-  const models = Array.from({ length: B }, () =>
-    trainMean(bootstrap(data))
-  )
-  return (x) => models.reduce((s, m) => s + m(x), 0) / B
-}
-
-// ── Demo ──────────────────────────────────────────────────────
-const data: Sample[] = [
-  { x: [1], y: 2.1 }, { x: [2], y: 3.8 }, { x: [3], y: 6.2 },
-  { x: [4], y: 7.5 }, { x: [5], y: 9.8 },
-]
-
-const singleModel = trainMean(data)
-const baggedModel  = bag(data, 500)
-
-console.log("Single model prediction (x=[3]):", singleModel([3]).toFixed(3))
-console.log("Bagged model  prediction (x=[3]):", baggedModel([3]).toFixed(3))
-
-// ── AdaBoost weight update (conceptual) ───────────────────────
-function adaWeightUpdate(
-  weights: number[],
-  correct: boolean[],
-  alpha: number
-): number[] {
-  const raw = weights.map((w, i) =>
-    correct[i] ? w * Math.exp(-alpha) : w * Math.exp(alpha)
-  )
-  const total = raw.reduce((s, w) => s + w, 0)
-  return raw.map(w => w / total)  // renormalise
-}
-
-const N = 5
-let w = Array(N).fill(1 / N)
-const correct1 = [true, true, false, true, false]  // round 1 errors
-const epsilon1 = w.reduce((s, wi, i) => s + (correct1[i] ? 0 : wi), 0)
-const alpha1   = 0.5 * Math.log((1 - epsilon1) / epsilon1)
-w = adaWeightUpdate(w, correct1, alpha1)
-
-console.log("\\nAfter round 1:")
-console.log("  alpha_1 =", alpha1.toFixed(3))
-console.log("  weights =", w.map(wi => wi.toFixed(3)))`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Bagging and AdaBoost weight update in TypeScript. Both algorithms are simple in isolation — the power comes from their theoretical guarantees about variance reduction and loss minimisation.
-            </p>
-            <CodeBlock code={TS_CODE} filename="ensembles.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Real-world note:</strong> Use <code>xgboost</code> or <code>lightgbm</code> Python packages for production ensemble models — they're 10–100× faster than scikit-learn's GBM due to histogram-based split finding, parallelised tree construction, and cache-aware data access patterns.
-            </div>
-        </>
-    )
-}
 
 export const ENSEMBLES_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

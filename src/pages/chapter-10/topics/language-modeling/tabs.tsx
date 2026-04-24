@@ -394,131 +394,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Language Model utilities — TypeScript ────────────────────────────────────
 
-// ── Bigram model ──────────────────────────────────────────────────────────────
-class BigramLM {
-  private counts: Map<string, Map<string, number>> = new Map()
-  private contextCounts: Map<string, number> = new Map()
-  private vocab: Set<string> = new Set()
-  private smoothing: number
 
-  constructor(smoothing = 0.1) {
-    this.smoothing = smoothing
-  }
-
-  fit(corpus: string[][]): void {
-    for (const sent of corpus) {
-      const tokens = ["<s>", ...sent, "</s>"]
-      for (const t of tokens) this.vocab.add(t)
-
-      for (let i = 0; i < tokens.length - 1; i++) {
-        const ctx  = tokens[i]
-        const word = tokens[i + 1]
-
-        if (!this.counts.has(ctx)) this.counts.set(ctx, new Map())
-        const row = this.counts.get(ctx)!
-        row.set(word, (row.get(word) ?? 0) + 1)
-        this.contextCounts.set(ctx, (this.contextCounts.get(ctx) ?? 0) + 1)
-      }
-    }
-  }
-
-  prob(word: string, context: string): number {
-    const V     = this.vocab.size
-    const num   = (this.counts.get(context)?.get(word) ?? 0) + this.smoothing
-    const denom = (this.contextCounts.get(context) ?? 0) + this.smoothing * V
-    return num / denom
-  }
-
-  perplexity(corpus: string[][]): number {
-    let logProbSum = 0
-    let totalTokens = 0
-
-    for (const sent of corpus) {
-      const tokens = ["<s>", ...sent, "</s>"]
-      for (let i = 0; i < tokens.length - 1; i++) {
-        const p = this.prob(tokens[i + 1], tokens[i])
-        logProbSum += Math.log(p)
-        totalTokens++
-      }
-    }
-
-    const nll = -logProbSum / totalTokens
-    return Math.exp(nll)
-  }
-}
-
-// ── Perplexity from probability sequence ──────────────────────────────────────
-function perplexity(probabilities: number[]): number {
-  const nll = -probabilities.reduce((s, p) => s + Math.log(p), 0) / probabilities.length
-  return Math.exp(nll)
-}
-
-// ── Autoregressive generation simulation ──────────────────────────────────────
-function sampleFromDistribution(probs: number[]): number {
-  const r = Math.random()
-  let cumulative = 0
-  for (let i = 0; i < probs.length; i++) {
-    cumulative += probs[i]
-    if (r < cumulative) return i
-  }
-  return probs.length - 1
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const corpus = [
-  ["the", "cat", "sat", "on", "the", "mat"],
-  ["the", "dog", "ran", "in", "the", "park"],
-  ["the", "cat", "ran", "on", "the", "mat"],
-  ["a", "cat", "and", "a", "dog", "played"],
-]
-
-const lm = new BigramLM(0.1)
-lm.fit(corpus)
-
-console.log("Bigram Language Model")
-console.log("─".repeat(50))
-
-const queries: [string, string][] = [
-  ["cat", "the"], ["dog", "the"], ["sat", "cat"], ["mat", "the"], ["park", "the"],
-]
-for (const [word, ctx] of queries) {
-  const p = lm.prob(word, ctx)
-  console.log(\`P(\${word.padEnd(6)} | \${ctx.padEnd(6)}) = \${p.toFixed(4)}\`)
-}
-
-console.log()
-console.log(\`Train perplexity: \${lm.perplexity(corpus).toFixed(3)}\`)
-console.log()
-
-// ── Perplexity calculation from probability sequence ──────────────────────────
-console.log("Perplexity examples:")
-const highConf = [0.9, 0.85, 0.92, 0.88]   // model is confident
-const lowConf  = [0.1, 0.05, 0.2, 0.15]    // model is uncertain
-
-console.log(\`  High-confidence probs [\${highConf.join(", ")}]\`)
-console.log(\`    → PP = \${perplexity(highConf).toFixed(2)} (low = model knows what comes next)\`)
-console.log()
-console.log(\`  Low-confidence probs [\${lowConf.join(", ")}]\`)
-console.log(\`    → PP = \${perplexity(lowConf).toFixed(2)} (high = model is confused)\`)
-console.log()
-console.log("Key: PP ≈ vocab_size means random guessing")
-console.log("     PP = 1 means perfect prediction (impossible in practice)")
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript bigram language model with Laplace smoothing and perplexity
-                computation. Demonstrates the core LM objective: probability estimation,
-                perplexity measurement, and the relationship between model confidence and perplexity.
-            </p>
-            <CodeBlock code={TS_CODE} filename="language_model.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -527,6 +404,5 @@ export const LANGUAGE_MODELING_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

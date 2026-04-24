@@ -281,76 +281,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── ULMFiT Schedules — TypeScript ────────────────────────────────────────────
 
-interface LayerConfig {
-    params: number[]
-    lr: number
-    trainable: boolean
-}
 
-function slantedTriangularLR(t: number, T: number, etaMax = 0.01, cutFrac = 0.1): number {
-    const cut = Math.floor(T * cutFrac)
-    if (t <= cut) {
-        return etaMax * (t / cut)
-    }
-    return etaMax * ((T - t) / (T - cut))
-}
-
-function discriminativeLRs(baseLR: number, numLayers: number, decay = 2.6): number[] {
-    const lrs: number[] = []
-    for (let i = 0; i < numLayers; i++) {
-        lrs.push(baseLR / Math.pow(decay, numLayers - 1 - i))
-    }
-    return lrs
-}
-
-function unfreezingMask(epoch: number, numLayers: number): boolean[] {
-    const mask = Array(numLayers).fill(false)
-    const toUnfreeze = Math.min(epoch, numLayers)
-    for (let i = numLayers - toUnfreeze; i < numLayers; i++) {
-        mask[i] = true
-    }
-    return mask
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const T = 1000
-const lrs: number[] = []
-for (let t = 0; t < T; t++) {
-    lrs.push(slantedTriangularLR(t, T))
-}
-
-const layerLRs = discriminativeLRs(1e-3, 4)
-console.log("Discriminative Learning Rates")
-console.log("─".repeat(40))
-layerLRs.forEach((lr, i) => {
-    console.log(\`  Layer \${i}: lr = \${lr.toExponential(2)}\`)
-})
-
-console.log("\\nGradual Unfreezing Schedule")
-console.log("─".repeat(40))
-for (let epoch = 1; epoch <= 5; epoch++) {
-    const mask = unfreezingMask(epoch, 4)
-    const status = mask.map(m => m ? "T" : "F").join("")
-    console.log(\`  Epoch \${epoch}: \${status}\`)
-}
-
-const peakIdx = lrs.indexOf(Math.max(...lrs))
-console.log(\`\\nSTLR peak at t=\${peakIdx}: lr=\${lrs[peakIdx].toFixed(4)}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of ULMFiT's learning rate scheduling and gradual unfreezing.
-                The demo prints the layer-wise LRs and the unfreezing schedule across epochs.
-            </p>
-            <CodeBlock code={TS_CODE} filename="ulmfit_schedules.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -360,5 +292,4 @@ export const ULMFIT_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

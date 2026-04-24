@@ -297,65 +297,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Encoder Family Comparisons — TypeScript ─────────────────────────────────
 
-function factorizedEmbeddingParams(
-    vocabSize: number,
-    hiddenSize: number,
-    embeddingSize: number
-): { bert: number; albert: number } {
-    return {
-        bert: vocabSize * hiddenSize,
-        albert: vocabSize * embeddingSize + embeddingSize * hiddenSize,
-    }
-}
 
-function rtdLoss(logits: number[], isOriginal: boolean[]): number {
-    let total = 0
-    for (let i = 0; i < logits.length; i++) {
-        const prob = 1 / (1 + Math.exp(-logits[i]))
-        const label = isOriginal[i] ? 1 : 0
-        total += -(label * Math.log(prob + 1e-10) +
-                   (1 - label) * Math.log(1 - prob + 1e-10))
-    }
-    return total / logits.length
-}
-
-function effectiveSignalRatio(maskedRatio = 0.15): number {
-    return 1.0 / maskedRatio
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const vocabSize = 30522
-const hiddenSize = 4096
-const embeddingSize = 128
-
-const { bert, albert } = factorizedEmbeddingParams(vocabSize, hiddenSize, embeddingSize)
-
-const discLogits = Array.from({ length: 16 }, () => (Math.random() - 0.5) * 2)
-const isOrig = Array.from({ length: 16 }, () => Math.random() > 0.15)
-
-console.log("Encoder Family Comparison")
-console.log("─".repeat(40))
-console.log(\`BERT embedding params:   \${bert.toLocaleString()}\`)
-console.log(\`ALBERT embedding params: \${albert.toLocaleString()}\`)
-console.log(\`Reduction: \${((1 - albert / bert) * 100).toFixed(1)}%\`)
-console.log()
-console.log(\`ELECTRA RTD loss: \${rtdLoss(discLogits, isOrig).toFixed(4)}\`)
-console.log(\`Signal ratio (ELECTRA/BERT): \${effectiveSignalRatio().toFixed(1)}x\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation comparing ALBERT's parameter savings and ELECTRA's training
-                efficiency. The code quantifies why each variant improves on the original BERT design.
-            </p>
-            <CodeBlock code={TS_CODE} filename="encoder_family.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -365,5 +308,4 @@ export const ENCODER_ONLY_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

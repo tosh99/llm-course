@@ -146,69 +146,7 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── FastText n-gram extraction — TypeScript ─────────────────────────────────
 
-function getNgrams(word: string, minN = 3, maxN = 6): string[] {
-    const w = \`<\${word}>\`
-    const ngrams: string[] = []
-    for (let n = minN; n <= maxN; n++) {
-        for (let i = 0; i <= w.length - n; i++) {
-            ngrams.push(w.slice(i, i + n))
-        }
-    }
-    return ngrams
-}
-
-// djb2 hash
-function hashNgram(s: string, buckets = 1000): number {
-    let h = 5381
-    for (const c of s) h = ((h * 33) ^ c.charCodeAt(0)) >>> 0
-    return h % buckets
-}
-
-// Sum n-gram vectors to get word vector
-function getWordVector(
-    word: string,
-    table: Float32Array,
-    dim: number,
-    buckets = 1000
-): number[] {
-    const ngrams = getNgrams(word)
-    const result = new Array(dim).fill(0)
-    for (const ng of ngrams) {
-        const idx = hashNgram(ng, buckets) * dim
-        for (let d = 0; d < dim; d++) result[d] += table[idx + d]
-    }
-    return result.map(v => v / Math.max(ngrams.length, 1))
-}
-
-// Show morphological overlap
-const words = ["play", "playing", "played", "player"]
-for (const w of words) {
-    const ngs = getNgrams(w, 3, 4)
-    console.log(\`\${w.padEnd(10)}: \${ngs.join(", ")}\`)
-}
-
-function sharedNgrams(a: string, b: string): number {
-    const sa = new Set(getNgrams(a, 3, 4))
-    const sb = new Set(getNgrams(b, 3, 4))
-    return [...sa].filter(g => sb.has(g)).length
-}
-
-console.log("\\nShared n-grams:")
-const pairs = [["play","playing"],["play","played"],["play","king"]]
-for (const [a, b] of pairs) {
-    console.log(\`  \${a} ∩ \${b}: \${sharedNgrams(a, b)}\`)
-}`
-
-function CodeTab() {
-    return (
-        <>
-            <p>FastText n-gram extraction and word vector construction in TypeScript.</p>
-            <CodeBlock code={TS_CODE} filename="fasttext.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 export const FASTTEXT_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
@@ -216,5 +154,4 @@ export const FASTTEXT_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

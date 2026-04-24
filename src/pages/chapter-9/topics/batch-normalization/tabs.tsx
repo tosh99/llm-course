@@ -345,118 +345,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── BatchNorm 1D — TypeScript ────────────────────────────────────────────────
 
-type Vec = number[]
-type Mat = number[][]  // [batch, features]
 
-function colMean(X: Mat): Vec {
-  const [m, n] = [X.length, X[0].length]
-  return Array.from({ length: n }, (_, j) =>
-    X.reduce((s, row) => s + row[j], 0) / m
-  )
-}
-
-function colVar(X: Mat, mean: Vec): Vec {
-  const [m, n] = [X.length, X[0].length]
-  return Array.from({ length: n }, (_, j) =>
-    X.reduce((s, row) => s + (row[j] - mean[j]) ** 2, 0) / m
-  )
-}
-
-// ── BatchNorm state ───────────────────────────────────────────────────────────
-interface BNState {
-  gamma:       Vec  // learnable scale (init 1)
-  beta:        Vec  // learnable shift (init 0)
-  runningMean: Vec  // for inference
-  runningVar:  Vec  // for inference
-}
-
-function createBN(features: number): BNState {
-  return {
-    gamma:       new Array(features).fill(1),
-    beta:        new Array(features).fill(0),
-    runningMean: new Array(features).fill(0),
-    runningVar:  new Array(features).fill(1),
-  }
-}
-
-// ── Forward pass (training mode) ──────────────────────────────────────────────
-function batchNormTrain(
-  X: Mat,
-  state: BNState,
-  eps = 1e-5,
-  momentum = 0.1
-): { Y: Mat; mean: Vec; variance: Vec; xHat: Mat } {
-  const mean     = colMean(X)
-  const variance = colVar(X, mean)
-
-  // Update running statistics
-  state.runningMean = state.runningMean.map((m, i) =>
-    (1 - momentum) * m + momentum * mean[i]
-  )
-  state.runningVar = state.runningVar.map((v, i) =>
-    (1 - momentum) * v + momentum * variance[i]
-  )
-
-  // Normalize
-  const xHat: Mat = X.map(row =>
-    row.map((x, j) => (x - mean[j]) / Math.sqrt(variance[j] + eps))
-  )
-
-  // Scale and shift
-  const Y: Mat = xHat.map(row =>
-    row.map((xh, j) => state.gamma[j] * xh + state.beta[j])
-  )
-
-  return { Y, mean, variance, xHat }
-}
-
-// ── Inference mode: use running stats ─────────────────────────────────────────
-function batchNormInfer(x: Vec, state: BNState, eps = 1e-5): Vec {
-  return x.map((xi, j) => {
-    const xHat = (xi - state.runningMean[j]) / Math.sqrt(state.runningVar[j] + eps)
-    return state.gamma[j] * xHat + state.beta[j]
-  })
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const features = 4
-const bn = createBN(features)
-
-// Simulate badly-scaled batch (mean≈5, std≈3)
-const X: Mat = Array.from({ length: 16 }, () =>
-  Array.from({ length: features }, () => Math.random() * 6 + 2)
-)
-
-const { Y, mean, variance } = batchNormTrain(X, bn)
-
-console.log("BatchNorm 1D Demo")
-console.log("─".repeat(40))
-console.log("Input  mean:", mean.map(v => v.toFixed(3)))
-console.log("Input  var: ", variance.map(v => v.toFixed(3)))
-
-const outMean = colMean(Y)
-const outVar  = colVar(Y, outMean)
-console.log("Output mean:", outMean.map(v => v.toFixed(3)))
-console.log("Output var: ", outVar.map(v => v.toFixed(3)))
-console.log()
-console.log("After BN: mean≈0, var≈1 (plus gamma/beta correction)")
-console.log("Running mean (for inference):", bn.runningMean.map(v => v.toFixed(4)))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of BatchNorm 1D with full training and inference modes.
-                Shows the running statistics update and demonstrates how arbitrary input distributions
-                are normalized to mean ≈ 0, variance ≈ 1.
-            </p>
-            <CodeBlock code={TS_CODE} filename="batchnorm.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -465,6 +355,5 @@ export const BATCH_NORMALIZATION_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

@@ -119,7 +119,7 @@ function HighSchoolTab() {
             <p>
                 Given two vectors <strong>a</strong> = (a_1, a_2) and <strong>b</strong> = (b_1, b_2):
             </p>
-            <MathBlock tex="\\vec{a} \\cdot \\vec{b} = a_1 b_1 + a_2 b_2 = |\\vec{a}||\\vec{b}|\\cos\\theta" />
+            <MathBlock tex="\vec{a} \cdot \vec{b} = a_1 b_1 + a_2 b_2 = |\vec{a}||\vec{b}|\cos\theta" />
             <p>
                 The dot product measures how much two vectors "point the same way." When theta = 90 degrees,
                 cos theta = 0 — orthogonal vectors have zero dot product. In ML this is used constantly to measure
@@ -132,7 +132,7 @@ function HighSchoolTab() {
                 <strong>y</strong> = A<strong>x</strong> — a coordinate transformation, like the same shape
                 seen in a distorted mirror.
             </p>
-            <MathBlock tex="\\begin{pmatrix} 2 & 0 \\ 0 & 3 \\end{pmatrix} \\begin{pmatrix} 1 \\ 1 \\end{pmatrix} = \\begin{pmatrix} 2 \\ 3 \\end{pmatrix}" />
+            <MathBlock tex="\begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix} \begin{pmatrix} 1 \\ 1 \end{pmatrix} = \begin{pmatrix} 2 \\ 3 \end{pmatrix}" />
             <p>
                 This matrix stretched x by 2 and y by 3. Every neural network layer does something like
                 this — projecting input into a new space where patterns are easier to see.
@@ -162,7 +162,7 @@ function MathsTab() {
                 A vector <strong>x</strong> in R^n is an ordered n-tuple of real numbers. The
                 <strong>norm</strong> measures its "size." The general L^p norm family is:
             </p>
-            <MathBlock tex="\\|\\mathbf{x}\\|_p = \\left(\\sum_{i=1}^n |x_i|^p\\right)^{1/p}" />
+            <MathBlock tex="\|\mathbf{x}\|_p = \left(\sum_{i=1}^n |x_i|^p\right)^{1/p}" />
             <p>
                 The choice of p matters. <strong>L^2 (p=2)</strong> is Euclidean distance — it is the
                 natural notion of "length" and appears in MSE loss and weight decay. <strong>L^1 (p=1)</strong>
@@ -175,15 +175,15 @@ function MathsTab() {
                 The <strong>inner product</strong> (dot product) is the fundamental operation that
                 measures alignment between two vectors:
             </p>
-            <MathBlock tex="\\langle \\mathbf{a}, \\mathbf{b} \\rangle = \\mathbf{a}^\\top \\mathbf{b} = \\sum_{i=1}^n a_i b_i" />
+            <MathBlock tex="\langle \mathbf{a}, \mathbf{b} \rangle = \mathbf{a}^\top \mathbf{b} = \sum_{i=1}^n a_i b_i" />
             <p>
-                It equals <InlineMath tex="\\|\\mathbf{a}\\|\\|\\mathbf{b}\\|\\cos\\theta" />, so dividing by both
+                It equals <InlineMath tex="\|\mathbf{a}\|\|\mathbf{b}\|\cos\theta" />, so dividing by both
                 norms yields <strong>cosine similarity</strong> — a scale-invariant measure of directional
                 agreement. This is used in: word embedding analogies, attention score computation in
-                Transformers <InlineMath tex="(\\mathbf{q}^\\top \\mathbf{k})" />, nearest-neighbour search
+                Transformers <InlineMath tex="(\mathbf{q}^\top \mathbf{k})" />, nearest-neighbour search
                 in RAG systems, and contrastive learning objectives like CLIP.
             </p>
-            <MathBlock tex="\\cos\\theta = \\frac{\\mathbf{a}^\\top \\mathbf{b}}{\\|\\mathbf{a}\\|\\|\\mathbf{b}\\|} \\in [-1, 1]" />
+            <MathBlock tex="\cos\theta = \frac{\mathbf{a}^\top \mathbf{b}}{\|\mathbf{a}\|\|\mathbf{b}\|} \in [-1, 1]" />
 
             <DiagramBlock title="Dot product geometry — vectors a and b, angle theta, and projection">
                 <DotProductDiagram />
@@ -191,15 +191,15 @@ function MathsTab() {
 
             <h3>Matrix Multiplication</h3>
             <p>
-                For <InlineMath tex="A \\in \\mathbb{R}^{m\\times k}" /> and
-                <InlineMath tex="B \\in \\mathbb{R}^{k\\times n}" />, their product
-                <InlineMath tex="C = AB \\in \\mathbb{R}^{m\\times n}" /> has entries:
+                For <InlineMath tex="A \in \mathbb{R}^{m\times k}" /> and
+                <InlineMath tex="B \in \mathbb{R}^{k\times n}" />, their product
+                <InlineMath tex="C = AB \in \mathbb{R}^{m\times n}" /> has entries:
             </p>
-            <MathBlock tex="C_{ij} = \\sum_{l=1}^k A_{il}\\, B_{lj}" />
+            <MathBlock tex="C_{ij} = \sum_{l=1}^k A_{il}\, B_{lj}" />
             <p>
                 Think of C's (i,j) entry as the dot product of row i of A with column j of B. This
                 operation is the engine of neural networks — a forward pass through a linear layer is
-                <InlineMath tex="\\mathbf{y} = W\\mathbf{x} + \\mathbf{b}" />. The entire reason GPUs exist
+                <InlineMath tex="\mathbf{y} = W\mathbf{x} + \mathbf{b}" />. The entire reason GPUs exist
                 in ML is that they can compute batches of matrix products in parallel using thousands of
                 cores. Matrix multiplication is associative but <em>not commutative</em>: AB != BA in
                 general.
@@ -211,12 +211,12 @@ function MathsTab() {
 
             <h3>Gradient as a Vector</h3>
             <p>
-                For a scalar loss function <InlineMath tex="\\mathcal{L}: \\mathbb{R}^n \\to \\mathbb{R}" />,
-                the gradient <InlineMath tex="\\nabla_\\mathbf{x} \\mathcal{L} \\in \\mathbb{R}^n" /> stacks
+                For a scalar loss function <InlineMath tex="\mathcal{L}: \mathbb{R}^n \to \mathbb{R}" />,
+                the gradient <InlineMath tex="\nabla_\mathbf{x} \mathcal{L} \in \mathbb{R}^n" /> stacks
                 all partial derivatives into a vector. It points in the direction of steepest ascent — so
                 stepping opposite to it descends the loss:
             </p>
-            <MathBlock tex="\\mathbf{x}_{t+1} = \\mathbf{x}_t - \\eta\\,\\nabla_\\mathbf{x} \\mathcal{L}(\\mathbf{x}_t)" />
+            <MathBlock tex="\mathbf{x}_{t+1} = \mathbf{x}_t - \eta\,\nabla_\mathbf{x} \mathcal{L}(\mathbf{x}_t)" />
             <p>
                 For a neural network with millions of parameters, this is one giant high-dimensional vector
                 update per step. The learning rate eta controls step size.
@@ -286,104 +286,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Types ────────────────────────────────────────────────
-type Vec = number[];
-type Mat = number[][];  // row-major: Mat[row][col]
 
-// ── Vector Operations ─────────────────────────────────────
 
-/** Element-wise addition */
-function vecAdd(a: Vec, b: Vec): Vec {
-  return a.map((v, i) => v + b[i]);
-}
-
-/** Scale a vector by a scalar */
-function vecScale(a: Vec, s: number): Vec {
-  return a.map(v => v * s);
-}
-
-/** Dot product: Sigma a_i * b_i  — the workhorse of neural networks */
-function dot(a: Vec, b: Vec): number {
-  return a.reduce((sum, v, i) => sum + v * b[i], 0);
-}
-
-/** L2 (Euclidean) norm */
-function norm(a: Vec): number {
-  return Math.sqrt(dot(a, a));
-}
-
-/** Cosine similarity — measures direction, ignores magnitude */
-function cosineSim(a: Vec, b: Vec): number {
-  return dot(a, b) / (norm(a) * norm(b));
-}
-
-// ── Matrix Operations ─────────────────────────────────────
-
-/** Matrix * Vector  ->  the core of a neural network layer */
-function matVecMul(W: Mat, x: Vec): Vec {
-  return W.map(row => dot(row, x));
-}
-
-/** Matrix * Matrix — O(n^3), but GPUs do this in parallel */
-function matMul(A: Mat, B: Mat): Mat {
-  const rows = A.length;
-  const cols = B[0].length;
-  const inner = B.length;
-  return Array.from({ length: rows }, (_, i) =>
-    Array.from({ length: cols }, (_, j) =>
-      Array.from({ length: inner }, (_, k) => A[i][k] * B[k][j])
-           .reduce((s, v) => s + v, 0)
-    )
-  );
-}
-
-/** Transpose: flip rows <-> columns */
-function transpose(A: Mat): Mat {
-  return A[0].map((_, j) => A.map(row => row[j]));
-}
-
-// ── Linear Layer (y = Wx + b) ─────────────────────────────
-// The atomic operation of every dense layer.
-// In PyTorch: nn.Linear(in_features, out_features)
-
-function linearLayer(W: Mat, b: Vec, x: Vec): Vec {
-  return vecAdd(matVecMul(W, x), b);
-}
-
-// ── Demo ──────────────────────────────────────────────────
-
-const W: Mat = [           // 2x3 weight matrix
-  [0.5, -0.2, 0.8],
-  [0.1,  0.9, -0.3],
-];
-const b: Vec = [0.1, -0.1];    // bias
-const x: Vec = [1.0, 2.0, 3.0]; // input (3-dim)
-
-console.log(linearLayer(W, b, x));
-// -> [2.5, 1.9]  — projected from 3D to 2D
-
-// Cosine similarity — used in attention, retrieval, embeddings
-const king: Vec  = [0.8, 0.2, 0.1];
-const queen: Vec = [0.7, 0.3, 0.2];
-console.log(cosineSim(king, queen).toFixed(4));
-// -> 0.9984 — very similar directions (semantically related words)`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript with no libraries. These implementations build intuition before reaching for
-                NumPy or PyTorch.
-            </p>
-            <CodeBlock code={TS_CODE} filename="vectors-matrices.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Next step:</strong> Replace these loops with <code>numpy</code> in Python, which
-                calls optimised BLAS routines — the same operations, 100-1000x faster due to SIMD and
-                cache-aware memory layouts.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -393,5 +297,4 @@ export const VECTORS_MATRICES_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
     python: <PythonTab />,
-    code: <CodeTab />,
 }

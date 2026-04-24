@@ -281,65 +281,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Constitutional AI Simulation — TypeScript ────────────────────────────────
 
-interface Principle {
-    id: string
-    text: string
-}
 
-function critiqueAndRevise(
-    response: string,
-    principles: Principle[],
-    critiqueFn: (r: string, p: Principle) => number
-): Array<{ principle: Principle; score: number }> {
-    const critiques = principles.map(p => ({
-        principle: p,
-        score: critiqueFn(response, p),
-    }))
-    return critiques.sort((a, b) => a.score - b.score)
-}
-
-function aiPreferenceRank(
-    responses: string[],
-    principle: Principle,
-    scoreFn: (r: string, p: Principle) => number
-): { ranked: number[]; scores: number[] } {
-    const scores = responses.map(r => scoreFn(r, principle))
-    const ranked = scores
-        .map((s, i) => ({ s, i }))
-        .sort((a, b) => b.s - a.s)
-        .map(x => x.i)
-    return { ranked, scores }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const principles: Principle[] = [
-    { id: "helpful", text: "be helpful and honest" },
-    { id: "harmless", text: "avoid harmful content" },
-    { id: "humble", text: "acknowledge uncertainty" },
-]
-
-const responses = ["Option A", "Option B", "Option C"]
-const scoreFn = (_r: string, _p: Principle) => (Math.random() - 0.5) * 2
-
-const { ranked, scores } = aiPreferenceRank(responses, principles[0], scoreFn)
-console.log("AI Preference Ranking:")
-ranked.forEach((idx, i) => {
-    console.log(\`  \${i + 1}. \${responses[idx]} (score: \${scores[idx].toFixed(3)})\`)
-})
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript simulation of Constitutional AI critique and AI preference ranking.
-            </p>
-            <CodeBlock code={TS_CODE} filename="constitutional_ai.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -349,5 +292,4 @@ export const CONSTITUTIONAL_AI_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

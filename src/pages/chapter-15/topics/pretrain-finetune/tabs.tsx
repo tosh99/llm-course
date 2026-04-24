@@ -290,56 +290,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Pretrain / Finetune Simulation — TypeScript ──────────────────────────────
 
-function pretrainLoss(steps: number[]): number[] {
-    return steps.map(s => 4.0 * Math.exp(-s / 5000) + 1.5 + (Math.random() - 0.5) * 0.2)
-}
 
-function finetuneLoss(steps: number[], pretrained: boolean): number[] {
-    return steps.map(s => {
-        const base = pretrained
-            ? 1.5 * Math.exp(-s / 200) + 0.3
-            : 4.0 * Math.exp(-s / 800) + 0.5
-        return base + (Math.random() - 0.5) * 0.1
-    })
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const pretrainSteps = Array.from({ length: 100 }, (_, i) => i * 100)
-const pretrainLosses = pretrainLoss(pretrainSteps)
-
-const finetuneSteps = Array.from({ length: 100 }, (_, i) => i * 10)
-const lossPretrained = finetuneLoss(finetuneSteps, true)
-const lossScratch = finetuneLoss(finetuneSteps, false)
-
-console.log("Pre-train → Fine-tune Simulation")
-console.log("─".repeat(45))
-console.log(\`Pretraining final loss: \${pretrainLosses[pretrainLosses.length - 1].toFixed(3)}\`)
-console.log()
-console.log("Fine-tuning (100 steps):")
-console.log(\`  Pretrained init: \${lossPretrained[10].toFixed(3)}\`)
-console.log(\`  Random init:     \${lossScratch[10].toFixed(3)}\`)
-console.log()
-console.log("Fine-tuning (500 steps):")
-console.log(\`  Pretrained init: \${lossPretrained[50].toFixed(3)}\`)
-console.log(\`  Random init:     \${lossScratch[50].toFixed(3)}\`)
-console.log()
-console.log("Pretraining provides a dramatic head start in convergence.")
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript simulation of pretraining and fine-tuning loss curves. The pretrained
-                initialization starts at a much lower loss and converges significantly faster than
-                random initialization.
-            </p>
-            <CodeBlock code={TS_CODE} filename="pretrain_sim.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -349,5 +301,4 @@ export const PRETRAIN_FINETUNE_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

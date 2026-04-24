@@ -200,60 +200,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Simulate gradient flow through deep networks ────────────────────────────
-type Act = "sigmoid" | "relu" | "tanh";
 
-function satMax(act: Act): number {
-  if (act === "sigmoid") return 0.25;
-  if (act === "relu")    return 0.5;   // assume 50% active neurons on average
-  if (act === "tanh")    return 1.0;
-  return 1;
-}
 
-function gradientFlow(nLayers: number, wMag: number, act: Act): number {
-  let grad = 1.0;
-  const sat = satMax(act);
-  for (let l = 0; l < nLayers; l++)
-    grad *= wMag * sat;
-  return grad;
-}
-
-const layers = [1, 3, 5, 10, 20];
-const wMags   = [0.5, 1.0, 2.0, 4.0];
-const acts: Act[] = ["sigmoid", "relu", "tanh"];
-
-const fmt = (v: number) =>
-  Math.abs(v) < 1e-10 ? "     ~0" :
-  Math.abs(v) > 1e10  ? "  >1e10" :
-  \`\${v.toFixed(2).padStart(6)}\`;
-
-console.log("Layers | Act      |" + wMags.map(w => \` W=\${w}\`.padStart(7)).join(""));
-console.log("-".repeat(50));
-
-for (const n of layers) {
-  for (const act of acts) {
-    const vals = wMags.map(w => fmt(gradientFlow(n, w, act)));
-    console.log(\`  \${String(n).padStart(5)} | \${act.padEnd(8)} | \${vals.join(" ")}\`);
-  }
-  console.log();
-}
-
-console.log("Sigmoid+W~1 : gradients VANISH (×0.25 per layer)");
-console.log("ReLU+W~2    : gradients FLOW normally (×1.0 per layer)");
-console.log("Sigmoid+W~4 : gradients EXPLODE (×1.0 or more per layer)");`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript simulation of gradient flow through deep networks.
-                Shows exactly which combinations of activation and weight scale cause vanishing
-                (sigmoid + W≈1) vs normal flow (ReLU + W=2) vs explosion (sigmoid + W≥4).
-            </p>
-            <CodeBlock code={TS_CODE} filename="vanishing_gradients.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ──────────────────────────────────────────────────────────
 
@@ -262,6 +210,5 @@ export const VANISHING_GRADIENTS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

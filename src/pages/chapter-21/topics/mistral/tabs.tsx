@@ -236,60 +236,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Mistral Core Ops — TypeScript ────────────────────────────────────────────
 
-function slidingWindowMask(seqLen: number, windowSize: number): number[][] {
-    const mask: number[][] = Array.from({ length: seqLen }, () =>
-        Array(seqLen).fill(-1e9)
-    )
-    for (let i = 0; i < seqLen; i++) {
-        const start = Math.max(0, i - windowSize)
-        for (let j = start; j <= i; j++) mask[i][j] = 0
-    }
-    return mask
-}
 
-function softmax(arr: number[]): number[] {
-    const maxVal = Math.max(...arr)
-    const exps = arr.map(v => Math.exp(v - maxVal))
-    const sum = exps.reduce((a, b) => a + b, 0)
-    return exps.map(v => v / sum)
-}
-
-function moeRoute(x: number[], Wg: number[][], k = 2): { idx: number[]; weights: number[] } {
-    const logits = Wg.map(row => row.reduce((s, w, i) => s + w * x[i], 0))
-    const probs = softmax(logits)
-    // argmax top-k via sort
-    const indexed = probs.map((p, i) => ({ p, i }))
-    indexed.sort((a, b) => b.p - a.p)
-    return {
-        idx: indexed.slice(0, k).map(v => v.i),
-        weights: indexed.slice(0, k).map(v => v.p),
-    }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const mask = slidingWindowMask(8, 4)
-console.log("SWA mask row 7:", mask[7])
-
-const x = Array.from({ length: 32 }, () => Math.random() * 2 - 1)
-const Wg = Array.from({ length: 8 }, () =>
-    Array.from({ length: 32 }, () => Math.random() * 0.1)
-)
-const route = moeRoute(x, Wg, 2)
-console.log("Experts:", route.idx, "weights:", route.weights.map(v => v.toFixed(4)))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of Sliding Window Attention masking and MoE routing.
-            </p>
-            <CodeBlock code={TS_CODE} filename="mistral_ops.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -299,5 +247,4 @@ export const MISTRAL_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

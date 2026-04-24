@@ -343,124 +343,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Word2Vec utilities — cosine similarity and nearest neighbor ───────────────
 
-type Vec = number[]
-type Embeddings = Map<string, Vec>
 
-// ── Cosine similarity ─────────────────────────────────────────────────────────
-function dot(a: Vec, b: Vec): number {
-  return a.reduce((s, ai, i) => s + ai * b[i], 0)
-}
-
-function norm(v: Vec): number {
-  return Math.sqrt(dot(v, v))
-}
-
-function cosineSimilarity(a: Vec, b: Vec): number {
-  const denom = norm(a) * norm(b)
-  if (denom === 0) return 0
-  return dot(a, b) / denom
-}
-
-// ── Vector arithmetic ─────────────────────────────────────────────────────────
-function vecAdd(a: Vec, b: Vec): Vec { return a.map((v, i) => v + b[i]) }
-function vecSub(a: Vec, b: Vec): Vec { return a.map((v, i) => v - b[i]) }
-
-// ── Nearest neighbor search ───────────────────────────────────────────────────
-function nearestNeighbors(
-  query: Vec,
-  embeddings: Embeddings,
-  topN = 5,
-  exclude: string[] = []
-): { word: string; similarity: number }[] {
-  const scores = Array.from(embeddings.entries())
-    .filter(([word]) => !exclude.includes(word))
-    .map(([word, vec]) => ({
-      word,
-      similarity: cosineSimilarity(query, vec),
-    }))
-    .sort((a, b) => b.similarity - a.similarity)
-
-  return scores.slice(0, topN)
-}
-
-// ── Analogy solver: positive - negative ───────────────────────────────────────
-function analogy(
-  embeddings: Embeddings,
-  positive: string[],
-  negative: string[],
-  topN = 3
-): { word: string; similarity: number }[] {
-  // Compute: sum(positive vectors) - sum(negative vectors)
-  const dim = embeddings.values().next().value.length
-  let queryVec = new Array(dim).fill(0)
-
-  for (const word of positive) {
-    const v = embeddings.get(word)
-    if (v) queryVec = vecAdd(queryVec, v)
-  }
-  for (const word of negative) {
-    const v = embeddings.get(word)
-    if (v) queryVec = vecSub(queryVec, v)
-  }
-
-  return nearestNeighbors(queryVec, embeddings, topN, [...positive, ...negative])
-}
-
-// ── Demo with toy embeddings ──────────────────────────────────────────────────
-// Manually crafted 4D embeddings encoding: [royal, gender, human, geographic]
-const embeddings: Embeddings = new Map([
-  ["king",    [1.0,  1.0, 1.0, 0.0]],
-  ["queen",   [1.0, -1.0, 1.0, 0.0]],
-  ["man",     [0.0,  1.0, 1.0, 0.0]],
-  ["woman",   [0.0, -1.0, 1.0, 0.0]],
-  ["prince",  [0.8,  1.0, 1.0, 0.0]],
-  ["princess",[0.8, -1.0, 1.0, 0.0]],
-  ["france",  [0.0,  0.0, 0.0, 1.0]],
-  ["germany", [0.0,  0.0, 0.0, 1.0]],
-  ["paris",   [0.0,  0.0, 0.1, 1.2]],
-  ["berlin",  [0.0,  0.0, 0.1, 1.1]],
-])
-
-console.log("Cosine Similarity Examples:")
-console.log("─".repeat(45))
-
-const pairs = [
-  ["king",  "queen"],
-  ["king",  "man"],
-  ["man",   "woman"],
-  ["paris", "berlin"],
-  ["king",  "paris"],
-]
-for (const [a, b] of pairs) {
-  const va = embeddings.get(a)!
-  const vb = embeddings.get(b)!
-  const sim = cosineSimilarity(va, vb)
-  console.log(\`  sim(\${a}, \${b}) = \${sim.toFixed(4)}\`)
-}
-
-console.log()
-console.log("Analogy: king − man + woman = ?")
-const result = analogy(embeddings, ["king", "woman"], ["man"])
-result.forEach(({ word, similarity }) => {
-  console.log(\`  \${word}: \${similarity.toFixed(4)}\`)
-})
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript cosine similarity, nearest neighbor search, and analogy solver over
-                word embeddings. Demonstrated on manually crafted 4D vectors encoding gender,
-                royalty, humanity, and geography — showing how the analogy arithmetic works
-                geometrically.
-            </p>
-            <CodeBlock code={TS_CODE} filename="word2vec_utils.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -469,6 +353,5 @@ export const WORD2VEC_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

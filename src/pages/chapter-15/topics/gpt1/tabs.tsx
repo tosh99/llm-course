@@ -288,84 +288,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Causal Mask for Self-Attention — TypeScript ──────────────────────────────
 
-type Mat = number[][]
 
-function causalMask(seqLen: number): boolean[][] {
-    const mask: boolean[][] = []
-    for (let i = 0; i < seqLen; i++) {
-        mask.push(Array(seqLen).fill(false).map((_, j) => j <= i))
-    }
-    return mask
-}
-
-function matMul(A: Mat, B: Mat): Mat {
-    const n = A.length, m = B[0].length, p = B.length
-    const C: Mat = Array.from({ length: n }, () => Array(m).fill(0))
-    for (let i = 0; i < n; i++)
-        for (let j = 0; j < m; j++)
-            for (let k = 0; k < p; k++)
-                C[i][j] += A[i][k] * B[k][j]
-    return C
-}
-
-function transpose(A: Mat): Mat {
-    return A[0].map((_, j) => A.map(row => row[j]))
-}
-
-function maskedAttention(Q: Mat, K: Mat, V: Mat, mask: boolean[][]): Mat {
-    const dK = Q[0].length
-    const scores = matMul(Q, transpose(K))
-    const scaled = scores.map((row, i) =>
-        row.map((s, j) => mask[i][j] ? s / Math.sqrt(dK) : -1e9)
-    )
-    const attn = scaled.map(row => {
-        const maxVal = Math.max(...row)
-        const exp = row.map(v => Math.exp(v - maxVal))
-        const sum = exp.reduce((a, b) => a + b, 0)
-        return exp.map(v => v / sum)
-    })
-    return matMul(attn, V)
-}
-
-function randMat(rows: number, cols: number): Mat {
-    return Array.from({ length: rows }, () =>
-        Array.from({ length: cols }, () => (Math.random() - 0.5) * 2))
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const seqLen = 5, dK = 8
-const Q = randMat(seqLen, dK)
-const K = randMat(seqLen, dK)
-const V = randMat(seqLen, dK)
-const mask = causalMask(seqLen)
-
-const out = maskedAttention(Q, K, V, mask)
-
-console.log("Causal Self-Attention Demo")
-console.log("─".repeat(40))
-console.log("Mask:")
-mask.forEach(row => console.log("  " + row.map(b => b ? 1 : 0).join(" ")))
-
-console.log("\\nOutput norms:")
-out.forEach((row, i) => {
-    const norm = Math.sqrt(row.reduce((s, v) => s + v * v, 0))
-    console.log(\`  pos \${i}: ||out|| = \${norm.toFixed(4)}\`)
-})
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of causal self-attention with explicit masking. The demo
-                generates random Q/K/V matrices, applies the causal mask, and computes the attended output.
-            </p>
-            <CodeBlock code={TS_CODE} filename="gpt_attention.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -375,5 +299,4 @@ export const GPT1_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

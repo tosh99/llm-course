@@ -298,87 +298,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── BERT Input Encoding — TypeScript ─────────────────────────────────────────
 
-function encodeInput(tokensA: number[], tokensB?: number[], maxLen = 512) {
-    const clsId = 101, sepId = 102
-    const tokenIds: number[] = [clsId, ...tokensA, sepId]
-    const segmentIds: number[] = Array(tokenIds.length).fill(0)
 
-    if (tokensB) {
-        tokenIds.push(...tokensB, sepId)
-        segmentIds.push(...Array(tokensB.length + 1).fill(1))
-    }
-
-    const padLen = maxLen - tokenIds.length
-    if (padLen < 0) {
-        tokenIds.length = maxLen
-        segmentIds.length = maxLen
-    } else {
-        tokenIds.push(...Array(padLen).fill(0))
-        segmentIds.push(...Array(padLen).fill(0))
-    }
-
-    const attentionMask = tokenIds.map(t => t !== 0 ? 1 : 0)
-    return { tokenIds, segmentIds, attentionMask }
-}
-
-function maskTokens(
-    tokenIds: number[],
-    vocabSize: number,
-    maskId = 103,
-    maskProb = 0.15
-) {
-    const masked = [...tokenIds]
-    const labels = Array(tokenIds.length).fill(-100)
-
-    const candidates = tokenIds
-        .map((t, i) => ({ t, i }))
-        .filter(({ t }) => t !== 0 && t !== 101 && t !== 102)
-        .map(({ i }) => i)
-
-    const nMask = Math.max(1, Math.floor(candidates.length * maskProb))
-    const selected = candidates.sort(() => Math.random() - 0.5).slice(0, nMask)
-
-    for (const i of selected) {
-        labels[i] = tokenIds[i]
-        const r = Math.random()
-        if (r < 0.8) {
-            masked[i] = maskId
-        } else if (r < 0.9) {
-            masked[i] = Math.floor(Math.random() * vocabSize)
-        }
-    }
-    return { masked, labels }
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const tokensA = [2023, 2003, 1037, 3231]
-const tokensB = [2003, 1037, 3231]
-
-const { tokenIds, segmentIds } = encodeInput(tokensA, tokensB, 16)
-const { masked, labels } = maskTokens(tokenIds, 30522)
-
-console.log("BERT Input Encoding")
-console.log("─".repeat(40))
-console.log("Token IDs: ", tokenIds.join(" "))
-console.log("Segment IDs:", segmentIds.join(" "))
-console.log("Masked IDs: ", masked.join(" "))
-console.log("Labels:     ", labels.join(" "))
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementations of BERT's input encoding and masking strategy.
-                The functions pack sentence pairs with special tokens and apply the
-                80/10/10 masking rule used during pretraining.
-            </p>
-            <CodeBlock code={TS_CODE} filename="bert_encoding.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -388,5 +309,4 @@ export const BERT_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

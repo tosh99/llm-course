@@ -377,115 +377,7 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Adam Optimizer — TypeScript ──────────────────────────────────────────────
 
-type Vec = number[]
-
-interface AdamState {
-  m: Vec    // first moment
-  v: Vec    // second moment
-  t: number // step count
-}
-
-interface AdamConfig {
-  lr?:    number  // default 0.001
-  beta1?: number  // default 0.9
-  beta2?: number  // default 0.999
-  eps?:   number  // default 1e-8
-}
-
-function createAdam(dim: number, cfg: AdamConfig = {}): AdamState {
-  return {
-    m: new Array(dim).fill(0),
-    v: new Array(dim).fill(0),
-    t: 0,
-  }
-}
-
-function adamStep(
-  theta: Vec,
-  grad: Vec,
-  state: AdamState,
-  cfg: AdamConfig = {}
-): Vec {
-  const lr    = cfg.lr    ?? 0.001
-  const beta1 = cfg.beta1 ?? 0.9
-  const beta2 = cfg.beta2 ?? 0.999
-  const eps   = cfg.eps   ?? 1e-8
-
-  state.t += 1
-  const t = state.t
-
-  // Update biased moment estimates
-  state.m = state.m.map((mi, i) => beta1 * mi + (1 - beta1) * grad[i])
-  state.v = state.v.map((vi, i) => beta2 * vi + (1 - beta2) * grad[i] ** 2)
-
-  // Bias correction
-  const bc1 = 1 - beta1 ** t
-  const bc2 = 1 - beta2 ** t
-
-  // Parameter update
-  return theta.map((th, i) => {
-    const mHat = state.m[i] / bc1
-    const vHat = state.v[i] / bc2
-    return th - lr * mHat / (Math.sqrt(vHat) + eps)
-  })
-}
-
-// ── Quadratic test: f(x) = x² (minimum at x=0) ───────────────────────────────
-function optimizeQuadratic(steps = 50): void {
-  let theta = [10.0]   // start far from minimum
-  const state = createAdam(1)
-
-  console.log("Adam on f(x) = x²")
-  console.log("─".repeat(45))
-  console.log(\`\${"Step".padEnd(6)} | \${"x".padEnd(12)} | \${"f(x)".padEnd(12)} | bias_correction\`)
-  console.log("─".repeat(45))
-
-  for (let t = 1; t <= steps; t++) {
-    const grad = [2 * theta[0]]   // ∇f = 2x
-    theta = adamStep(theta, grad, state)
-
-    if ([1, 2, 5, 10, 20, 50].includes(t)) {
-      const bc = 1 - 0.9 ** t
-      const loss = theta[0] ** 2
-      console.log(
-        \`\${String(t).padEnd(6)} | \${theta[0].toFixed(6).padEnd(12)} | \${loss.toFixed(6).padEnd(12)} | \${bc.toFixed(6)}\`
-      )
-    }
-  }
-}
-
-optimizeQuadratic()
-
-// ── Compare: Adam vs plain SGD ────────────────────────────────────────────────
-console.log()
-console.log("Effective step size analysis:")
-console.log("Adam converges to ≈ ±α regardless of gradient scale")
-console.log("This is why Adam works well across different parameter scales")
-
-const scales = [0.001, 0.1, 1.0, 10.0, 1000.0]
-console.log(\`\\n\${"Gradient":>12} | \${"SGD step (lr=0.01)":>20} | Adam step (α=0.01)\`)
-for (const g of scales) {
-  const sgdStep = 0.01 * g
-  // Adam effective step ≈ α · sign(g) when |g| is consistent
-  const adamEff = 0.01  // always ≈ α
-  console.log(\`\${String(g).padEnd(12)} | \${sgdStep.toFixed(6).padEnd(20)} | \${adamEff.toFixed(6}\`)
-}
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of Adam optimizer with full bias correction.
-                Applied to a quadratic function to show convergence and how the bias
-                correction factor evolves from near-zero at t=1 to ≈1.0 at t=100.
-            </p>
-            <CodeBlock code={TS_CODE} filename="adam.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -495,5 +387,4 @@ export const ADAM_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
     python: <PythonTab />,
-    code: <CodeTab />,
 }

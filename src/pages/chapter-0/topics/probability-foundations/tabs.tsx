@@ -475,129 +475,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Probability & Statistics ─────────────────────────────
-// Core statistical functions used in ML
 
-type Vec = number[];
 
-// ── Descriptive statistics ────────────────────────────────
-
-function mean(x: Vec): number {
-  return x.reduce((s, v) => s + v, 0) / x.length;
-}
-
-function variance(x: Vec): number {
-  const mu = mean(x);
-  return x.reduce((s, v) => s + (v - mu) ** 2, 0) / x.length;
-}
-
-function stdDev(x: Vec): number {
-  return Math.sqrt(variance(x));
-}
-
-// ── Covariance ────────────────────────────────────────────
-
-function covariance(x: Vec, y: Vec): number {
-  const mx = mean(x);
-  const my = mean(y);
-  return x.reduce((s, xi, i) => s + (xi - mx) * (y[i] - my), 0) / x.length;
-}
-
-function correlation(x: Vec, y: Vec): number {
-  return covariance(x, y) / (stdDev(x) * stdDev(y));
-}
-
-// ── Demo ──────────────────────────────────────────────────
-
-const data: Vec = [2.1, 3.5, 1.8, 4.2, 3.1, 2.7, 3.9, 2.4];
-
-console.log("Descriptive statistics:");
-console.log(\`  Mean:     \${mean(data).toFixed(3)}\`);
-console.log(\`  Variance: \${variance(data).toFixed(3)}\`);
-console.log(\`  Std Dev:  \${stdDev(data).toFixed(3)}\`);
-
-// ── Normal distribution PDF ───────────────────────────────
-// f(x) = (1/σ√2π) · exp(-(x-μ)²/2σ²)
-
-function normalPDF(x: number, mu: number, sigma: number): number {
-  const coeff = 1 / (sigma * Math.sqrt(2 * Math.PI));
-  return coeff * Math.exp(-0.5 * ((x - mu) / sigma) ** 2);
-}
-
-console.log("\\nNormal distribution N(0, 1):");
-console.log(\`  f(0)  = \${normalPDF(0, 0, 1).toFixed(4)}\`);   // peak
-console.log(\`  f(1)  = \${normalPDF(1, 0, 1).toFixed(4)}\`);
-console.log(\`  f(-1) = \${normalPDF(-1, 0, 1).toFixed(4)}\`);
-
-// ── Cross-entropy ─────────────────────────────────────────
-// H(y, ŷ) = -Σ yᵢ · log(ŷᵢ)
-
-function crossEntropy(yTrue: Vec, yPred: Vec): number {
-  return -yTrue.reduce(
-    (s, yi, i) => s + yi * Math.log(yPred[i] + 1e-15),
-    0
-  );
-}
-
-// Binary classification: true label = [1, 0], predictions vary
-console.log("\\nCross-entropy (y = [1, 0]):");
-console.log(\`  Perfect [0.99, 0.01]:  \${crossEntropy([1, 0], [0.99, 0.01]).toFixed(4)}\`);
-console.log(\`  Wrong   [0.01, 0.99]:  \${crossEntropy([1, 0], [0.01, 0.99]).toFixed(4)}\`);
-console.log(\`  Unsure  [0.5, 0.5]:    \${crossEntropy([1, 0], [0.5, 0.5]).toFixed(4)}\`);
-
-// ── KL divergence ─────────────────────────────────────────
-// KL(P || Q) = Σ P(x) · log(P(x) / Q(x))
-
-function klDivergence(p: Vec, q: Vec): number {
-  return p.reduce(
-    (d, pi, i) => d + pi * Math.log((pi + 1e-15) / (q[i] + 1e-15)),
-    0
-  );
-}
-
-const p: Vec = [0.4, 0.3, 0.2, 0.1];
-const q: Vec = [0.25, 0.25, 0.25, 0.25];
-
-console.log(\`\\nKL(p||uniform) = \${klDivergence(p, q).toFixed(4)}\`);
-console.log(\`KL(p||p)       = \${klDivergence(p, p).toFixed(4)}\`);
-
-// ── Maximum Likelihood ────────────────────────────────────
-// For Gaussian data, MLE estimates:
-// μ̂ = x̄, σ̂² = (1/n) Σ(xᵢ - x̄)²
-
-const samples: Vec = Array.from({ length: 1000 }, () =>
-  // Box-Muller transform: generate N(0,1) samples
-  (() => {
-    const u1 = Math.random();
-    const u2 = Math.random();
-    return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-  })()
-);
-
-const muMLE = mean(samples);
-const sigmaMLE = Math.sqrt(variance(samples));
-
-console.log(\`\\nMLE from 1000 N(0,1) samples:\`);
-console.log(\`  μ̂ = \${muMLE.toFixed(4)} (true: 0)\`);
-console.log(\`  σ̂ = \${sigmaMLE.toFixed(4)} (true: 1)\`);`;
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                Pure TypeScript implementations of core probability and statistics. These are the building blocks
-                that loss functions, evaluation metrics, and model uncertainty estimation are built from.
-            </p>
-            <CodeBlock code={TS_CODE} filename="probability_foundations.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Next step:</strong> In PyTorch, <code>nn.CrossEntropyLoss</code> combines softmax and
-                negative log-likelihood in one numerically stable operation. <code>torch.distributions</code>{" "}
-                provides PDFs, sampling, and KL divergence. Understanding these from scratch prepares you to
-                debug training failures and design custom losses.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -606,6 +485,5 @@ export const PROBABILITY_FOUNDATIONS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

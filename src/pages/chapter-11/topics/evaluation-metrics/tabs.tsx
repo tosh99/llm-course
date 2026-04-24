@@ -342,141 +342,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── BLEU-style n-gram precision and brevity penalty (TypeScript) ─────────────
 
-/** Extract n-grams from an array of tokens */
-function ngrams(tokens: string[], n: number): string[][] {
-  const result: string[][] = []
-  for (let i = 0; i <= tokens.length - n; i++) {
-    result.push(tokens.slice(i, i + n))
-  }
-  return result
-}
 
-/** Count occurrences of each n-gram */
-function countNgrams(tokens: string[], n: number): Map<string, number> {
-  const counts = new Map<string, number>()
-  for (const ng of ngrams(tokens, n)) {
-    const key = ng.join(" ")
-    counts.set(key, (counts.get(key) ?? 0) + 1)
-  }
-  return counts
-}
-
-/** Modified precision: clipped by reference counts */
-function modifiedPrecision(
-  candidate: string[],
-  reference: string[],
-  n: number
-): number {
-  const cCounts = countNgrams(candidate, n)
-  const rCounts = countNgrams(reference, n)
-
-  let clippedMatches = 0
-  let totalCandidate = 0
-
-  for (const [gram, cCount] of cCounts) {
-    const rCount = rCounts.get(gram) ?? 0
-    clippedMatches += Math.min(cCount, rCount)
-    totalCandidate += cCount
-  }
-
-  return totalCandidate === 0 ? 0 : clippedMatches / totalCandidate
-}
-
-/** Brevity penalty */
-function brevityPenalty(candLen: number, refLen: number): number {
-  if (candLen > refLen) return 1.0
-  return Math.exp(1 - refLen / candLen)
-}
-
-/** Simple BLEU (geometric mean of 1- to 4-gram precisions × BP) */
-function bleu(
-  candidate: string,
-  reference: string
-): number {
-  const c = candidate.split(/\\s+/)
-  const r = reference.split(/\\s+/)
-
-  const maxN = 4
-  let logSum = 0
-  let validN = 0
-
-  for (let n = 1; n <= maxN; n++) {
-    const p = modifiedPrecision(c, r, n)
-    if (p > 0) {
-      logSum += Math.log(p)
-      validN++
-    }
-  }
-
-  if (validN === 0) return 0
-
-  const geoMean = Math.exp(logSum / validN)
-  const bp = brevityPenalty(c.length, r.length)
-  return bp * geoMean
-}
-
-// ── Demo ─────────────────────────────────────────────────────────────────────
-const candidate = "the cat sat on the mat"
-const reference = "the cat is on the mat"
-
-console.log("Candidate:", candidate)
-console.log("Reference:", reference)
-console.log()
-
-for (let n = 1; n <= 4; n++) {
-  const p = modifiedPrecision(
-    candidate.split(" "),
-    reference.split(" "),
-    n
-  )
-  console.log(\`p_\${n} = \${p.toFixed(4)}\`)
-}
-
-console.log()
-console.log(\`Brevity penalty: \${brevityPenalty(6, 7).toFixed(4)}\`)
-console.log(\`BLEU score:      \${bleu(candidate, reference).toFixed(4)}\`)
-
-// ── ROUGE-1 recall ───────────────────────────────────────────────────────────
-function rouge1Recall(candidate: string, reference: string): number {
-  const c = candidate.split(/\\s+/)
-  const r = reference.split(/\\s+/)
-  const cCounts = countNgrams(c, 1)
-  const rCounts = countNgrams(r, 1)
-
-  let matches = 0
-  for (const [gram, rCount] of rCounts) {
-    const cCount = cCounts.get(gram) ?? 0
-    matches += Math.min(rCount, cCount)
-  }
-
-  const totalRef = r.length
-  return totalRef === 0 ? 0 : matches / totalRef
-}
-
-console.log()
-console.log(\`ROUGE-1 recall: \${rouge1Recall(candidate, reference).toFixed(4)}\`)
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript implementation of modified n-gram precision, brevity penalty, a
-                simplified BLEU score, and ROUGE-1 recall. Demonstrated on a toy sentence pair
-                so you can trace every count by hand.
-            </p>
-            <CodeBlock code={TS_CODE} filename="bleu_rouge.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>Simplification note:</strong> Real BLEU implementations (like sacrebleu)
-                handle multiple references, smoothing for zero n-gram matches, and tokenization
-                standards. This code illustrates the core formulas without the full engineering
-                complexity.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -485,6 +352,5 @@ export const EVALUATION_METRICS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
-    code: <CodeTab />,
+    python: <PythonTab />,
 }

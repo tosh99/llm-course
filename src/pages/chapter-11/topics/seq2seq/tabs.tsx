@@ -348,97 +348,8 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Minimal Seq2Seq Forward Pass (TypeScript) ───────────────────────────────
-// Demonstrates the encode → context vector → decode pipeline.
 
-type Vec = number[]
 
-// Simplified GRU step (random weights baked in for demo)
-function gruStep(h: Vec, x: Vec): Vec {
-  const n = h.length
-  const z = h.map((hi, i) => 1 / (1 + Math.exp(-(0.3 * hi + 0.4 * (x[i % x.length] ?? 0)))))
-  const r = h.map((hi, i) => 1 / (1 + Math.exp(-(0.4 * hi + 0.2 * (x[i % x.length] ?? 0)))))
-  const hc = h.map((hi, i) => Math.tanh(r[i] * hi * 0.5 + 0.6 * (x[i % x.length] ?? 0)))
-  return h.map((hi, i) => (1 - z[i]) * hi + z[i] * hc[i])
-}
-
-function softmax(v: Vec): Vec {
-  const max = Math.max(...v)
-  const exp = v.map(x => Math.exp(x - max))
-  const sum = exp.reduce((a, b) => a + b, 0)
-  return exp.map(x => x / sum)
-}
-
-function embed(token: number, dim: number): Vec {
-  const v = new Array(dim).fill(0)
-  v[token % dim] = 1.0
-  return v
-}
-
-// ── Encoder ──────────────────────────────────────────────────────────────────
-function encode(tokens: number[], hiddenDim: number): Vec {
-  let h: Vec = new Array(hiddenDim).fill(0)
-  for (const tok of tokens) {
-    h = gruStep(h, embed(tok, hiddenDim))
-  }
-  return h  // context vector
-}
-
-// ── Decoder ──────────────────────────────────────────────────────────────────
-function decode(context: Vec, vocabSize: number, maxLen = 8): number[] {
-  const SOS = 0, EOS = 1
-  let h = context
-  let prev = SOS
-  const output: number[] = []
-
-  for (let t = 0; t < maxLen; t++) {
-    h = gruStep(h, embed(prev, h.length))
-    const logits = h.map((hi, i) => hi * (1 + 0.2 * i))
-    const probs = softmax(logits.slice(0, vocabSize))
-    prev = probs.indexOf(Math.max(...probs))
-    output.push(prev)
-    if (prev === EOS) break
-  }
-  return output
-}
-
-// ── Demo ─────────────────────────────────────────────────────────────────────
-const HIDDEN_DIM = 8
-const VOCAB_SIZE = 12
-
-const source = [3, 7, 2, 9, 5]  // simulated source sentence
-console.log("Source tokens:  ", source)
-
-const ctx = encode(source, HIDDEN_DIM)
-console.log("Context vector: ", ctx.map(v => v.toFixed(3)))
-
-const output = decode(ctx, VOCAB_SIZE)
-console.log("Decoded tokens: ", output)
-
-console.log()
-console.log("Observations:")
-console.log("  The context vector has fixed size", HIDDEN_DIM, "regardless of source length.")
-console.log("  Source had", source.length, "tokens; output has", output.length, "tokens.")
-console.log("  Different lengths — that is the key property of seq2seq.")`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript simulation of the encode → context vector → autoregressive decode pipeline.
-                Uses simplified GRU cells with baked-in weights to show the data flow without
-                the full matrix algebra.
-            </p>
-            <CodeBlock code={TS_CODE} filename="seq2seq.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch-callout">
-                <strong>The key property:</strong> the context vector has a fixed dimensionality
-                regardless of source length. <code>encode([3,7,2,9,5])</code> and
-                <code>encode([1,2,3,4,5,6,7,8,9,10,11,12])</code> both produce an 8-dimensional
-                vector. This is the power — and the bottleneck — of plain seq2seq.
-            </div>
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -448,5 +359,4 @@ export const SEQ2SEQ_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }

@@ -314,51 +314,7 @@ function PythonTab() {
     )
 }
 
-const TS_CODE = `// ── Emergence Simulation — TypeScript ───────────────────────────────────────
 
-function smoothSkill(N: number, N_star: number, steepness: number): number {
-  return 1 / (1 + Math.exp(-steepness * Math.log(N / N_star)))
-}
-
-function exactMatchAccuracy(p: number, threshold = 0.5): number {
-  return p > threshold ? 1 : 0
-}
-
-function brierScore(p: number): number {
-  return (1 - p) ** 2
-}
-
-function tokenPerplexity(p: number): number {
-  return -Math.log(Math.max(p, 1e-10))
-}
-
-// ── Demo ──────────────────────────────────────────────────────────────────────
-const N_star = 5e10
-const steepness = 3.0
-const sizes = [1e8, 5e8, 1e9, 5e9, 1e10, 5e10, 1e11, 5e11, 1e12]
-
-console.log("Emergence Simulation — TypeScript")
-console.log("-".repeat(55))
-console.log(\`\${"Params".padStart(12)} \${"p".padStart(8)} \${"Acc".padStart(6)} \${"Brier".padStart(8)} \${"Perp".padStart(8)}\`)
-
-for (const n of sizes) {
-  const p = smoothSkill(n, N_star, steepness)
-  console.log(
-    \`\${n.toExponential(1).padStart(12)} \${p.toFixed(3).padStart(8)} \${exactMatchAccuracy(p).toFixed(1).padStart(6)} \${brierScore(p).toFixed(4).padStart(8)} \${tokenPerplexity(p).toFixed(3).padStart(8)}\`
-  )
-}
-`
-
-function CodeTab() {
-    return (
-        <>
-            <p>
-                TypeScript simulation of smooth skill curves and metric-dependent emergence.
-            </p>
-            <CodeBlock code={TS_CODE} filename="emergence_demo.ts" lang="typescript" langLabel="TypeScript" />
-        </>
-    )
-}
 
 // ── Tab content map ───────────────────────────────────────────────────────────
 
@@ -368,5 +324,4 @@ export const EMERGENT_ABILITIES_TABS: Record<TabId, React.ReactNode> = {
     highschool: <HighSchoolTab />,
     maths:      <MathsTab />,
     python:     <PythonTab />,
-    code:       <CodeTab />,
 }
