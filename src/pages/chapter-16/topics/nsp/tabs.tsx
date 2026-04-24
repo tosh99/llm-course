@@ -330,7 +330,7 @@ function bceLoss(logits: number[], labels: number[]): number {
 
 // ── Demo ──────────────────────────────────────────────────────────────────────
 const sentences = Array.from({ length: 10 },
-    (_, i) => \`Sentence number \<InlineMath tex="{i} about topic \\" />{i % 3}.\`)
+    (_, i) => \`Sentence number <InlineMath tex="{i} about topic \\" />{i % 3}.\`)
 
 const nspPairs = buildSentencePairs(sentences, "nsp")
 const sopPairs = buildSentencePairs(sentences, "sop")
@@ -339,14 +339,14 @@ console.log("NSP Pairs")
 console.log("─".repeat(50))
 nspPairs.slice(0, 4).forEach(([a, b, label]) => {
     const marker = label === 1 ? "IsNext" : "NotNext"
-    console.log(\`[\<InlineMath tex="{marker}] A: \\" />{a.slice(0, 30).padEnd(30)} | B: \${b.slice(0, 30)}\`)
+    console.log(\`[<InlineMath tex="{marker}] A: \\" />{a.slice(0, 30).padEnd(30)} | B: \${b.slice(0, 30)}\`)
 })
 
 console.log("\nSOP Pairs")
 console.log("─".repeat(50))
 sopPairs.slice(0, 4).forEach(([a, b, label]) => {
     const marker = label === 1 ? "Correct" : "Swapped"
-    console.log(\`[\<InlineMath tex="{marker}] A: \\" />{a.slice(0, 30).padEnd(30)} | B: \${b.slice(0, 30)}\`)
+    console.log(\`[<InlineMath tex="{marker}] A: \\" />{a.slice(0, 30).padEnd(30)} | B: \${b.slice(0, 30)}\`)
 })
 `
 

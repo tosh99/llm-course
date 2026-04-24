@@ -2,10 +2,16 @@
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python" | "code"
 export type TopicId =
-    | "linear-algebra"
-    | "calculus"
-    | "probability"
-    | "information-theory"
+    | "vectors-matrices"
+    | "systems-equations"
+    | "eigenvalues"
+    | "svd-decompositions"
+    | "derivatives-gradients"
+    | "integral-calculus"
+    | "probability-foundations"
+    | "statistical-inference"
+    | "entropy-kl-divergence"
+    | "mutual-information"
     | "python"
     | "computing"
 

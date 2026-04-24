@@ -2,17 +2,23 @@ import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router"
 import "./chapter-0.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { INFORMATION_THEORY_TABS } from "./topics/information-theory/tabs"
+import { MUTUAL_INFORMATION_TABS } from "./topics/mutual-information/tabs"
 import { PYTHON_TABS } from "./topics/python/tabs"
-import { LINEAR_ALGEBRA_TABS } from "./topics/linear-algebra/tabs"
-import { CALCULUS_TABS } from "./topics/calculus/tabs"
-import { PROBABILITY_TABS } from "./topics/probability/tabs"
+import { VECTORS_MATRICES_TABS } from "./topics/vectors-matrices/tabs"
+import { SYSTEMS_EQUATIONS_TABS } from "./topics/systems-equations/tabs"
+import { EIGENVALUES_TABS } from "./topics/eigenvalues/tabs"
+import { SVD_DECOMPOSITIONS_TABS } from "./topics/svd-decompositions/tabs"
+import { DERIVATIVES_GRADIENTS_TABS } from "./topics/derivatives-gradients/tabs"
+import { INTEGRAL_CALCULUS_TABS } from "./topics/integral-calculus/tabs"
+import { PROBABILITY_FOUNDATIONS_TABS } from "./topics/probability-foundations/tabs"
+import { STATISTICAL_INFERENCE_TABS } from "./topics/statistical-inference/tabs"
+import { ENTROPY_KL_DIVERGENCE_TABS } from "./topics/entropy-kl-divergence/tabs"
 import type { TabId, TopicId } from "./types"
 
 // ── Main component ────────────────────────────────────────────────────────────
 
 export function Chapter0Page() {
-    const [activeTopic, setActiveTopic] = useState<TopicId>("linear-algebra")
+    const [activeTopic, setActiveTopic] = useState<TopicId>("vectors-matrices")
     const [activeTab, setActiveTab] = useState<TabId>("history")
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const contentRef = useRef<HTMLDivElement>(null)
@@ -42,10 +48,16 @@ export function Chapter0Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        "linear-algebra": LINEAR_ALGEBRA_TABS[activeTab],
-        calculus: CALCULUS_TABS[activeTab],
-        probability: PROBABILITY_TABS[activeTab],
-        "information-theory": INFORMATION_THEORY_TABS[activeTab],
+        "vectors-matrices": VECTORS_MATRICES_TABS[activeTab],
+        "systems-equations": SYSTEMS_EQUATIONS_TABS[activeTab],
+        "eigenvalues": EIGENVALUES_TABS[activeTab],
+        "svd-decompositions": SVD_DECOMPOSITIONS_TABS[activeTab],
+        "derivatives-gradients": DERIVATIVES_GRADIENTS_TABS[activeTab],
+        "integral-calculus": INTEGRAL_CALCULUS_TABS[activeTab],
+        "probability-foundations": PROBABILITY_FOUNDATIONS_TABS[activeTab],
+        "statistical-inference": STATISTICAL_INFERENCE_TABS[activeTab],
+        "entropy-kl-divergence": ENTROPY_KL_DIVERGENCE_TABS[activeTab],
+        "mutual-information": MUTUAL_INFORMATION_TABS[activeTab],
         python: PYTHON_TABS[activeTab],
         computing: null,
     }
@@ -61,7 +73,7 @@ export function Chapter0Page() {
             </header>
 
             {/* ── Sidebar ── */}
-            <nav className="ch-sidebar">
+            <nav className="ch-sidebar" aria-label="Chapter topics">
                 <button
                     className={`ch-mobile-toggle${mobileNavOpen ? " open" : ""}`}
                     onClick={() => setMobileNavOpen((v) => !v)}
@@ -97,7 +109,7 @@ export function Chapter0Page() {
                 {/* Topic header */}
                 <div className="ch-topic-header">
                     <div className="ch-eyebrow">{topic.eyebrow}</div>
-                    <div className="ch-topic-title">{topicLabel}</div>
+                    <h1 className="ch-topic-title">{topicLabel}</h1>
                     <div className="ch-topic-subtitle">{topic.subtitle}</div>
 
                     {/* Tabs */}
@@ -115,7 +127,7 @@ export function Chapter0Page() {
                 </div>
 
                 {/* Content */}
-                <div className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`}>
+                <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (
                             <div className="ch-coming-soon">
@@ -127,7 +139,7 @@ export function Chapter0Page() {
                             Content for <strong>{topicLabel}</strong> is coming soon.
                         </div>
                     )}
-                </div>
+                </article>
             </main>
         </div>
     )

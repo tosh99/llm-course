@@ -59,7 +59,7 @@ export function Chapter14Page() {
                 </Link>
             </header>
             {/* ── Sidebar ── */}
-            <nav className="ch-sidebar">
+            <nav className="ch-sidebar" aria-label="Chapter topics">
                 <button
                     className={`ch-mobile-toggle${mobileNavOpen ? " open" : ""}`}
                     onClick={() => setMobileNavOpen((v) => !v)}
@@ -95,7 +95,7 @@ export function Chapter14Page() {
                 {/* Topic header */}
                 <div className="ch-topic-header">
                     <div className="ch-eyebrow">{topic.eyebrow}</div>
-                    <div className="ch-topic-title">{topicLabel}</div>
+                    <h1 className="ch-topic-title">{topicLabel}</h1>
                     <div className="ch-topic-subtitle">{topic.subtitle}</div>
 
                     {/* Tabs */}
@@ -113,7 +113,7 @@ export function Chapter14Page() {
                 </div>
 
                 {/* Content */}
-                <div
+                <article
                     className="ch-content ch-fade"
                     ref={contentRef}
                     key={`${activeTopic}-${activeTab}`}
@@ -129,7 +129,7 @@ export function Chapter14Page() {
                             Content for <strong>{topicLabel}</strong> is coming soon.
                         </div>
                     )}
-                </div>
+                </article>
             </main>
         </div>
     )

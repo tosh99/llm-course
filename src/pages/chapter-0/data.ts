@@ -3,30 +3,60 @@ import type { TabId, TopicId } from "./types"
 // ── Data ─────────────────────────────────────────────────────────────────────
 
 export const TOPICS: { id: TopicId; label: string; icon: string; category: string; ready: boolean }[] = [
-    { id: "linear-algebra", label: "Linear Algebra", icon: "⟨⟩", category: "Mathematics", ready: true },
-    { id: "calculus", label: "Calculus", icon: "∂", category: "Mathematics", ready: true },
-    { id: "probability", label: "Probability & Statistics", icon: "∼", category: "Mathematics", ready: true },
-    { id: "information-theory", label: "Information Theory", icon: "ℍ", category: "Mathematics", ready: true },
+    { id: "vectors-matrices", label: "Vectors & Matrices", icon: "⟨⟩", category: "Mathematics", ready: true },
+    { id: "systems-equations", label: "Systems of Equations", icon: "∑", category: "Mathematics", ready: true },
+    { id: "eigenvalues", label: "Eigenvalues & Eigenvectors", icon: "λ", category: "Mathematics", ready: true },
+    { id: "svd-decompositions", label: "SVD & Decompositions", icon: "Σ", category: "Mathematics", ready: true },
+    { id: "derivatives-gradients", label: "Derivatives & Gradients", icon: "∂", category: "Mathematics", ready: true },
+    { id: "integral-calculus", label: "Integral Calculus", icon: "∫", category: "Mathematics", ready: true },
+    { id: "probability-foundations", label: "Probability Foundations", icon: "∼", category: "Mathematics", ready: true },
+    { id: "statistical-inference", label: "Statistical Inference", icon: "σ", category: "Mathematics", ready: true },
+    { id: "entropy-kl-divergence", label: "Entropy & KL Divergence", icon: "ℍ", category: "Mathematics", ready: true },
+    { id: "mutual-information", label: "Mutual Information", icon: "I", category: "Mathematics", ready: true },
     { id: "python", label: "Python", icon: "🐍", category: "Programming", ready: true },
     { id: "computing", label: "Computing", icon: "⚙", category: "Computing", ready: false },
 ]
 
 export const TOPIC_META: Record<TopicId, { eyebrow: string; subtitle: string }> = {
-    "linear-algebra": {
+    "vectors-matrices": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Vectors, matrices, transformations — the language of data and models",
+        subtitle: "Vectors, matrices, dot products, and transformations — the language of data",
     },
-    calculus: {
+    "systems-equations": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Derivatives, gradients, and the mechanics of learning",
+        subtitle: "Gaussian elimination, determinants, and solving linear systems",
     },
-    probability: {
+    "eigenvalues": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Distributions, Bayes, and uncertainty — the foundation of inference",
+        subtitle: "Eigenvalues, eigenvectors, and the geometry of linear maps",
     },
-    "information-theory": {
+    "svd-decompositions": {
         eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Entropy, KL divergence, and how information is measured",
+        subtitle: "Singular value decomposition and low-rank matrix approximations",
+    },
+    "derivatives-gradients": {
+        eyebrow: "Prerequisites · Mathematics",
+        subtitle: "Derivatives, chain rule, gradients, and the mechanics of learning",
+    },
+    "integral-calculus": {
+        eyebrow: "Prerequisites · Mathematics",
+        subtitle: "Areas, volumes, and the fundamental theorem of calculus",
+    },
+    "probability-foundations": {
+        eyebrow: "Prerequisites · Mathematics",
+        subtitle: "Probability spaces, distributions, Bayes, and uncertainty",
+    },
+    "statistical-inference": {
+        eyebrow: "Prerequisites · Mathematics",
+        subtitle: "Estimation, hypothesis testing, and connecting statistics to ML",
+    },
+    "entropy-kl-divergence": {
+        eyebrow: "Prerequisites · Mathematics",
+        subtitle: "Entropy, cross-entropy, KL divergence, and measuring distributional distance",
+    },
+    "mutual-information": {
+        eyebrow: "Prerequisites · Mathematics",
+        subtitle: "Shared information, channel capacity, and applications in ML",
     },
     python: {
         eyebrow: "Prerequisites · Programming",

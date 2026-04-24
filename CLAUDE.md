@@ -10,15 +10,32 @@ A self-study curriculum app tracing the historical development of ML and LLMs. B
 - **Build**: Vite 7, TypeScript 5.9
 - **Styling**: Tailwind CSS v4, shadcn/ui (base-nova style, zinc base color)
 - **Icons**: Hugeicons (`@hugeicons/react`)
+- **Math rendering**: KaTeX (`katex`)
+- **Syntax highlighting**: highlight.js
 - **Font (global)**: Geist Variable (sans-serif, loaded via `@fontsource-variable/geist`)
 - **Package manager**: Bun
 
-## File Conventions
+## File Structure
 
-- Pages go in `src/pages/` as `.tsx` files — never standalone HTML.
-- Page-specific styles go in a co-located `.css` file (e.g. `home-page.css`, `chapter-0.css`).
-- Shared UI primitives go in `src/components/ui/` (shadcn components).
-- Shared layout components (nav, header) go in `src/components/`.
+```
+src/
+├── pages/
+│   ├── home-page.tsx / home-page.css      # Home page
+│   ├── chapter-X/
+│   │   ├── index.tsx               # Chapter page component
+│   │   ├── chapter-X.css         # Chapter-specific styles
+│   │   ├── data.ts              # Topic definitions
+│   │   ├── types.ts             # TypeScript types (TabId, TopicId)
+│   │   ├── shared.tsx            # Shared components/helpers
+│   │   └── topics/
+│   │       ├── topic-name/
+│   │       │   ├── tabs.tsx      # Tab content (named exports: TOPIC_TABS)
+│   │       │   └── diagrams.tsx  # Optional SVG diagrams
+│   └── chapter-shared.css       # Shared chapter styles (.ch-* classes)
+├── components/
+│   └── ui/                     # shadcn components
+└── index.css                   # Global styles, Tailwind, markdown class
+```
 
 ## Design Language
 
@@ -26,7 +43,7 @@ The app has a **dark academic / scholarly** aesthetic — dark backgrounds, warm
 
 ### Color Palette (CSS Variables)
 
-All pages define these variables on their root class (`.hp`, `.ch0`, etc.):
+All pages define these variables on their root class (`.hp`, `.ch`):
 
 | Variable         | Value     | Usage                                  |
 |------------------|-----------|----------------------------------------|
@@ -34,7 +51,7 @@ All pages define these variables on their root class (`.hp`, `.ch0`, etc.):
 | `--ch-panel`     | `#111115` | Header, sidebar, panel backgrounds     |
 | `--ch-card`      | `#17171d` | Card / elevated surface                |
 | `--ch-border`    | `#252530` | Borders and dividers                   |
-| `--ch-amber`     | `#e8a838` | Primary accent — labels, stats, CTAs   |
+| `--ch-amber`     | `#8a838` | Primary accent — labels, stats, CTAs   |
 | `--ch-amber-dim` | `#7a5520` | Dimmed amber for inactive/locked items |
 | `--ch-text`      | `#cdc9c0` | Primary body text                      |
 | `--ch-muted`     | `#5e5b56` | Muted / secondary text                 |
@@ -84,10 +101,9 @@ Three font families are used in a strict role hierarchy:
 
 ### Layout
 
-- **Header**: 52px tall, sticky, `background: var(--ch-panel)`, `border-bottom: 1px solid var(--ch-border)`. Contains title (Playfair Display) + separator + monospace sub-label + right-aligned badge.
+- **Header**: 52px tall, sticky, `background: var(--ch-panel)`, `border-bottom: 1px solid var(--ch-border)`. Contains chapter number (Playfair Display) + separator + monospace sub-label + right-aligned badge.
 - **Chapter pages**: CSS grid with `grid-template-rows: 52px 1fr` and `grid-template-columns: 224px 1fr` (sidebar + main). `height: 100dvh; overflow: hidden`.
 - **Home page**: Single column, flex column, `min-height: 100dvh`.
-- **Bottom nav** (`<BottomNav>`): Fixed, `sm:hidden` — only shown on mobile. Hidden on chapter pages (fullscreen routes starting with `/chapter/`).
 
 ### Borders & Radius
 
@@ -96,30 +112,103 @@ Three font families are used in a strict role hierarchy:
 - Border radius for cards: `4px`
 - The global Tailwind radius scale: `--radius: 0.45rem` with sm/md/lg/xl variants scaled from it.
 
+## Component Guidelines
+
+### Chapter Page Structure
+
+Each chapter page has:
+1. **Header** (`.ch-header`): Sticky header with chapter info
+2. **Sidebar** (`.ch-sidebar`): Topic navigation with categories
+3. **Main content** (`.ch-main`): Topic header + tabs + content area
+
+### State Management
+
+- `activeTopic: TopicId` — current sidebar topic selection
+- `activeTab: TabId` — current tab in content area
+- On topic change, reset `activeTab` to `"history"` (default)
+
+### Shared Components (from `chapter-X/shared.tsx`)
+
+| Component        | Props                                   | Purpose                          |
+|-----------------|----------------------------------------|----------------------------------|
+| `MathBlock`     | `tex: string`                           | Display math (KaTeX)              |
+| `InlineMath`    | `tex: string`                           | Inline math (KaTeX)               |
+| `CodeBlock`    | `code`, `filename`, `lang?`, `langLabel?`| Syntax-highlighted code           |
+| `Analogy`      | `label`, `children`                      | Analogy callout                  |
+| `DefBlock`     | `label`, `children`                     | Definition block                |
+| `DiagramBlock` | `title`, `children`                     | Diagram container                |
+| `pt(cx, cy, s)`| utility                                | Math coord → SVG pixel transform   |
+
+### Content Block Styles (from `chapter-shared.css`)
+
+| Class               | Purpose                                |
+|--------------------|----------------------------------------|
+| `.ch-timeline`     | Vertical timeline with year markers      |
+| `.ch-analogy`      | Amber-left-border callout             |
+| `.ch-def-block`   | Blue-left-border definition             |
+| `.ch-callout`     | Purple callout                        |
+| `.ch-math-block`  | Math rendering container              |
+| `.ch-code-wrap`   | Code block with header                |
+| `.ch-diagram-block`| Diagram SVG container                 |
+| `.ch-neuron-diagram`| Neuron/gate diagram container        |
+| `.ch-gate-diagram`| Gate diagram container                  |
+| `.ch-arch-flow`   | Architecture flow text diagram        |
+| `.ch-table`       | Generic data table                    |
+| `.ch-truth-table` | Logic truth table                     |
+
 ### Interactive States
 
 - Available chapters: cursor pointer, amber accent on chapter number, green status dot, amber-tinted hover background (`rgba(232, 168, 56, 0.04)`).
 - Locked chapters: cursor default, dimmed amber (`--ch-amber-dim`) on number, gray status dot.
-- Hover on available chapter: expands horizontally with negative margin trick, fades border bottom.
+- Topic navigation: Left border highlight on hover/active.
 
 ### Status Indicators
 
-- Green dot (`--ch-green: #5ab98c`) = available/complete
-- Gray dot (`--ch-border`) = locked/not started
+- Green dot (`--ch-green: #5ab98c`) = ready/complete
+- Gray dot (`--ch-border`) = not ready
 
-### Markdown Content
+## Data Structures
 
-Markdown-rendered content uses the `.markdown` class (defined in `src/index.css`). It uses `text-sm`, relaxed line-height, and scoped heading hierarchy (h1–h4 with border separators on h2).
+### Topic Definition (from `data.ts`)
+
+```typescript
+interface Topic {
+    id: TopicId
+    label: string
+    category: string
+    icon: string       // emoji or icon character
+    ready?: boolean  // defaults to false
+}
+```
+
+### Tab Definition (from `types.ts`)
+
+```typescript
+type TabId = "history" | "kid" | "highschool" | "maths" | "python" | "code"
+```
+
+### Topic Tabs Export (from `topics/*/tabs.tsx`)
+
+Named export pattern: `const TOPIC_TABS: Record<TabId, React.ReactNode> = { ... }`
 
 ## Naming Conventions
 
-- CSS classes use a BEM-like prefix pattern per page: `.hp-*` for home page, `.ch0-*` for chapter 0, etc.
-- Data is defined as typed `const` arrays/objects above the component (preceded by `// ── Data ──` comment banners).
-- Section comments use `// ── Label ──` style separators.
+- **CSS classes**:
+  - `.hp-*` for home page
+  - `.ch-*` for chapter shared (in `chapter-shared.css`)
+  - `.chX-*` for chapter-specific (e.g., `.ch0-*`)
+- **Data markers**: `// ── Data ──` comment banners
+- **Section markers**: `// ── Label ──` separators
+- **Component markers**: `// ── Component ──` etc.
 
-## Component Guidelines
+## Markdown Content
 
-- Prefer custom CSS classes over Tailwind utilities for page-specific layout — Tailwind is used in shared/generic components like `<BottomNav>`.
-- Use `cn()` from `@/lib/utils` when conditionally composing Tailwind classes.
-- Icons: use Hugeicons for any new icons. Inline SVG is acceptable for one-off icons.
-- Do not add `shadcn` components unless needed — the existing set is: `accordion`, `badge`, `button`, `card`.
+Markdown-rendered content uses the `.markdown` class (defined in `src/index.css`). It uses `text-sm`, relaxed line-height, and scoped heading hierarchy (h1–h4 with border separators on h2).
+
+## Code Highlighting
+
+Uses highlight.js with dark amber theme. Registered languages: `typescript`, `python`.
+
+## shadcn Components
+
+The existing set: `accordion`, `badge`, `button`, `card`. Do not add new components unless needed.

@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router"
+import { Seo } from "@/components/seo"
 import { HomePage } from "@/pages/home-page"
 import { Chapter0Page } from "@/pages/chapter-0"
 import { Chapter1Page } from "@/pages/chapter-1"
@@ -25,6 +26,7 @@ import { Chapter21Page } from "@/pages/chapter-21"
 function Layout() {
     return (
         <>
+            <Seo />
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/chapter/0" element={<Chapter0Page />} />

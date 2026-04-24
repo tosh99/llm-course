@@ -331,7 +331,7 @@ console.log("Solution:", sol);   // -> [2.2, 1.2]
 // In production, use a library like math.js or ndarray.
 
 type Mat = number[][];
-unction gaussianEliminate(A: Mat, b: number[]): number[] | null {
+unction gaussianEliminate(A: Mat, b: number[]): number[] | null {
   const n = A.length;
   // Build augmented matrix
   const M = A.map((row, i) => [...row, b[i]]);

@@ -283,9 +283,10 @@ export function HomePage() {
     const totalChapters = CURRICULUM.reduce((n, p) => n + p.chapters.length, 0)
 
     return (
-        <div className="hp">
+        <main className="hp">
             {/* ── Header ── */}
             <header className="hp-header">
+                <a href="#toc" className="hp-skip-link">Skip to curriculum</a>
                 <span className="hp-header-title">DeepLearn</span>
                 <div className="hp-header-sep" />
                 <span className="hp-header-sub">ML → LLM Course</span>
@@ -293,25 +294,25 @@ export function HomePage() {
             </header>
 
             {/* ── Hero ── */}
-            <section className="hp-hero">
+            <section className="hp-hero" aria-labelledby="hp-hero-heading">
                 <div className="hp-hero-eyebrow">Progressive Curriculum</div>
-                <h1 className="hp-hero-title">
+                <h1 id="hp-hero-heading" className="hp-hero-title">
                     Machine Learning to<br />Large Language Models
                 </h1>
                 <p className="hp-hero-desc">
                     A self-study curriculum tracing the historical development of ML, deep learning,
                     and modern LLMs — from the 1943 perceptron to today's reasoning models.
                 </p>
-                <div className="hp-hero-stats">
-                    <div className="hp-stat">
+                <div className="hp-hero-stats" role="list" aria-label="Course statistics">
+                    <div className="hp-stat" role="listitem">
                         <span className="hp-stat-num">{totalChapters}</span>
                         <span className="hp-stat-label">Chapters</span>
                     </div>
-                    <div className="hp-stat">
+                    <div className="hp-stat" role="listitem">
                         <span className="hp-stat-num">7</span>
                         <span className="hp-stat-label">Parts</span>
                     </div>
-                    <div className="hp-stat">
+                    <div className="hp-stat" role="listitem">
                         <span className="hp-stat-num">80+</span>
                         <span className="hp-stat-label">Years of History</span>
                     </div>
@@ -319,12 +320,12 @@ export function HomePage() {
             </section>
 
             {/* ── Table of Contents ── */}
-            <div className="hp-toc">
+            <nav id="toc" className="hp-toc" aria-label="Curriculum">
                 {CURRICULUM.map((part) => (
-                    <div key={part.label} className="hp-part">
+                    <section key={part.label} className="hp-part">
                         <div className="hp-part-header">
                             <span className="hp-part-num">{part.label}</span>
-                            <span className="hp-part-title">{part.title}</span>
+                            <h2 className="hp-part-title">{part.title}</h2>
                             {part.era && <span className="hp-part-era">{part.era}</span>}
                         </div>
 
@@ -334,12 +335,12 @@ export function HomePage() {
                                     <ChapterRow ch={ch} />
                                 </Link>
                             ) : (
-                                <div key={ch.num} className="hp-chapter">
+                                <div key={ch.num} className="hp-chapter" aria-disabled="true">
                                     <ChapterRow ch={ch} />
                                 </div>
                             )
                         )}
-                    </div>
+                    </section>
                 ))}
 
                 {/* ── Appendix ── */}
@@ -351,8 +352,8 @@ export function HomePage() {
                         ))}
                     </div>
                 </div>
-            </div>
-        </div>
+            </nav>
+        </main>
     )
 }
 

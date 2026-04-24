@@ -57,7 +57,7 @@ export function Chapter7Page() {
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
             {/* ── Sidebar ── */}
-            <nav className="ch-sidebar">
+            <nav className="ch-sidebar" aria-label="Chapter topics">
                 <button
                     className={`ch-mobile-toggle${mobileNavOpen ? " open" : ""}`}
                     onClick={() => setMobileNavOpen((v) => !v)}
@@ -93,7 +93,7 @@ export function Chapter7Page() {
                 {/* Topic header */}
                 <div className="ch-topic-header">
                     <div className="ch-eyebrow">{topic.eyebrow}</div>
-                    <div className="ch-topic-title">{topicLabel}</div>
+                    <h1 className="ch-topic-title">{topicLabel}</h1>
                     <div className="ch-topic-subtitle">{topic.subtitle}</div>
 
                     {/* Tabs */}
@@ -111,7 +111,7 @@ export function Chapter7Page() {
                 </div>
 
                 {/* Content */}
-                <div className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`}>
+                <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (
                             <div className="ch-coming-soon">
@@ -123,7 +123,7 @@ export function Chapter7Page() {
                             Content for <strong>{topicLabel}</strong> is coming soon.
                         </div>
                     )}
-                </div>
+                </article>
             </main>
         </div>
     )

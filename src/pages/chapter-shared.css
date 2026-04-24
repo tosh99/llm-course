@@ -196,7 +196,7 @@
   font-weight: 600;
   color: #ede9e0;
   line-height: 1.2;
-  margin-bottom: 4px;
+  margin: 0 0 4px 0;
 }
 
 .ch-topic-subtitle {
@@ -666,6 +666,10 @@
   .ch {
     grid-template-columns: 1fr;
     grid-template-rows: 52px auto 1fr;
+  }
+
+  .ch-header-badge {
+    display: none;
   }
 
   .ch-sidebar {
