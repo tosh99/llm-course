@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch8-tl-item">
-            <div className="ch8-tl-year">{item.year}</div>
-            <div className="ch8-tl-title">{item.title}</div>
-            <div className="ch8-tl-section-label">Context</div>
-            <div className="ch8-tl-body">{item.context}</div>
-            <div className="ch8-tl-section-label">What Changed</div>
-            <div className="ch8-tl-body">{item.what}</div>
-            <div className="ch8-tl-section-label">Impact</div>
-            <div className="ch8-tl-body ch8-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">Context</div>
+            <div className="ch-tl-body">{item.context}</div>
+            <div className="ch-tl-section-label">What Changed</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Impact</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -49,7 +49,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch8-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -102,7 +102,7 @@ function KidTab() {
                 what you found." Much simpler and faster!
             </Analogy>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Amazing fact:</strong> GoogLeNet has 22 layers but only 6.7 million
                 parameters—less than AlexNet! The 1×1 bottlenecks and removing giant layers
                 made it super efficient while being super deep.
@@ -161,7 +161,7 @@ function HighSchoolTab() {
                 <li>Total GoogLeNet parameters: only 6.7M (vs 138M for VGG)</li>
             </ul>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Auxiliary Classifiers:</strong> GoogLeNet adds extra classification
                 branches at intermediate layers (Inception 4a and 4d). These provide additional
                 gradient signal during training, combating vanishing gradients in deep networks.
@@ -354,7 +354,7 @@ function PythonTab() {
                 Notice the global average pooling—no fully connected layers!
             </p>
             <CodeBlock code={PYTHON_CODE} filename="googlenet.py" lang="python" langLabel="Python" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Key observations:</strong> 1) 1×1 convolutions dramatically reduce
                 compute. 2) Global average pooling replaces expensive FC layers. 3) Multi-scale
                 processing captures features at all resolutions.
@@ -639,7 +639,7 @@ function CodeTab() {
                 fully-connected layers.
             </p>
             <CodeBlock code={TS_CODE} filename="googlenet.ts" lang="typescript" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Efficiency insight:</strong> GoogLeNet reduces final layer parameters
                 by 99% compared to VGG by using global average pooling instead of giant
                 fully-connected layers. Each feature map is reduced to a single number

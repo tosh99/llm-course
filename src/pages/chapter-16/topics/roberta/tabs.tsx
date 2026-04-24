@@ -14,62 +14,62 @@ function HistoryTab() {
                 Facebook AI asked a simple question: what if we trained BERT properly?
             </p>
 
-            <div className="ch16-timeline">
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">Oct 2018</div>
-                    <div className="ch16-tl-section-label">Foundation</div>
-                    <div className="ch16-tl-title">BERT Release</div>
-                    <div className="ch16-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Oct 2018</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">BERT Release</div>
+                    <div className="ch-tl-body">
                         Google released BERT-Base and BERT-Large with their pretraining recipe: BooksCorpus
                         (800M words) + English Wikipedia (2,500M words), batch size 256, 1M steps, MLM + NSP.
                         The world was amazed by the results — but the training was expensive and the hyperparameters
                         seemed conservative.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Established the pretraining paradigm but left headroom for optimization</div>
+                    <div className="ch-tl-impact">Impact: Established the pretraining paradigm but left headroom for optimization</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">Jul 2019</div>
-                    <div className="ch16-tl-section-label">Optimization</div>
-                    <div className="ch16-tl-title">Liu et al. — RoBERTa</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Jul 2019</div>
+                    <div className="ch-tl-section-label">Optimization</div>
+                    <div className="ch-tl-title">Liu et al. — RoBERTa</div>
+                    <div className="ch-tl-body">
                         "A Robustly Optimized BERT Pretraining Approach" systematically tested design choices.
                         Key changes: (1) dynamic masking instead of static, (2) full sentences without NSP,
                         (3) larger batch sizes (8K sequences), (4) longer training (500K steps with 10× data),
                         (5) longer sequences, and (6) a new dataset: CC-News, OpenWebText, and Stories.
                         The result: every metric improved, often dramatically.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Showed that BERT was undertrained; recipe optimization rivals architectural innovation</div>
+                    <div className="ch-tl-impact">Impact: Showed that BERT was undertrained; recipe optimization rivals architectural innovation</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">2019 – 2020</div>
-                    <div className="ch16-tl-section-label">Validation</div>
-                    <div className="ch16-tl-title">The Importance of Data Scale</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019 – 2020</div>
+                    <div className="ch-tl-section-label">Validation</div>
+                    <div className="ch-tl-title">The Importance of Data Scale</div>
+                    <div className="ch-tl-body">
                         RoBERTa's ablations revealed that training on 160GB of text (vs BERT's 16GB) with
                         larger batches was the single biggest improvement. NSP removal helped, but data
                         scale and training time dominated. This foreshadowed the scaling laws that would
                         later define the GPT era: more data + more compute = better models.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Proved that training recipe and data scale are first-class citizens in model design</div>
+                    <div className="ch-tl-impact">Impact: Proved that training recipe and data scale are first-class citizens in model design</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">2020 – present</div>
-                    <div className="ch16-tl-section-label">Legacy</div>
-                    <div className="ch16-tl-title">RoBERTa as the New Default</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020 – present</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">RoBERTa as the New Default</div>
+                    <div className="ch-tl-body">
                         RoBERTa-Large became the go-to pretrained encoder for practitioners. Its weights
                         were released by Hugging Face and Facebook, and it remains competitive years later.
                         The paper's message — optimize your baseline before inventing new architectures —
                         became a mantra in the research community.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Established robust optimization as a core research contribution</div>
+                    <div className="ch-tl-impact">Impact: Established robust optimization as a core research contribution</div>
                 </div>
             </div>
 
-            <div className="ch16-callout">
+            <div className="ch-callout">
                 <strong>The key lesson:</strong> RoBERTa matched or exceeded every BERT result without
                 changing the architecture at all. The only changes were in the training process: more data,
                 bigger batches, longer training, and removing a harmful auxiliary task. Sometimes the
@@ -144,8 +144,8 @@ function HighSchoolTab() {
                 there was no single silver bullet.
             </p>
 
-            <hr className="ch16-sep" />
-            <div className="ch16-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Surprising finding:</strong> Even BERT-Large, when trained with the RoBERTa recipe
                 (more data, larger batches, no NSP), matched or exceeded the original BERT numbers.
                 The architecture was not the bottleneck — the training process was.
@@ -201,7 +201,7 @@ function MathsTab() {
                 Wikipedia because their linguistic diversity improved downstream generalization.
             </p>
 
-            <div className="ch16-callout">
+            <div className="ch-callout">
                 <strong>Scaling insight:</strong> RoBERTa's results foreshadowed the Kaplan scaling laws
                 (2020): loss improves predictably with more compute, data, and parameters. The recipe
                 optimization was an early empirical demonstration that data scale and training time

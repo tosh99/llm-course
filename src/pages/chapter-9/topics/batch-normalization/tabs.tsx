@@ -15,12 +15,12 @@ function HistoryTab() {
                 that were previously untrainable to converge reliably.
             </p>
 
-            <div className="ch9-timeline">
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">Pre-2015</div>
-                    <div className="ch9-tl-section-label">The Problem</div>
-                    <div className="ch9-tl-title">Internal Covariate Shift</div>
-                    <div className="ch9-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Pre-2015</div>
+                    <div className="ch-tl-section-label">The Problem</div>
+                    <div className="ch-tl-title">Internal Covariate Shift</div>
+                    <div className="ch-tl-body">
                         As parameters of earlier layers change during training, the distribution of
                         inputs to later layers changes continuously. Each layer must constantly
                         adapt to a shifting input distribution — a phenomenon Ioffe and Szegedy
@@ -28,14 +28,14 @@ function HistoryTab() {
                         small learning rates, careful initialization (Xavier/He), dropout, and
                         saturating nonlinearities — all band-aids for a deeper problem.
                     </div>
-                    <div className="ch9-tl-impact">Context: Deep nets required huge tuning effort; training was brittle and slow</div>
+                    <div className="ch-tl-impact">Context: Deep nets required huge tuning effort; training was brittle and slow</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2015</div>
-                    <div className="ch9-tl-section-label">Breakthrough</div>
-                    <div className="ch9-tl-title">Batch Normalization — Ioffe & Szegedy (ICML 2015)</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Breakthrough</div>
+                    <div className="ch-tl-title">Batch Normalization — Ioffe & Szegedy (ICML 2015)</div>
+                    <div className="ch-tl-body">
                         The key insight: normalize each layer's activations to zero mean and unit
                         variance <em>within each mini-batch</em>, then apply learnable scale (γ) and
                         shift (β) parameters. This keeps the distribution of activations stable
@@ -43,28 +43,28 @@ function HistoryTab() {
                         training, ability to use 10× higher learning rates, and the ability to
                         match Dropout's regularization effect without dropout.
                     </div>
-                    <div className="ch9-tl-impact">Impact: 10× faster training; became universal in CNNs; enabled VGGNet, ResNet, Inception</div>
+                    <div className="ch-tl-impact">Impact: 10× faster training; became universal in CNNs; enabled VGGNet, ResNet, Inception</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2015–2020</div>
-                    <div className="ch9-tl-section-label">Dominance</div>
-                    <div className="ch9-tl-title">BatchNorm in every major CNN</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015–2020</div>
+                    <div className="ch-tl-section-label">Dominance</div>
+                    <div className="ch-tl-title">BatchNorm in every major CNN</div>
+                    <div className="ch-tl-body">
                         ResNet (He et al., 2015), DenseNet, EfficientNet, and virtually every
                         competitive image classification architecture used BatchNorm after 2015.
                         It became so fundamental that some researchers described it as a structural
                         component of modern CNNs — not a regularizer or trick, but a necessary
                         layer type alongside linear and convolutional layers.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Standard component of CNN architectures; won 2015 ILSVRC with ResNet</div>
+                    <div className="ch-tl-impact">Impact: Standard component of CNN architectures; won 2015 ILSVRC with ResNet</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2016–2018</div>
-                    <div className="ch9-tl-section-label">Debate & Understanding</div>
-                    <div className="ch9-tl-title">Why does BatchNorm actually work?</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016–2018</div>
+                    <div className="ch-tl-section-label">Debate & Understanding</div>
+                    <div className="ch-tl-title">Why does BatchNorm actually work?</div>
+                    <div className="ch-tl-body">
                         Santurkar et al. (2018) challenged the "internal covariate shift" explanation
                         with experiments showing BatchNorm still helps even when artificial noise is
                         added to induces ICS. Their alternative: BatchNorm smooths the loss landscape,
@@ -72,11 +72,11 @@ function HistoryTab() {
                         debate remains partly open — BatchNorm likely works for multiple reasons
                         simultaneously.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Revealed BatchNorm's benefit may be landscape smoothing, not ICS reduction</div>
+                    <div className="ch-tl-impact">Impact: Revealed BatchNorm's benefit may be landscape smoothing, not ICS reduction</div>
                 </div>
             </div>
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>The NLP problem:</strong> BatchNorm normalizes over the batch dimension.
                 For NLP sequences, batch size 1 is common at inference, and sequences vary in
                 length — making batch statistics unreliable. This limitation directly motivated
@@ -167,9 +167,9 @@ function HighSchoolTab() {
                 <li>For CNNs: normalize over (batch, H, W) for each channel independently</li>
             </ul>
 
-            <hr className="ch9-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>Why not just normalize inputs once?</strong> You could normalize the raw
                 input data — and that's always recommended. But as the network applies layers
                 of nonlinear transformations, the distributions of intermediate activations drift
@@ -228,7 +228,7 @@ function MathsTab() {
             <h3>Normalization Variants</h3>
             <MathBlock tex="\begin{array}{lll} \textbf{Method} & \textbf{Normalize over} & \textbf{Best for} \\ \hline \text{BatchNorm} & \text{batch } B \text{ per feature} & \text{CNNs, large batch} \\ \text{LayerNorm} & \text{features per example} & \text{Transformers, RNNs} \\ \text{GroupNorm} & \text{groups of channels} & \text{Small batch CNNs} \\ \text{InstanceNorm} & \text{spatial per example} & \text{Style transfer} \\ \end{array}" />
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>The γ, β necessity:</strong> Without the learnable scale and shift,
                 BatchNorm would force every layer to output zero-mean unit-variance activations.
                 But some layers may need different distributions — e.g., a sigmoid needs

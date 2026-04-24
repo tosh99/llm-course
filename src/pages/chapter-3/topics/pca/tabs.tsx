@@ -37,17 +37,17 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch3-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
-                <div key={item.year} className="ch3-tl-item">
-                    <div className="ch3-tl-year">{item.year}</div>
-                    <div className="ch3-tl-title">{item.title}</div>
-                    <div className="ch3-tl-section-label">The challenge</div>
-                    <div className="ch3-tl-body">{item.challenge}</div>
-                    <div className="ch3-tl-section-label">What was introduced</div>
-                    <div className="ch3-tl-body">{item.what}</div>
-                    <div className="ch3-tl-section-label">Why it mattered</div>
-                    <div className="ch3-tl-body ch3-tl-impact">{item.impact}</div>
+                <div key={item.year} className="ch-tl-item">
+                    <div className="ch-tl-year">{item.year}</div>
+                    <div className="ch-tl-title">{item.title}</div>
+                    <div className="ch-tl-section-label">The challenge</div>
+                    <div className="ch-tl-body">{item.challenge}</div>
+                    <div className="ch-tl-section-label">What was introduced</div>
+                    <div className="ch-tl-body">{item.what}</div>
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
                 </div>
             ))}
         </div>
@@ -207,7 +207,7 @@ function PythonTab() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="pca.py" lang="python" langLabel="Python" />
-            <div className="ch3-callout">
+            <div className="ch-callout">
                 <strong>Practical tips:</strong> Use <code>n_components=0.95</code> to automatically keep enough components for 95% explained variance. For very large datasets (millions of samples), use <code>TruncatedSVD</code> (randomised SVD — no need to centre the data) or <code>IncrementalPCA</code> for out-of-core processing. Visualise embeddings with the first two PCs or combine with t-SNE for high-dimensional data.
             </div>
         </>
@@ -298,7 +298,7 @@ function CodeTab() {
                 PCA via power iteration and deflation — the method used before SVD algorithms were available. Each eigenvector is found by repeatedly multiplying a random vector by the covariance matrix and normalising. Deflation removes the found eigenvector's contribution so the next iteration finds the second eigenvector.
             </p>
             <CodeBlock code={TS_CODE} filename="pca.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch3-callout">
+            <div className="ch-callout">
                 <strong>Production note:</strong> Power iteration is slow and numerically unstable for finding multiple eigenvectors. Real implementations use LAPACK's <code>dsyevd</code> (full eigendecomposition) or ARPACK's Lanczos algorithm for the top-k eigenvectors only (O(nkd) vs O(d³) for full decomposition).
             </div>
         </>

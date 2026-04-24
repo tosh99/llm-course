@@ -24,7 +24,7 @@ export function DotProductDiagram() {
     const lx = po.x + 52 * Math.cos(angM), ly = po.y - 52 * Math.sin(angM)
 
     return (
-        <svg viewBox="0 0 360 225" className="ch0-diagram-svg">
+        <svg viewBox="0 0 360 225" className="ch-diagram-svg">
             <defs>
                 <marker id="dpa" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#e8a838" /></marker>
                 <marker id="dpb" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#5a9ab9" /></marker>
@@ -78,7 +78,7 @@ export function MatTransformDiagram() {
     const trPts = `${pAo.x},${pAo.y} ${pAe1.x},${pAe1.y} ${pAe3.x},${pAe3.y} ${pAe2.x},${pAe2.y}`
 
     return (
-        <svg viewBox="0 0 360 210" className="ch0-diagram-svg">
+        <svg viewBox="0 0 360 210" className="ch-diagram-svg">
             <defs>
                 <marker id="mta" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#e8a838" /></marker>
                 <marker id="mtb" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#5a9ab9" /></marker>
@@ -136,7 +136,7 @@ export function EigenvectorDiagram() {
     const mp = pt(cx, cy, s)
 
     return (
-        <svg viewBox="0 0 360 220" className="ch0-diagram-svg">
+        <svg viewBox="0 0 360 220" className="ch-diagram-svg">
             <defs>
                 <marker id="eva" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#e8a838" /></marker>
                 <marker id="evb" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#5a9ab9" /></marker>
@@ -208,7 +208,7 @@ export function CovarianceDiagram({ compact = false }: { compact?: boolean }) {
     const p = pt(cx, cy, s)
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch0-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <defs>
                 <marker id="cva" markerWidth="3.5" markerHeight="3.5" refX="2.5" refY="1.75" orient="auto"><polygon points="0 0,3.5 1.75,0 3.5" fill="#e8a838" /></marker>
                 <marker id="cvb" markerWidth="3.5" markerHeight="3.5" refX="2.5" refY="1.75" orient="auto"><polygon points="0 0,3.5 1.75,0 3.5" fill="#5a9ab9" /></marker>
@@ -245,7 +245,7 @@ export function CovarianceDiagram({ compact = false }: { compact?: boolean }) {
 
 export function SVDDiagram() {
     return (
-        <svg viewBox="0 0 460 170" className="ch0-diagram-svg">
+        <svg viewBox="0 0 460 170" className="ch-diagram-svg">
             <defs>
                 <marker id="svda" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#3a3a55" /></marker>
             </defs>

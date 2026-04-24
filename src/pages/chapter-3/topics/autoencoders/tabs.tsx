@@ -31,7 +31,7 @@ function AutoencoderDiagram() {
     })
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch3-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <rect width={w} height={h} fill="#0f0f14" rx="4" />
             <text x={12} y={14} fill="#3a3a50" fontSize="5.5" fontFamily="JetBrains Mono,monospace" letterSpacing="1">AUTOENCODER — ENCODER → BOTTLENECK → DECODER</text>
 
@@ -123,17 +123,17 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch3-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
-                <div key={item.year} className="ch3-tl-item">
-                    <div className="ch3-tl-year">{item.year}</div>
-                    <div className="ch3-tl-title">{item.title}</div>
-                    <div className="ch3-tl-section-label">The challenge</div>
-                    <div className="ch3-tl-body">{item.challenge}</div>
-                    <div className="ch3-tl-section-label">What was introduced</div>
-                    <div className="ch3-tl-body">{item.what}</div>
-                    <div className="ch3-tl-section-label">Why it mattered</div>
-                    <div className="ch3-tl-body ch3-tl-impact">{item.impact}</div>
+                <div key={item.year} className="ch-tl-item">
+                    <div className="ch-tl-year">{item.year}</div>
+                    <div className="ch-tl-title">{item.title}</div>
+                    <div className="ch-tl-section-label">The challenge</div>
+                    <div className="ch-tl-body">{item.challenge}</div>
+                    <div className="ch-tl-section-label">What was introduced</div>
+                    <div className="ch-tl-body">{item.what}</div>
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
                 </div>
             ))}
         </div>
@@ -324,7 +324,7 @@ function PythonTab() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="vae.py" lang="python" langLabel="Python" />
-            <div className="ch3-callout">
+            <div className="ch-callout">
                 <strong>Implementation notes:</strong> The <code>reparameterise</code> method only samples at training time — at eval, return the mean (deterministic encoding). The <code>beta</code> parameter in the loss controls the weight of the KL term — β=1 is standard VAE, β&gt;1 (β-VAE) encourages more disentangled representations. Start with <code>latent_dim=2</code> to visualise the latent space directly.
             </div>
         </>
@@ -389,7 +389,7 @@ function CodeTab() {
                 The autoencoder forward pass: encoder compresses x to z, decoder reconstructs x̂ from z. In TypeScript we can implement the forward pass cleanly; training requires backpropagation — use PyTorch or TensorFlow for that. The anomaly detection pattern (high reconstruction error = anomaly) is widely used in production monitoring.
             </p>
             <CodeBlock code={TS_CODE} filename="autoencoder.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch3-callout">
+            <div className="ch-callout">
                 <strong>Connecting to the next chapter:</strong> Autoencoders with non-linear activations are the gateway to deep unsupervised learning. The encoder-decoder pattern reappears everywhere: sequence-to-sequence models (Ch. 11), the Transformer (Ch. 14), BERT (Ch. 16), and diffusion models all use variants of this compress-then-reconstruct idea.
             </div>
         </>

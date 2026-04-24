@@ -15,62 +15,62 @@ function HistoryTab() {
                 arbitrary NLP tasks? GPT-1 proved that it could.
             </p>
 
-            <div className="ch15-timeline">
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2017</div>
-                    <div className="ch15-tl-section-label">Foundation</div>
-                    <div className="ch15-tl-title">Vaswani et al. — Attention Is All You Need</div>
-                    <div className="ch15-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">Vaswani et al. — Attention Is All You Need</div>
+                    <div className="ch-tl-body">
                         The Transformer architecture introduced multi-head self-attention and position-wise
                         feed-forward networks, enabling unprecedented parallelization during training. The
                         original paper used an encoder-decoder architecture for machine translation.
                     </div>
-                    <div className="ch15-tl-impact">Impact: Provided the architectural substrate for GPT</div>
+                    <div className="ch-tl-impact">Impact: Provided the architectural substrate for GPT</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2018</div>
-                    <div className="ch15-tl-section-label">Precedent</div>
-                    <div className="ch15-tl-title">ULMFiT &amp; ELMo</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">ULMFiT &amp; ELMo</div>
+                    <div className="ch-tl-body">
                         Both ULMFiT and ELMo demonstrated that language model pretraining followed by task-specific
                         fine-tuning was a viable paradigm. However, both used LSTM-based architectures and required
                         task-specific architectural modifications. The question remained: could a single,
                         general-purpose architecture handle all tasks?
                     </div>
-                    <div className="ch15-tl-impact">Impact: Proved the pretrain-then-finetune paradigm but left room for a unified architecture</div>
+                    <div className="ch-tl-impact">Impact: Proved the pretrain-then-finetune paradigm but left room for a unified architecture</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">June 2018</div>
-                    <div className="ch15-tl-section-label">Invention</div>
-                    <div className="ch15-tl-title">Radford et al. — GPT-1</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">June 2018</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Radford et al. — GPT-1</div>
+                    <div className="ch-tl-body">
                         "Improving Language Understanding by Generative Pre-Training" introduced a 12-layer
                         Transformer decoder (117M parameters) trained on the BooksCorpus (7,000 unpublished
                         books). The key innovation was <em>task-agnostic architecture</em>: the same model,
                         with only an input transformation, could handle classification, entailment, similarity,
                         and multiple-choice tasks. No task-specific layers were needed.
                     </div>
-                    <div className="ch15-tl-impact">Impact: Demonstrated that a single decoder-only model could be a universal NLP solver</div>
+                    <div className="ch-tl-impact">Impact: Demonstrated that a single decoder-only model could be a universal NLP solver</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2018 – 2019</div>
-                    <div className="ch15-tl-section-label">Legacy</div>
-                    <div className="ch15-tl-title">The GPT Lineage Begins</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018 – 2019</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">The GPT Lineage Begins</div>
+                    <div className="ch-tl-body">
                         GPT-1's architecture and training recipe became the template for GPT-2 (1.5B params),
                         GPT-3 (175B params), and eventually ChatGPT. The decoder-only, left-to-right,
                         next-token-prediction approach — initially seen as inferior to bidirectional methods —
                         turned out to be the most scalable path to general intelligence. BERT won 2018's
                         benchmarks, but GPT won the war.
                     </div>
-                    <div className="ch15-tl-impact">Impact: The architectural foundation of modern large language models</div>
+                    <div className="ch-tl-impact">Impact: The architectural foundation of modern large language models</div>
                 </div>
             </div>
 
-            <div className="ch15-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> A left-to-right language model must learn to condition
                 on all previous context to predict the next token. This forces it to learn a rich, general
                 representation of language, world knowledge, and reasoning — all from a single simple
@@ -161,8 +161,8 @@ function HighSchoolTab() {
             </p>
             <MathBlock tex="\mathcal{L}_2(\mathcal{C}) = \mathcal{L}_1(\mathcal{C}) + \lambda \cdot \mathcal{L}_{\text{task}}(\mathcal{C})" />
 
-            <hr className="ch15-sep" />
-            <div className="ch15-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> GPT-1 achieved 72.8% on the GLUE benchmark, improving the
                 state-of-the-art by 5.5 absolute points on average across 12 NLP tasks. On natural
                 language inference, it outperformed task-specific architectures with 10× more parameters.
@@ -225,7 +225,7 @@ function MathsTab() {
                 approximately 117 million parameters.
             </p>
 
-            <div className="ch15-callout">
+            <div className="ch-callout">
                 <strong>Why decoder-only scales better:</strong> Encoder-decoder models must attend to
                 the full source and target sequences, creating O(n·m) complexity. Decoder-only models
                 have O(n²) complexity but can be trained with simple next-token prediction, which is

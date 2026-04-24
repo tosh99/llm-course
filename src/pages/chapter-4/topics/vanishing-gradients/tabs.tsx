@@ -73,7 +73,7 @@ function HighSchoolTab() {
             </p>
 
             <h3>Numerical example</h3>
-            <table className="ch4-truth-table" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", borderCollapse: "collapse", marginBottom: "18px" }}>
+            <table className="ch-truth-table" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", borderCollapse: "collapse", marginBottom: "18px" }}>
                 <thead>
                     <tr>
                         {["Layers", "Gradient factor", "Relative magnitude"].map(h => (
@@ -97,9 +97,9 @@ function HighSchoolTab() {
                 If weight magnitudes are &gt; 2.0 (rather than ~1.0), the product grows exponentially: a 10-layer network with weights of magnitude 2.5 would amplify gradients by 2.5<sup>10</sup> ≈ 9500×. Updates become chaotic and training diverges.
             </p>
 
-            <hr className="ch4-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>Fixes:</strong> careful weight initialization (Xavier: <InlineMath tex="W \sim \mathcal{N}(0, \sqrt{2/n_{in}})" />; He init for ReLU), batch normalization (Ioffe & Szegedy, 2015), residual connections (ResNet, 2015), and using ReLU instead of sigmoid/tanh.
             </div>
         </>

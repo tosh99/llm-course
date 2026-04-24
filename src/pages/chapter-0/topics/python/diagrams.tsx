@@ -13,7 +13,7 @@ export function PythonEcosystemDiagram() {
     ]
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch0-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <rect width={w} height={h} fill="#0f0f14" rx="4" />
 
             <text x="180" y="18" textAnchor="middle" fill="#5e5b56" fontSize="5" fontFamily="JetBrains Mono,monospace" letterSpacing="2">THE PYTHON ML STACK</text>
@@ -42,7 +42,7 @@ export function ArrayMemoryDiagram() {
     const w = 360, h = 180
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch0-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <rect width={w} height={h} fill="#0f0f14" rx="4" />
 
             <text x="180" y="18" textAnchor="middle" fill="#5e5b56" fontSize="5" fontFamily="JetBrains Mono,monospace" letterSpacing="2">PYTHON LIST vs NUMPY ARRAY</text>
@@ -74,7 +74,7 @@ export function BroadcastingDiagram() {
     const w = 360, h = 200
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch0-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <rect width={w} height={h} fill="#0f0f14" rx="4" />
 
             <text x="180" y="18" textAnchor="middle" fill="#5e5b56" fontSize="5" fontFamily="JetBrains Mono,monospace" letterSpacing="2">BROADCASTING — SHAPE EXPANSION</text>

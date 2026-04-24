@@ -15,12 +15,12 @@ function HistoryTab() {
                 was posed formally in 2015, in the context of image captioning.
             </p>
 
-            <div className="ch12-timeline">
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2015 Feb</div>
-                    <div className="ch12-tl-section-label">Image Captioning</div>
-                    <div className="ch12-tl-title">Xu et al. — Show, Attend and Tell</div>
-                    <div className="ch12-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015 Feb</div>
+                    <div className="ch-tl-section-label">Image Captioning</div>
+                    <div className="ch-tl-title">Xu et al. — Show, Attend and Tell</div>
+                    <div className="ch-tl-body">
                         Kelvin Xu, Jimmy Ba, Ryan Kiros, Kyunghyun Cho, Aaron Courville, Ruslan
                         Salakhutdinov, Richard Zemel, and Yoshua Bengio published "Show, Attend and
                         Tell: Neural Image Caption Generation with Visual Attention" (ICML 2015).
@@ -30,14 +30,14 @@ function HistoryTab() {
                         introduced and compared <em>soft</em> (deterministic) and <em>hard</em>
                         (stochastic) attention formally.
                     </div>
-                    <div className="ch12-tl-impact">Impact: First formal comparison of soft vs hard attention; soft attention became the standard</div>
+                    <div className="ch-tl-impact">Impact: First formal comparison of soft vs hard attention; soft attention became the standard</div>
                 </div>
 
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2015</div>
-                    <div className="ch12-tl-section-label">Soft Attention</div>
-                    <div className="ch12-tl-title">Deterministic, Differentiable, End-to-End</div>
-                    <div className="ch12-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Soft Attention</div>
+                    <div className="ch-tl-title">Deterministic, Differentiable, End-to-End</div>
+                    <div className="ch-tl-body">
                         Soft attention computes a weighted mixture of all feature vectors: context
                         = Σ α<sub>i</sub> f<sub>i</sub>. Because α is produced by softmax
                         (differentiable), the entire computation graph is differentiable and
@@ -46,14 +46,14 @@ function HistoryTab() {
                         converges faster and is easier to tune, at the cost of slightly less
                         interpretable alignments (you see weights, not selections).
                     </div>
-                    <div className="ch12-tl-impact">Impact: Used in virtually all modern attention systems including the Transformer</div>
+                    <div className="ch-tl-impact">Impact: Used in virtually all modern attention systems including the Transformer</div>
                 </div>
 
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2015</div>
-                    <div className="ch12-tl-section-label">Hard Attention</div>
-                    <div className="ch12-tl-title">Stochastic, Non-Differentiable, REINFORCE</div>
-                    <div className="ch12-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Hard Attention</div>
+                    <div className="ch-tl-title">Stochastic, Non-Differentiable, REINFORCE</div>
+                    <div className="ch-tl-body">
                         Hard attention samples a single location z<sub>t</sub> ~ Categorical(α<sub>t</sub>)
                         and uses only f<sub>zt</sub> as the context. This is not differentiable —
                         the sampling operation has no useful gradient. Xu et al. trained it with the
@@ -62,14 +62,14 @@ function HistoryTab() {
                         sampling decision. Hard attention produced sharper, more interpretable
                         attention maps but was harder to train and more sensitive to reward variance.
                     </div>
-                    <div className="ch12-tl-impact">Impact: Proved hard attention was possible; motivated Gumbel-Softmax and ST estimators</div>
+                    <div className="ch-tl-impact">Impact: Proved hard attention was possible; motivated Gumbel-Softmax and ST estimators</div>
                 </div>
 
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2017</div>
-                    <div className="ch12-tl-section-label">Bridge</div>
-                    <div className="ch12-tl-title">Gumbel-Softmax — Differentiable Discrete Relaxation</div>
-                    <div className="ch12-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Bridge</div>
+                    <div className="ch-tl-title">Gumbel-Softmax — Differentiable Discrete Relaxation</div>
+                    <div className="ch-tl-body">
                         Jang et al. and Maddison et al. (independently, 2017) introduced the
                         Gumbel-Softmax trick: add Gumbel noise to the logits before softmax
                         and control a temperature τ. At τ→0, this approximates a one-hot
@@ -78,11 +78,11 @@ function HistoryTab() {
                         approximately-discrete selections. This bridged soft and hard attention
                         and enabled differentiable discrete latent variables.
                     </div>
-                    <div className="ch12-tl-impact">Impact: Enabled discrete bottlenecks (VQ-VAE, discrete VAEs) and improved training of hard attention</div>
+                    <div className="ch-tl-impact">Impact: Enabled discrete bottlenecks (VQ-VAE, discrete VAEs) and improved training of hard attention</div>
                 </div>
             </div>
 
-            <div className="ch12-callout">
+            <div className="ch-callout">
                 <strong>Why soft attention won in practice:</strong> Soft attention is
                 differentiable, stable, and yields competitive or better performance on most tasks.
                 Hard attention's interpretability benefit (a single attended location per step)
@@ -224,7 +224,7 @@ function MathsTab() {
             <MathBlock tex="g_i = -\log(-\log u_i), \quad u_i \sim \text{Uniform}(0,1)" />
             <MathBlock tex="y_i^\tau = \frac{\exp\!\left((e_i + g_i)/\tau\right)}{\sum_j \exp\!\left((e_j + g_j)/\tau\right)} \xrightarrow{\tau\to 0} \text{one-hot}(\arg\max_i\!(e_i + g_i))" />
 
-            <div className="ch12-callout">
+            <div className="ch-callout">
                 <strong>Practical guidance:</strong> Use soft attention for most tasks —
                 it's differentiable, stable, and nearly always matches or outperforms hard
                 attention in BLEU/accuracy metrics. Use hard attention (or Gumbel-Softmax)

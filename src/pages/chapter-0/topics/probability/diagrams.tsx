@@ -24,7 +24,7 @@ export function NormalDistributionDiagram() {
         + ` L${sigma1.x},${sigma1.y + (cy - sigma1.y)} L${sigmaN1.x},${sigmaN1.y + (cy - sigmaN1.y)} Z`
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch0-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <defs>
                 <marker id="nda" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#e8a838" /></marker>
             </defs>
@@ -67,7 +67,7 @@ export function BayesDiagram() {
     const p = pt(cx, cy, s)
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch0-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <defs>
                 <marker id="bya" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#e8a838" /></marker>
                 <marker id="byb" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#5a9ab9" /></marker>
@@ -114,7 +114,7 @@ export function VarianceDiagram() {
     const mean = points.reduce((s, pt) => s + pt[0], 0) / points.length
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch0-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <defs>
                 <marker id="vda" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto"><polygon points="0 0,4 2,0 4" fill="#e8a838" /></marker>
             </defs>

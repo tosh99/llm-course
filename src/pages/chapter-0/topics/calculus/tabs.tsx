@@ -14,15 +14,15 @@ interface TimelineItem {
 
 function TlItem({ item }: { item: TimelineItem }) {
     return (
-        <div className="ch0-tl-item">
-            <div className="ch0-tl-year">{item.year}</div>
-            <div className="ch0-tl-title">{item.title}</div>
-            <div className="ch0-tl-section-label">The challenge</div>
-            <div className="ch0-tl-body">{item.challenge}</div>
-            <div className="ch0-tl-section-label">What was introduced</div>
-            <div className="ch0-tl-body">{item.what}</div>
-            <div className="ch0-tl-section-label">Why it mattered</div>
-            <div className="ch0-tl-body ch0-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The challenge</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -77,7 +77,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch0-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TlItem key={item.year} item={item} />
             ))}
@@ -262,7 +262,7 @@ function HighSchoolTab() {
                 learning rates.
             </p>
 
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Connection to ML:</strong> The loss function L(θ) has thousands to billions of
                 parameters θ. We compute ∇θL using backpropagation (the chain rule applied through the
                 network), then update θ ← θ − η·∇θL. Repeating this millions of times is what "training a
@@ -393,7 +393,7 @@ function MathsTab() {
                 </li>
             </ul>
 
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Backpropagation is just reverse-mode automatic differentiation
                 applied to a neural network's computation graph. It's not a special trick — it's the chain
                 rule, organised efficiently on a graph. Modern frameworks (PyTorch, JAX) build this graph
@@ -526,7 +526,7 @@ function PythonTab() {
                 or JAX for automatic differentiation — they compute exact gradients, not approximations.
             </p>
             <CodeBlock code={PY_CODE} filename="calculus.py" lang="python" langLabel="Python" />
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Finite difference (f(x+h) − f(x))/h approximates derivatives,
                 but it's numerically unstable and slow for many variables. Autodiff frameworks like PyTorch
                 build a computational graph and apply the chain rule efficiently — exact gradients at GPU
@@ -651,7 +651,7 @@ function CodeTab() {
                 intuition for what autodiff frameworks compute automatically.
             </p>
             <CodeBlock code={TS_CODE} filename="calculus.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Next step:</strong> Use PyTorch or TensorFlow for real ML. Their autodiff engines
                 compute exact gradients via computational graphs, not finite differences. The chain rule
                 still applies — you just see it through the <code>loss.backward()</code> API.

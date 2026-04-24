@@ -6,7 +6,7 @@ export function GradientDescentDiagram() {
     const p = pt(cx, cy, s)
 
     return (
-        <svg viewBox="0 0 360 220" className="ch0-diagram-svg">
+        <svg viewBox="0 0 360 220" className="ch-diagram-svg">
             <defs>
                 <marker id="gda" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#e8a838" /></marker>
                 <marker id="gdb" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#5a9ab9" /></marker>
@@ -67,7 +67,7 @@ export function PartialDerivativeDiag() {
     const px = p(mx, my).x, py = p(mx, my).y
 
     return (
-        <svg viewBox="0 0 360 210" className="ch0-diagram-svg">
+        <svg viewBox="0 0 360 210" className="ch-diagram-svg">
             <defs>
                 <marker id="pda" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#e8a838" /></marker>
                 <marker id="pdb" markerWidth="5" markerHeight="5" refX="3.5" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#5a9ab9" /></marker>

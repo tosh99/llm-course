@@ -15,54 +15,54 @@ function HistoryTab() {
                 attempts to engineer what a neural network would simply learn.
             </p>
 
-            <div className="ch11-timeline">
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">1949</div>
-                    <div className="ch11-tl-section-label">Origins</div>
-                    <div className="ch11-tl-title">Warren Weaver's memorandum — first MT proposal</div>
-                    <div className="ch11-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1949</div>
+                    <div className="ch-tl-section-label">Origins</div>
+                    <div className="ch-tl-title">Warren Weaver's memorandum — first MT proposal</div>
+                    <div className="ch-tl-body">
                         Weaver, a Rockefeller Foundation executive, circulated a memo proposing that
                         translation could be solved with cryptography techniques (decode foreign language
                         as a cipher of English) and information theory. The memo launched the field and
                         attracted US government funding during the Cold War, when translating Soviet
                         documents at scale was a national security priority.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Founded the machine translation research field</div>
+                    <div className="ch-tl-impact">Impact: Founded the machine translation research field</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">1966</div>
-                    <div className="ch11-tl-section-label">Crisis</div>
-                    <div className="ch11-tl-title">ALPAC Report — US government cuts MT funding</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1966</div>
+                    <div className="ch-tl-section-label">Crisis</div>
+                    <div className="ch-tl-title">ALPAC Report — US government cuts MT funding</div>
+                    <div className="ch-tl-body">
                         The Automatic Language Processing Advisory Committee concluded that MT was slower,
                         less accurate, and twice as expensive as human translation. It recommended cutting
                         all MT research funding. The report nearly killed the field for a decade, but
                         motivated a shift away from rule-based systems toward statistical approaches —
                         eventually.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Triggered a decade-long winter for MT research</div>
+                    <div className="ch-tl-impact">Impact: Triggered a decade-long winter for MT research</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">1993</div>
-                    <div className="ch11-tl-section-label">Statistical MT</div>
-                    <div className="ch11-tl-title">IBM Models — Brown et al. — statistical word alignment</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1993</div>
+                    <div className="ch-tl-section-label">Statistical MT</div>
+                    <div className="ch-tl-title">IBM Models — Brown et al. — statistical word alignment</div>
+                    <div className="ch-tl-body">
                         Peter Brown and colleagues at IBM published the IBM alignment models (Models 1–5),
                         framing MT as a statistical problem: given observed parallel text, estimate the
                         probability that each source word generates each target word. This introduced
                         the noisy-channel model: P(target | source) ∝ P(source | target) × P(target).
                         The era of statistical MT (SMT) had begun.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Founded statistical MT; the noisy-channel model dominated for two decades</div>
+                    <div className="ch-tl-impact">Impact: Founded statistical MT; the noisy-channel model dominated for two decades</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2003–2006</div>
-                    <div className="ch11-tl-section-label">Phrase-based SMT</div>
-                    <div className="ch11-tl-title">Moses & phrase-based SMT — Koehn et al.</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2003–2006</div>
+                    <div className="ch-tl-section-label">Phrase-based SMT</div>
+                    <div className="ch-tl-title">Moses & phrase-based SMT — Koehn et al.</div>
+                    <div className="ch-tl-body">
                         Phrase-based SMT (PBSMT) replaced word-to-word alignment with phrase-to-phrase
                         translation, dramatically improving fluency. Philipp Koehn's Moses became the
                         open-source standard. Google Translate launched in 2006 on top of PBSMT, processing
@@ -70,33 +70,33 @@ function HistoryTab() {
                         PBSMT was a carefully engineered pipeline: tokenization, alignment, phrase extraction,
                         language model, decoder, reranker.
                     </div>
-                    <div className="ch11-tl-impact">Impact: PBSMT dominated commercial MT for a decade</div>
+                    <div className="ch-tl-impact">Impact: PBSMT dominated commercial MT for a decade</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">September 2014</div>
-                    <div className="ch11-tl-section-label">Neural revolution</div>
-                    <div className="ch11-tl-title">Sutskever et al. — neural MT competitive with PBSMT</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">September 2014</div>
+                    <div className="ch-tl-section-label">Neural revolution</div>
+                    <div className="ch-tl-title">Sutskever et al. — neural MT competitive with PBSMT</div>
+                    <div className="ch-tl-body">
                         On WMT14 English→French, the LSTM seq2seq model achieved 34.8 BLEU (5-model
                         ensemble), directly competitive with a heavily-tuned PBSMT system that had years
                         of engineering. The neural model used no hand-crafted features, no linguistic
                         rules, and no alignment model — just raw parallel text and gradient descent.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Proved neural MT could reach PBSMT performance; shifted the entire field</div>
+                    <div className="ch-tl-impact">Impact: Proved neural MT could reach PBSMT performance; shifted the entire field</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2016</div>
-                    <div className="ch11-tl-section-label">Industry transition</div>
-                    <div className="ch11-tl-title">Google Neural MT — PBSMT retired in production</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016</div>
+                    <div className="ch-tl-section-label">Industry transition</div>
+                    <div className="ch-tl-title">Google Neural MT — PBSMT retired in production</div>
+                    <div className="ch-tl-body">
                         Google deployed its Neural Machine Translation system, replacing PBSMT for most
                         language pairs. GNMT used an 8-layer LSTM encoder-decoder with attention, residual
                         connections, and a mixed word/character vocabulary. For Chinese→English, translation
                         errors dropped by 60%. Academic MT research pivoted almost entirely to neural methods.
                     </div>
-                    <div className="ch11-tl-impact">Impact: End of the PBSMT era; neural MT became the industry standard</div>
+                    <div className="ch-tl-impact">Impact: End of the PBSMT era; neural MT became the industry standard</div>
                 </div>
             </div>
         </>
@@ -195,7 +195,7 @@ function HighSchoolTab() {
                 <li>Perfect human-level: ~60+ BLEU (humans don't always agree either)</li>
             </ul>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>BLEU limitations:</strong> BLEU measures surface n-gram overlap, not meaning.
                 A translation can be semantically correct but use different synonyms and score poorly.
                 Modern MT evaluation increasingly uses neural metrics (BERTScore, COMET) that
@@ -239,7 +239,7 @@ function MathsTab() {
             </ul>
             <MathBlock tex="p_n = \frac{\sum_{\mathbf{s} \in \text{cand}} \sum_{\text{ngram} \in \mathbf{s}} \min(\text{Count}(\text{ngram}, \mathbf{s}),\, \text{Count}_{\text{ref}}(\text{ngram}))}{\sum_{\mathbf{s} \in \text{cand}} \sum_{\text{ngram} \in \mathbf{s}} \text{Count}(\text{ngram}, \mathbf{s})}" />
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Why geometric mean?</strong> BLEU uses the geometric mean of n-gram precisions
                 (equivalent to exp(∑ w_n log p_n)) rather than the arithmetic mean. This ensures that
                 if any n-gram precision is zero (common for 4-grams on short/bad translations), the
@@ -426,7 +426,7 @@ function CodeTab() {
                 score degrades as the translation quality decreases.
             </p>
             <CodeBlock code={TS_CODE} filename="bleu_score.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>BLEU in context:</strong> A score of 30 BLEU on WMT14 En→Fr was roughly
                 equivalent to a strong phrase-based system in 2014. By 2018, Transformer-based
                 models exceeded 41 BLEU on the same benchmark. Human-level performance is estimated

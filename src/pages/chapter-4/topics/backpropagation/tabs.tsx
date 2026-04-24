@@ -13,15 +13,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch4-tl-item">
-            <div className="ch4-tl-year">{item.year}</div>
-            <div className="ch4-tl-title">{item.title}</div>
-            <div className="ch4-tl-section-label">The context</div>
-            <div className="ch4-tl-body">{item.challenge}</div>
-            <div className="ch4-tl-section-label">What was introduced</div>
-            <div className="ch4-tl-body">{item.what}</div>
-            <div className="ch4-tl-section-label">Why it mattered</div>
-            <div className="ch4-tl-body ch4-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The context</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -67,7 +67,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch4-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -139,9 +139,9 @@ function HighSchoolTab() {
                 where <InlineMath tex="\eta" /> is the learning rate. This is gradient descent applied to each weight individually.
             </p>
 
-            <hr className="ch4-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>The efficiency insight:</strong> naive computation of each weight's gradient would require a forward pass per weight. Backprop reuses computed gradients across layers, making a full gradient computation cost roughly the same as a single forward pass — about 2× the forward pass total.
             </div>
         </>
@@ -197,7 +197,7 @@ function MathsTab() {
                 All gradients are accumulated over the training set (or mini-batch), then applied.
             </p>
 
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>Computational complexity:</strong> backprop performs <em>O(L)</em> sequential chain-rule steps (one per layer), each involving matrix multiplications of size determined by layer widths. The total is <InlineMath tex="O(\sum_l n_l \cdot n_{l-1})" /> — roughly proportional to the number of weights, which is why deeper networks need more computation.
             </div>
         </>
@@ -287,7 +287,7 @@ function PythonTab() {
                 XOR requires a hidden layer — this is exactly the problem Minsky proved a single perceptron couldn't solve.
             </p>
             <CodeBlock code={PY_CODE} filename="backprop.py" lang="python" langLabel="Python" />
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>What you're seeing:</strong> after ~15,000 epochs, the network learns XOR —
                 something impossible for a single perceptron. The hidden layer's 4 units discover
                 an internal representation that makes the problem linearly separable in the hidden space.
@@ -415,7 +415,7 @@ function CodeTab() {
                 No libraries — just arrays, elementary calculus, and the chain rule.
             </p>
             <CodeBlock code={TS_CODE} filename="backprop.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>Historical note:</strong> the original 1986 paper computed gradients by hand
                 for small networks. Modern frameworks (PyTorch, JAX) compute backprop automatically
                 via computational graphs — but they all use the same chain-rule mathematics.

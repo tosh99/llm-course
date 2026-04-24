@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch7-tl-item">
-            <div className="ch7-tl-year">{item.year}</div>
-            <div className="ch7-tl-title">{item.title}</div>
-            <div className="ch7-tl-section-label">The context</div>
-            <div className="ch7-tl-body">{item.challenge}</div>
-            <div className="ch7-tl-section-label">What was introduced</div>
-            <div className="ch7-tl-body">{item.what}</div>
-            <div className="ch7-tl-section-label">Why it mattered</div>
-            <div className="ch7-tl-body ch7-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The context</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -59,7 +59,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch7-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -140,9 +140,9 @@ function HighSchoolTab() {
                 <li><strong>Dropout</strong>: 0.5 dropout on FC layers prevented overfitting.</li>
             </ol>
 
-            <hr className="ch7-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Top-5 error results (ImageNet 2012):</strong><br />
                 AlexNet: 15.3% → Previous best: 26.2% → The gap was unprecedented.<br />
                 By 2015, deep nets achieved 3.6% — below human error rate (5.1%).
@@ -195,7 +195,7 @@ function MathsTab() {
                 Conv3 and FC layers communicated between GPUs. This was necessary because a single GTX 580 only had 3GB of memory.
             </p>
 
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Historical significance:</strong> AlexNet proved that deep learning,
                 ReLU, GPU training, and data augmentation together could achieve breakthrough
                 results. Every subsequent architecture built on these foundations.
@@ -302,7 +302,7 @@ function PythonTab() {
                 with ~60 million parameters.
             </p>
             <CodeBlock code={PY_CODE} filename="alexnet.py" lang="python" langLabel="Python" />
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Architecture insight:</strong> Most parameters (58.6M out of 60M)
                 are in the fully-connected layers. Modern architectures (ResNet, EfficientNet)
                 reduce this with global average pooling.
@@ -514,7 +514,7 @@ function CodeTab() {
                 forward pass logic without external ML libraries.
             </p>
             <CodeBlock code={TS_CODE} filename="alexnet.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>The legacy:</strong> AlexNet's 2012 breakthrough established
                 the template for modern CNNs: depth + ReLU + dropout + GPU training.
                 The entire computer vision field shifted in months.

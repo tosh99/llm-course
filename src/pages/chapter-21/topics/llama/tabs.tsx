@@ -15,60 +15,60 @@ function HistoryTab() {
                 open-source innovation.
             </p>
 
-            <div className="ch21-timeline">
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">2022</div>
-                    <div className="ch21-tl-section-label">Context</div>
-                    <div className="ch21-tl-title">Closed Models Dominate</div>
-                    <div className="ch21-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022</div>
+                    <div className="ch-tl-section-label">Context</div>
+                    <div className="ch-tl-title">Closed Models Dominate</div>
+                    <div className="ch-tl-body">
                         OpenAI's GPT-3 and InstructGPT are available only through APIs. Researchers
                         and developers cannot study weights, modify architectures, or fine-tune on
                         private data. The open-source community lacks competitive alternatives.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Centralization of AI capability in a few corporations</div>
+                    <div className="ch-tl-impact">Impact: Centralization of AI capability in a few corporations</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">Feb 2023</div>
-                    <div className="ch21-tl-section-label">Invention</div>
-                    <div className="ch21-tl-title">Touvron et al. — LLaMA: Open and Efficient Foundation Language Models</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Feb 2023</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Touvron et al. — LLaMA: Open and Efficient Foundation Language Models</div>
+                    <div className="ch-tl-body">
                         Meta AI trained LLaMA models at 7B, 13B, 33B, and 65B parameters using only
                         publicly available datasets. The key innovation was training smaller models
                         on <em>far more tokens</em> than previous work — following the Chinchilla
                         scaling laws. LLaMA-13B outperformed GPT-3 (175B) on most benchmarks.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Proved open models could match closed giants</div>
+                    <div className="ch-tl-impact">Impact: Proved open models could match closed giants</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">March 2023</div>
-                    <div className="ch21-tl-section-label">Community</div>
-                    <div className="ch21-tl-title">The Weights Leak and the Ecosystem Explodes</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">March 2023</div>
+                    <div className="ch-tl-section-label">Community</div>
+                    <div className="ch-tl-title">The Weights Leak and the Ecosystem Explodes</div>
+                    <div className="ch-tl-body">
                         LLaMA weights were distributed via torrent, and within weeks the community
                         built Alpaca (Stanford), Vicuna, Koala, WizardLM, and dozens more fine-tuned
                         variants. For the first time, anyone with a consumer GPU could run and
                         modify a GPT-3-class model locally.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Democratized access to large language models</div>
+                    <div className="ch-tl-impact">Impact: Democratized access to large language models</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">July 2023</div>
-                    <div className="ch21-tl-section-label">Evolution</div>
-                    <div className="ch21-tl-title">LLaMA 2 — Commercially Usable Open Weights</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">July 2023</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">LLaMA 2 — Commercially Usable Open Weights</div>
+                    <div className="ch-tl-body">
                         Meta released LLaMA 2 with a commercially permissive license. The suite
                         included 7B, 13B, and 70B base models plus chat-tuned variants trained with
                         RLHF. LLaMA 2-70B approached GPT-3.5 performance, and the model became the
                         default foundation for open-source development.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Established the open-weights standard for enterprise use</div>
+                    <div className="ch-tl-impact">Impact: Established the open-weights standard for enterprise use</div>
                 </div>
             </div>
 
-            <div className="ch21-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Chinchilla-optimal training — smaller models
                 trained on more data — produces better inference efficiency than giant models
                 trained on too few tokens. LLaMA traded training compute for inference accessibility.
@@ -143,8 +143,8 @@ function HighSchoolTab() {
                 Exchange. All data was deduplicated and filtered for quality.
             </p>
 
-            <hr className="ch21-sep" />
-            <div className="ch21-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> LLaMA-13B outperformed GPT-3 (175B) on most benchmarks
                 despite being 13× smaller. The trade-off was longer training time, but the resulting
                 model was far cheaper to run at inference.

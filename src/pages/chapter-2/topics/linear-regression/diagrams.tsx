@@ -18,7 +18,7 @@ export function RegressionDiagram() {
     const py0 = p(0, 0), py1 = p(0, 6.2)
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch2-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <defs>
                 <marker id="lr-arrow" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto"><polygon points="0 0,6 3,0 6" fill="#5a9ab9" /></marker>
             </defs>
@@ -81,7 +81,7 @@ export function RegressionDiagram() {
 export function BiasVarianceDiagram() {
     const w = 480, h = 190
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch2-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <rect width={w} height={h} fill="#0f0f14" rx="4" />
 
             <text x={12} y={16} fill="#3a3a50" fontSize="5.5" fontFamily="JetBrains Mono,monospace" letterSpacing="1">BIAS-VARIANCE TRADE-OFF</text>
@@ -142,7 +142,7 @@ export function BiasVarianceDiagram() {
 export function RidgeLassoDiagram() {
     const w = 480, h = 170
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch2-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <rect width={w} height={h} fill="#0f0f14" rx="4" />
 
             <text x={12} y={16} fill="#3a3a50" fontSize="5.5" fontFamily="JetBrains Mono,monospace" letterSpacing="1">L1 vs L2 PENALTY — CONSTRAINT REGIONS</text>

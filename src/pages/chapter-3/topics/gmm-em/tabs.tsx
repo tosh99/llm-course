@@ -37,17 +37,17 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch3-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
-                <div key={item.year} className="ch3-tl-item">
-                    <div className="ch3-tl-year">{item.year}</div>
-                    <div className="ch3-tl-title">{item.title}</div>
-                    <div className="ch3-tl-section-label">The challenge</div>
-                    <div className="ch3-tl-body">{item.challenge}</div>
-                    <div className="ch3-tl-section-label">What was introduced</div>
-                    <div className="ch3-tl-body">{item.what}</div>
-                    <div className="ch3-tl-section-label">Why it mattered</div>
-                    <div className="ch3-tl-body ch3-tl-impact">{item.impact}</div>
+                <div key={item.year} className="ch-tl-item">
+                    <div className="ch-tl-year">{item.year}</div>
+                    <div className="ch-tl-title">{item.title}</div>
+                    <div className="ch-tl-section-label">The challenge</div>
+                    <div className="ch-tl-body">{item.challenge}</div>
+                    <div className="ch-tl-section-label">What was introduced</div>
+                    <div className="ch-tl-body">{item.what}</div>
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
                 </div>
             ))}
         </div>
@@ -226,7 +226,7 @@ function PythonTab() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="gmm_em.py" lang="python" langLabel="Python" />
-            <div className="ch3-callout">
+            <div className="ch-callout">
                 <strong>Covariance types:</strong> <code>full</code> allows each component its own arbitrary ellipse (most flexible, most parameters); <code>diag</code> restricts to axis-aligned ellipses; <code>spherical</code> is equivalent to soft k-means; <code>tied</code> uses the same covariance for all components. Start with <code>full</code> and use BIC to trade off fit vs. complexity.
             </div>
         </>
@@ -314,7 +314,7 @@ function CodeTab() {
                 A complete 1D Gaussian Mixture Model trained with EM. The alternating E-step (computing responsibilities) and M-step (updating means, variances, mixing weights) is the core of the algorithm — all in about 40 lines.
             </p>
             <CodeBlock code={TS_CODE} filename="gmm_em.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch3-callout">
+            <div className="ch-callout">
                 <strong>Extension to multivariate:</strong> Replace the scalar Gaussian with the multivariate form (requires matrix inverse and determinant). The E-step formula is unchanged. The M-step adds the outer product sum for the covariance update: Σₖ = (1/Nₖ) Σₙ rₙₖ (xₙ−μₖ)(xₙ−μₖ)ᵀ.
             </div>
         </>

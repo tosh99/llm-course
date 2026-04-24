@@ -15,26 +15,26 @@ function HistoryTab() {
                 rules of thumb to precisely designed schedules that are themselves hyperparameters.
             </p>
 
-            <div className="ch9-timeline">
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">1960s–1980s</div>
-                    <div className="ch9-tl-section-label">Classical Methods</div>
-                    <div className="ch9-tl-title">Constant LR and polynomial decay</div>
-                    <div className="ch9-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1960s–1980s</div>
+                    <div className="ch-tl-section-label">Classical Methods</div>
+                    <div className="ch-tl-title">Constant LR and polynomial decay</div>
+                    <div className="ch-tl-body">
                         Early neural network training used constant learning rates or simple
                         polynomial decay schedules from numerical optimization theory. Stochastic
                         approximation theory (Robbins-Monro, 1951) established that SGD converges
                         if Ση = ∞ and Ση² &lt; ∞ — satisfied by 1/t decay. In practice,
                         step decay (halving every N epochs) was the pragmatic standard.
                     </div>
-                    <div className="ch9-tl-impact">Context: Small networks trained with constant or step decay LR</div>
+                    <div className="ch-tl-impact">Context: Small networks trained with constant or step decay LR</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2016</div>
-                    <div className="ch9-tl-section-label">Cyclical Learning Rates</div>
-                    <div className="ch9-tl-title">Smith — Cyclical Learning Rates for Training Neural Networks</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016</div>
+                    <div className="ch-tl-section-label">Cyclical Learning Rates</div>
+                    <div className="ch-tl-title">Smith — Cyclical Learning Rates for Training Neural Networks</div>
+                    <div className="ch-tl-body">
                         Leslie Smith's paper challenged the orthodoxy of monotonically decreasing
                         learning rates. His cyclical LR policy triangularly oscillates the LR between
                         a minimum and maximum. The key insight: periodically increasing the LR acts
@@ -42,14 +42,14 @@ function HistoryTab() {
                         Smith also introduced the LR range test: train with exponentially increasing LR
                         and find the range where loss decreases fastest.
                     </div>
-                    <div className="ch9-tl-impact">Impact: First principled argument for increasing LR during training; LR range test became a standard tool</div>
+                    <div className="ch-tl-impact">Impact: First principled argument for increasing LR during training; LR range test became a standard tool</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2017</div>
-                    <div className="ch9-tl-section-label">Warmup</div>
-                    <div className="ch9-tl-title">Vaswani et al. — Transformer LR Schedule</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Warmup</div>
+                    <div className="ch-tl-title">Vaswani et al. — Transformer LR Schedule</div>
+                    <div className="ch-tl-body">
                         "Attention Is All You Need" introduced the now-canonical warmup-then-decay
                         schedule for Transformers. LR increases linearly for warmup_steps steps,
                         then decreases proportionally to 1/√step. The warmup is critical: at the
@@ -57,35 +57,35 @@ function HistoryTab() {
                         and a large LR causes the Adam second-moment estimate to be unreliable.
                         Warmup prevents this cold-start instability.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Warmup became mandatory for Transformer training; all LLMs use warmup</div>
+                    <div className="ch-tl-impact">Impact: Warmup became mandatory for Transformer training; all LLMs use warmup</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2017–2018</div>
-                    <div className="ch9-tl-section-label">Cosine Annealing</div>
-                    <div className="ch9-tl-title">Loshchilov & Hutter — SGDR and Cosine Annealing</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017–2018</div>
+                    <div className="ch-tl-section-label">Cosine Annealing</div>
+                    <div className="ch-tl-title">Loshchilov & Hutter — SGDR and Cosine Annealing</div>
+                    <div className="ch-tl-body">
                         "SGDR: Stochastic Gradient Descent with Warm Restarts" proposed cosine
                         annealing with periodic restarts. The LR follows a cosine curve from η<sub>max</sub>
                         to η<sub>min</sub>, then resets ("warm restarts"). Cosine annealing became
                         the default schedule for ImageNet training and large-scale language model
                         training — smooth, gradual decay that reaches a well-defined minimum.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Cosine schedule is now the most common LR schedule in large model training</div>
+                    <div className="ch-tl-impact">Impact: Cosine schedule is now the most common LR schedule in large model training</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2018–2019</div>
-                    <div className="ch9-tl-section-label">One-Cycle</div>
-                    <div className="ch9-tl-title">Smith & Tobin — The One-Cycle Policy</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018–2019</div>
+                    <div className="ch-tl-section-label">One-Cycle</div>
+                    <div className="ch-tl-title">Smith & Tobin — The One-Cycle Policy</div>
+                    <div className="ch-tl-body">
                         The one-cycle policy: increase LR from a small value to η<sub>max</sub> over
                         the first 30% of training, then decrease to near zero over the remaining 70%.
                         Also cycle the momentum in reverse. This "super-convergence" can achieve
                         the same final accuracy in 5–10× fewer epochs — making it popular for
                         fast experimentation.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Standard in fast.ai; enables training in fraction of usual epochs</div>
+                    <div className="ch-tl-impact">Impact: Standard in fast.ai; enables training in fraction of usual epochs</div>
                 </div>
             </div>
         </>
@@ -180,7 +180,7 @@ function HighSchoolTab() {
                 <li>Momentum cycles in reverse: high at start, low in the middle, high at end</li>
             </ul>
 
-            <hr className="ch9-sep" />
+            <hr className="ch-sep" />
 
             <h3>LR Range Test (Smith, 2017)</h3>
             <p>
@@ -189,7 +189,7 @@ function HighSchoolTab() {
                 starts to increase sharply.
             </p>
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>Rule of thumb for modern training:</strong> Use cosine annealing with linear
                 warmup for Transformer-based models. The warmup duration is typically 1-5% of total
                 training steps. The cosine minimum is typically 10% of the peak LR. This combination
@@ -244,7 +244,7 @@ function MathsTab() {
             <h3>Linear Warmup + Cosine Decay (Combined)</h3>
             <MathBlock tex="\eta_t = \begin{cases} \eta_{\max} \cdot t / T_{\text{warm}} & t \leq T_{\text{warm}} \\ \eta_{\min} + \frac{\eta_{\max}-\eta_{\min}}{2}\!\left(1 + \cos\!\left(\frac{\pi(t-T_{\text{warm}})}{T-T_{\text{warm}}}\right)\right) & t > T_{\text{warm}} \end{cases}" />
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>Empirical finding:</strong> For large language models, warmup and cosine
                 decay together are crucial. Chen et al. (2024) showed that the cosine minimum
                 (η<sub>min</sub>/η<sub>max</sub> ratio) significantly impacts final model quality —

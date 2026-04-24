@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch8-tl-item">
-            <div className="ch8-tl-year">{item.year}</div>
-            <div className="ch8-tl-title">{item.title}</div>
-            <div className="ch8-tl-section-label">Context</div>
-            <div className="ch8-tl-body">{item.context}</div>
-            <div className="ch8-tl-section-label">What Changed</div>
-            <div className="ch8-tl-body">{item.what}</div>
-            <div className="ch8-tl-section-label">Impact</div>
-            <div className="ch8-tl-body ch8-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">Context</div>
+            <div className="ch-tl-body">{item.context}</div>
+            <div className="ch-tl-section-label">What Changed</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Impact</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -59,7 +59,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch8-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -109,7 +109,7 @@ function KidTab() {
                 right of the image. Without these stickers, the puzzle would be impossible!
             </Analogy>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Cool fact:</strong> ViT was inspired by how GPT reads text!
                 Instead of words like "cat" and "dog," it reads image patches.
                 This means the same AI brain can learn to understand BOTH pictures
@@ -179,7 +179,7 @@ function HighSchoolTab() {
                 generalize better due to their stronger priors.
             </p>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Data scaling:</strong> ViT underperforms ResNets when trained on
                 ImageNet alone, but surpasses them dramatically when pre-trained on larger
                 datasets (JFT-300M, ImageNet-21k). This reveals a key insight: self-attention
@@ -435,7 +435,7 @@ function PythonTab() {
                 pre-normalization Transformer blocks, and the [CLS] token for classification.
             </p>
             <CodeBlock code={PYTHON_CODE} filename="vit.py" lang="python" langLabel="Python" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Implementation note:</strong> Using Conv2d with stride=patch_size
                 is mathematically equivalent to flattening patches and applying a linear
                 projection, but more efficient on GPUs. The positional embeddings are
@@ -748,7 +748,7 @@ function CodeTab() {
                 multi-head self-attention, and classification from the [CLS] token.
             </p>
             <CodeBlock code={TS_CODE} filename="vit.ts" lang="typescript" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Unlike CNNs where receptive field grows
                 gradually across layers, ViT's self-attention gives every patch a global
                 receptive field in the very first layer. The model learns which spatial

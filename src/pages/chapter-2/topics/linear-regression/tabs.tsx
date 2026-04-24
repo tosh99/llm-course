@@ -14,15 +14,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch2-tl-item">
-            <div className="ch2-tl-year">{item.year}</div>
-            <div className="ch2-tl-title">{item.title}</div>
-            <div className="ch2-tl-section-label">The challenge</div>
-            <div className="ch2-tl-body">{item.challenge}</div>
-            <div className="ch2-tl-section-label">What was introduced</div>
-            <div className="ch2-tl-body">{item.what}</div>
-            <div className="ch2-tl-section-label">Why it mattered</div>
-            <div className="ch2-tl-body ch2-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The challenge</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -92,7 +92,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch2-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -258,7 +258,7 @@ function MathsTab() {
                 A single linear layer is ŷ = Wx + b — exactly the linear regression model with multiple outputs. Training via gradient descent on MSE loss is minimising Σ(yᵢ − ŷᵢ)², just as Gauss proposed. The difference is composition: stacking multiple linear layers with non-linearities creates non-linear function approximators. But the optimisation principle — minimise sum of squared errors — is unchanged.
             </p>
 
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Linear regression is the simplest instance of a <em>parametric supervised learning</em> model. Its three components — model family (linear functions), loss function (MSE), and optimisation (closed-form or gradient descent) — define the template for nearly every learning algorithm that followed.
             </div>
         </>
@@ -327,7 +327,7 @@ function PythonTab() {
                 NumPy's matrix operations make closed-form OLS and Ridge one-liners. For LASSO and other regularised models, scikit-learn provides efficient coordinate descent solvers.
             </p>
             <CodeBlock code={PY_CODE} filename="linear_regression.py" lang="python" langLabel="Python" />
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Use <code>RidgeCV</code> / <code>LassoCV</code> for automatic λ selection via cross-validation. Always scale features before applying L1/L2 penalties — otherwise the penalty unfairly disadvantages features with larger numerical ranges.
             </div>
         </>
@@ -431,7 +431,7 @@ function CodeTab() {
                 Pure TypeScript — no libraries needed. The OLS and Ridge implementations use the same normal equations Gauss derived in 1809, now running in a browser.
             </p>
             <CodeBlock code={TS_CODE} filename="linear-regression.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Production note:</strong> Use a proper linear algebra library (<code>math.js</code>, <code>ndarray</code>) for matrix inversion — the naive implementation here is O(n³) with numerical instability. In practice, use QR decomposition (<code>np.linalg.qr</code> in Python) for better numerical behaviour.
             </div>
         </>

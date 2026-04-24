@@ -15,58 +15,58 @@ function HistoryTab() {
                 inputs that reliably elicit desired outputs.
             </p>
 
-            <div className="ch19-timeline">
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">2019</div>
-                    <div className="ch19-tl-section-label">Precedent</div>
-                    <div className="ch19-tl-title">Jiang et al. — How Can We Know What LMs Know?</div>
-                    <div className="ch19-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">Jiang et al. — How Can We Know What LMs Know?</div>
+                    <div className="ch-tl-body">
                         Researchers showed that the phrasing of a query to a language model significantly
                         impacted its ability to retrieve factual knowledge. Different paraphrases of the
                         same question yielded different accuracy scores.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Revealed that LMs are highly sensitive to input phrasing</div>
+                    <div className="ch-tl-impact">Impact: Revealed that LMs are highly sensitive to input phrasing</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">May 2020</div>
-                    <div className="ch19-tl-section-label">Birth</div>
-                    <div className="ch19-tl-title">GPT-3 API &amp; the Rise of Prompting</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">May 2020</div>
+                    <div className="ch-tl-section-label">Birth</div>
+                    <div className="ch-tl-title">GPT-3 API &amp; the Rise of Prompting</div>
+                    <div className="ch-tl-body">
                         As developers began building on the GPT-3 API, they discovered empirically that
                         adding instructions like "Explain step by step" or formatting prompts as
                         conversations yielded dramatically better results. A cottage industry of prompt
                         design tips, templates, and libraries emerged.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Prompt engineering became a practical skill for building LLM apps</div>
+                    <div className="ch-tl-impact">Impact: Prompt engineering became a practical skill for building LLM apps</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">2021</div>
-                    <div className="ch19-tl-section-label">Systematization</div>
-                    <div className="ch19-tl-title">Reynolds &amp; McDonell — Prompt Programming</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2021</div>
+                    <div className="ch-tl-section-label">Systematization</div>
+                    <div className="ch-tl-title">Reynolds &amp; McDonell — Prompt Programming</div>
+                    <div className="ch-tl-body">
                         Researchers formalized prompt engineering as "prompt programming," identifying
                         patterns like priming, few-shot exemplars, and output format specification.
                         They argued that prompts are a new kind of program that executes on a language model.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Established prompt engineering as a first-class programming paradigm</div>
+                    <div className="ch-tl-impact">Impact: Established prompt engineering as a first-class programming paradigm</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">2022 – 2024</div>
-                    <div className="ch19-tl-section-label">Automation</div>
-                    <div className="ch19-tl-title">Automatic Prompt Engineering (APE)</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022 – 2024</div>
+                    <div className="ch-tl-section-label">Automation</div>
+                    <div className="ch-tl-title">Automatic Prompt Engineering (APE)</div>
+                    <div className="ch-tl-body">
                         Zhou et al. proposed using LLMs themselves to generate and refine prompts,
                         creating a meta-learning loop. Later work introduced gradient-based prompt
                         optimization (soft prompts) and discrete search methods to automate the craft.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Moved prompt engineering from manual art toward automated science</div>
+                    <div className="ch-tl-impact">Impact: Moved prompt engineering from manual art toward automated science</div>
                 </div>
             </div>
 
-            <div className="ch19-callout">
+            <div className="ch-callout">
                 <strong>The central tension:</strong> Prompt engineering is powerful because language
                 models understand natural language, but fragile because small changes in wording can
                 produce large changes in behavior. The field is evolving from trial-and-error toward
@@ -154,8 +154,8 @@ function HighSchoolTab() {
                 instruction hierarchy (prioritizing system prompts over user prompts).
             </p>
 
-            <hr className="ch19-sep" />
-            <div className="ch19-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key principle:</strong> Language models are conditional probability
                 distributions over text. Prompt engineering is the art of conditioning that
                 distribution on a prefix that places high probability on the desired completion.
@@ -208,7 +208,7 @@ function MathsTab() {
                 often have stronger influence than those at the beginning.
             </p>
 
-            <div className="ch19-callout">
+            <div className="ch-callout">
                 <strong>Discrete vs. continuous:</strong> Discrete prompt engineering operates in
                 the space of human-readable text. Continuous (soft) prompting operates in embedding
                 space. The latter is more expressive and optimizable but loses interpretability and

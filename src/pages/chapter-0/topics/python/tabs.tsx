@@ -15,15 +15,15 @@ interface TimelineItem {
 
 function TlItem({ item }: { item: TimelineItem }) {
     return (
-        <div className="ch0-tl-item">
-            <div className="ch0-tl-year">{item.year}</div>
-            <div className="ch0-tl-title">{item.title}</div>
-            <div className="ch0-tl-section-label">The challenge</div>
-            <div className="ch0-tl-body">{item.challenge}</div>
-            <div className="ch0-tl-section-label">What was introduced</div>
-            <div className="ch0-tl-body">{item.what}</div>
-            <div className="ch0-tl-section-label">Why it mattered</div>
-            <div className="ch0-tl-body ch0-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The challenge</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -69,7 +69,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch0-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TlItem key={item.year} item={item} />
             ))}
@@ -229,7 +229,7 @@ function HighSchoolTab() {
                 and then reduce them to a scalar with <code>.mean()</code>.
             </p>
 
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Connection to ML:</strong> PyTorch tensors are NumPy arrays with two extras:
                 (1) they live on the GPU instead of the CPU, and (2) they track every operation for
                 automatic differentiation. If you understand NumPy, you understand 80% of PyTorch.
@@ -321,7 +321,7 @@ function MathsTab() {
                 write any tensor operation in a single line.
             </p>
 
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> ML is numerical linear algebra at scale. Python provides the
                 interface; C/Fortran/CUDA provide the speed. NumPy is the bridge. Every tensor operation in
                 PyTorch — matmul, conv2d, softmax, layer_norm — is ultimately a C++ function operating on
@@ -434,7 +434,7 @@ function PythonTab() {
                 you'll use daily.
             </p>
             <CodeBlock code={PY_CODE} filename="python_basics.py" lang="python" langLabel="Python" />
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Every PyTorch operation mirrors a NumPy operation.
                 <code>torch.tensor</code> ≈ <code>np.array</code>,
                 <code>torch.matmul</code> ≈ <code>np.matmul</code>,
@@ -561,7 +561,7 @@ function CodeTab() {
                 when you call <code>np.dot()</code> or <code>torch.matmul()</code>.
             </p>
             <CodeBlock code={TS_CODE} filename="array_basics.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Next step:</strong> In PyTorch, all of these operations are GPU-accelerated and
                 autograd-tracked. <code>torch.matmul(A, B)</code> runs on GPU, and calling
                 <code>loss.backward()</code> computes ∂loss/∂A and ∂loss/∂B automatically via reverse-mode

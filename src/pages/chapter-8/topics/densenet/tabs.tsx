@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch8-tl-item">
-            <div className="ch8-tl-year">{item.year}</div>
-            <div className="ch8-tl-title">{item.title}</div>
-            <div className="ch8-tl-section-label">Context</div>
-            <div className="ch8-tl-body">{item.context}</div>
-            <div className="ch8-tl-section-label">What Changed</div>
-            <div className="ch8-tl-body">{item.what}</div>
-            <div className="ch8-tl-section-label">Impact</div>
-            <div className="ch8-tl-body ch8-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">Context</div>
+            <div className="ch-tl-body">{item.context}</div>
+            <div className="ch-tl-section-label">What Changed</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Impact</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -49,7 +49,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch8-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -108,7 +108,7 @@ function KidTab() {
                 3. Starts fresh at the new branch with just the essentials
             </Analogy>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Super efficient:</strong> DenseNet-121 uses only ~8 million parameters
                 (vs ResNet-50's ~25 million) but achieves similar accuracy! The extreme feature
                 reuse means less work is repeated.
@@ -177,7 +177,7 @@ function HighSchoolTab() {
                 can see layer 2's edge detectors and focus on higher-level patterns instead.
             </p>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Parameter efficiency:</strong> DenseNet-121 achieves ResNet-50-level
                 accuracy with only 8M vs 25M parameters—roughly 3× fewer! This is achieved
                 through aggressive feature reuse rather than learning redundant representations.
@@ -432,7 +432,7 @@ function PythonTab() {
                 subsequent layers.
             </p>
             <CodeBlock code={PYTHON_CODE} filename="densenet.py" lang="python" langLabel="Python" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Implementation note:</strong> DenseNet concatenates feature maps
                 along the channel dimension. This means channel counts grow rapidly—
                 transition layers with compression are essential for deeper networks.
@@ -792,7 +792,7 @@ function CodeTab() {
                 compress channels between blocks.
             </p>
             <CodeBlock code={TS_CODE} filename="densenet.ts" lang="typescript" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Memory trade-off:</strong> DenseNet's feature concatenation requires
                 storing all intermediate feature maps during training, increasing memory
                 usage despite fewer parameters. The computation/parameter efficiency

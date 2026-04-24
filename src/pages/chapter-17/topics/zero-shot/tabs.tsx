@@ -16,25 +16,25 @@ function HistoryTab() {
                 the defining capability of the large model era.
             </p>
 
-            <div className="ch17-timeline">
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">Pre-2019</div>
-                    <div className="ch17-tl-section-label">Norm</div>
-                    <div className="ch17-tl-title">Supervised Fine-Tuning</div>
-                    <div className="ch17-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Pre-2019</div>
+                    <div className="ch-tl-section-label">Norm</div>
+                    <div className="ch-tl-title">Supervised Fine-Tuning</div>
+                    <div className="ch-tl-body">
                         Every NLP task required a dedicated dataset of input-output pairs. Want sentiment
                         analysis? Collect 10,000 movie reviews with star ratings. Want translation?
                         Gather parallel sentences. Models were narrow specialists, and generalization
                         came from architecture, not from the pretraining data.
                     </div>
-                    <div className="ch17-tl-impact">Impact: High cost and long timelines for every new application</div>
+                    <div className="ch-tl-impact">Impact: High cost and long timelines for every new application</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">Feb 2019</div>
-                    <div className="ch17-tl-section-label">Surprise</div>
-                    <div className="ch17-tl-title">GPT-2's Emergent Zero-Shot</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Feb 2019</div>
+                    <div className="ch-tl-section-label">Surprise</div>
+                    <div className="ch-tl-title">GPT-2's Emergent Zero-Shot</div>
+                    <div className="ch-tl-body">
                         OpenAI discovered that GPT-2 could answer reading comprehension questions,
                         translate between languages, and summarize articles simply by formatting the
                         input as a natural language prompt. No gradient updates, no labeled data —
@@ -42,28 +42,28 @@ function HistoryTab() {
                         The field realized that "unsupervised multitask learning" was not just a
                         theoretical possibility but a practical reality.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Demonstrated that scale unlocks implicit task learning</div>
+                    <div className="ch-tl-impact">Impact: Demonstrated that scale unlocks implicit task learning</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">2020</div>
-                    <div className="ch17-tl-section-label">Evolution</div>
-                    <div className="ch17-tl-title">GPT-3 and Few-Shot Prompting</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">GPT-3 and Few-Shot Prompting</div>
+                    <div className="ch-tl-body">
                         GPT-3 scaled the idea further with <em>in-context learning</em>: instead of
                         zero examples, provide a few input-output demonstrations directly in the
                         prompt. Performance improved dramatically. The model wasn't learning during
                         inference (weights are frozen), but it was "reading" the examples and inferring
                         the task pattern — a kind of implicit meta-learning.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Prompt engineering became a core ML skill</div>
+                    <div className="ch-tl-impact">Impact: Prompt engineering became a core ML skill</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">2021 – 2024</div>
-                    <div className="ch17-tl-section-label">Maturation</div>
-                    <div className="ch17-tl-title">Instruction Tuning</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2021 – 2024</div>
+                    <div className="ch-tl-section-label">Maturation</div>
+                    <div className="ch-tl-title">Instruction Tuning</div>
+                    <div className="ch-tl-body">
                         Pure zero-shot via prompting was brittle: small changes in wording could
                         drastically change outputs. Researchers at Google (FLAN), OpenAI (InstructGPT),
                         and Stanford (Alpaca) showed that fine-tuning on collections of natural
@@ -71,11 +71,11 @@ function HistoryTab() {
                         learns to follow the <em>format</em> of instructions, not just infer tasks
                         from examples.
                     </div>
-                    <div className="ch17-tl-impact">Impact: ChatGPT and modern assistants are built on instruction-tuned zero-shot</div>
+                    <div className="ch-tl-impact">Impact: ChatGPT and modern assistants are built on instruction-tuned zero-shot</div>
                 </div>
             </div>
 
-            <div className="ch17-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> During pretraining on vast and diverse text, a
                 large model encounters millions of implicit task demonstrations. Summarization
                 appears in TL;DRs, translation in bilingual text, QA in FAQs. Zero-shot capability
@@ -174,8 +174,8 @@ function HighSchoolTab() {
                 that override the intended task. Reliability remains a major research challenge.
             </p>
 
-            <hr className="ch17-sep" />
-            <div className="ch17-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key distinction:</strong> In zero-shot and few-shot prompting, the model's
                 weights are never updated. All "learning" happens inside the forward pass through
                 the attention mechanism. This is fundamentally different from fine-tuning, where
@@ -226,7 +226,7 @@ function MathsTab() {
                 is how GPT-2 and early GPT-3 were evaluated on tasks like StoryCloze and RACE.
             </p>
 
-            <div className="ch17-callout">
+            <div className="ch-callout">
                 <strong>Why it works:</strong> During pretraining, the model learns a rich conditional
                 distribution P(text) over natural language. Any task that can be expressed as text
                 generation can therefore be reduced to querying this distribution. The model isn't

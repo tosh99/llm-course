@@ -44,17 +44,17 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch2-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
-                <div key={item.year} className="ch2-tl-item">
-                    <div className="ch2-tl-year">{item.year}</div>
-                    <div className="ch2-tl-title">{item.title}</div>
-                    <div className="ch2-tl-section-label">The challenge</div>
-                    <div className="ch2-tl-body">{item.challenge}</div>
-                    <div className="ch2-tl-section-label">What was introduced</div>
-                    <div className="ch2-tl-body">{item.what}</div>
-                    <div className="ch2-tl-section-label">Why it mattered</div>
-                    <div className="ch2-tl-body ch2-tl-impact">{item.impact}</div>
+                <div key={item.year} className="ch-tl-item">
+                    <div className="ch-tl-year">{item.year}</div>
+                    <div className="ch-tl-title">{item.title}</div>
+                    <div className="ch-tl-section-label">The challenge</div>
+                    <div className="ch-tl-body">{item.challenge}</div>
+                    <div className="ch-tl-section-label">What was introduced</div>
+                    <div className="ch-tl-body">{item.what}</div>
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
                 </div>
             ))}
         </div>
@@ -256,7 +256,7 @@ function PythonTab() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="regularization.py" lang="python" langLabel="Python" />
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Practical rule:</strong> Always <code>StandardScaler</code> features before Lasso/Ridge — the penalty is applied to the raw coefficient values, so features with larger numeric scales get unfairly penalised. After scaling, the penalty is applied equally and the resulting λ is interpretable.
             </div>
         </>
@@ -350,7 +350,7 @@ function CodeTab() {
                 Ridge regression has a closed-form solution via the normal equations. Lasso requires iterative coordinate descent — the soft-thresholding operator is the key step that sets small coefficients to exactly zero.
             </p>
             <CodeBlock code={TS_CODE} filename="regularization.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Why coordinate descent for Lasso?</strong> The L1 penalty makes the objective non-differentiable at zero, so gradient descent doesn't work directly. Coordinate descent cycles through each feature, optimising one coefficient at a time (holding others fixed) — and the single-coordinate update has a closed-form soft-threshold solution.
             </div>
         </>

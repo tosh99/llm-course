@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch8-tl-item">
-            <div className="ch8-tl-year">{item.year}</div>
-            <div className="ch8-tl-title">{item.title}</div>
-            <div className="ch8-tl-section-label">Context</div>
-            <div className="ch8-tl-body">{item.context}</div>
-            <div className="ch8-tl-section-label">What Changed</div>
-            <div className="ch8-tl-body">{item.what}</div>
-            <div className="ch8-tl-section-label">Impact</div>
-            <div className="ch8-tl-body ch8-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">Context</div>
+            <div className="ch-tl-body">{item.context}</div>
+            <div className="ch-tl-section-label">What Changed</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Impact</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -49,7 +49,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch8-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -102,7 +102,7 @@ function KidTab() {
                 textures → shapes → parts → objects. Each layer specializes in one small task.
             </Analogy>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Trade-off:</strong> VGGNet is BIG—138 million parameters (2× more than AlexNet).
                 Most are in the final 3 fully-connected layers. This inspired later networks
                 to use smarter shortcuts instead of these giant layers!
@@ -161,7 +161,7 @@ function HighSchoolTab() {
                 to capture increasingly complex, abstract features.
             </p>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>VGG-16 vs VGG-19:</strong> VGG-19 simply adds 3 more convolution layers in
                 the middle blocks. Surprisingly, this small change often improves accuracy.
                 Depth matters more than width!
@@ -332,7 +332,7 @@ function PythonTab() {
                 throughout enable unprecedented depth.
             </p>
             <CodeBlock code={PYTHON_CODE} filename="vggnet.py" lang="python" langLabel="Python" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Design principle:</strong> Notice how each block doubles channels
                 while halving spatial dimensions. This maintains constant compute per layer
                 (roughly) while building hierarchical representations.
@@ -583,7 +583,7 @@ function CodeTab() {
                 same receptive field with fewer parameters.
             </p>
             <CodeBlock code={TS_CODE} filename="vggnet.ts" lang="typescript" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Architecture insight:</strong> Notice that 89% of VGG-16's
                 ~138M parameters are in the fully-connected layers at the end.
                 This inefficiency inspired later architectures to use global average

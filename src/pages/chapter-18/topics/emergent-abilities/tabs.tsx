@@ -17,26 +17,26 @@ function HistoryTab() {
                 widespread across benchmarks.
             </p>
 
-            <div className="ch18-timeline">
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2020 – 2021</div>
-                    <div className="ch18-tl-section-label">Precursors</div>
-                    <div className="ch18-tl-title">GPT-3 exhibits few-shot learning</div>
-                    <div className="ch18-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020 – 2021</div>
+                    <div className="ch-tl-section-label">Precursors</div>
+                    <div className="ch-tl-title">GPT-3 exhibits few-shot learning</div>
+                    <div className="ch-tl-body">
                         GPT-3 (175B) could perform tasks it was never explicitly trained on, simply
                         by reading a few examples in the prompt. Smaller models could not do this.
                         However, few-shot learning was still a gradual improvement: performance
                         scaled smoothly with model size, even if the absolute capability felt
                         "magical" compared to earlier systems.
                     </div>
-                    <div className="ch18-tl-impact">Impact: First hint that scale unlocks qualitatively new behaviors</div>
+                    <div className="ch-tl-impact">Impact: First hint that scale unlocks qualitatively new behaviors</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2022</div>
-                    <div className="ch18-tl-section-label">Definition</div>
-                    <div className="ch18-tl-title">Wei et al. — Emergent Abilities of Large Language Models</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022</div>
+                    <div className="ch-tl-section-label">Definition</div>
+                    <div className="ch-tl-title">Wei et al. — Emergent Abilities of Large Language Models</div>
+                    <div className="ch-tl-body">
                         Wei and colleagues systematically evaluated models from 70M to 540B
                         parameters on dozens of benchmarks. They defined an emergent ability as
                         one that is <em>not present</em> in small models but <em>is present</em> in
@@ -45,14 +45,14 @@ function HistoryTab() {
                         arithmetic, word unscrambling, and answering questions in low-resource
                         languages.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Framed scaling as a path to unpredictable new capabilities</div>
+                    <div className="ch-tl-impact">Impact: Framed scaling as a path to unpredictable new capabilities</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2022 – 2023</div>
-                    <div className="ch18-tl-section-label">Debate</div>
-                    <div className="ch18-tl-title">Schaeffer et al. — Are Emergent Abilities a Mirage?</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022 – 2023</div>
+                    <div className="ch-tl-section-label">Debate</div>
+                    <div className="ch-tl-title">Schaeffer et al. — Are Emergent Abilities a Mirage?</div>
+                    <div className="ch-tl-body">
                         Schaeffer and colleagues at Stanford argued that emergence is largely an
                         artifact of <em>discontinuous metrics</em>. If you measure accuracy (which
                         jumps from 0% to 100% in discrete steps), abilities look emergent. But if
@@ -61,14 +61,14 @@ function HistoryTab() {
                         continuous metrics, suggesting it is a measurement illusion rather than a
                         deep property of scaling.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Sparked a major debate about the nature of AI progress</div>
+                    <div className="ch-tl-impact">Impact: Sparked a major debate about the nature of AI progress</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2023 – Present</div>
-                    <div className="ch18-tl-section-label">Synthesis</div>
-                    <div className="ch18-tl-title">Chain-of-Thought and structured reasoning</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2023 – Present</div>
+                    <div className="ch-tl-section-label">Synthesis</div>
+                    <div className="ch-tl-title">Chain-of-Thought and structured reasoning</div>
+                    <div className="ch-tl-body">
                         Regardless of the metric debate, one form of emergence is hard to dispute:
                         large models can use <em>chain-of-thought prompting</em> to decompose
                         complex problems into steps, while small models cannot. This is not just
@@ -76,11 +76,11 @@ function HistoryTab() {
                         that appears only above a certain scale. Similar thresholds exist for
                         tool use, multi-turn planning, and in-context learning of novel algorithms.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Led to specialized reasoning models (o1, o3, DeepSeek-R1)</div>
+                    <div className="ch-tl-impact">Impact: Led to specialized reasoning models (o1, o3, DeepSeek-R1)</div>
                 </div>
             </div>
 
-            <div className="ch18-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Whether or not emergence is "real" depends on
                 your metric. Under the hood, model behavior changes smoothly. But from a user's
                 perspective — measured by task accuracy — the difference between "cannot solve"
@@ -172,8 +172,8 @@ function HighSchoolTab() {
                 continuous space but "sudden" in the binary space.
             </p>
 
-            <hr className="ch18-sep" />
-            <div className="ch18-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Practical implication:</strong> Even if emergence is partially a metric
                 artifact, the thresholds are real and important. A model that scores 49% on a
                 medical licensing exam is useless; one that scores 51% is transformative. The
@@ -246,7 +246,7 @@ function MathsTab() {
                 </li>
             </ul>
 
-            <div className="ch18-callout">
+            <div className="ch-callout">
                 <strong>Open problem:</strong> Can we predict <em>which</em> abilities will emerge
                 and at what scale? Current theory cannot. If we could, it would transform AI
                 safety (we could foresee dangerous capabilities) and AI economics (we could plan

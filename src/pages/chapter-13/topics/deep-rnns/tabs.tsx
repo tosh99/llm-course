@@ -15,12 +15,12 @@ function HistoryTab() {
                 length) and layer (stacked depth).
             </p>
 
-            <div className="ch13-timeline">
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2013</div>
-                    <div className="ch13-tl-section-label">Foundation</div>
-                    <div className="ch13-tl-title">Pascanu, Mikolov, Bengio — On the Difficulty of Training RNNs</div>
-                    <div className="ch13-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">Pascanu, Mikolov, Bengio — On the Difficulty of Training RNNs</div>
+                    <div className="ch-tl-body">
                         Razvan Pascanu and colleagues analyzed why deep RNNs are harder to train
                         than deep feedforward networks. They identified two distinct sources of
                         gradient difficulty: the <em>temporal</em> explosion/vanishing across time
@@ -29,28 +29,28 @@ function HistoryTab() {
                         suggested that depth beyond 3–4 recurrent layers yielded diminishing returns
                         without careful initialization.
                     </div>
-                    <div className="ch13-tl-impact">Impact: Established that deep RNN training requires different techniques than deep CNNs</div>
+                    <div className="ch-tl-impact">Impact: Established that deep RNN training requires different techniques than deep CNNs</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2014</div>
-                    <div className="ch13-tl-section-label">Architecture</div>
-                    <div className="ch13-tl-title">Deep Speech — 5+ Layer Bidirectional RNNs</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014</div>
+                    <div className="ch-tl-section-label">Architecture</div>
+                    <div className="ch-tl-title">Deep Speech — 5+ Layer Bidirectional RNNs</div>
+                    <div className="ch-tl-body">
                         Baidu's Deep Speech system (Hannun et al., 2014) used a 5-layer bidirectional
                         RNN with clipped ReLU activations for end-to-end speech recognition. This was
                         one of the first production systems to demonstrate that very deep recurrent
                         stacks could work at scale — but only with aggressive gradient clipping,
                         Batch Normalization (later), and massive datasets.
                     </div>
-                    <div className="ch13-tl-impact">Impact: Proved deep RNNs are viable for industrial speech recognition</div>
+                    <div className="ch-tl-impact">Impact: Proved deep RNNs are viable for industrial speech recognition</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2015</div>
-                    <div className="ch13-tl-section-label">Regularization</div>
-                    <div className="ch13-tl-title">Recurrent Batch Normalization &amp; Variational Dropout</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Regularization</div>
+                    <div className="ch-tl-title">Recurrent Batch Normalization &amp; Variational Dropout</div>
+                    <div className="ch-tl-body">
                         Cooijmans et al. (2016) introduced Batch Normalization for RNNs by
                         normalizing the pre-activations at each time step, using separate statistics
                         per time step during training. Gal and Ghahramani (2015) proposed
@@ -59,14 +59,14 @@ function HistoryTab() {
                         regularizing the feedforward connections. Both techniques made 4–6 layer
                         RNNs trainable where they had previously exploded or collapsed.
                     </div>
-                    <div className="ch13-tl-impact">Impact: Enabled reliable training of deep recurrent stacks up to 6–8 layers</div>
+                    <div className="ch-tl-impact">Impact: Enabled reliable training of deep recurrent stacks up to 6–8 layers</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2016 – 2017</div>
-                    <div className="ch13-tl-section-label">Limit</div>
-                    <div className="ch13-tl-title">The 4-Layer Ceiling and the Rise of Attention</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016 – 2017</div>
+                    <div className="ch-tl-section-label">Limit</div>
+                    <div className="ch-tl-title">The 4-Layer Ceiling and the Rise of Attention</div>
+                    <div className="ch-tl-body">
                         Empirically, the NLP community discovered a ceiling: RNNs rarely benefited
                         from more than 4 recurrent layers, even with all regularization tricks.
                         The representational bottleneck shifted from depth to breadth — wider hidden
@@ -76,11 +76,11 @@ function HistoryTab() {
                         This hybrid approach acknowledged that pure depth in recurrence was
                         fundamentally limited.
                     </div>
-                    <div className="ch13-tl-impact">Impact: Led to hybrid architectures and eventually the Transformer, which separates depth from recurrence</div>
+                    <div className="ch-tl-impact">Impact: Led to hybrid architectures and eventually the Transformer, which separates depth from recurrence</div>
                 </div>
             </div>
 
-            <div className="ch13-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> In CNNs, depth creates spatial hierarchies
                 (edges → textures → objects). In RNNs, depth creates <em>temporal</em> hierarchies
                 (phonemes → syllables → words → phrases). But because each layer must wait for
@@ -167,8 +167,8 @@ function HighSchoolTab() {
                 <li><strong>Highway connections:</strong> Learnable gating between layer input and output (Zhang et al., 2016)</li>
             </ul>
 
-            <hr className="ch13-sep" />
-            <div className="ch13-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Practical rule of thumb:</strong> Start with 1–2 recurrent layers. Add a
                 third only if validation loss clearly improves. More than 4 pure recurrent layers
                 rarely help and often hurt due to training instability. If you need more capacity,
@@ -227,7 +227,7 @@ function MathsTab() {
                 trained with 6–8 layers, whereas plain deep RNNs struggle beyond 3.
             </p>
 
-            <div className="ch13-callout">
+            <div className="ch-callout">
                 <strong>Why Transformers replaced deep RNNs:</strong> In a Transformer, depth is
                 purely feedforward across layers, while time-dependence is handled by self-attention
                 (a single large matrix operation). There is no recurrent matrix product across time,

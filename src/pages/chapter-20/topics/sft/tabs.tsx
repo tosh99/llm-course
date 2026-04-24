@@ -14,49 +14,49 @@ function HistoryTab() {
                 training the model to imitate high-quality human demonstrations.
             </p>
 
-            <div className="ch20-timeline">
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2018 – 2020</div>
-                    <div className="ch20-tl-section-label">Precedent</div>
-                    <div className="ch20-tl-title">Task-Specific Fine-Tuning</div>
-                    <div className="ch20-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018 – 2020</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">Task-Specific Fine-Tuning</div>
+                    <div className="ch-tl-body">
                         ULMFiT, BERT, and GPT-1 all demonstrated that fine-tuning pretrained models
                         on labeled task data dramatically improved performance. However, these were
                         single-task adaptations (sentiment, NLI, QA). The idea of general-purpose
                         instruction following through SFT had not yet been systematically explored.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Proved fine-tuning works, but only for narrow tasks</div>
+                    <div className="ch-tl-impact">Impact: Proved fine-tuning works, but only for narrow tasks</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2020</div>
-                    <div className="ch20-tl-section-label">Insight</div>
-                    <div className="ch20-tl-title">Wei et al. — Fine-Tuned Language Models are Zero-Shot Learners</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020</div>
+                    <div className="ch-tl-section-label">Insight</div>
+                    <div className="ch-tl-title">Wei et al. — Fine-Tuned Language Models are Zero-Shot Learners</div>
+                    <div className="ch-tl-body">
                         FLAN showed that training on a mixture of tasks phrased as instructions
                         enabled zero-shot generalization to unseen tasks. The key was scale: using
                         thousands of task templates created a model that understood the <em>meta-task</em>
                         of following instructions. This was pure SFT — no RLHF yet.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Demonstrated instruction tuning as a generalization strategy</div>
+                    <div className="ch-tl-impact">Impact: Demonstrated instruction tuning as a generalization strategy</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2021 – 2022</div>
-                    <div className="ch20-tl-section-label">Standardization</div>
-                    <div className="ch20-tl-title">SFT Becomes the Alignment Baseline</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2021 – 2022</div>
+                    <div className="ch-tl-section-label">Standardization</div>
+                    <div className="ch-tl-title">SFT Becomes the Alignment Baseline</div>
+                    <div className="ch-tl-body">
                         InstructGPT, Claude, and later ChatGPT all used SFT as Stage 1. Researchers
                         discovered that even SFT alone — without RLHF — produced surprisingly capable
                         assistants. Alpaca (2023) famously replicated ChatGPT-quality behavior with
                         just 52K SFT examples and OpenAI's text-davinci-003 outputs. SFT became the
                         "poor man's alignment" and the essential first step for every major model.
                     </div>
-                    <div className="ch20-tl-impact">Impact: SFT established as the universal starting point for alignment</div>
+                    <div className="ch-tl-impact">Impact: SFT established as the universal starting point for alignment</div>
                 </div>
             </div>
 
-            <div className="ch20-callout">
+            <div className="ch-callout">
                 <strong>The SFT paradox:</strong> SFT alone can produce helpful assistants, but the
                 model is limited by the quality and diversity of human demonstrations. It cannot
                 exceed human performance and may inherit human biases. This is why RLHF follows —
@@ -132,8 +132,8 @@ function HighSchoolTab() {
                 <li><strong>Masking:</strong> Loss computed only on response tokens, not prompt tokens</li>
             </ul>
 
-            <hr className="ch20-sep" />
-            <div className="ch20-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>SFT-only models:</strong> Models like Alpaca, Vicuna, and Zephyr-β demonstrated
                 that high-quality SFT data alone can produce surprisingly capable assistants. However,
                 they often struggle with nuanced reasoning and can be more easily jailbroken than
@@ -178,7 +178,7 @@ function MathsTab() {
                 suboptimal, the cloned policy cannot exceed expert performance.
             </p>
 
-            <div className="ch20-callout">
+            <div className="ch-callout">
                 <strong>Distribution shift:</strong> SFT trains on human demonstrations but deploys
                 on model-generated outputs. This train-test mismatch means the model may enter
                 regions of its own output space it never saw during training — a key motivation

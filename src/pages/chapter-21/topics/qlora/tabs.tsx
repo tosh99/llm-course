@@ -15,49 +15,49 @@ function HistoryTab() {
                 the base model with LoRA fine-tuning, enabling 65B model tuning on a 48GB GPU.
             </p>
 
-            <div className="ch21-timeline">
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">2023</div>
-                    <div className="ch21-tl-section-label">Context</div>
-                    <div className="ch21-tl-title">LoRA Is Not Enough</div>
-                    <div className="ch21-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2023</div>
+                    <div className="ch-tl-section-label">Context</div>
+                    <div className="ch-tl-title">LoRA Is Not Enough</div>
+                    <div className="ch-tl-body">
                         LoRA reduced gradients and optimizer states, but the base model still had
                         to reside in GPU memory in 16-bit precision. A 65B model needed ~130GB for
                         weights plus ~20GB for activations — requiring expensive multi-GPU setups
                         or cloud A100 instances.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Open fine-tuning remained out of reach for most</div>
+                    <div className="ch-tl-impact">Impact: Open fine-tuning remained out of reach for most</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">May 2023</div>
-                    <div className="ch21-tl-section-label">Invention</div>
-                    <div className="ch21-tl-title">Dettmers et al. — QLoRA: Efficient Finetuning of Quantized LLMs</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">May 2023</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Dettmers et al. — QLoRA: Efficient Finetuning of Quantized LLMs</div>
+                    <div className="ch-tl-body">
                         QLoRA introduced three innovations: (1) 4-bit NormalFloat quantization that
                         matches 16-bit performance, (2) Double Quantization to compress the
                         quantization constants themselves, and (3) Paged Optimizers that offload
                         optimizer states to CPU RAM when GPU memory is exhausted. The result:
                         65B fine-tuning on a single 48GB GPU without quality loss.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Single-GPU fine-tuning of LLaMA-65B became possible</div>
+                    <div className="ch-tl-impact">Impact: Single-GPU fine-tuning of LLaMA-65B became possible</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">2023 – Present</div>
-                    <div className="ch21-tl-section-label">Legacy</div>
-                    <div className="ch21-tl-title">The Default for Open Fine-Tuning</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2023 – Present</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">The Default for Open Fine-Tuning</div>
+                    <div className="ch-tl-body">
                         QLoRA became the standard method for training open-source models. Tools
                         like Axolotl, Hugging Face TRL, and unsloth built entire ecosystems around
                         it. Researchers and hobbyists could now fine-tune models larger than GPT-3
                         on desktop GPUs, spawning thousands of specialized models.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Removed the hardware barrier to large model customization</div>
+                    <div className="ch-tl-impact">Impact: Removed the hardware barrier to large model customization</div>
                 </div>
             </div>
 
-            <div className="ch21-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Quantize the frozen base model aggressively
                 (4-bit) while keeping the small LoRA adapters in high precision (16-bit). The
                 quantization error is frozen and does not accumulate, while the adapters learn
@@ -121,8 +121,8 @@ function HighSchoolTab() {
                 states to CPU RAM automatically when the GPU is full, then page them back on demand.
             </p>
 
-            <hr className="ch21-sep" />
-            <div className="ch21-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> QLoRA trained a 65B parameter model to match 16-bit
                 LoRA and full fine-tuning on MMLU, achieving 99.9% of 16-bit accuracy while using
                 less than one-third the GPU memory.

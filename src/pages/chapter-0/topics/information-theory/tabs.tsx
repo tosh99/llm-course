@@ -14,15 +14,15 @@ interface TlItem {
 
 function TlItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch0-tl-item">
-            <div className="ch0-tl-year">{item.year}</div>
-            <div className="ch0-tl-title">{item.title}</div>
-            <div className="ch0-tl-section-label">The challenge</div>
-            <div className="ch0-tl-body">{item.challenge}</div>
-            <div className="ch0-tl-section-label">What was introduced</div>
-            <div className="ch0-tl-body">{item.what}</div>
-            <div className="ch0-tl-section-label">Why it mattered</div>
-            <div className="ch0-tl-body ch0-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The challenge</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -72,7 +72,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch0-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TlItem key={item.year} item={item} />
             ))}
@@ -482,7 +482,7 @@ function PythonTab() {
                 No specialised library is required.
             </p>
             <CodeBlock code={PY_CODE} filename="information_theory.py" lang="python" langLabel="Python" />
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> <code>entropy(pk, qk=qk)</code> is cross-entropy;{" "}
                 <code>entropy(pk)</code> is Shannon entropy. The difference is the KL divergence. In
                 PyTorch, <code>nn.CrossEntropyLoss</code> is the KL divergence between the true
@@ -604,7 +604,7 @@ function CodeTab() {
                 for the formulas before reaching for libraries.
             </p>
             <CodeBlock code={TS_CODE} filename="information-theory.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> All three quantities — entropy, KL divergence, and mutual
                 information — are built from the same primitive: a weighted sum of p(x)·log(q(x)). The
                 asymmetry of KL (P‖Q ≠ Q‖P) is the reason that KL as a loss always minimises from the

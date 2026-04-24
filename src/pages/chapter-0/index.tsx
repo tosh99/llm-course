@@ -14,11 +14,13 @@ import type { TabId, TopicId } from "./types"
 export function Chapter0Page() {
     const [activeTopic, setActiveTopic] = useState<TopicId>("linear-algebra")
     const [activeTab, setActiveTab] = useState<TabId>("history")
+    const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const contentRef = useRef<HTMLDivElement>(null)
 
     const topic = TOPIC_META[activeTopic]
-    const topicLabel = TOPICS.find((t) => t.id === activeTopic)?.label ?? ""
-    const isReady = TOPICS.find((t) => t.id === activeTopic)?.ready ?? false
+    const activeTopicEntry = TOPICS.find((t) => t.id === activeTopic)
+    const topicLabel = activeTopicEntry?.label ?? ""
+    const isReady = activeTopicEntry?.ready ?? false
 
     useEffect(() => {
         if (!contentRef.current || !window.renderMathInElement) return
@@ -33,6 +35,12 @@ export function Chapter0Page() {
 
     const categories = [...new Set(TOPICS.map((t) => t.category))]
 
+    const selectTopic = (id: TopicId) => {
+        setActiveTopic(id)
+        setActiveTab("history")
+        setMobileNavOpen(false)
+    }
+
     const tabContent: Record<TopicId, React.ReactNode> = {
         "linear-algebra": LINEAR_ALGEBRA_TABS[activeTab],
         calculus: CALCULUS_TABS[activeTab],
@@ -43,53 +51,61 @@ export function Chapter0Page() {
     }
 
     return (
-        <div className="ch0">
+        <div className="ch">
             {/* ── Header ── */}
-            <header className="ch0-header">
-                <span className="ch0-header-chapter">Ch. 0</span>
-                <div className="ch0-header-sep" />
-                <span className="ch0-header-title">Prerequisites &amp; Foundations</span>
-                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch0-header-badge">ML → LLM Course</span></Link>
+            <header className="ch-header">
+                <span className="ch-header-chapter">Ch. 0</span>
+                <div className="ch-header-sep" />
+                <span className="ch-header-title">Prerequisites &amp; Foundations</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
 
             {/* ── Sidebar ── */}
-            <nav className="ch0-sidebar">
-                {categories.map((cat, ci) => (
-                    <div key={cat}>
-                        {ci > 0 && <div className="ch0-sidebar-divider" />}
-                        <div className="ch0-sidebar-label">{cat}</div>
-                        {TOPICS.filter((t) => t.category === cat).map((topic) => (
-                            <div
-                                key={topic.id}
-                                className={`ch0-nav-item${activeTopic === topic.id ? " active" : ""}`}
-                                onClick={() => {
-                                    setActiveTopic(topic.id)
-                                    setActiveTab("history")
-                                }}
-                            >
-                                <span className="ch0-nav-icon">{topic.icon}</span>
-                                {topic.label}
-                                <span className="ch0-nav-dot" />
-                            </div>
-                        ))}
-                    </div>
-                ))}
+            <nav className="ch-sidebar">
+                <button
+                    className={`ch-mobile-toggle${mobileNavOpen ? " open" : ""}`}
+                    onClick={() => setMobileNavOpen((v) => !v)}
+                >
+                    <span className="ch-nav-icon">{activeTopicEntry?.icon}</span>
+                    <span>{topicLabel}</span>
+                    <span className="ch-mobile-chevron">▾</span>
+                </button>
+
+                <div className={`ch-sidebar-items${mobileNavOpen ? " open" : ""}`}>
+                    {categories.map((cat, ci) => (
+                        <div key={cat}>
+                            {ci > 0 && <div className="ch-sidebar-divider" />}
+                            <div className="ch-sidebar-label">{cat}</div>
+                            {TOPICS.filter((t) => t.category === cat).map((t) => (
+                                <div
+                                    key={t.id}
+                                    className={`ch-nav-item${activeTopic === t.id ? " active" : ""}`}
+                                    onClick={() => selectTopic(t.id)}
+                                >
+                                    <span className="ch-nav-icon">{t.icon}</span>
+                                    {t.label}
+                                    <span className="ch-nav-dot" />
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
             </nav>
 
             {/* ── Main ── */}
-            <main className="ch0-main">
+            <main className="ch-main">
                 {/* Topic header */}
-                <div className="ch0-topic-header">
-                    <div className="ch0-eyebrow">{topic.eyebrow}</div>
-                    <div className="ch0-topic-title">{topicLabel}</div>
-                    <div className="ch0-topic-subtitle">{topic.subtitle}</div>
+                <div className="ch-topic-header">
+                    <div className="ch-eyebrow">{topic.eyebrow}</div>
+                    <div className="ch-topic-title">{topicLabel}</div>
+                    <div className="ch-topic-subtitle">{topic.subtitle}</div>
 
                     {/* Tabs */}
-                    <div className="ch0-tabs">
+                    <div className="ch-tabs">
                         {TABS.map((tab) => (
                             <button
                                 key={tab.id}
-                                className={`ch0-tab-btn${activeTab === tab.id ? " active" : ""}`}
+                                className={`ch-tab-btn${activeTab === tab.id ? " active" : ""}`}
                                 onClick={() => setActiveTab(tab.id)}
                             >
                                 {tab.label}
@@ -99,15 +115,15 @@ export function Chapter0Page() {
                 </div>
 
                 {/* Content */}
-                <div className="ch0-content ch0-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`}>
+                <div className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (
-                            <div className="ch0-coming-soon">
+                            <div className="ch-coming-soon">
                                 Content for <strong>{topicLabel}</strong> is coming soon.
                             </div>
                         )
                     ) : (
-                        <div className="ch0-coming-soon">
+                        <div className="ch-coming-soon">
                             Content for <strong>{topicLabel}</strong> is coming soon.
                         </div>
                     )}

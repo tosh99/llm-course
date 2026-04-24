@@ -14,29 +14,29 @@ function HistoryTab() {
                 the visual cortex.
             </p>
 
-            <div className="ch6-timeline">
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">1962</div>
-                    <div className="ch6-tl-title">Hubel & Wiesel's Hierarchy</div>
-                    <div className="ch6-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1962</div>
+                    <div className="ch-tl-title">Hubel & Wiesel's Hierarchy</div>
+                    <div className="ch-tl-body">
                         Studying cat visual cortex, they found simple cells detect oriented edges,
                         while complex cells combine simple cell outputs to detect patterns regardless
                         of exact position. This hierarchical structure directly inspired CNN design.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">1980–1998</div>
-                    <div className="ch6-tl-title">LeNet and Early CNNs</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1980–1998</div>
+                    <div className="ch-tl-title">LeNet and Early CNNs</div>
+                    <div className="ch-tl-body">
                         Fukushima's neocognitron and LeCun's LeNet-5 implemented hierarchical processing.
                         Early layers learned edges, later layers combined them into shapes and digits.
                         But visualization tools didn't exist to see this clearly.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">2014</div>
-                    <div className="ch6-tl-title">Zeiler & Fergus Visualization</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014</div>
+                    <div className="ch-tl-title">Zeiler & Fergus Visualization</div>
+                    <div className="ch-tl-body">
                         The "Visualizing and Understanding Convolutional Networks" paper finally proved
                         what was theorized: CNNs build hierarchical features. Layer 1: edges. Layer 2:
                         textures. Layer 3: patterns. Layer 4-5: object parts and objects. This was a
@@ -45,9 +45,9 @@ function HistoryTab() {
                 </div>
             </div>
 
-            <div className="ch6-analogy">
-                <div className="ch6-analogy-label">The Assembly Line</div>
-                <div className="ch6-analogy-text">
+            <div className="ch-analogy">
+                <div className="ch-analogy-label">The Assembly Line</div>
+                <div className="ch-analogy-text">
                     Think of a car factory. The first workers cut raw metal into simple shapes (edges).
                     The next group assembles shapes into panels (textures). Then panels become doors,
                     hoods, trunks (patterns). Finally, these parts are assembled into complete cars
@@ -103,7 +103,7 @@ function KidTab() {
                 Everything started as tiny edge pieces and grew into understanding a whole animal!
             </Analogy>
 
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>Amazing Fact:</strong> Scientists studied real cat brains in 1962 and found
                 they work the same way! First neurons see edges, then they combine to see shapes,
                 then parts, then whole objects. Our brains and CNNs use the same trick!
@@ -322,7 +322,7 @@ function PythonTab() {
                 dimensions, growing receptive fields.
             </p>
             <CodeBlock code={PY_CODE} filename="feature_hierarchies.py" lang="python" langLabel="Python" />
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Channels increase as complexity increases, while
                 spatial resolution decreases. This trade-off is fundamental to how CNNs work.
             </div>

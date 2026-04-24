@@ -22,7 +22,7 @@ export function MathBlock({ tex }: { tex: string }) {
         }
     }, [tex])
 
-    return <div className="ch1-math-block" ref={ref} />
+    return <div className="ch-math-block" ref={ref} />
 }
 
 export function InlineMath({ tex }: { tex: string }) {
@@ -65,13 +65,13 @@ export function CodeBlock({
     }, [code, lang])
 
     return (
-        <div className="ch1-code-wrap">
-            <div className="ch1-code-header">
-                <span className="ch1-code-dot" style={{ background: "#b95a5a" }} />
-                <span className="ch1-code-dot" style={{ background: "#e8a838" }} />
-                <span className="ch1-code-dot" style={{ background: "#5ab98c" }} />
-                <span className="ch1-code-filename">{filename}</span>
-                <span className="ch1-code-lang">{langLabel ?? lang}</span>
+        <div className="ch-code-wrap">
+            <div className="ch-code-header">
+                <span className="ch-code-dot" style={{ background: "#b95a5a" }} />
+                <span className="ch-code-dot" style={{ background: "#e8a838" }} />
+                <span className="ch-code-dot" style={{ background: "#5ab98c" }} />
+                <span className="ch-code-filename">{filename}</span>
+                <span className="ch-code-lang">{langLabel ?? lang}</span>
             </div>
             <pre>
                 <code ref={ref} className={`language-${lang}`}>
@@ -84,17 +84,17 @@ export function CodeBlock({
 
 export function Analogy({ label, children }: { label: string; children: React.ReactNode }) {
     return (
-        <div className="ch1-analogy">
-            <div className="ch1-analogy-label">{label}</div>
-            <div className="ch1-analogy-text">{children}</div>
+        <div className="ch-analogy">
+            <div className="ch-analogy-label">{label}</div>
+            <div className="ch-analogy-text">{children}</div>
         </div>
     )
 }
 
 export function DefBlock({ label, children }: { label: string; children: React.ReactNode }) {
     return (
-        <div className="ch1-def-block">
-            <div className="ch1-def-label">{label}</div>
+        <div className="ch-def-block">
+            <div className="ch-def-label">{label}</div>
             <p>{children}</p>
         </div>
     )
@@ -102,8 +102,8 @@ export function DefBlock({ label, children }: { label: string; children: React.R
 
 export function DiagramBlock({ title, children }: { title: string; children: React.ReactNode }) {
     return (
-        <div className="ch1-diagram-block">
-            <div className="ch1-diagram-title">{title}</div>
+        <div className="ch-diagram-block">
+            <div className="ch-diagram-title">{title}</div>
             {children}
         </div>
     )

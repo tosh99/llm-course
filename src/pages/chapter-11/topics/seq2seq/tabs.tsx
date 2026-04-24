@@ -15,26 +15,26 @@ function HistoryTab() {
                 vector, then expand that vector into a different variable-length sequence.
             </p>
 
-            <div className="ch11-timeline">
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">June 2014</div>
-                    <div className="ch11-tl-section-label">First paper</div>
-                    <div className="ch11-tl-title">Cho et al. — RNN Encoder-Decoder (GRU-based)</div>
-                    <div className="ch11-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">June 2014</div>
+                    <div className="ch-tl-section-label">First paper</div>
+                    <div className="ch-tl-title">Cho et al. — RNN Encoder-Decoder (GRU-based)</div>
+                    <div className="ch-tl-body">
                         Kyunghyun Cho, Bart van Merriënboer, and colleagues at the University of Montreal
                         published "Learning Phrase Representations using RNN Encoder-Decoder for Statistical
                         Machine Translation." The paper introduced both the encoder-decoder architecture
                         and the GRU cell in the same contribution. The architecture was designed to learn
                         phrase representations for phrase-based SMT — not as a standalone MT system.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Coined "encoder-decoder"; introduced GRU as a side contribution</div>
+                    <div className="ch-tl-impact">Impact: Coined "encoder-decoder"; introduced GRU as a side contribution</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">September 2014</div>
-                    <div className="ch11-tl-section-label">Landmark result</div>
-                    <div className="ch11-tl-title">Sutskever, Vinyals & Le — Seq2Seq with deep LSTM</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">September 2014</div>
+                    <div className="ch-tl-section-label">Landmark result</div>
+                    <div className="ch-tl-title">Sutskever, Vinyals & Le — Seq2Seq with deep LSTM</div>
+                    <div className="ch-tl-body">
                         Three months later, Ilya Sutskever, Oriol Vinyals, and Quoc V. Le at Google Brain
                         published "Sequence to Sequence Learning with Neural Networks." This paper used a
                         4-layer deep LSTM as a standalone MT system, reversing the source sequence as an
@@ -42,39 +42,39 @@ function HistoryTab() {
                         with phrase-based SMT systems that had years of engineering behind them. The result
                         stunned the field.
                     </div>
-                    <div className="ch11-tl-impact">Impact: First pure neural MT competitive with phrase-based SMT on large-scale data</div>
+                    <div className="ch-tl-impact">Impact: First pure neural MT competitive with phrase-based SMT on large-scale data</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2015</div>
-                    <div className="ch11-tl-section-label">The bottleneck solved</div>
-                    <div className="ch11-tl-title">Bahdanau, Cho & Bengio — Attention mechanism</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">The bottleneck solved</div>
+                    <div className="ch-tl-title">Bahdanau, Cho & Bengio — Attention mechanism</div>
+                    <div className="ch-tl-body">
                         The context vector bottleneck — compressing all source information into a single
                         fixed-size vector — was identified as the main limitation of seq2seq. Bahdanau
                         et al. replaced the fixed context vector with a dynamic one computed at each
                         decoding step (attention). This dramatically improved performance on long sentences
                         and became the seed for the Transformer (Ch. 14).
                     </div>
-                    <div className="ch11-tl-impact">Impact: Seq2seq + attention became the dominant MT paradigm 2015–2017</div>
+                    <div className="ch-tl-impact">Impact: Seq2seq + attention became the dominant MT paradigm 2015–2017</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2016</div>
-                    <div className="ch11-tl-section-label">Production deployment</div>
-                    <div className="ch11-tl-title">Google Neural Machine Translation (GNMT)</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016</div>
+                    <div className="ch-tl-section-label">Production deployment</div>
+                    <div className="ch-tl-title">Google Neural Machine Translation (GNMT)</div>
+                    <div className="ch-tl-body">
                         Google deployed GNMT — a large multi-layer LSTM encoder-decoder with attention and
                         a hybrid word/character vocabulary — replacing their decade-old phrase-based system.
                         For some language pairs, GNMT reduced translation errors by more than 60% compared
                         to the phrase-based baseline. Phrase-based SMT effectively ceased to be a research
                         priority overnight.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Marked the practical end of phrase-based SMT at industrial scale</div>
+                    <div className="ch-tl-impact">Impact: Marked the practical end of phrase-based SMT at industrial scale</div>
                 </div>
             </div>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>The context vector bottleneck</strong> — the core limitation of vanilla seq2seq —
                 is what motivates attention (Ch. 12) and ultimately the Transformer (Ch. 14). Understanding
                 seq2seq as a constrained architecture helps explain why attention was such a decisive
@@ -176,7 +176,7 @@ function HighSchoolTab() {
                 <li><code>&lt;UNK&gt;</code> — replaces words not in the vocabulary</li>
             </ul>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Autoregressive decoding:</strong> the decoder's output at step t (ŷ<sub>t</sub>)
                 feeds back as its input at step t+1. This creates a dependency chain — each word
                 depends on all previously generated words. During training this is managed with
@@ -234,7 +234,7 @@ function MathsTab() {
                 weighted combination of all encoder states.
             </p>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Connection to variational autoencoders:</strong> The encoder-decoder structure
                 directly inspired VAEs (Kingma & Welling, 2013), where a probabilistic encoder maps
                 inputs to a latent distribution rather than a deterministic vector. The seq2seq
@@ -430,7 +430,7 @@ function CodeTab() {
                 the full matrix algebra.
             </p>
             <CodeBlock code={TS_CODE} filename="seq2seq.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>The key property:</strong> the context vector has a fixed dimensionality
                 regardless of source length. <code>encode([3,7,2,9,5])</code> and
                 <code>encode([1,2,3,4,5,6,7,8,9,10,11,12])</code> both produce an 8-dimensional

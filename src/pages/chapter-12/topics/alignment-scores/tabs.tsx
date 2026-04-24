@@ -16,12 +16,12 @@ function HistoryTab() {
                 Transformer.
             </p>
 
-            <div className="ch12-timeline">
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2014</div>
-                    <div className="ch12-tl-section-label">First Scoring Function</div>
-                    <div className="ch12-tl-title">Additive (MLP) Attention — Bahdanau et al.</div>
-                    <div className="ch12-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014</div>
+                    <div className="ch-tl-section-label">First Scoring Function</div>
+                    <div className="ch-tl-title">Additive (MLP) Attention — Bahdanau et al.</div>
+                    <div className="ch-tl-body">
                         Bahdanau's energy function e<sub>tj</sub> = v<sub>a</sub><sup>T</sup> tanh(W<sub>a</sub>s + U<sub>a</sub>h)
                         uses a one-hidden-layer MLP to compute compatibility. This is sometimes called
                         "concat" attention because it concatenates (or projects and adds) the two
@@ -29,14 +29,14 @@ function HistoryTab() {
                         but is very flexible — the MLP can learn arbitrary compatibility functions
                         between states of different dimensionality.
                     </div>
-                    <div className="ch12-tl-impact">Impact: Most expressive scoring function; standard for years</div>
+                    <div className="ch-tl-impact">Impact: Most expressive scoring function; standard for years</div>
                 </div>
 
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2015</div>
-                    <div className="ch12-tl-section-label">Simplification</div>
-                    <div className="ch12-tl-title">Dot-Product and General — Luong et al.</div>
-                    <div className="ch12-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Simplification</div>
+                    <div className="ch-tl-title">Dot-Product and General — Luong et al.</div>
+                    <div className="ch-tl-body">
                         Minh-Thang Luong, Hieu Pham, and Christopher Manning proposed two simpler
                         alternatives in "Effective Approaches to Attention-based Neural Machine
                         Translation" (EMNLP 2015). The <em>dot</em> score s<sup>T</sup>h requires
@@ -45,14 +45,14 @@ function HistoryTab() {
                         cheaper to compute than additive attention. Empirically they performed
                         comparably or better despite the simplicity.
                     </div>
-                    <div className="ch12-tl-impact">Impact: Showed that simpler scoring was sufficient; reduced attention overhead significantly</div>
+                    <div className="ch-tl-impact">Impact: Showed that simpler scoring was sufficient; reduced attention overhead significantly</div>
                 </div>
 
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2017</div>
-                    <div className="ch12-tl-section-label">Scaling Insight</div>
-                    <div className="ch12-tl-title">Scaled Dot-Product — Vaswani et al. (Transformer)</div>
-                    <div className="ch12-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Scaling Insight</div>
+                    <div className="ch-tl-title">Scaled Dot-Product — Vaswani et al. (Transformer)</div>
+                    <div className="ch-tl-body">
                         The Transformer introduced one critical modification: divide the dot product
                         by √d<sub>k</sub> before softmax. The reasoning: for large embedding
                         dimensions d<sub>k</sub>, the dot product e = q<sup>T</sup>k tends to grow
@@ -62,11 +62,11 @@ function HistoryTab() {
                         √d<sub>k</sub> keeps the variance of e at approximately 1, regardless of
                         dimension, preserving healthy gradient magnitudes.
                     </div>
-                    <div className="ch12-tl-impact">Impact: The scaling trick made deep stacks of attention layers trainable at high dimensions</div>
+                    <div className="ch-tl-impact">Impact: The scaling trick made deep stacks of attention layers trainable at high dimensions</div>
                 </div>
             </div>
 
-            <div className="ch12-callout">
+            <div className="ch-callout">
                 <strong>The progression in one line:</strong> additive (expressive, expensive) →
                 dot-product (cheap, unstable at high d) → scaled dot-product (cheap, stable).
                 This convergence on scaled dot-product attention is why every Transformer
@@ -152,8 +152,8 @@ function HighSchoolTab() {
                 softmax saturation. This is the operation in every Transformer layer.
             </p>
 
-            <hr className="ch12-sep" />
-            <div className="ch12-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Summary table:</strong>
                 additive: best for mismatched dims, O(d) params;
                 dot: zero params, requires same dim;
@@ -208,7 +208,7 @@ function MathsTab() {
             <MathBlock tex="\frac{\partial}{\partial \mathbf{s}} \mathbf{v}^\top \tanh(\mathbf{W}\mathbf{s} + \mathbf{U}\mathbf{h}) = \mathbf{W}^\top \left(\mathbf{v} \odot \text{sech}^2(\mathbf{W}\mathbf{s} + \mathbf{U}\mathbf{h})\right)" />
             <MathBlock tex="\frac{\partial}{\partial \mathbf{q}}\, \mathbf{q}^\top \mathbf{k} / \sqrt{d_k} = \mathbf{k} / \sqrt{d_k}" />
 
-            <div className="ch12-callout">
+            <div className="ch-callout">
                 <strong>Empirical finding from Luong et al.:</strong> The <em>general</em> scoring
                 function (bilinear) outperformed dot but underperformed additive on some language
                 pairs. However, scaled dot-product in the Transformer context (with separate

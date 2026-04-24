@@ -15,26 +15,26 @@ function HistoryTab() {
                 demonstration changed the trajectory of NLP forever.
             </p>
 
-            <div className="ch10-timeline">
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">1957</div>
-                    <div className="ch10-tl-section-label">Theoretical Foundation</div>
-                    <div className="ch10-tl-title">The Distributional Hypothesis — Harris</div>
-                    <div className="ch10-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1957</div>
+                    <div className="ch-tl-section-label">Theoretical Foundation</div>
+                    <div className="ch-tl-title">The Distributional Hypothesis — Harris</div>
+                    <div className="ch-tl-body">
                         Zellig Harris articulated the distributional hypothesis in 1954: "words that
                         occur in the same contexts tend to have similar meanings." John Firth later
                         rephrased it as "you shall know a word by the company it keeps." This principle
                         is the foundation of every word embedding method — Word2Vec, GloVe, and FastText
                         all operationalize the idea that context encodes meaning.
                     </div>
-                    <div className="ch10-tl-impact">Impact: The theoretical basis for all distributional word representations</div>
+                    <div className="ch-tl-impact">Impact: The theoretical basis for all distributional word representations</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2003</div>
-                    <div className="ch10-tl-section-label">Neural Precursor</div>
-                    <div className="ch10-tl-title">Bengio et al. Neural Language Model</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2003</div>
+                    <div className="ch-tl-section-label">Neural Precursor</div>
+                    <div className="ch-tl-title">Bengio et al. Neural Language Model</div>
+                    <div className="ch-tl-body">
                         Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin published
                         "A Neural Probabilistic Language Model," which jointly learned word embeddings
                         and a language model. The embeddings were a byproduct — the main goal was a
@@ -42,14 +42,14 @@ function HistoryTab() {
                         meaningful vector representations: similar words had similar vectors.
                         The training was far too slow for large vocabulary (weeks on millions of words).
                     </div>
-                    <div className="ch10-tl-impact">Impact: First neural word embeddings; demonstrated the concept but not yet at scale</div>
+                    <div className="ch-tl-impact">Impact: First neural word embeddings; demonstrated the concept but not yet at scale</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2013 Jan</div>
-                    <div className="ch10-tl-section-label">Breakthrough</div>
-                    <div className="ch10-tl-title">Word2Vec — Mikolov et al.</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013 Jan</div>
+                    <div className="ch-tl-section-label">Breakthrough</div>
+                    <div className="ch-tl-title">Word2Vec — Mikolov et al.</div>
+                    <div className="ch-tl-body">
                         Tomáš Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean published "Efficient
                         Estimation of Word Representations in Vector Space." The key insight: train a
                         shallow (not deep) neural network with a simplified objective — either predict
@@ -59,14 +59,14 @@ function HistoryTab() {
                         famous semantic arithmetic demo (king−man+woman≈queen) captured the world's
                         imagination.
                     </div>
-                    <div className="ch10-tl-impact">Impact: Made word embeddings practical at scale; king−man+woman=queen became iconic</div>
+                    <div className="ch-tl-impact">Impact: Made word embeddings practical at scale; king−man+woman=queen became iconic</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2013 Oct</div>
-                    <div className="ch10-tl-section-label">Scaling</div>
-                    <div className="ch10-tl-title">Negative Sampling — Mikolov et al.</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013 Oct</div>
+                    <div className="ch-tl-section-label">Scaling</div>
+                    <div className="ch-tl-title">Negative Sampling — Mikolov et al.</div>
+                    <div className="ch-tl-body">
                         A second paper "Distributed Representations of Words and Phrases" introduced
                         negative sampling — replacing the expensive softmax over the entire vocabulary
                         (50,000+ words) with a binary classification task: is this (word, context)
@@ -74,11 +74,11 @@ function HistoryTab() {
                         This reduced computation from O(V) to O(k) per update (k ≈ 5–20).
                         Also introduced subsampling of frequent words and phrase detection.
                     </div>
-                    <div className="ch10-tl-impact">Impact: Made billion-word training feasible; negative sampling is now universal in embedding training</div>
+                    <div className="ch-tl-impact">Impact: Made billion-word training feasible; negative sampling is now universal in embedding training</div>
                 </div>
             </div>
 
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>Why it mattered beyond NLP:</strong> Word2Vec established the paradigm of
                 <em>representation learning</em> — letting the model discover structure in data
                 rather than hand-engineering features. The same principle of learning dense embeddings
@@ -174,8 +174,8 @@ function HighSchoolTab() {
                 samples frequent words more but less than their raw frequency.
             </p>
 
-            <hr className="ch10-sep" />
-            <div className="ch10-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>What the network actually learns:</strong> The "input" embedding matrix W
                 (V × d) and "output" embedding matrix W' (V × d) are both trained. Each row of
                 W is the embedding for a word as a center word; each row of W' is its embedding
@@ -227,7 +227,7 @@ function MathsTab() {
             </p>
             <MathBlock tex="P_n(w) = \frac{f(w)^{3/4}}{\sum_{w'} f(w')^{3/4}}" />
 
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>The PMI connection:</strong> Levy & Goldberg (2014) showed that Skip-gram
                 with negative sampling implicitly factorizes the pointwise mutual information (PMI)
                 matrix: PMI(w, c) = log(P(w,c) / P(w)P(c)). This connects Word2Vec to classical

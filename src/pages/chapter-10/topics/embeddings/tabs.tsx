@@ -14,12 +14,12 @@ function HistoryTab() {
                 also captured and amplified human biases.
             </p>
 
-            <div className="ch10-timeline">
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2013–2014</div>
-                    <div className="ch10-tl-section-label">Discovery</div>
-                    <div className="ch10-tl-title">Geometric structure in embedding space</div>
-                    <div className="ch10-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013–2014</div>
+                    <div className="ch-tl-section-label">Discovery</div>
+                    <div className="ch-tl-title">Geometric structure in embedding space</div>
+                    <div className="ch-tl-body">
                         Mikolov et al.'s famous analogy demonstrations showed that embedding differences
                         encode semantic relationships: king−man+woman≈queen. Researchers then found
                         this structure is pervasive: capital−country (Paris−France+Germany≈Berlin),
@@ -27,14 +27,14 @@ function HistoryTab() {
                         The embedding space has geometric structure that mirrors human linguistic
                         categories — not by design, but as an emergent property of the training objective.
                     </div>
-                    <div className="ch10-tl-impact">Impact: Demonstrated embeddings encode structured semantic knowledge</div>
+                    <div className="ch-tl-impact">Impact: Demonstrated embeddings encode structured semantic knowledge</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2016</div>
-                    <div className="ch10-tl-section-label">Concern</div>
-                    <div className="ch10-tl-title">Bias in word embeddings — Bolukbasi et al.</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016</div>
+                    <div className="ch-tl-section-label">Concern</div>
+                    <div className="ch-tl-title">Bias in word embeddings — Bolukbasi et al.</div>
+                    <div className="ch-tl-body">
                         Tolga Bolukbasi and colleagues published "Man is to Computer Programmer as
                         Woman is to Homemaker? Debiasing Word Embeddings." They showed that standard
                         word embeddings encode human gender stereotypes: the analogy "man:computer
@@ -43,14 +43,14 @@ function HistoryTab() {
                         They proposed a geometric debiasing method: identify the "gender direction"
                         in embedding space and project out the gender component from gender-neutral words.
                     </div>
-                    <div className="ch10-tl-impact">Impact: Launched the field of embedding bias; fundamental question for all representation learning</div>
+                    <div className="ch-tl-impact">Impact: Launched the field of embedding bias; fundamental question for all representation learning</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2017–2018</div>
-                    <div className="ch10-tl-section-label">Extension</div>
-                    <div className="ch10-tl-title">From static to contextual embeddings — ELMo</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017–2018</div>
+                    <div className="ch-tl-section-label">Extension</div>
+                    <div className="ch-tl-title">From static to contextual embeddings — ELMo</div>
+                    <div className="ch-tl-body">
                         Word2Vec and GloVe assign each word a single fixed vector regardless of context.
                         "Bank" has the same vector whether it means a financial institution or a river
                         bank. Peters et al. (2018) introduced ELMo (Embeddings from Language Models),
@@ -59,11 +59,11 @@ function HistoryTab() {
                         uses of "bank" get different vectors. ELMo was a bridge between static
                         embeddings and the Transformer era (BERT, GPT).
                     </div>
-                    <div className="ch10-tl-impact">Impact: Showed contextual embeddings outperform static; direct precursor to BERT</div>
+                    <div className="ch-tl-impact">Impact: Showed contextual embeddings outperform static; direct precursor to BERT</div>
                 </div>
             </div>
 
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>The isotropy problem:</strong> Mu & Viswanath (2018) discovered that
                 word embedding spaces are anisotropic — most of the variance is concentrated in
                 a few directions, and the average cosine similarity between random word pairs is
@@ -165,8 +165,8 @@ function HighSchoolTab() {
             </p>
             <MathBlock tex="e_w^{\text{debiased}} = e_w - \frac{e_w \cdot g}{\|g\|^2} g" />
 
-            <hr className="ch10-sep" />
-            <div className="ch10-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Intrinsic vs extrinsic evaluation:</strong> Intrinsic evaluation measures
                 cosine similarity against human-rated word pairs (WordSim-353) or analogy accuracy
                 (Google Analogy Test). Extrinsic evaluation tests embeddings as features in downstream
@@ -223,7 +223,7 @@ function MathsTab() {
                 improves downstream task performance.
             </p>
 
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>Probing classifiers:</strong> To test what information is encoded in
                 embeddings, train a linear classifier f(e<sub>w</sub>) to predict a linguistic
                 property (POS tag, word frequency, semantic category). If a simple linear classifier

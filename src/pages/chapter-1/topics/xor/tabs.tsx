@@ -80,29 +80,29 @@ function HistoryTab() {
         <>
             <h2>The Result That Ended Neural Networks for a Decade</h2>
 
-            <div className="ch1-timeline">
-                <div className="ch1-tl-item">
-                    <div className="ch1-tl-year">1969</div>
-                    <div className="ch1-tl-title">Perceptrons — The Book</div>
-                    <div className="ch1-tl-section-label">The publication</div>
-                    <div className="ch1-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1969</div>
+                    <div className="ch-tl-title">Perceptrons — The Book</div>
+                    <div className="ch-tl-section-label">The publication</div>
+                    <div className="ch-tl-body">
                         Marvin Minsky and Seymour Papert published Perceptrons: An Introduction to Computational Geometry (MIT Press). The book was rigorous, mathematically precise, and devastating. They proved that a single-layer perceptron could not compute XOR — the exclusive-or function. More broadly, they proved that perceptrons were fundamentally limited to linearly separable functions.
                     </div>
-                    <div className="ch1-tl-section-label">The impact</div>
-                    <div className="ch1-tl-body ch1-tl-impact">
+                    <div className="ch-tl-section-label">The impact</div>
+                    <div className="ch-tl-body ch-tl-impact">
                         Within two years of the book's publication, federal funding for neural network research essentially dried up. The field entered its first AI Winter. Researchers pivoted to symbolic AI, expert systems, and logic-based approaches. The neural network field wouldn't recover until 1986.
                     </div>
                 </div>
 
-                <div className="ch1-tl-item">
-                    <div className="ch1-tl-year">1986</div>
-                    <div className="ch1-tl-title">Backpropagation — The Recovery</div>
-                    <div className="ch1-tl-section-label">What changed</div>
-                    <div className="ch1-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1986</div>
+                    <div className="ch-tl-title">Backpropagation — The Recovery</div>
+                    <div className="ch-tl-section-label">What changed</div>
+                    <div className="ch-tl-body">
                         David Rumelhart, Geoffrey Hinton, and Ronald Williams published "Learning representations by back-propagating errors" in Nature. They demonstrated that multilayer networks (with hidden layers) could solve XOR and much more complex functions — if trained with backpropagation. The learning signal flowed backwards through the network, computing gradients at each layer.
                     </div>
-                    <div className="ch1-tl-section-label">Why it resolved the crisis</div>
-                    <div className="ch1-tl-body ch1-tl-impact">
+                    <div className="ch-tl-section-label">Why it resolved the crisis</div>
+                    <div className="ch-tl-body ch-tl-impact">
                         Minsky & Papert's critique was correct for the algorithms available in 1969. Backpropagation provided exactly what they said was missing: an efficient way to train hidden layers. A two-layer network (2 hidden units + 1 output) can solve XOR trivially. The lesson: the limitation was never the architecture — it was the training algorithm.
                     </div>
                 </div>
@@ -159,7 +159,7 @@ function HighSchoolTab() {
             </DiagramBlock>
 
             <h3>XOR Truth Table</h3>
-            <table className="ch1-truth-table">
+            <table className="ch-truth-table">
                 <thead><tr><th>x₁</th><th>x₂</th><th>x₁ XOR x₂</th></tr></thead>
                 <tbody>
                     <tr><td>0</td><td>0</td><td>0</td></tr>
@@ -192,7 +192,7 @@ function HighSchoolTab() {
                 the first layer computes NAND and OR (using different weights); the second layer combines them.
             </p>
 
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Key lesson:</strong> A single perceptron is a linear classifier. Two layers
                 (one hidden) with non-linear activations can represent any boolean function — including XOR.
                 The key is that the hidden layer creates <em>feature combinations</em> that the output
@@ -259,7 +259,7 @@ function MathsTab() {
                 <li><strong>Predicate limitation</strong>: many natural predicates (e.g., connectedness in images) are not linearly separable</li>
             </ul>
 
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Resolution in 1986:</strong> Backpropagation trains hidden layers by propagating error gradients backwards. A 2-layer network with 2 hidden units and trained weights can solve XOR exactly — this was the computational proof that Minsky's critique was about the algorithm, not the architecture.
             </div>
         </>
@@ -326,7 +326,7 @@ function PythonTab() {
                 architecture for XOR.
             </p>
             <CodeBlock code={PY_CODE} filename="xor_twolayer.py" lang="python" langLabel="Python" />
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> XOR needs exactly 2 hidden units. With 1 hidden unit,
                 the decision boundary is still a single hyperplane in the 2D feature space of hidden
                 activations — still insufficient. This is why hidden layers matter: they create
@@ -406,7 +406,7 @@ function CodeTab() {
                 decomposition. No backpropagation needed — the insight is purely architectural.
             </p>
             <CodeBlock code={TS_CODE} filename="xor-twolayer.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Deep insight:</strong> The hidden layer maps the original 2D space to a
                 <em> new 2D space</em> (hidden activations). In that new space, XOR points are
                 linearly separable. The hidden layer is a <em>feature transformation</em> — it

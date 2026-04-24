@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch7-tl-item">
-            <div className="ch7-tl-year">{item.year}</div>
-            <div className="ch7-tl-title">{item.title}</div>
-            <div className="ch7-tl-section-label">The context</div>
-            <div className="ch7-tl-body">{item.challenge}</div>
-            <div className="ch7-tl-section-label">What was introduced</div>
-            <div className="ch7-tl-body">{item.what}</div>
-            <div className="ch7-tl-section-label">Why it mattered</div>
-            <div className="ch7-tl-body ch7-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The context</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -59,7 +59,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch7-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -126,9 +126,9 @@ function HighSchoolTab() {
                 <li>Stack them together and fine-tune with labeled data using backpropagation</li>
             </ol>
 
-            <hr className="ch7-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Each layer learns increasingly abstract features.
                 The first RBM learns edges, the second learns corners and edges-of-edges,
                 the third learns object parts, and so on — all automatically.
@@ -175,7 +175,7 @@ function MathsTab() {
                 form directed sigmoid belief networks.
             </p>
 
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Why CD works:</strong> Even one step (CD-1) gives a surprisingly good
                 gradient estimate because the reconstruction is already closer to the
                 true data distribution than random initialization.
@@ -245,7 +245,7 @@ function PythonTab() {
                 Pure NumPy implementation of an RBM with Contrastive Divergence training.
             </p>
             <CodeBlock code={PY_CODE} filename="rbm.py" lang="python" langLabel="Python" />
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> The RBM is learning to reconstruct its input.
                 After training, its hidden activations form a compressed, meaningful representation.
             </div>
@@ -335,7 +335,7 @@ function CodeTab() {
                 Pure TypeScript implementation of an RBM with Contrastive Divergence.
             </p>
             <CodeBlock code={TS_CODE} filename="rbm.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Historical note:</strong> This CD-1 algorithm was crucial for making
                 RBMs practical.
             </div>

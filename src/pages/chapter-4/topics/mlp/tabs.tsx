@@ -21,7 +21,7 @@ function HistoryTab() {
                 Cybenko (1989) and Hornik et al. (1989) independently proved that a single hidden layer with a non-linear activation can approximate any continuous function on a compact domain — given enough hidden units. This mathematical guarantee explained why MLPs were so expressive, even if the theorem said nothing about how to <em>learn</em> the right weights.
             </p>
 
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>The depth trade-off:</strong> a single wide hidden layer <em>can</em> approximate any function in theory. In practice, deep networks (many layers) often learn more efficiently and generalize better than a single extremely wide layer — a phenomenon explored more fully in the ResNet era (2015 onward).
             </div>
         </>
@@ -88,9 +88,9 @@ function HighSchoolTab() {
                 If <InlineMath tex="\sigma" /> were the identity function (linear activation), the entire network would collapse to a single linear transformation — no matter how many layers. Deep networks only gain their expressive power from non-linear activations at each layer.
             </p>
 
-            <hr className="ch4-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>Capacity vs. efficiency:</strong> the universal approximation theorem says a single hidden layer can represent <em>any</em> function. But "can" ≠ "efficiently." Deep networks exploit compositional structure in data (images, language, audio) far better than a single wide layer would.
             </div>
         </>

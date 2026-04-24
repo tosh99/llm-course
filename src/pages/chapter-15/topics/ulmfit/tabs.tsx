@@ -15,39 +15,39 @@ function HistoryTab() {
                 asked a simple question: why can't language models do the same?
             </p>
 
-            <div className="ch15-timeline">
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2012</div>
-                    <div className="ch15-tl-section-label">Precedent</div>
-                    <div className="ch15-tl-title">ImageNet Transfer Learning</div>
-                    <div className="ch15-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2012</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">ImageNet Transfer Learning</div>
+                    <div className="ch-tl-body">
                         The AlexNet revolution showed that CNNs pretrained on ImageNet learned generic visual
                         features (edges, textures, shapes) that transferred beautifully to object detection,
                         segmentation, and medical imaging. The recipe was simple: pretrain on a large supervised
                         dataset, then fine-tune the last few layers on the target task.
                     </div>
-                    <div className="ch15-tl-impact">Impact: Transfer learning became the default in computer vision</div>
+                    <div className="ch-tl-impact">Impact: Transfer learning became the default in computer vision</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2015 – 2017</div>
-                    <div className="ch15-tl-section-label">Problem</div>
-                    <div className="ch15-tl-title">The NLP Transfer Gap</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015 – 2017</div>
+                    <div className="ch-tl-section-label">Problem</div>
+                    <div className="ch-tl-title">The NLP Transfer Gap</div>
+                    <div className="ch-tl-body">
                         Word vectors (Word2Vec, GloVe) offered <em>static</em> transfer: each word got one fixed
                         embedding regardless of context. But the heavy lifting — the LSTM or CNN that processed
                         sequences — was always trained from scratch. Attempts to fine-tune pretrained language
                         models directly led to catastrophic forgetting: the model lost its general linguistic
                         knowledge within a few gradient steps.
                     </div>
-                    <div className="ch15-tl-impact">Impact: NLP practitioners believed language models were too fragile to fine-tune</div>
+                    <div className="ch-tl-impact">Impact: NLP practitioners believed language models were too fragile to fine-tune</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2018</div>
-                    <div className="ch15-tl-section-label">Breakthrough</div>
-                    <div className="ch15-tl-title">Howard &amp; Ruder — ULMFiT</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">Breakthrough</div>
+                    <div className="ch-tl-title">Howard &amp; Ruder — ULMFiT</div>
+                    <div className="ch-tl-body">
                         In "Universal Language Model Fine-tuning for Text Classification" (ACL 2018), Howard
                         and Ruder introduced a disciplined three-stage recipe: (1) pretrain a language model on
                         a massive general-domain corpus (WikiText-103), (2) fine-tune the language model on the
@@ -55,24 +55,24 @@ function HistoryTab() {
                         a classification head and fine-tune the whole model with gradual unfreezing. The result:
                         state-of-the-art on six benchmarks with 100× less labeled data.
                     </div>
-                    <div className="ch15-tl-impact">Impact: Proved that language models, handled correctly, are as transferable as ImageNet CNNs</div>
+                    <div className="ch-tl-impact">Impact: Proved that language models, handled correctly, are as transferable as ImageNet CNNs</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2018 – 2019</div>
-                    <div className="ch15-tl-section-label">Legacy</div>
-                    <div className="ch15-tl-title">The Recipe Becomes Standard</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018 – 2019</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">The Recipe Becomes Standard</div>
+                    <div className="ch-tl-body">
                         ULMFiT's core ideas — pretrained LMs, task-specific fine-tuning, discriminative learning
                         rates, gradual unfreezing — became the template for ELMo, BERT, and GPT. Fast.ai built
                         an entire course and library around the approach. Even today, the "pretrain then fine-tune"
                         paradigm dominates NLP, with ULMFiT recognized as the paper that made it practical.
                     </div>
-                    <div className="ch15-tl-impact">Impact: The foundational recipe for modern NLP transfer learning</div>
+                    <div className="ch-tl-impact">Impact: The foundational recipe for modern NLP transfer learning</div>
                 </div>
             </div>
 
-            <div className="ch15-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Catastrophic forgetting is not inevitable. By using
                 discriminative learning rates (lower LR for early layers) and gradual unfreezing (unfreezing
                 one layer at a time from top to bottom), the model preserves its general knowledge while
@@ -151,8 +151,8 @@ function HighSchoolTab() {
                     across all chunks.</li>
             </ul>
 
-            <hr className="ch15-sep" />
-            <div className="ch15-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> On IMDb sentiment classification, ULMFiT achieved 94.3% accuracy
                 with only 100 labeled examples — matching the previous state-of-the-art that used 25,000 labeled
                 examples. On TREC-6 question classification, it reached 96.7% with only 400 examples.
@@ -207,7 +207,7 @@ function MathsTab() {
             <MathBlock tex="\mathbf{h}_{\text{doc}} = [\max(\mathbf{h}_1, \dots, \mathbf{h}_k); \; \text{mean}(\mathbf{h}_1, \dots, \mathbf{h}_k)]" />
             <MathBlock tex="\hat{y} = \text{softmax}(\mathbf{W}_c \mathbf{h}_{\text{doc}} + \mathbf{b}_c)" />
 
-            <div className="ch15-callout">
+            <div className="ch-callout">
                 <strong>Why it works:</strong> The layer-wise LR decay exploits the hierarchical structure
                 of neural language models. Embeddings encode surface features (characters, morphemes); middle
                 layers encode syntax; top layers encode task-relevant semantics. Gradual unfreezing respects

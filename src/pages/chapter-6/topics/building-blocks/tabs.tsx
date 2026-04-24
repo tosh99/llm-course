@@ -14,42 +14,42 @@ function HistoryTab() {
                 ResNet and DenseNet.
             </p>
 
-            <div className="ch6-timeline">
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">Conv</div>
-                    <div className="ch6-tl-title">The Core Operation</div>
-                    <div className="ch6-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Conv</div>
+                    <div className="ch-tl-title">The Core Operation</div>
+                    <div className="ch-tl-body">
                         The sliding dot product that detects local patterns. Introduced by Fukushima's
                         Neocognitron (1980), perfected by LeCun (1989). Still the workhorse of modern CNNs.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">Pool</div>
-                    <div className="ch6-tl-title">Spatial Aggregation</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Pool</div>
+                    <div className="ch-tl-title">Spatial Aggregation</div>
+                    <div className="ch-tl-body">
                         Subsampling for translation invariance. LeNet used average pooling; modern
                         networks prefer max pooling. Stride is key — typically 2× to halve dimensions.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">Activation</div>
-                    <div className="ch6-tl-title">Non-linearity</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Activation</div>
+                    <div className="ch-tl-title">Non-linearity</div>
+                    <div className="ch-tl-body">
                         Tanh and sigmoid in early architectures, replaced by ReLU (2010) for vanishing
                         gradient resistance. Now includes BatchNorm and ResNet-style activations.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">Flatten → FC</div>
-                    <div className="ch6-tl-title">Classification</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Flatten → FC</div>
+                    <div className="ch-tl-title">Classification</div>
+                    <div className="ch-tl-body">
                         Converting spatial features to class probabilities. Modern networks often
                         use Global Average Pooling instead to reduce parameters.
                     </div>
                 </div>
             </div>
 
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>The Modern Pattern:</strong> [Conv → BN → ReLU → Conv → BN → ReLU → Pool] × N →
                 [GlobalAvgPool → FC] — a pattern you'll see in ResNet, DenseNet, and EfficientNet.
             </div>
@@ -311,7 +311,7 @@ function PythonTab() {
                 flattening, reducing parameters significantly.
             </p>
             <CodeBlock code={PY_CODE} filename="building_blocks.py" lang="python" />
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>Modern pattern:</strong> BatchNorm after conv, ReLU after BN, Global Average
                 Pooling before FC. Fewer parameters, faster training, better generalization.
             </div>

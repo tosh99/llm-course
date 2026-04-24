@@ -13,15 +13,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch1-tl-item">
-            <div className="ch1-tl-year">{item.year}</div>
-            <div className="ch1-tl-title">{item.title}</div>
-            <div className="ch1-tl-section-label">The context</div>
-            <div className="ch1-tl-body">{item.challenge}</div>
-            <div className="ch1-tl-section-label">What was introduced</div>
-            <div className="ch1-tl-body">{item.what}</div>
-            <div className="ch1-tl-section-label">Why it mattered</div>
-            <div className="ch1-tl-body ch1-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The context</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -76,7 +76,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch1-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -165,9 +165,9 @@ function HighSchoolTab() {
                 The <strong>XOR</strong> function is not linearly separable — no straight line can separate the (1,0) and (0,1) cases from the (1,1) and (0,0) cases simultaneously. This is why the perceptron fails on XOR.
             </p>
 
-            <hr className="ch1-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>The geometric picture:</strong> The perceptron is drawing a hyperplane through data. If such a hyperplane exists, the perceptron will eventually find it (it converges). If not, it will oscillate forever without finding a solution.
             </div>
         </>
@@ -213,7 +213,7 @@ function MathsTab() {
             <p>
                 XOR truth table (inputs x₁, x₂; output y = x₁ ⊕ x₂):
             </p>
-            <table className="ch1-truth-table">
+            <table className="ch-truth-table">
                 <thead>
                     <tr>
                         <th>x₁</th><th>x₂</th><th>y = x₁ ⊕ x₂</th>
@@ -239,7 +239,7 @@ function MathsTab() {
                 This means a single perceptron has limited expressive power — it cannot distinguish complex pattern classes without help from hidden layers.
             </p>
 
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> XOR requires at least two threshold decisions combined non-linearly.
                 A two-layer network (one hidden layer) can solve XOR by representing it as:
                 <InlineMath tex="x_1 \oplus x_2 = (x_1 \land \lnot x_2) \lor (\lnot x_1 \land x_2)" />.
@@ -329,7 +329,7 @@ function PythonTab() {
                 No PyTorch needed — these are the original, hand-implemented algorithms.
             </p>
             <CodeBlock code={PY_CODE} filename="mcp_perceptron.py" lang="python" langLabel="Python" />
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Note:</strong> The XOR experiment will never converge — the perceptron oscillates
                 indefinitely because no hyperplane exists. This is the exact failure Minsky & Papert proved.
             </div>
@@ -436,7 +436,7 @@ function CodeTab() {
                 No libraries — just arrays and math, matching the 1957 paper exactly.
             </p>
             <CodeBlock code={TS_CODE} filename="mcp-perceptron.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Historical note:</strong> In 1957, Rosenblatt implemented the perceptron in
                 hardware (the Mark I) using potentiometers and motors. The weights were literally
                 turned by electric motors when mistakes were made. Today's equivalent runs on a GPU

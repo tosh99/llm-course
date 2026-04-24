@@ -15,62 +15,62 @@ function HistoryTab() {
                 must learn to use both directions simultaneously.
             </p>
 
-            <div className="ch16-timeline">
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">1953</div>
-                    <div className="ch16-tl-section-label">Precedent</div>
-                    <div className="ch16-tl-title">The Cloze Procedure</div>
-                    <div className="ch16-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1953</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">The Cloze Procedure</div>
+                    <div className="ch-tl-body">
                         Psychologist W.L. Taylor invented the "cloze test": delete every Nth word from a
                         passage and ask readers to fill in the blanks. The task requires understanding
                         grammar, semantics, and discourse from both sides of each gap. It became a standard
                         measure of reading comprehension.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Provided the pedagogical inspiration for MLM</div>
+                    <div className="ch-tl-impact">Impact: Provided the pedagogical inspiration for MLM</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">2013 – 2017</div>
-                    <div className="ch16-tl-section-label">Problem</div>
-                    <div className="ch16-tl-title">The Directionality Trap</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013 – 2017</div>
+                    <div className="ch-tl-section-label">Problem</div>
+                    <div className="ch-tl-title">The Directionality Trap</div>
+                    <div className="ch-tl-body">
                         Word2Vec, LSTM language models, and GPT all processed text in one direction. A model
                         reading left-to-right sees "The bank of the river" and by the time it reaches "river,"
                         it has already fixed "bank" as a financial institution. True understanding requires
                         seeing "river" <em>before</em> committing to a sense for "bank."
                     </div>
-                    <div className="ch16-tl-impact">Impact: Showed that unidirectional models suffer from premature disambiguation</div>
+                    <div className="ch-tl-impact">Impact: Showed that unidirectional models suffer from premature disambiguation</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">Oct 2018</div>
-                    <div className="ch16-tl-section-label">Breakthrough</div>
-                    <div className="ch16-tl-title">Masked Language Modeling</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Oct 2018</div>
+                    <div className="ch-tl-section-label">Breakthrough</div>
+                    <div className="ch-tl-title">Masked Language Modeling</div>
+                    <div className="ch-tl-body">
                         BERT replaced next-word prediction with masked-word prediction. 15% of input tokens
                         are randomly selected; 80% are replaced with <code>[MASK]</code>, 10% with random
                         tokens, and 10% left unchanged. The model must predict the original word using full
                         bidirectional context. This simple change forced the Transformer encoder to learn
                         deep, contextualized representations.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Enabled true deep bidirectionality in neural language models</div>
+                    <div className="ch-tl-impact">Impact: Enabled true deep bidirectionality in neural language models</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">2019 – present</div>
-                    <div className="ch16-tl-section-label">Evolution</div>
-                    <div className="ch16-tl-title">SpanBERT, ALBERT, and Beyond</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019 – present</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">SpanBERT, ALBERT, and Beyond</div>
+                    <div className="ch-tl-body">
                         SpanBERT masked contiguous spans instead of single tokens, improving coreference
                         and question answering. ALBERT shared parameters across layers and used
                         sentence-order prediction instead of NSP. ELECTRA replaced MLM entirely with a
                         replaced-token detection task, training more efficiently.
                     </div>
-                    <div className="ch16-tl-impact">Impact: MLM spawned an entire family of masked pretraining objectives</div>
+                    <div className="ch-tl-impact">Impact: MLM spawned an entire family of masked pretraining objectives</div>
                 </div>
             </div>
 
-            <div className="ch16-callout">
+            <div className="ch-callout">
                 <strong>The 80/10/10 rule:</strong> If we always replaced masked tokens with <code>[MASK]</code>,
                 the model would only see <code>[MASK]</code> during pretraining but real words during
                 fine-tuning. By keeping 10% unchanged and replacing 10% with random words, the model learns
@@ -150,8 +150,8 @@ function HighSchoolTab() {
                     bidirectional context — it can only fill in blanks, not generate continuations.</li>
             </ul>
 
-            <hr className="ch16-sep" />
-            <div className="ch16-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key insight:</strong> MLM transforms language modeling from a generation task
                 into a denoising task. The model learns not to predict sequences but to reconstruct
                 corrupted ones — a paradigm that would later inspire BART, T5, and diffusion language
@@ -201,7 +201,7 @@ function MathsTab() {
                 self-attention layers, updating every parameter in the model.
             </p>
 
-            <div className="ch16-callout">
+            <div className="ch-callout">
                 <strong>Why shared embeddings:</strong> BERT ties the input embedding matrix <InlineMath tex="\\mathbf{E}" />
                 with the output projection. This acts as a strong regularizer and reduces parameters,
                 since the model must use the same vector space for reading tokens and predicting them.

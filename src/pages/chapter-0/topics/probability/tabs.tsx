@@ -15,15 +15,15 @@ interface TimelineItem {
 
 function TlItem({ item }: { item: TimelineItem }) {
     return (
-        <div className="ch0-tl-item">
-            <div className="ch0-tl-year">{item.year}</div>
-            <div className="ch0-tl-title">{item.title}</div>
-            <div className="ch0-tl-section-label">The challenge</div>
-            <div className="ch0-tl-body">{item.challenge}</div>
-            <div className="ch0-tl-section-label">What was introduced</div>
-            <div className="ch0-tl-body">{item.what}</div>
-            <div className="ch0-tl-section-label">Why it mattered</div>
-            <div className="ch0-tl-body ch0-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The challenge</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -78,7 +78,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch0-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TlItem key={item.year} item={item} />
             ))}
@@ -240,7 +240,7 @@ function HighSchoolTab() {
                 <NormalDistributionDiagram />
             </DiagramBlock>
 
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Connection to ML:</strong> Cross-entropy loss (used to train classifiers and LLMs)
                 comes directly from probability theory: it measures how surprised the model is by the correct
                 answer. Weight initialisation draws from N(0, 0.02). Batch normalisation centres activations
@@ -368,7 +368,7 @@ function MathsTab() {
                 analysis of SGD convergence.
             </p>
 
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Machine learning is applied statistics. Every model defines a
                 probability distribution p(y|x; θ), training is MLE (or MAP), loss functions are negative
                 log-likelihoods, and regularisation is Bayesian priors. Understanding probability theory means
@@ -475,7 +475,7 @@ function PythonTab() {
                 are the statistical foundations of every neural network's training loop.
             </p>
             <CodeBlock code={PY_CODE} filename="probability.py" lang="python" langLabel="Python" />
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Every neural network classifier outputs probabilities via softmax,
                 and is trained with cross-entropy loss. This is MLE in disguise — maximising the log-likelihood
                 of correct labels. In PyTorch: <code>nn.CrossEntropyLoss()</code> combines log-softmax + NLL loss
@@ -599,7 +599,7 @@ function CodeTab() {
                 that loss functions, evaluation metrics, and model uncertainty estimation are built from.
             </p>
             <CodeBlock code={TS_CODE} filename="probability.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Next step:</strong> In PyTorch, <code>nn.CrossEntropyLoss</code> combines softmax and
                 negative log-likelihood in one numerically stable operation. <code>torch.distributions</code>{" "}
                 provides PDFs, sampling, and KL divergence. Understanding these from scratch prepares you to

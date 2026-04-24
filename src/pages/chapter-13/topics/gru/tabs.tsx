@@ -16,26 +16,26 @@ function HistoryTab() {
                 gradient problem? The answer was the Gated Recurrent Unit.
             </p>
 
-            <div className="ch13-timeline">
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">1997</div>
-                    <div className="ch13-tl-section-label">Predecessor</div>
-                    <div className="ch13-tl-title">Hochreiter &amp; Schmidhuber — LSTM</div>
-                    <div className="ch13-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1997</div>
+                    <div className="ch-tl-section-label">Predecessor</div>
+                    <div className="ch-tl-title">Hochreiter &amp; Schmidhuber — LSTM</div>
+                    <div className="ch-tl-body">
                         The Long Short-Term Memory cell introduced input, forget, and output gates
                         plus a constant-error carousel (CEC) to shuttle gradients across hundreds
                         of time steps. It worked brilliantly but required ~4× the parameters of a
                         vanilla RNN and had a subtle interaction between cell state and hidden state
                         that made implementation error-prone.
                     </div>
-                    <div className="ch13-tl-impact">Impact: Solved vanishing gradients but at the cost of complexity</div>
+                    <div className="ch-tl-impact">Impact: Solved vanishing gradients but at the cost of complexity</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2014</div>
-                    <div className="ch13-tl-section-label">Invention</div>
-                    <div className="ch13-tl-title">Cho et al. — Learning Phrase Representations with GRU</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Cho et al. — Learning Phrase Representations with GRU</div>
+                    <div className="ch-tl-body">
                         In "Learning Phrase Representations using RNN Encoder-Decoder for
                         Statistical Machine Translation" (EMNLP 2014), Cho introduced the Gated
                         Recurrent Unit as a drop-in replacement for LSTM in their encoder-decoder
@@ -44,28 +44,28 @@ function HistoryTab() {
                         how much of the previous state to keep) and a <em>reset gate</em> (controlling
                         how much of the previous state to forget when computing the candidate state).
                     </div>
-                    <div className="ch13-tl-impact">Impact: Comparable BLEU scores with fewer parameters and faster training</div>
+                    <div className="ch-tl-impact">Impact: Comparable BLEU scores with fewer parameters and faster training</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2015</div>
-                    <div className="ch13-tl-section-label">Validation</div>
-                    <div className="ch13-tl-title">Chung et al. — Empirical Evaluation of GRU vs LSTM</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Validation</div>
+                    <div className="ch-tl-title">Chung et al. — Empirical Evaluation of GRU vs LSTM</div>
+                    <div className="ch-tl-body">
                         Junyoung Chung, Çağlar Gülçehre, Kyunghyun Cho, and Yoshua Bengio ran the
                         first large-scale empirical comparison. On polyphonic music modeling and
                         speech signal modeling, GRUs performed equivalently to LSTMs. On some
                         smaller datasets, GRUs even outperformed LSTMs, possibly because their
                         reduced parameter count acted as a beneficial regularizer.
                     </div>
-                    <div className="ch13-tl-impact">Impact: Established GRU as a legitimate, often preferred, alternative to LSTM</div>
+                    <div className="ch-tl-impact">Impact: Established GRU as a legitimate, often preferred, alternative to LSTM</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2015 – 2017</div>
-                    <div className="ch13-tl-section-label">Adoption</div>
-                    <div className="ch13-tl-title">GRU Becomes the Default in Production</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015 – 2017</div>
+                    <div className="ch-tl-section-label">Adoption</div>
+                    <div className="ch-tl-title">GRU Becomes the Default in Production</div>
+                    <div className="ch-tl-body">
                         Google's Neural Machine Translation system, Baidu's Deep Speech 2, and
                         numerous Kaggle winning solutions adopted GRUs for the simple reason that
                         they trained faster and used less memory while delivering the same accuracy.
@@ -73,11 +73,11 @@ function HistoryTab() {
                         LSTM. The community settled on a heuristic: try GRU first, switch to LSTM only
                         if you need the extra capacity.
                     </div>
-                    <div className="ch13-tl-impact">Impact: GRU became the pragmatic default for sequence modeling before Transformers</div>
+                    <div className="ch-tl-impact">Impact: GRU became the pragmatic default for sequence modeling before Transformers</div>
                 </div>
             </div>
 
-            <div className="ch13-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> LSTM's forget and input gates are redundant.
                 If the forget gate keeps 80% of the old state and the input gate adds 20% new
                 content, that is mathematically similar to a single update gate that blends the
@@ -165,8 +165,8 @@ function HighSchoolTab() {
             </p>
             <MathBlock tex="\mathbf{h}_t = (1 - \mathbf{z}_t) \odot \mathbf{h}_{t-1} + \mathbf{z}_t \odot \tilde{\mathbf{h}}_t" />
 
-            <hr className="ch13-sep" />
-            <div className="ch13-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key difference from LSTM:</strong> GRU has no separate cell state c<sub>t</sub>.
                 The hidden state h<sub>t</sub> serves both roles. This means fewer parameters
                 (3 weight matrices instead of 4) and a shorter gradient path. The update gate z<sub>t</sub>
@@ -222,7 +222,7 @@ function MathsTab() {
                 speedup per step.
             </p>
 
-            <div className="ch13-callout">
+            <div className="ch-callout">
                 <strong>Why GRU sometimes outperforms LSTM:</strong> The reduced parameter count
                 acts as implicit regularization. On smaller datasets, LSTMs can overfit by using
                 their extra capacity to memorize noise. GRUs, being slightly less expressive,

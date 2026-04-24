@@ -7,7 +7,7 @@ function HistoryTab() {
     return (
         <>
             <h2>Why RNNs forget: the mathematical inevitability of gradient decay</h2>
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Building on Ch. 4:</strong> Vanishing gradients in deep feedforward networks were introduced in Ch. 4. This topic covers the <em>same phenomenon as it specifically manifests in RNNs</em> — where sequence length, not layer count, determines depth. The problem is structurally identical but exponentially worse because the unrolled network can be hundreds of steps deep.
             </div>
             <p>
@@ -34,7 +34,7 @@ function HistoryTab() {
                 If ||W<sub>hh</sub>|| &lt; 4, gradients shrink by at least 75% per step. After
                 20 steps, the signal is typically below machine precision.
             </p>
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Intuition:</strong> BPTT through T time steps is equivalent to training a
                 T-layer feedforward network. Training very deep networks is hard (vanishing/exploding
                 gradients were known problems in feedforward nets since the 1990s). RNNs are even
@@ -129,8 +129,8 @@ function HighSchoolTab() {
                 than gradients at later steps.
             </p>
 
-            <hr className="ch5-sep" />
-            <div className="ch5-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Real-world consequence:</strong> If you try to use a simple RNN to predict
                 the next word in a long sentence, it will effectively only "remember" the last ~7-10
                 words. This is why early RNN language models struggled with long-range dependencies
@@ -196,7 +196,7 @@ function MathsTab() {
                 The weight barely changes — the network cannot learn the long-range dependency.
             </p>
 
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Bengio et al. (1994)</strong> showed that the vanishing gradient problem
                 is not specific to RNNs — it affects any deep network with shared weights across
                 many layers. The fundamental fix requires either: (1) skip connections that bypass
@@ -395,7 +395,7 @@ function CodeTab() {
                 produces a constant gradient of 1.0.
             </p>
             <CodeBlock code={TS_CODE} filename="vanishing_gradient.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Historical note:</strong> Hochreiter's 1991 identification of the vanishing
                 gradient was remarkable because he diagnosed the problem mathematically before
                 building a solution. The LSTM was designed specifically to address each mathematical

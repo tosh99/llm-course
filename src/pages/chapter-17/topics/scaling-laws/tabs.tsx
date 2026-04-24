@@ -16,52 +16,52 @@ function HistoryTab() {
                 changed how the entire field thought about building AI.
             </p>
 
-            <div className="ch17-timeline">
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">2019</div>
-                    <div className="ch17-tl-section-label">Observation</div>
-                    <div className="ch17-tl-title">The Smooth Curves</div>
-                    <div className="ch17-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019</div>
+                    <div className="ch-tl-section-label">Observation</div>
+                    <div className="ch-tl-title">The Smooth Curves</div>
+                    <div className="ch-tl-body">
                         While training GPT-2 variants, OpenAI researchers Jared Kaplan, Sam McCandlish,
                         and colleagues noticed that validation loss followed smooth, predictable curves
                         as a function of model size and training time. There was no sudden phase
                         transition — just steady, power-law improvement.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Hinted that capability might be predictable from scale alone</div>
+                    <div className="ch-tl-impact">Impact: Hinted that capability might be predictable from scale alone</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">Jan 2020</div>
-                    <div className="ch17-tl-section-label">Publication</div>
-                    <div className="ch17-tl-title">Scaling Laws for Neural Language Models</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Jan 2020</div>
+                    <div className="ch-tl-section-label">Publication</div>
+                    <div className="ch-tl-title">Scaling Laws for Neural Language Models</div>
+                    <div className="ch-tl-body">
                         The paper formalized three key relationships: loss scales as a power law with
                         model size (N), dataset size (D), and compute (C). Crucially, the relationships
                         hold across multiple orders of magnitude and appear to be <em>independent of
                         architecture details</em> — LSTM, transformer, wide vs. deep — as long as the
                         model has enough capacity.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Provided a quantitative roadmap for building better models</div>
+                    <div className="ch-tl-impact">Impact: Provided a quantitative roadmap for building better models</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">2020 – 2022</div>
-                    <div className="ch17-tl-section-label">Application</div>
-                    <div className="ch17-tl-title">GPT-3 and Beyond</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020 – 2022</div>
+                    <div className="ch-tl-section-label">Application</div>
+                    <div className="ch-tl-title">GPT-3 and Beyond</div>
+                    <div className="ch-tl-body">
                         OpenAI used the scaling laws to justify GPT-3: if a 1.5B model behaves
                         predictably, a 175B model should too. It did. The laws also informed Google's
                         PaLM, Anthropic's models, and Meta's LLaMA. Researchers could now estimate
                         the compute budget needed to reach a target loss before training even began.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Scaling became the dominant model improvement strategy</div>
+                    <div className="ch-tl-impact">Impact: Scaling became the dominant model improvement strategy</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">2022</div>
-                    <div className="ch17-tl-section-label">Refinement</div>
-                    <div className="ch17-tl-title">Chinchilla</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022</div>
+                    <div className="ch-tl-section-label">Refinement</div>
+                    <div className="ch-tl-title">Chinchilla</div>
+                    <div className="ch-tl-body">
                         DeepMind's Chinchilla paper argued that previous models were severely
                         <em>undertrained</em>. The optimal compute-efficient strategy is to scale
                         model size and data <em>in equal proportions</em> — for every doubling of
@@ -69,11 +69,11 @@ function HistoryTab() {
                         1.4T tokens (Chinchilla) outperformed a 280B model trained on only 300B tokens
                         (Gopher) while using the same compute.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Data size, not just model size, became a first-class citizen</div>
+                    <div className="ch-tl-impact">Impact: Data size, not just model size, became a first-class citizen</div>
                 </div>
             </div>
 
-            <div className="ch17-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Language model performance is constrained by a
                 budget of compute, data, and parameters. Within wide ranges, these three factors
                 obey power laws, allowing practitioners to trade them off predictably. The
@@ -163,8 +163,8 @@ function HighSchoolTab() {
                 been more compute-efficient.
             </p>
 
-            <hr className="ch17-sep" />
-            <div className="ch17-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Practical implication:</strong> Before Chinchilla, if you had a compute budget
                 for 100B FLOPs, you might train a 10B model on 10B tokens. After Chinchilla, you'd
                 train a 3B model on 60B tokens — same compute, better performance.
@@ -220,7 +220,7 @@ function MathsTab() {
                 accurate for planning cluster budgets.
             </p>
 
-            <div className="ch17-callout">
+            <div className="ch-callout">
                 <strong>Why power laws?</strong> The empirical power-law scaling likely reflects the
                 hierarchical, self-similar structure of language. As models grow, they capture
                 progressively longer-range and more abstract patterns. Each decade of scale unlocks

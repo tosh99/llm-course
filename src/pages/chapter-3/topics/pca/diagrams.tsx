@@ -29,7 +29,7 @@ export function PCADiagram() {
     const pc2end = p(mx + pc2[0] * 0.6, my + pc2[1] * 0.6)
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch3-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <defs>
                 <marker id="pca-arr1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
                     <polygon points="0 0,6 3,0 6" fill="#e8a838" />
@@ -110,7 +110,7 @@ export function ScreePlot() {
     const barW = pw / variances.length
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch3-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <rect width={w} height={h} fill="#0f0f14" rx="4" />
             <text x={12} y={14} fill="#3a3a50" fontSize="5.5" fontFamily="JetBrains Mono,monospace" letterSpacing="1">SCREE PLOT — EXPLAINED VARIANCE PER COMPONENT</text>
 

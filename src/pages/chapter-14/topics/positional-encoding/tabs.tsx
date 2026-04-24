@@ -15,12 +15,12 @@ function HistoryTab() {
                 into the Transformer without reintroducing recurrence.
             </p>
 
-            <div className="ch14-timeline">
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2017</div>
-                    <div className="ch14-tl-section-label">Invention</div>
-                    <div className="ch14-tl-title">Vaswani et al. — Sinusoidal Positional Encoding</div>
-                    <div className="ch14-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Vaswani et al. — Sinusoidal Positional Encoding</div>
+                    <div className="ch-tl-body">
                         The original Transformer used fixed sinusoidal functions of different
                         frequencies to encode position. The encoding is added directly to the
                         input embeddings. The choice of sine and cosine was deliberate: the
@@ -28,28 +28,28 @@ function HistoryTab() {
                         by relative positions, because for any fixed offset k, PE<sub>pos+k</sub>
                         can be represented as a linear function of PE<sub>pos</sub>.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Enabled the first fully parallel sequence model</div>
+                    <div className="ch-tl-impact">Impact: Enabled the first fully parallel sequence model</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2018</div>
-                    <div className="ch14-tl-section-label">Alternative</div>
-                    <div className="ch14-tl-title">GPT-1 — Learned Positional Embeddings</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">Alternative</div>
+                    <div className="ch-tl-title">GPT-1 — Learned Positional Embeddings</div>
+                    <div className="ch-tl-body">
                         OpenAI's GPT-1 replaced the fixed sinusoids with learned embedding vectors
                         for each position, just like word embeddings. For a maximum sequence
                         length of 512, this adds 512 × d<sub>model</sub> parameters. The learned
                         approach performed equivalently to sinusoids on language modeling, and
                         became the default in BERT and subsequent encoder-only models.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Simpler to implement; became standard in GPT and BERT</div>
+                    <div className="ch-tl-impact">Impact: Simpler to implement; became standard in GPT and BERT</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2021</div>
-                    <div className="ch14-tl-section-label">Evolution</div>
-                    <div className="ch14-tl-title">RoPE — Rotary Position Embedding</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2021</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">RoPE — Rotary Position Embedding</div>
+                    <div className="ch-tl-body">
                         Su et al. proposed Rotary Position Embedding (RoPE), which multiplies
                         the Query and Key vectors by a rotation matrix that depends on position.
                         Unlike additive encodings, RoPE encodes position directly into the
@@ -57,14 +57,14 @@ function HistoryTab() {
                         in the QK<sup>⊤</sup> computation. It also extrapolates to longer
                         sequences better than sinusoidal or learned embeddings.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Adopted in LLaMA, PaLM, and most modern open LLMs</div>
+                    <div className="ch-tl-impact">Impact: Adopted in LLaMA, PaLM, and most modern open LLMs</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2022 – 2024</div>
-                    <div className="ch14-tl-section-label">Long Context</div>
-                    <div className="ch14-tl-title">ALiBi, xPos, and Extrapolation Research</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022 – 2024</div>
+                    <div className="ch-tl-section-label">Long Context</div>
+                    <div className="ch-tl-title">ALiBi, xPos, and Extrapolation Research</div>
+                    <div className="ch-tl-body">
                         To handle contexts far longer than training length, researchers developed
                         bias-based approaches. ALiBi (Attention with Linear Biases) adds a
                         negative bias to attention scores proportional to the distance between
@@ -72,11 +72,11 @@ function HistoryTab() {
                         2×–8× longer without any fine-tuning. xPos and other variants refine
                         this idea for better relative-position behavior.
                     </div>
-                    <div className="ch14-tl-impact">Impact: ALiBi is used in MPT and BLOOM; critical for long-context inference</div>
+                    <div className="ch-tl-impact">Impact: ALiBi is used in MPT and BLOOM; critical for long-context inference</div>
                 </div>
             </div>
 
-            <div className="ch14-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Because attention treats its inputs as an
                 unordered set, you must explicitly tell it where each token sits in the
                 sequence. The encoding method — sinusoidal, learned, or rotary — is a design
@@ -165,8 +165,8 @@ function HighSchoolTab() {
                 just as well for in-distribution lengths.
             </p>
 
-            <hr className="ch14-sep" />
-            <div className="ch14-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Learned vs. sinusoidal:</strong> Sinusoidal encodings require no training,
                 extrapolate to unseen lengths, and have a built-in relative-position bias.
                 Learned embeddings are simpler to implement, can adapt to the data distribution,
@@ -235,7 +235,7 @@ function MathsTab() {
                 No encoding needed; extrapolation is built into the bias function.</li>
             </ul>
 
-            <div className="ch14-callout">
+            <div className="ch-callout">
                 <strong>Why no positional encoding in the decoder output?</strong> The decoder
                 generates tokens autoregressively. It only needs to know the positions of the
                 tokens it has already generated, which are always 0..t−1. Positional encoding

@@ -16,12 +16,12 @@ function HistoryTab() {
                 words that actually appear.
             </p>
 
-            <div className="ch10-timeline">
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">1951</div>
-                    <div className="ch10-tl-section-label">Foundation</div>
-                    <div className="ch10-tl-title">Shannon — Prediction and Entropy of Printed English</div>
-                    <div className="ch10-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1951</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">Shannon — Prediction and Entropy of Printed English</div>
+                    <div className="ch-tl-body">
                         Claude Shannon published "Prediction and Entropy of Printed English," in which
                         he estimated the entropy of English text through human guessing experiments.
                         He concluded that English has an entropy of roughly 1–1.3 bits per character,
@@ -29,42 +29,42 @@ function HistoryTab() {
                         makes it highly predictable. This laid the conceptual groundwork for all
                         subsequent perplexity measurements.
                     </div>
-                    <div className="ch10-tl-impact">Impact: First empirical estimate of text predictability; entropy became the theoretical basis for perplexity</div>
+                    <div className="ch-tl-impact">Impact: First empirical estimate of text predictability; entropy became the theoretical basis for perplexity</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">1970s–80s</div>
-                    <div className="ch10-tl-section-label">Cross-entropy formalism</div>
-                    <div className="ch10-tl-title">Entropy, cross-entropy, and the branching factor</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1970s–80s</div>
+                    <div className="ch-tl-section-label">Cross-entropy formalism</div>
+                    <div className="ch-tl-title">Entropy, cross-entropy, and the branching factor</div>
+                    <div className="ch-tl-body">
                         Information theorists formalized the relationship between entropy, cross-entropy,
                         and KL divergence. In speech recognition, researchers began using perplexity as
                         a proxy for "how confused" an acoustic model is about the next phoneme or word.
                         A perplexity of 100 meant the model was as uncertain as if it were choosing
                         uniformly among 100 equally likely options — the branching factor interpretation.
                     </div>
-                    <div className="ch10-tl-impact">Impact: Perplexity became the standard metric in speech recognition and n-gram language modeling</div>
+                    <div className="ch-tl-impact">Impact: Perplexity became the standard metric in speech recognition and n-gram language modeling</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">1990s–2000s</div>
-                    <div className="ch10-tl-section-label">Statistical NLP</div>
-                    <div className="ch10-tl-title">Penn Treebank and the era of n-gram LMs</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1990s–2000s</div>
+                    <div className="ch-tl-section-label">Statistical NLP</div>
+                    <div className="ch-tl-title">Penn Treebank and the era of n-gram LMs</div>
+                    <div className="ch-tl-body">
                         The Penn Treebank (Marcus et al., 1993) and later WikiText (Merity et al., 2016)
                         established canonical datasets for language modeling evaluation. Kneser-Ney
                         smoothing and class-based n-gram models pushed Penn Treebank perplexities down
                         to roughly 140–150 (word-level). For decades, improving perplexity on these
                         benchmarks was the primary objective of statistical NLP research.
                     </div>
-                    <div className="ch10-tl-impact">Impact: Standardized benchmarks made perplexity the lingua franca of LM evaluation</div>
+                    <div className="ch-tl-impact">Impact: Standardized benchmarks made perplexity the lingua franca of LM evaluation</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2010s</div>
-                    <div className="ch10-tl-section-label">Neural revolution</div>
-                    <div className="ch10-tl-title">Neural LMs, LSTMs, and Transformer benchmarks</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2010s</div>
+                    <div className="ch-tl-section-label">Neural revolution</div>
+                    <div className="ch-tl-title">Neural LMs, LSTMs, and Transformer benchmarks</div>
+                    <div className="ch-tl-body">
                         Neural language models began to dramatically outperform n-gram baselines.
                         Mikolov's RNNLM (2010) brought recurrent networks to the task; Zaremba et al.'s
                         LSTM regularization (2014) pushed PTB below 80 perplexity. The Transformer
@@ -72,11 +72,11 @@ function HistoryTab() {
                         GPT-2 achieved 18.3 on WikiText-103 and GPT-3 drove it even lower. Perplexity
                         had become the universal yardstick for LM progress.
                     </div>
-                    <div className="ch10-tl-impact">Impact: Neural architectures reduced perplexity by an order of magnitude; the metric remains central today</div>
+                    <div className="ch-tl-impact">Impact: Neural architectures reduced perplexity by an order of magnitude; the metric remains central today</div>
                 </div>
             </div>
 
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>Why lower is better:</strong> Perplexity is exponentiated cross-entropy.
                 A model with perplexity 100 assigns roughly the same probability to the true next word
                 as if it were guessing blindly among 100 options. A model with perplexity 20 is five
@@ -176,7 +176,7 @@ function HighSchoolTab() {
                 loss and evaluated with perplexity.
             </p>
 
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>Intuition check:</strong> If a model always predicts the next word with
                 probability 1.0, log P = 0, and perplexity = exp(0) = 1. If the model predicts
                 randomly among V words with probability 1/V each, log P = -log(V), and perplexity
@@ -231,7 +231,7 @@ function MathsTab() {
                 <li><strong>Unigram baseline:</strong> Q(w<sub>i</sub>) = count(w<sub>i</sub>) / N → PP = exp(H<sub>unigram</sub>)</li>
             </ul>
 
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>Important caveat:</strong> Perplexity is an intrinsic, likelihood-based metric.
                 It correlates with downstream task performance but does not guarantee it. A model with
                 lower perplexity is not necessarily better at translation, summarization, or reasoning —
@@ -385,7 +385,7 @@ function CodeTab() {
                 confused, and uniform-random models.
             </p>
             <CodeBlock code={TS_CODE} filename="perplexity.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>Key property:</strong> Perplexity is sensitive to very low probabilities.
                 A single token predicted with probability 0.001 can dominate the average and spike
                 the perplexity — which is why smoothing and good out-of-vocabulary handling matter.

@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch7-tl-item">
-            <div className="ch7-tl-year">{item.year}</div>
-            <div className="ch7-tl-title">{item.title}</div>
-            <div className="ch7-tl-section-label">The context</div>
-            <div className="ch7-tl-body">{item.challenge}</div>
-            <div className="ch7-tl-section-label">What was introduced</div>
-            <div className="ch7-tl-body">{item.what}</div>
-            <div className="ch7-tl-section-label">Why it mattered</div>
-            <div className="ch7-tl-body ch7-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The context</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -59,7 +59,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch7-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -129,9 +129,9 @@ function HighSchoolTab() {
                 <li><strong>Stochastic averaging:</strong> The final network averages predictions from many configurations</li>
             </ul>
 
-            <hr className="ch7-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>AlexNet used dropout:</strong> Krizhevsky et al. applied dropout to the
                 fully-connected layers of AlexNet with p=0.5. This was crucial for achieving
                 their ImageNet breakthrough.
@@ -184,7 +184,7 @@ function MathsTab() {
                 (except without dropout).
             </p>
 
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Connection to Bayesian learning:</strong> Gal and Ghahramani (2016) showed
                 that dropout can be interpreted as approximate Bayesian inference, with the dropout
                 mask acting as a variational distribution over network weights.
@@ -285,7 +285,7 @@ function PythonTab() {
                 NumPy implementation of dropout showing the masking operation and inverse dropout scaling.
             </p>
             <CodeBlock code={PY_CODE} filename="dropout_demo.py" lang="python" langLabel="Python" />
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Implementation detail:</strong> Modern frameworks use "inverse dropout"
                 where scaling happens during training, making test-time code cleaner.
             </div>
@@ -424,7 +424,7 @@ function CodeTab() {
                 Pure TypeScript implementation of dropout with layer abstraction.
             </p>
             <CodeBlock code={TS_CODE} filename="dropout.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Practical note:</strong> The mask is saved during forward pass
                 so the backward pass knows which gradients to propagate.
             </div>

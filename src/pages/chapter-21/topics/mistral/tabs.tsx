@@ -14,47 +14,47 @@ function HistoryTab() {
                 innovations: Grouped-Query Attention (GQA) and Sliding Window Attention (SWA).
             </p>
 
-            <div className="ch21-timeline">
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">2023</div>
-                    <div className="ch21-tl-section-label">Context</div>
-                    <div className="ch21-tl-title">Bigger Is the Only Way?</div>
-                    <div className="ch21-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2023</div>
+                    <div className="ch-tl-section-label">Context</div>
+                    <div className="ch-tl-title">Bigger Is the Only Way?</div>
+                    <div className="ch-tl-body">
                         The dominant narrative held that model quality scaled primarily with size.
                         LLaMA 2 70B was impressive but required multiple GPUs. The community
                         lacked a truly excellent small model that could run on a single consumer GPU.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Small models were treated as toys, not tools</div>
+                    <div className="ch-tl-impact">Impact: Small models were treated as toys, not tools</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">Sept 2023</div>
-                    <div className="ch21-tl-section-label">Invention</div>
-                    <div className="ch21-tl-title">Mistral 7B — Quality at the Edge</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Sept 2023</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Mistral 7B — Quality at the Edge</div>
+                    <div className="ch-tl-body">
                         Mistral AI released Mistral 7B under the Apache 2.0 license. It used
                         Sliding Window Attention (SWA) to handle long contexts efficiently and
                         Grouped-Query Attention (GQA) to speed up inference by sharing key/value
                         heads across query heads. The result: LLaMA-2-13B quality at half the size.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Proved architecture beats brute-force scaling</div>
+                    <div className="ch-tl-impact">Impact: Proved architecture beats brute-force scaling</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">Dec 2023</div>
-                    <div className="ch21-tl-section-label">Evolution</div>
-                    <div className="ch21-tl-title">Mixtral 8×7B — Sparse Mixture of Experts</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Dec 2023</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">Mixtral 8×7B — Sparse Mixture of Experts</div>
+                    <div className="ch-tl-body">
                         Mistral released Mixtral, a sparse MoE model with 8 expert networks (7B each)
                         and a router. Despite having 47B total parameters, only 13B are active per
                         token, making inference faster than dense 70B models while matching or
                         beating LLaMA 2 70B and GPT-3.5 on benchmarks.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Brought MoE efficiency to the open-source mainstream</div>
+                    <div className="ch-tl-impact">Impact: Brought MoE efficiency to the open-source mainstream</div>
                 </div>
             </div>
 
-            <div className="ch21-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Attention architecture matters as much as scale.
                 By using GQA to reduce KV-cache memory and SWA to extend context cheaply, Mistral 7B
                 achieved flagship performance in a footprint small enough for edge devices.
@@ -121,8 +121,8 @@ function HighSchoolTab() {
                 parameters per token.
             </p>
 
-            <hr className="ch21-sep" />
-            <div className="ch21-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> Mistral 7B matched LLaMA 2 13B quality with 46% fewer
                 parameters and faster inference. Mixtral 8×7B matched GPT-3.5 with a fraction of
                 the active compute.

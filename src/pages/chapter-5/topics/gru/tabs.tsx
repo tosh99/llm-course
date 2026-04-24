@@ -15,62 +15,62 @@ function HistoryTab() {
                 in deep learning history.
             </p>
 
-            <div className="ch5-timeline">
-                <div className="ch5-tl-item">
-                    <div className="ch5-tl-year">1997</div>
-                    <div className="ch5-tl-section-label">Foundation</div>
-                    <div className="ch5-tl-title">LSTM (Hochreiter & Schmidhuber)</div>
-                    <div className="ch5-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1997</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">LSTM (Hochreiter & Schmidhuber)</div>
+                    <div className="ch-tl-body">
                         The Long Short-Term Memory architecture introduced gating as a solution to
                         vanishing gradients. Three gates (forget, input, output) plus a separate cell
                         state gave the network explicit memory control — powerful, but with 4× the
                         parameters of a simple RNN.
                     </div>
-                    <div className="ch5-tl-impact">Impact: Solved vanishing gradients; became the dominant RNN</div>
+                    <div className="ch-tl-impact">Impact: Solved vanishing gradients; became the dominant RNN</div>
                 </div>
 
-                <div className="ch5-tl-item">
-                    <div className="ch5-tl-year">2014</div>
-                    <div className="ch5-tl-section-label">Simplification</div>
-                    <div className="ch5-tl-title">GRU introduced — Cho et al. (2014)</div>
-                    <div className="ch5-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014</div>
+                    <div className="ch-tl-section-label">Simplification</div>
+                    <div className="ch-tl-title">GRU introduced — Cho et al. (2014)</div>
+                    <div className="ch-tl-body">
                         Cho et al. proposed the GRU as a simpler alternative: merge the forget and input
                         gates into a single <em>update gate</em>, and add a <em>reset gate</em> to
                         control how much past hidden state to use when computing the candidate. The cell
                         state is eliminated — the hidden state carries everything. Result: fewer parameters,
                         similar expressive power, faster training.
                     </div>
-                    <div className="ch5-tl-impact">Impact: GRU vs LSTM became a celebrated open question in the field</div>
+                    <div className="ch-tl-impact">Impact: GRU vs LSTM became a celebrated open question in the field</div>
                 </div>
 
-                <div className="ch5-tl-item">
-                    <div className="ch5-tl-year">2014–2015</div>
-                    <div className="ch5-tl-section-label">Empirical Evaluation</div>
-                    <div className="ch5-tl-title">Performance parity — Chung et al. (2014)</div>
-                    <div className="ch5-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014–2015</div>
+                    <div className="ch-tl-section-label">Empirical Evaluation</div>
+                    <div className="ch-tl-title">Performance parity — Chung et al. (2014)</div>
+                    <div className="ch-tl-body">
                         Junyoung Chung et al. published "Empirical Evaluation of Gated Recurrent Neural
                         Networks on Sequence Modeling," directly comparing GRU and LSTM on music modeling
                         and speech signal tasks. Their conclusion: neither clearly wins — GRU slightly
                         faster, LSTM slightly better on some tasks. The choice became problem-dependent.
                     </div>
-                    <div className="ch5-tl-impact">Impact: Legitimized GRU as a first-class alternative to LSTM</div>
+                    <div className="ch-tl-impact">Impact: Legitimized GRU as a first-class alternative to LSTM</div>
                 </div>
 
-                <div className="ch5-tl-item">
-                    <div className="ch5-tl-year">2017–present</div>
-                    <div className="ch5-tl-section-label">Legacy</div>
-                    <div className="ch5-tl-title">GRU in the Transformer era</div>
-                    <div className="ch5-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017–present</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">GRU in the Transformer era</div>
+                    <div className="ch-tl-body">
                         Even as Transformers displaced LSTMs and GRUs for language modeling, GRUs
                         remain the preferred RNN in settings with limited compute budgets — embedded
                         devices, streaming applications, time series forecasting, and audio processing.
                         Modern SSM architectures (like Mamba) explicitly draw on GRU's gating intuition.
                     </div>
-                    <div className="ch5-tl-impact">Impact: Lighter RNN of choice for resource-constrained applications</div>
+                    <div className="ch-tl-impact">Impact: Lighter RNN of choice for resource-constrained applications</div>
                 </div>
             </div>
 
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> The GRU's contribution was not discovering something
                 new, but proving that LSTM's three-gate design could be compressed into two gates
                 without meaningful loss of performance. It established a crucial principle: the gating
@@ -173,7 +173,7 @@ function HighSchoolTab() {
                 <li><strong>z<sub>t</sub> ⊙ h̃<sub>t</sub></strong>: write the candidate (like an input gate adding new memory)</li>
             </ul>
 
-            <hr className="ch5-sep" />
+            <hr className="ch-sep" />
 
             <h3>GRU vs LSTM: What's Missing?</h3>
             <ul>
@@ -182,7 +182,7 @@ function HighSchoolTab() {
                 <li>Two gates instead of three → fewer parameters, faster to train</li>
             </ul>
 
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Why interpolation prevents vanishing gradients:</strong> When z<sub>t</sub> ≈ 0,
                 h<sub>t</sub> ≈ h<sub>t-1</sub> exactly. The gradient ∂h<sub>t</sub>/∂h<sub>t-1</sub>
                 ≈ 1. This is the same constant-error-carousel intuition from LSTM: the network learns
@@ -250,7 +250,7 @@ function MathsTab() {
                 and long-range dependencies (r ≈ 1) within the same network.
             </p>
 
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>LSTM vs GRU theoretical guarantee:</strong> Both architectures provably
                 solve the vanishing gradient problem through gating. The key difference is that LSTM's
                 separate cell state gives it an additional "write" pathway independent of the hidden
@@ -443,7 +443,7 @@ function CodeTab() {
                 preserving the previous hidden state and updating with the candidate.
             </p>
             <CodeBlock code={TS_CODE} filename="gru_cell.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Implementation note:</strong> In PyTorch's <code>nn.GRU</code>, the weight
                 matrices W<sub>r</sub>, W<sub>z</sub>, and W are packed into two fused matrices
                 (one for the input, one for the hidden state) for efficient BLAS operations.

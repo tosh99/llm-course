@@ -14,12 +14,12 @@ function HistoryTab() {
                 between training and inference that researchers have been managing ever since.
             </p>
 
-            <div className="ch11-timeline">
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">1989</div>
-                    <div className="ch11-tl-section-label">Origin</div>
-                    <div className="ch11-tl-title">Williams & Zipser — "A Learning Algorithm for Continually Running Fully Recurrent Neural Networks"</div>
-                    <div className="ch11-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1989</div>
+                    <div className="ch-tl-section-label">Origin</div>
+                    <div className="ch-tl-title">Williams & Zipser — "A Learning Algorithm for Continually Running Fully Recurrent Neural Networks"</div>
+                    <div className="ch-tl-body">
                         Ronald Williams and David Zipser formalised teacher forcing in the context of training
                         fully connected recurrent networks. They noted that feeding true outputs as
                         inputs during training — rather than the network's own predictions — dramatically
@@ -28,28 +28,28 @@ function HistoryTab() {
                         makes the gradient signal incoherent. The paper named this "teacher forcing" after
                         the intuition of a teacher correcting a student's mistakes in real time.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Named and formalised a technique used implicitly since the early days of RNNs</div>
+                    <div className="ch-tl-impact">Impact: Named and formalised a technique used implicitly since the early days of RNNs</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2014</div>
-                    <div className="ch11-tl-section-label">Standard practice</div>
-                    <div className="ch11-tl-title">Seq2seq models adopt teacher forcing universally</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014</div>
+                    <div className="ch-tl-section-label">Standard practice</div>
+                    <div className="ch-tl-title">Seq2seq models adopt teacher forcing universally</div>
+                    <div className="ch-tl-body">
                         Both Sutskever et al. and Cho et al. trained their seq2seq models with teacher
                         forcing at ratio 1.0 (always feed ground truth). This made training stable
                         for multi-layer LSTMs on long sequences. The implicit assumption: the model
                         would generalise to using its own outputs during inference without degradation.
                         In practice, this assumption was optimistic for longer sequences.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Teacher forcing became the de facto standard for all seq2seq training</div>
+                    <div className="ch-tl-impact">Impact: Teacher forcing became the de facto standard for all seq2seq training</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2015</div>
-                    <div className="ch11-tl-section-label">Problem recognised and addressed</div>
-                    <div className="ch11-tl-title">Bengio et al. — Scheduled Sampling</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Problem recognised and addressed</div>
+                    <div className="ch-tl-title">Bengio et al. — Scheduled Sampling</div>
+                    <div className="ch-tl-body">
                         Samy Bengio and colleagues at Google published "Scheduled Sampling for Sequence
                         Prediction with Recurrent Neural Networks." They formalised the exposure bias
                         problem: at inference, the model conditions on its own (imperfect) predictions,
@@ -57,25 +57,25 @@ function HistoryTab() {
                         scheduled sampling — gradually replaced ground-truth inputs with model predictions
                         as training progressed, using an annealing schedule.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Formalised exposure bias; scheduled sampling became widely adopted</div>
+                    <div className="ch-tl-impact">Impact: Formalised exposure bias; scheduled sampling became widely adopted</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2016</div>
-                    <div className="ch11-tl-section-label">Alternative approaches</div>
-                    <div className="ch11-tl-title">Professor Forcing — Lamb et al.</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016</div>
+                    <div className="ch-tl-section-label">Alternative approaches</div>
+                    <div className="ch-tl-title">Professor Forcing — Lamb et al.</div>
+                    <div className="ch-tl-body">
                         Alex Lamb and colleagues at Bengio's lab proposed "Professor Forcing," using a
                         GAN-like discriminator to make the network's hidden state dynamics during
                         free-running inference match those during teacher-forced training. Rather than
                         mixing ground-truth and predicted tokens, professor forcing operates on the
                         hidden state representations themselves.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Opened the direction of adversarial training for closing train/inference gaps</div>
+                    <div className="ch-tl-impact">Impact: Opened the direction of adversarial training for closing train/inference gaps</div>
                 </div>
             </div>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>The exposure bias tension:</strong> Teacher forcing at ratio 1.0 is optimal
                 for training stability but creates maximum train/inference discrepancy. Teacher forcing
                 at ratio 0.0 (free running) is optimal for inference alignment but makes early training
@@ -176,7 +176,7 @@ function HighSchoolTab() {
                 increasingly uses model predictions (closing the train/inference gap).
             </p>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>The Transformer's solution:</strong> The Transformer (Ch. 14) sidesteps
                 teacher forcing entirely at training time by processing all target positions
                 in parallel (masked self-attention ensures position t only attends to positions
@@ -231,7 +231,7 @@ function MathsTab() {
                 converges to the free-running training objective.
             </p>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Minimum risk training (MRT)</strong> is an alternative that optimises
                 the expected BLEU score directly rather than the per-token cross-entropy.
                 It samples multiple translations from the model, computes BLEU for each,
@@ -420,7 +420,7 @@ function CodeTab() {
                 improves.
             </p>
             <CodeBlock code={TS_CODE} filename="teacher_forcing.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>The Transformer's bypass:</strong> The Transformer eliminates this problem
                 during <em>training</em> by attending to all positions in parallel using masked
                 self-attention. There's no autoregressive loop during training — the model processes

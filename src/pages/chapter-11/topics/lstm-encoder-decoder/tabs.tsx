@@ -21,26 +21,26 @@ function HistoryTab() {
                 English→French. The reason is subtle and worth understanding precisely.
             </p>
 
-            <div className="ch11-timeline">
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">1997</div>
-                    <div className="ch11-tl-section-label">Foundation</div>
-                    <div className="ch11-tl-title">LSTM invented — Hochreiter & Schmidhuber</div>
-                    <div className="ch11-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1997</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">LSTM invented — Hochreiter & Schmidhuber</div>
+                    <div className="ch-tl-body">
                         The Long Short-Term Memory architecture was designed explicitly to solve the
                         vanishing gradient problem in RNNs. Its cell state — a linear pathway with
                         multiplicative gating — enables information to persist across hundreds of steps.
                         For 17 years it remained an academic curiosity; its full potential emerged only
                         when applied at scale.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Created the memory mechanism that made long-range sequence modeling possible</div>
+                    <div className="ch-tl-impact">Impact: Created the memory mechanism that made long-range sequence modeling possible</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">September 2014</div>
-                    <div className="ch11-tl-section-label">Application</div>
-                    <div className="ch11-tl-title">Sutskever et al. — Deep LSTM encoder-decoder</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">September 2014</div>
+                    <div className="ch-tl-section-label">Application</div>
+                    <div className="ch-tl-title">Sutskever et al. — Deep LSTM encoder-decoder</div>
+                    <div className="ch-tl-body">
                         The paper used a 4-layer LSTM encoder and 4-layer LSTM decoder. The key technical
                         contributions were: (1) using both h<sub>T</sub> and c<sub>T</sub> (not just the
                         hidden state) as the initial decoder state; (2) reversing the source sequence;
@@ -48,25 +48,25 @@ function HistoryTab() {
                         5-model ensemble achieved 34.8 BLEU — a result previously thought impossible
                         for a pure neural approach.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Proved deep LSTMs alone, with no linguistic features, could achieve SMT-level MT</div>
+                    <div className="ch-tl-impact">Impact: Proved deep LSTMs alone, with no linguistic features, could achieve SMT-level MT</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2016</div>
-                    <div className="ch11-tl-section-label">Industry deployment</div>
-                    <div className="ch11-tl-title">Google NMT — LSTM enc-dec at production scale</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016</div>
+                    <div className="ch-tl-section-label">Industry deployment</div>
+                    <div className="ch-tl-title">Google NMT — LSTM enc-dec at production scale</div>
+                    <div className="ch-tl-body">
                         Google's production NMT system used an 8-layer LSTM encoder and 8-layer LSTM
                         decoder with attention and residual connections between layers. It processed
                         100 million translation pairs. The system reduced translation errors by 60% on
                         some language pairs compared to phrase-based SMT. This marked the industry-wide
                         transition to neural MT.
                     </div>
-                    <div className="ch11-tl-impact">Impact: End of phrase-based SMT in production systems at scale</div>
+                    <div className="ch-tl-impact">Impact: End of phrase-based SMT in production systems at scale</div>
                 </div>
             </div>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Why reversal helps:</strong> In English→French translation, the first English
                 word often aligns to the first French word. In a forward encoder, the first English
                 word is processed earliest and its information must survive the full encoding of
@@ -169,7 +169,7 @@ function HighSchoolTab() {
                 the encoder and the corresponding target word being generated by the decoder.
             </p>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Residual connections in GNMT:</strong> Google's 2016 production system added
                 residual connections between LSTM layers — the output of layer l is added to the input
                 of layer l+2. This allowed stable training of 8-layer LSTMs by giving gradients a
@@ -223,7 +223,7 @@ function MathsTab() {
             </p>
             <MathBlock tex="4 \times 4 \times (1000^2 + 1000 \times 1000 + 1000) = 4 \times 4 \times 2{,}001{,}000 \approx 32\text{M parameters per model}" />
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Why passing c<sub>T</sub> matters:</strong> The hidden state h<sub>T</sub>
                 has been transformed through the output gate (tanh squeeze + sigmoid mask), losing
                 information. The cell state c<sub>T</sub> preserves the unfiltered long-range memory.
@@ -413,7 +413,7 @@ function CodeTab() {
                 token by token, producing the final context that initializes the decoder.
             </p>
             <CodeBlock code={TS_CODE} filename="lstm_encoder_decoder.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Cell state vs hidden state:</strong> notice how <code>c</code> accumulates
                 information multiplicatively (forget gate) while <code>h</code> is always squeezed
                 through a tanh + output gate. Passing both to the decoder gives it access to raw

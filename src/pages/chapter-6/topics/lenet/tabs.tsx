@@ -14,68 +14,68 @@ function HistoryTab() {
             </p>
 
             <h3>Architecture Details</h3>
-            <div className="ch6-timeline">
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">C1</div>
-                    <div className="ch6-tl-title">Convolutional Layer</div>
-                    <div className="ch6-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">C1</div>
+                    <div className="ch-tl-title">Convolutional Layer</div>
+                    <div className="ch-tl-body">
                         6 feature maps, each 28×28. 5×5 kernels with stride 1. Each unit connected to
                         25 inputs from the 32×32 input. Parameters: (5×5+1)×6 = 156
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">S2</div>
-                    <div className="ch6-tl-title">Subsampling (Pooling)</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">S2</div>
+                    <div className="ch-tl-title">Subsampling (Pooling)</div>
+                    <div className="ch-tl-body">
                         6 feature maps, each 14×14. 2×2 averaging with learnable weights and sigmoid.
                         Reduces spatial dimensions by half, providing translation invariance.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">C3</div>
-                    <div className="ch6-tl-title">Convolutional Layer</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">C3</div>
+                    <div className="ch-tl-title">Convolutional Layer</div>
+                    <div className="ch-tl-body">
                         16 feature maps, each 10×10. Each unit connects to multiple 5×5 receptive fields
                         from S2 using a <em>partial connection scheme</em> to break symmetry.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">S4</div>
-                    <div className="ch6-tl-title">Subsampling (Pooling)</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">S4</div>
+                    <div className="ch-tl-title">Subsampling (Pooling)</div>
+                    <div className="ch-tl-body">
                         16 feature maps, each 5×5. Another 2×2 pooling layer, continuing the progressive
                         spatial reduction and feature extraction hierarchy.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">C5</div>
-                    <div className="ch6-tl-title">Convolution → Fully-Connected</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">C5</div>
+                    <div className="ch-tl-title">Convolution → Fully-Connected</div>
+                    <div className="ch-tl-body">
                         120 units. Each unit connects to all 16×5×5=400 units from S4. Operates as
                         a convolution but produces 1×1 spatial output (effectively FC).
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">F6</div>
-                    <div className="ch6-tl-title">Fully-Connected</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">F6</div>
+                    <div className="ch-tl-title">Fully-Connected</div>
+                    <div className="ch-tl-body">
                         84 units. Each connected to all 120 C5 units. Uses tanh activation. The 84 outputs
                         were designed to match a specific character encoding format.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">Output</div>
-                    <div className="ch6-tl-title">RBF Classifier</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Output</div>
+                    <div className="ch-tl-title">RBF Classifier</div>
+                    <div className="ch-tl-body">
                         10 units (for digits 0-9). Used radial basis function (RBF) units rather than
                         softmax, computing distance to "ideal" digit representations.
                     </div>
                 </div>
             </div>
 
-            <div className="ch6-analogy">
-                <div className="ch6-analogy-label">Key Innovation</div>
-                <div className="ch6-analogy-text">
+            <div className="ch-analogy">
+                <div className="ch-analogy-label">Key Innovation</div>
+                <div className="ch-analogy-text">
                     LeNet-5 demonstrated that hierarchies of simple operations — convolution for feature
                     detection, pooling for spatial aggregation — could learn increasingly abstract
                     representations: from edges → simple shapes → digit parts → full digits.
@@ -121,7 +121,7 @@ function KidTab() {
                 Whichever perfect digit matches best is the answer!
             </Analogy>
 
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>LeNet-5 Fun Fact:</strong> This exact system was used in ATMs across the US
                 to read the handwritten amounts on checks. It processed millions of checks and was
                 incredibly accurate — over 99% on clean digits!
@@ -371,7 +371,7 @@ function PythonTab() {
                 (historical choice) and <code>tanh</code> activations.
             </p>
             <CodeBlock code={PY_CODE} filename="lenet5.py" lang="python" />
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>Modern improvements:</strong> ReLU instead of tanh, MaxPool instead of AvgPool,
                 Dropout, and softmax instead of RBF. These changes make training faster and more stable.
             </div>

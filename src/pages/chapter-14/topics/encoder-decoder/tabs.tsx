@@ -15,26 +15,26 @@ function HistoryTab() {
                 descendant of this stack.
             </p>
 
-            <div className="ch14-timeline">
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">1986 – 2014</div>
-                    <div className="ch14-tl-section-label">Predecessor</div>
-                    <div className="ch14-tl-title">Encoder-Decoder RNNs for Sequence Transduction</div>
-                    <div className="ch14-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1986 – 2014</div>
+                    <div className="ch-tl-section-label">Predecessor</div>
+                    <div className="ch-tl-title">Encoder-Decoder RNNs for Sequence Transduction</div>
+                    <div className="ch-tl-body">
                         Sequence-to-sequence models used an RNN encoder to compress a source
                         sentence into a fixed-size context vector, and an RNN decoder to generate
                         the target sentence. Attention (Bahdanau 2014) improved this by letting
                         the decoder peek at all encoder states, but the encoder and decoder were
                         still recurrent. Training was slow, and long sentences still struggled.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Established the encoder-decoder paradigm for translation</div>
+                    <div className="ch-tl-impact">Impact: Established the encoder-decoder paradigm for translation</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2017</div>
-                    <div className="ch14-tl-section-label">Invention</div>
-                    <div className="ch14-tl-title">Vaswani et al. — The Transformer Architecture</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Vaswani et al. — The Transformer Architecture</div>
+                    <div className="ch-tl-body">
                         The paper "Attention Is All You Need" introduced an encoder-decoder
                         architecture where both sides are stacks of identical layers. Each
                         encoder layer has two sub-layers: multi-head self-attention and a
@@ -43,14 +43,14 @@ function HistoryTab() {
                         network. Residual connections and layer normalization surround every
                         sub-layer. No recurrence, no convolution — just attention.
                     </div>
-                    <div className="ch14-tl-impact">Impact: The foundational architecture of GPT, BERT, T5, and every modern LLM</div>
+                    <div className="ch-tl-impact">Impact: The foundational architecture of GPT, BERT, T5, and every modern LLM</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2018</div>
-                    <div className="ch14-tl-section-label">Fork</div>
-                    <div className="ch14-tl-title">GPT (Decoder-Only) and BERT (Encoder-Only)</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">Fork</div>
+                    <div className="ch-tl-title">GPT (Decoder-Only) and BERT (Encoder-Only)</div>
+                    <div className="ch-tl-body">
                         Researchers quickly realized the encoder and decoder could be used
                         independently. OpenAI's GPT used only the decoder stack for left-to-right
                         language modeling. Google's BERT used only the encoder stack with
@@ -58,14 +58,14 @@ function HistoryTab() {
                         text-to-text transfer. These three branches — decoder-only, encoder-only,
                         and encoder-decoder — remain the dominant paradigms today.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Specialization proved each half of the Transformer is independently powerful</div>
+                    <div className="ch-tl-impact">Impact: Specialization proved each half of the Transformer is independently powerful</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2020 – 2024</div>
-                    <div className="ch14-tl-section-label">Scale</div>
-                    <div className="ch14-tl-title">GPT-3, PaLM, LLaMA, and the Rise of Decoders</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020 – 2024</div>
+                    <div className="ch-tl-section-label">Scale</div>
+                    <div className="ch-tl-title">GPT-3, PaLM, LLaMA, and the Rise of Decoders</div>
+                    <div className="ch-tl-body">
                         At scale, decoder-only models became the dominant architecture for
                         generative LLMs. Stacking 12 to 96 decoder layers with billions of
                         parameters produced remarkable emergent abilities. The original
@@ -73,11 +73,11 @@ function HistoryTab() {
                         but the open-source explosion (LLaMA, Mistral, Falcon) solidified the
                         decoder-only stack as the default for general-purpose language models.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Decoder-only Transformers are now synonymous with "LLM"</div>
+                    <div className="ch-tl-impact">Impact: Decoder-only Transformers are now synonymous with "LLM"</div>
                 </div>
             </div>
 
-            <div className="ch14-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> By unifying the encoder and decoder around
                 the same primitive — multi-head attention — the Transformer created a modular,
                 scalable architecture. You can remove the encoder to get GPT, remove the decoder
@@ -169,8 +169,8 @@ function HighSchoolTab() {
                 and appends it to the input, so the mask is never violated.
             </p>
 
-            <hr className="ch14-sep" />
-            <div className="ch14-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Residual connections are critical:</strong> Without them, a 6-layer
                 Transformer would be nearly impossible to train. The residual path creates a
                 direct gradient highway from output back to input. Layer normalization stabilizes
@@ -231,7 +231,7 @@ function MathsTab() {
                 <li>Total ≈ 65M parameters (Base) or 213M (Big: d=1024, d<sub>ff</sub>=4096, N=6)</li>
             </ul>
 
-            <div className="ch14-callout">
+            <div className="ch-callout">
                 <strong>Pre-Norm vs. Post-Norm:</strong> The original Transformer used Post-Norm
                 (residual then normalize). Modern implementations often use Pre-Norm
                 (normalize then residual), which trains more stably at depth: <code>X + Sublayer(LayerNorm(X))</code>.

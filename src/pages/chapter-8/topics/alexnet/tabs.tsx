@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch8-tl-item">
-            <div className="ch8-tl-year">{item.year}</div>
-            <div className="ch8-tl-title">{item.title}</div>
-            <div className="ch8-tl-section-label">Context</div>
-            <div className="ch8-tl-body">{item.context}</div>
-            <div className="ch8-tl-section-label">What Changed</div>
-            <div className="ch8-tl-body">{item.what}</div>
-            <div className="ch8-tl-section-label">Impact</div>
-            <div className="ch8-tl-body ch8-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">Context</div>
+            <div className="ch-tl-body">{item.context}</div>
+            <div className="ch-tl-section-label">What Changed</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Impact</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -49,7 +49,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch8-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -96,7 +96,7 @@ function KidTab() {
                 detectives look at clues, then 3 bosses making the final decision!
             </DefBlock>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Cool fact:</strong> AlexNet was trained on two GTX 580 graphics cards, each with
                 only 3GB of memory (less than some phones today!). The network had to be split across
                 both cards because it was too big to fit on just one.
@@ -153,7 +153,7 @@ function HighSchoolTab() {
                 is blocked, others must compensate.
             </p>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Test time:</strong> At test time, all neurons are active, but weights are
                 scaled by the dropout probability (0.5). This approximates averaging predictions
                 from many "thinned" networks.
@@ -339,7 +339,7 @@ function PythonTab() {
                 dropout, and the 5 convolutional + 3 fully connected layer structure.
             </p>
             <CodeBlock code={PYTHON_CODE} filename="alexnet.py" lang="python" langLabel="Python" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Note:</strong> The modern version uses BatchNorm instead of LRN
                 and is cleaner to implement. Both achieve similar performance.
             </div>
@@ -580,7 +580,7 @@ function CodeTab() {
                 without any external libraries.
             </p>
             <CodeBlock code={TS_CODE} filename="alexnet.ts" lang="typescript" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> The same algorithm PyTorch uses, just slower!
                 Notice how spatial dimensions shrink while channel depth grows through
                 the convolutional layers: 224×224×3 → 55×55×96 → 27×27×256 → ... → 6×6×256.

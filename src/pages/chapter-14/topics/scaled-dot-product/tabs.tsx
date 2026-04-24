@@ -15,26 +15,26 @@ function HistoryTab() {
                 other position directly?
             </p>
 
-            <div className="ch14-timeline">
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2014</div>
-                    <div className="ch14-tl-section-label">Predecessor</div>
-                    <div className="ch14-tl-title">Bahdanau et al. — Neural Machine Translation by Jointly Learning to Align and Translate</div>
-                    <div className="ch14-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014</div>
+                    <div className="ch-tl-section-label">Predecessor</div>
+                    <div className="ch-tl-title">Bahdanau et al. — Neural Machine Translation by Jointly Learning to Align and Translate</div>
+                    <div className="ch-tl-body">
                         Dzmitry Bahdanau introduced the first neural attention mechanism for sequence
                         models. In an encoder-decoder LSTM, the decoder would compute a weighted
                         sum over all encoder hidden states to decide which source words to focus on.
                         This was a breakthrough, but attention was still bolted onto a recurrent
                         backbone. The RNN did the heavy lifting; attention merely helped.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Proved that soft alignment via weighted averaging works</div>
+                    <div className="ch-tl-impact">Impact: Proved that soft alignment via weighted averaging works</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2017</div>
-                    <div className="ch14-tl-section-label">Invention</div>
-                    <div className="ch14-tl-title">Vaswani et al. — Attention Is All You Need</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Vaswani et al. — Attention Is All You Need</div>
+                    <div className="ch-tl-body">
                         Ashish Vaswani and his co-authors at Google Brain and Google Research
                         published the Transformer architecture. The radical claim: attention alone
                         is sufficient — no recurrence, no convolution. The core operation is
@@ -44,38 +44,38 @@ function HistoryTab() {
                         softmax of Query-Key dot products, scaled by the square root of the
                         key dimension.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Replaced RNNs in NLP within 18 months; enabled GPT and BERT</div>
+                    <div className="ch-tl-impact">Impact: Replaced RNNs in NLP within 18 months; enabled GPT and BERT</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2017 – 2018</div>
-                    <div className="ch14-tl-section-label">Validation</div>
-                    <div className="ch14-tl-title">State-of-the-Art on WMT &amp; GLUE</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017 – 2018</div>
+                    <div className="ch-tl-section-label">Validation</div>
+                    <div className="ch-tl-title">State-of-the-Art on WMT &amp; GLUE</div>
+                    <div className="ch-tl-body">
                         The original Transformer achieved 28.4 BLEU on WMT 2014 English-to-German,
                         surpassing all existing models including ensembles. Training took 3.5 days
                         on 8 P100 GPUs — faster than the RNN baselines it beat. The research
                         community quickly reproduced the results and found that Transformers
                         scaled far better to large datasets than LSTMs.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Demonstrated that parallelism + attention beats recurrence + attention</div>
+                    <div className="ch-tl-impact">Impact: Demonstrated that parallelism + attention beats recurrence + attention</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2018 – Present</div>
-                    <div className="ch14-tl-section-label">Adoption</div>
-                    <div className="ch14-tl-title">Transformer Becomes the Universal Architecture</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018 – Present</div>
+                    <div className="ch-tl-section-label">Adoption</div>
+                    <div className="ch-tl-title">Transformer Becomes the Universal Architecture</div>
+                    <div className="ch-tl-body">
                         GPT (2018), BERT (2018), T5 (2019), Vision Transformer (2020), and
                         eventually GPT-3/4, Claude, and Gemini all used the same scaled
                         dot-product attention as their foundation. The operation is now as
                         fundamental to deep learning as convolution was to computer vision.
                     </div>
-                    <div className="ch14-tl-impact">Impact: The default building block of modern deep learning</div>
+                    <div className="ch-tl-impact">Impact: The default building block of modern deep learning</div>
                 </div>
             </div>
 
-            <div className="ch14-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Recurrence forces information to travel one
                 step at a time. Attention creates a complete graph: every token talks to every
                 other token in a single layer. The path length between any two positions is
@@ -170,8 +170,8 @@ function HighSchoolTab() {
                 </li>
             </ol>
 
-            <hr className="ch14-sep" />
-            <div className="ch14-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Why no RNN?</strong> In an RNN, the hidden state at time t is a function
                 of the hidden state at t−1. In attention, the output at position i is a function
                 of <em>all</em> positions in a single matrix multiplication. This means the
@@ -233,7 +233,7 @@ function MathsTab() {
                 like Flash Attention and sparse attention patterns.
             </p>
 
-            <div className="ch14-callout">
+            <div className="ch-callout">
                 <strong>Gradient flow:</strong> Because attention is a single differentiable
                 weighted sum, gradients flow directly from output position i back to every
                 input position j, weighted by A<sub>ij</sub>. There is no multiplicative

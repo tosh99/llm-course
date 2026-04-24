@@ -14,59 +14,59 @@ function HistoryTab() {
                 examples). This framework became the standard for measuring emergent abilities.
             </p>
 
-            <div className="ch19-timeline">
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">2015</div>
-                    <div className="ch19-tl-section-label">Foundation</div>
-                    <div className="ch19-tl-title">Vinyals et al. — Matching Networks</div>
-                    <div className="ch19-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">Vinyals et al. — Matching Networks</div>
+                    <div className="ch-tl-body">
                         Matching Networks proposed learning to learn from a small support set,
                         using attention to compare query examples against labeled prototypes.
                         This was an early formalization of few-shot learning in deep learning.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Established few-shot learning as a distinct paradigm</div>
+                    <div className="ch-tl-impact">Impact: Established few-shot learning as a distinct paradigm</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">2019</div>
-                    <div className="ch19-tl-section-label">Precedent</div>
-                    <div className="ch19-tl-title">Radford et al. — GPT-2 Zero-Shot</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">Radford et al. — GPT-2 Zero-Shot</div>
+                    <div className="ch-tl-body">
                         GPT-2 showed that large language models could perform some tasks with zero
                         task-specific examples, but results were generally weak. The question remained:
                         how many examples were needed to reach competitive performance?
                     </div>
-                    <div className="ch19-tl-impact">Impact: Demonstrated the zero-shot potential of language models</div>
+                    <div className="ch-tl-impact">Impact: Demonstrated the zero-shot potential of language models</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">May 2020</div>
-                    <div className="ch19-tl-section-label">Invention</div>
-                    <div className="ch19-tl-title">Brown et al. — The Few-Shot Taxonomy</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">May 2020</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Brown et al. — The Few-Shot Taxonomy</div>
+                    <div className="ch-tl-body">
                         The GPT-3 paper systematically compared zero-shot, one-shot, and few-shot
                         performance across dozens of tasks. The results revealed a consistent trend:
                         more examples almost always improved performance, with few-shot often matching
                         or exceeding fine-tuned baselines.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Created the standard evaluation framework for LLMs</div>
+                    <div className="ch-tl-impact">Impact: Created the standard evaluation framework for LLMs</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">2022</div>
-                    <div className="ch19-tl-section-label">Analysis</div>
-                    <div className="ch19-tl-title">Min et al. — Rethinking the Role of Demonstrations</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022</div>
+                    <div className="ch-tl-section-label">Analysis</div>
+                    <div className="ch-tl-title">Min et al. — Rethinking the Role of Demonstrations</div>
+                    <div className="ch-tl-body">
                         Min et al. shocked the field by showing that even <em>random labels</em> in
                         few-shot examples improved performance over zero-shot. This suggested that
                         much of few-shot gains come from revealing the <em>label space</em> and
                         <em>input distribution</em>, not from true learning of input-label mappings.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Revealed that few-shot prompting is partly about task specification</div>
+                    <div className="ch-tl-impact">Impact: Revealed that few-shot prompting is partly about task specification</div>
                 </div>
             </div>
 
-            <div className="ch19-callout">
+            <div className="ch-callout">
                 <strong>The spectrum:</strong> Zero-shot requires the model to infer the task from
                 a description alone. One-shot adds a single example, grounding the description in
                 concrete behavior. Few-shot provides multiple examples, allowing the model to average
@@ -147,8 +147,8 @@ function HighSchoolTab() {
                 and performance is eventually bounded by context length.
             </p>
 
-            <hr className="ch19-sep" />
-            <div className="ch19-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Surprising finding (Min et al., 2022):</strong> Even when example labels are
                 replaced with random labels, few-shot performance often remains well above zero-shot.
                 This implies that a significant portion of few-shot improvement comes from surfacing
@@ -199,7 +199,7 @@ function MathsTab() {
                 provide likelihood evidence that shifts the posterior toward the correct task.
             </p>
 
-            <div className="ch19-callout">
+            <div className="ch-callout">
                 <strong>Calibration:</strong> Few-shot prompting also improves calibration — the
                 alignment between model confidence and accuracy. Zero-shot models are often
                 overconfident; conditioning on examples grounds the model's predictions in observed

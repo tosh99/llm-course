@@ -15,61 +15,61 @@ function HistoryTab() {
                 collapse the model's language capabilities.
             </p>
 
-            <div className="ch20-timeline">
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">1992</div>
-                    <div className="ch20-tl-section-label">Foundation</div>
-                    <div className="ch20-tl-title">Williams — REINFORCE</div>
-                    <div className="ch20-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1992</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">Williams — REINFORCE</div>
+                    <div className="ch-tl-body">
                         Ronald Williams introduced the REINFORCE algorithm, a Monte Carlo policy
                         gradient method. While elegant, REINFORCE suffered from high variance and
                         unstable updates — a small change in parameters could lead to wildly
                         different policies.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Established policy gradients but revealed instability problems</div>
+                    <div className="ch-tl-impact">Impact: Established policy gradients but revealed instability problems</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2015 – 2016</div>
-                    <div className="ch20-tl-section-label">Evolution</div>
-                    <div className="ch20-tl-title">TRPO and Trust Regions</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015 – 2016</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">TRPO and Trust Regions</div>
+                    <div className="ch-tl-body">
                         Schulman et al. introduced Trust Region Policy Optimization (TRPO), which
                         constrained policy updates using KL divergence to prevent destructive steps.
                         TRPO was theoretically sound but computationally expensive, requiring second-order
                         methods and conjugate gradient optimization.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Proved trust regions stabilize policy optimization</div>
+                    <div className="ch-tl-impact">Impact: Proved trust regions stabilize policy optimization</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2017</div>
-                    <div className="ch20-tl-section-label">Breakthrough</div>
-                    <div className="ch20-tl-title">Schulman et al. — Proximal Policy Optimization</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Breakthrough</div>
+                    <div className="ch-tl-title">Schulman et al. — Proximal Policy Optimization</div>
+                    <div className="ch-tl-body">
                         PPO replaced TRPO's complex constrained optimization with a simple clipped
                         surrogate objective. By clipping the probability ratio, PPO achieved similar
                         stability with first-order methods. It became the default RL algorithm across
                         OpenAI, DeepMind, and the broader research community.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Made stable policy optimization practical at scale</div>
+                    <div className="ch-tl-impact">Impact: Made stable policy optimization practical at scale</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2022</div>
-                    <div className="ch20-tl-section-label">Application</div>
-                    <div className="ch20-tl-title">PPO Meets Language Models</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022</div>
+                    <div className="ch-tl-section-label">Application</div>
+                    <div className="ch-tl-title">PPO Meets Language Models</div>
+                    <div className="ch-tl-body">
                         InstructGPT applied PPO to fine-tune GPT-3 using the reward model as the
                         environment. Key adaptations: KL penalty to stay close to the SFT model,
                         value function initialization from the RM, and careful tuning of the clipping
                         parameter ε. The result was the first broadly capable aligned language model.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Demonstrated PPO as the go-to RL algorithm for LLM alignment</div>
+                    <div className="ch-tl-impact">Impact: Demonstrated PPO as the go-to RL algorithm for LLM alignment</div>
                 </div>
             </div>
 
-            <div className="ch20-callout">
+            <div className="ch-callout">
                 <strong>Why not standard gradient descent?</strong> The reward model is non-differentiable
                 with respect to the language model's outputs (it's a separate network). We need RL
                 because we can only observe rewards for completed sequences, not for individual tokens
@@ -155,8 +155,8 @@ function HighSchoolTab() {
             </p>
             <MathBlock tex="L^{\text{PPO}}(\phi) = L^{\text{CLIP}}(\phi) - c_1 L^{\text{VF}}(\psi) + c_2 H(\pi_\phi)" />
 
-            <hr className="ch20-sep" />
-            <div className="ch20-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Implementation tip:</strong> In language models, each token generation step
                 is an action, but the reward is only received at the end of the sequence. This
                 sparse reward setting makes advantage estimation particularly important — without
@@ -213,7 +213,7 @@ function MathsTab() {
                 transformer backbone with a scalar head.
             </p>
 
-            <div className="ch20-callout">
+            <div className="ch-callout">
                 <strong>Why PPO over REINFORCE:</strong> REINFORCE has variance O(T) where T is sequence
                 length. PPO's advantage estimation reduces this to O(1) by subtracting a baseline.
                 The clipping further stabilizes training in the high-dimensional action space of

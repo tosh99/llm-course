@@ -15,12 +15,12 @@ function HistoryTab() {
                 or improved on the original.
             </p>
 
-            <div className="ch12-timeline">
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2015 Aug</div>
-                    <div className="ch12-tl-section-label">Refinement</div>
-                    <div className="ch12-tl-title">Luong, Pham, Manning — Effective Approaches to Attention</div>
-                    <div className="ch12-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015 Aug</div>
+                    <div className="ch-tl-section-label">Refinement</div>
+                    <div className="ch-tl-title">Luong, Pham, Manning — Effective Approaches to Attention</div>
+                    <div className="ch-tl-body">
                         "Effective Approaches to Attention-based Neural Machine Translation" (EMNLP 2015)
                         introduced two key contributions. First: a cleaner architecture that computes
                         attention using the <em>current</em> decoder hidden state h<sub>t</sub> (not
@@ -29,14 +29,14 @@ function HistoryTab() {
                         before the output layer. Second: two types of attention — global (over all
                         source positions) and local (over a window around a predicted alignment point).
                     </div>
-                    <div className="ch12-tl-impact">Impact: Cleaner formulation; global attention became the default for many systems</div>
+                    <div className="ch-tl-impact">Impact: Cleaner formulation; global attention became the default for many systems</div>
                 </div>
 
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2015</div>
-                    <div className="ch12-tl-section-label">Global Attention</div>
-                    <div className="ch12-tl-title">Three Scoring Functions — Dot, General, Concat</div>
-                    <div className="ch12-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Global Attention</div>
+                    <div className="ch-tl-title">Three Scoring Functions — Dot, General, Concat</div>
+                    <div className="ch-tl-body">
                         Luong et al. compared three scoring functions under the global attention
                         framework: <em>dot</em> (h<sub>t</sub><sup>T</sup>h̄<sub>s</sub>),
                         <em>general</em> (h<sub>t</sub><sup>T</sup>W<sub>a</sub>h̄<sub>s</sub>), and
@@ -45,14 +45,14 @@ function HistoryTab() {
                         faster to compute. This result was surprising — the simpler parameterizations
                         worked better, perhaps because they were less prone to overfitting.
                     </div>
-                    <div className="ch12-tl-impact">Impact: Established dot and general as go-to scoring functions</div>
+                    <div className="ch-tl-impact">Impact: Established dot and general as go-to scoring functions</div>
                 </div>
 
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2015</div>
-                    <div className="ch12-tl-section-label">Local Attention</div>
-                    <div className="ch12-tl-title">Local-p: Predict the Alignment Position</div>
-                    <div className="ch12-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Local Attention</div>
+                    <div className="ch-tl-title">Local-p: Predict the Alignment Position</div>
+                    <div className="ch-tl-body">
                         For monotonic or near-monotonic language pairs (like English↔German in some
                         regions), attending to all T<sub>x</sub> source positions is wasteful and
                         potentially noisy. Local attention predicts an alignment position p<sub>t</sub>
@@ -61,11 +61,11 @@ function HistoryTab() {
                         from O(T<sub>x</sub>) to O(2D+1) per step (D is the window half-width).
                         On long sentences, this led to improved BLEU scores.
                     </div>
-                    <div className="ch12-tl-impact">Impact: Showed attention can be restricted to a dynamic window, foreshadowing local attention in later work</div>
+                    <div className="ch-tl-impact">Impact: Showed attention can be restricted to a dynamic window, foreshadowing local attention in later work</div>
                 </div>
             </div>
 
-            <div className="ch12-callout">
+            <div className="ch-callout">
                 <strong>Architectural difference from Bahdanau:</strong> In Bahdanau's model,
                 context c<sub>t</sub> is an input to the decoder RNN cell at step t. In Luong's
                 model, the decoder RNN runs first (h<sub>t</sub> = RNN(h<sub>t-1</sub>, y<sub>t-1</sub>)),
@@ -202,7 +202,7 @@ function MathsTab() {
                 sentences, this becomes increasingly significant.
             </p>
 
-            <div className="ch12-callout">
+            <div className="ch-callout">
                 <strong>Local attention foreshadows later work:</strong> The idea of restricting
                 attention to a dynamic window around a predicted position predates and
                 conceptually relates to the local attention windows used in LongFormer (2020)

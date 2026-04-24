@@ -3,24 +3,24 @@ import type { TabId } from "../../types"
 
 function HistoryTab() {
     return (
-        <div className="ch10-timeline">
-            <div className="ch10-tl-item">
-                <div className="ch10-tl-year">2017</div>
-                <div className="ch10-tl-title">Bojanowski, Grave, Joulin & Mikolov — Enriching Word Vectors with Subword Information</div>
-                <div className="ch10-tl-section-label">The limitation of whole-word embeddings</div>
-                <div className="ch10-tl-body">Word2Vec and GloVe treat each word as an atomic unit. "play", "playing", and "played" are three unrelated vectors with no shared parameters, despite being morphologically related. Worse, any word not seen during training — a typo, a new product name, a rare technical term — gets no representation at all. For morphologically rich languages (Finnish, Turkish, Arabic, Hungarian), this is catastrophic: a typical word may have dozens of valid inflected forms.</div>
-                <div className="ch10-tl-section-label">What was introduced</div>
-                <div className="ch10-tl-body">Facebook AI Research (Piotr Bojanowski, Edouard Grave, Armand Joulin, Tomas Mikolov) represented each word as the sum of its character n-gram vectors. The word "where" (n=3) decomposes into: &lt;wh, whe, her, ere, re&gt; with boundary markers. Each n-gram has its own vector. The word vector is the sum of all its n-gram vectors.</div>
-                <div className="ch10-tl-section-label">Why it mattered</div>
-                <div className="ch10-tl-body ch10-tl-impact">FastText improved on Word2Vec for morphologically rich languages, handled OOV words gracefully (sum n-gram vectors for any word), and influenced tokenization design. The subword idea directly shaped Byte-Pair Encoding (BPE) — the tokenizer used by GPT, BERT, and all modern LLMs.</div>
+        <div className="ch-timeline">
+            <div className="ch-tl-item">
+                <div className="ch-tl-year">2017</div>
+                <div className="ch-tl-title">Bojanowski, Grave, Joulin & Mikolov — Enriching Word Vectors with Subword Information</div>
+                <div className="ch-tl-section-label">The limitation of whole-word embeddings</div>
+                <div className="ch-tl-body">Word2Vec and GloVe treat each word as an atomic unit. "play", "playing", and "played" are three unrelated vectors with no shared parameters, despite being morphologically related. Worse, any word not seen during training — a typo, a new product name, a rare technical term — gets no representation at all. For morphologically rich languages (Finnish, Turkish, Arabic, Hungarian), this is catastrophic: a typical word may have dozens of valid inflected forms.</div>
+                <div className="ch-tl-section-label">What was introduced</div>
+                <div className="ch-tl-body">Facebook AI Research (Piotr Bojanowski, Edouard Grave, Armand Joulin, Tomas Mikolov) represented each word as the sum of its character n-gram vectors. The word "where" (n=3) decomposes into: &lt;wh, whe, her, ere, re&gt; with boundary markers. Each n-gram has its own vector. The word vector is the sum of all its n-gram vectors.</div>
+                <div className="ch-tl-section-label">Why it mattered</div>
+                <div className="ch-tl-body ch-tl-impact">FastText improved on Word2Vec for morphologically rich languages, handled OOV words gracefully (sum n-gram vectors for any word), and influenced tokenization design. The subword idea directly shaped Byte-Pair Encoding (BPE) — the tokenizer used by GPT, BERT, and all modern LLMs.</div>
             </div>
-            <div className="ch10-tl-item">
-                <div className="ch10-tl-year">2018</div>
-                <div className="ch10-tl-title">BPE Tokenization Replaces Character N-grams in LLMs</div>
-                <div className="ch10-tl-section-label">The evolution</div>
-                <div className="ch10-tl-body">FastText used fixed character n-gram ranges (3-6). Byte-Pair Encoding (Sennrich et al., 2016) learned data-driven subword units by iteratively merging the most frequent character pairs in the training corpus. This produced variable-length subword tokens that are more efficient and principled than fixed n-grams.</div>
-                <div className="ch10-tl-section-label">Why it mattered</div>
-                <div className="ch10-tl-body ch10-tl-impact">BPE tokenization is now universal in LLMs: GPT-2 uses BPE, BERT uses WordPiece (similar), T5 uses SentencePiece. FastText's insight — represent words as sub-unit combinations — lives on in every tokenizer, and thus in every modern language model.</div>
+            <div className="ch-tl-item">
+                <div className="ch-tl-year">2018</div>
+                <div className="ch-tl-title">BPE Tokenization Replaces Character N-grams in LLMs</div>
+                <div className="ch-tl-section-label">The evolution</div>
+                <div className="ch-tl-body">FastText used fixed character n-gram ranges (3-6). Byte-Pair Encoding (Sennrich et al., 2016) learned data-driven subword units by iteratively merging the most frequent character pairs in the training corpus. This produced variable-length subword tokens that are more efficient and principled than fixed n-grams.</div>
+                <div className="ch-tl-section-label">Why it mattered</div>
+                <div className="ch-tl-body ch-tl-impact">BPE tokenization is now universal in LLMs: GPT-2 uses BPE, BERT uses WordPiece (similar), T5 uses SentencePiece. FastText's insight — represent words as sub-unit combinations — lives on in every tokenizer, and thus in every modern language model.</div>
             </div>
         </div>
     )
@@ -57,7 +57,7 @@ function HighSchoolTab() {
             <p>This always produces a meaningful representation based on morphological similarity to known words. "Microwave" unseen? "micro" and "wave" and "rave" n-grams are known.</p>
 
             <h3>Typical settings</h3>
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>n_min = 3, n_max = 6</strong>: covers most meaningful morphemes without explosion in n-gram count.<br /><br />
                 <strong>Bucket size = 2M</strong>: n-grams are hashed into 2M buckets to cap memory. Hash collisions are acceptable — rare n-grams share a bucket with an occasional false match.<br /><br />
                 <strong>Final vector = v_w + mean(z_g)</strong>: word and n-gram vectors are trained jointly; the final representation combines both.
@@ -139,7 +139,7 @@ function PythonTab() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="fasttext.py" lang="python" langLabel="Python" />
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>FastText to BPE:</strong> FastText uses fixed-width character n-grams. BPE (Byte-Pair Encoding) learns data-driven variable-length subword merges. BPE is more efficient and is now the standard tokenizer for GPT, BERT, and LLaMA.
             </div>
         </>

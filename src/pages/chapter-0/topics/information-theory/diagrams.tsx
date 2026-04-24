@@ -28,7 +28,7 @@ export function EntropyDiagram() {
     const gap = 8
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch0-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <defs>
                 <marker id="ita" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#e8a838" /></marker>
                 <marker id="itb" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#5a9ab9" /></marker>
@@ -129,7 +129,7 @@ export function KLDiagram() {
         "M" + pts.map((pt) => `${pt.x},${pt.y}`).join(" L")
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch0-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <defs>
                 <marker id="kla" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#e8a838" /></marker>
                 <marker id="klb" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#5a9ab9" /></marker>
@@ -191,7 +191,7 @@ export function MutualInfoDiagram() {
     const dx = 22
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch0-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <defs>
                 <marker id="mia" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#e8a838" /></marker>
                 <marker id="mib" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#5a9ab9" /></marker>

@@ -14,63 +14,63 @@ function HistoryTab() {
                 colleagues at the Allen Institute for AI solved it with ELMo: Embeddings from Language Models.
             </p>
 
-            <div className="ch15-timeline">
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2013</div>
-                    <div className="ch15-tl-section-label">Predecessor</div>
-                    <div className="ch15-tl-title">Word2Vec &amp; Static Embeddings</div>
-                    <div className="ch15-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013</div>
+                    <div className="ch-tl-section-label">Predecessor</div>
+                    <div className="ch-tl-title">Word2Vec &amp; Static Embeddings</div>
+                    <div className="ch-tl-body">
                         Mikolov's Word2Vec proved that words could be represented as dense vectors where
                         semantic relationships became arithmetic (king - man + woman ≈ queen). But each word
                         had exactly one vector. Homonyms, polysemes, and words with context-dependent meanings
                         were forced into a single point in space.
                     </div>
-                    <div className="ch15-tl-impact">Impact: Powerful but fundamentally limited by context independence</div>
+                    <div className="ch-tl-impact">Impact: Powerful but fundamentally limited by context independence</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2017</div>
-                    <div className="ch15-tl-section-label">Predecessor</div>
-                    <div className="ch15-tl-title">CoVe — Contextualized Vectors</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Predecessor</div>
+                    <div className="ch-tl-title">CoVe — Contextualized Vectors</div>
+                    <div className="ch-tl-body">
                         McCann et al. used a neural machine translation encoder to produce context-dependent
                         vectors. The idea was sound, but the approach was tied to a specific translation
                         dataset and encoder architecture. The embeddings were not easily portable to arbitrary
                         NLP tasks.
                     </div>
-                    <div className="ch15-tl-impact">Impact: Proof of concept, but not a general-purpose solution</div>
+                    <div className="ch-tl-impact">Impact: Proof of concept, but not a general-purpose solution</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2018</div>
-                    <div className="ch15-tl-section-label">Invention</div>
-                    <div className="ch15-tl-title">Peters et al. — ELMo</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Peters et al. — ELMo</div>
+                    <div className="ch-tl-body">
                         In "Deep contextualized word representations" (NAACL 2018), Peters introduced a
                         bidirectional language model trained on a large corpus. The key insight: instead of
                         using the top layer, ELMo takes a <em>weighted combination of all layer representations</em>,
                         learned task-specifically. Lower layers capture syntax; upper layers capture semantics.
                         The task-specific weights let downstream models decide which layers matter most.
                     </div>
-                    <div className="ch15-tl-impact">Impact: Massive improvements on NLP benchmarks; the foundation for all contextualized embeddings</div>
+                    <div className="ch-tl-impact">Impact: Massive improvements on NLP benchmarks; the foundation for all contextualized embeddings</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2018 – 2019</div>
-                    <div className="ch15-tl-section-label">Adoption</div>
-                    <div className="ch15-tl-title">ELMo Becomes the New Baseline</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018 – 2019</div>
+                    <div className="ch-tl-section-label">Adoption</div>
+                    <div className="ch-tl-title">ELMo Becomes the New Baseline</div>
+                    <div className="ch-tl-body">
                         ELMo embeddings were adopted across the NLP community. On SQuAD, ELMo improved the
                         state-of-the-art by 4.7 points. On sentiment analysis, it cut error by 20-25%. The
                         approach was simple: replace your static embeddings with ELMo, keep the rest of your
                         model the same. It worked because ELMo's representations were deep, bidirectional,
                         and character-based — capturing morphology and syntax without a fixed vocabulary.
                     </div>
-                    <div className="ch15-tl-impact">Impact: ELMo became the default embedding method before BERT superseded it</div>
+                    <div className="ch-tl-impact">Impact: ELMo became the default embedding method before BERT superseded it</div>
                 </div>
             </div>
 
-            <div className="ch15-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Different layers of a deep language model encode different
                 kinds of information. A weighted sum of all layers, with task-specific weights, produces
                 richer representations than any single layer alone.
@@ -146,8 +146,8 @@ function HighSchoolTab() {
                 that lets the task scale the entire ELMo vector up or down. k=0 is the character CNN layer.
             </p>
 
-            <hr className="ch15-sep" />
-            <div className="ch15-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key difference from CoVe:</strong> CoVe used a translation encoder and only the top
                 layer. ELMo trains a <em>pure language model</em> and uses <em>all layers</em> with learned
                 weights. This makes ELMo more general (any language, any corpus) and more expressive
@@ -207,7 +207,7 @@ function MathsTab() {
                 The concatenation approach is most common and consistently outperforms static embeddings.
             </p>
 
-            <div className="ch15-callout">
+            <div className="ch-callout">
                 <strong>Empirical observation:</strong> On coreference resolution, lower ELMo layers
                 contribute more (syntax-heavy task). On textual entailment, upper layers contribute
                 more (semantics-heavy). The learned weights s<sub>k</sub> automatically discover these

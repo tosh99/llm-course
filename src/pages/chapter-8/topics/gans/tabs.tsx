@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch8-tl-item">
-            <div className="ch8-tl-year">{item.year}</div>
-            <div className="ch8-tl-title">{item.title}</div>
-            <div className="ch8-tl-section-label">Context</div>
-            <div className="ch8-tl-body">{item.context}</div>
-            <div className="ch8-tl-section-label">What Changed</div>
-            <div className="ch8-tl-body">{item.what}</div>
-            <div className="ch8-tl-section-label">Impact</div>
-            <div className="ch8-tl-body ch8-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">Context</div>
+            <div className="ch-tl-body">{item.context}</div>
+            <div className="ch-tl-section-label">What Changed</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Impact</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -69,7 +69,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch8-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -121,7 +121,7 @@ function KidTab() {
                 teacher can't tell they're not from a famous artist.
             </Analogy>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Cool fact:</strong> The first GANs created blurry faces. Within
                 four years, GANs generated photorealistic human faces that most people
                 couldn't distinguish from real photos. Today, GANs are used to create
@@ -187,7 +187,7 @@ function HighSchoolTab() {
                 is a game. It may oscillate indefinitely rather than settle to an equilibrium.
             </p>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Why it works:</strong> At equilibrium, the generator perfectly
                 matches the real data distribution and the discriminator can do no better
                 than random guessing (outputting 0.5 for everything). This is the Nash
@@ -381,7 +381,7 @@ function PythonTab() {
                 to a 28×28 image. The discriminator uses strided convolutions to downsample.
             </p>
             <CodeBlock code={PYTHON_CODE} filename="gan.py" lang="python" langLabel="Python" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Training tips:</strong> 1) Use Adam with β₁=0.5 for stability.
                 2) Label smoothing (real labels = 0.9 instead of 1.0) helps prevent D from
                 becoming too confident. 3) Train D more steps than G if D wins too easily.
@@ -662,7 +662,7 @@ function CodeTab() {
                 trained alternately with binary cross-entropy loss.
             </p>
             <CodeBlock code={TS_CODE} filename="gan.ts" lang="typescript" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Even this tiny simulation shows the minimax
                 dynamics. At equilibrium, the discriminator outputs ~0.5 for generated samples—
                 it has learned that it cannot reliably distinguish them from real data.

@@ -36,7 +36,7 @@ function DendrogramDiagram() {
     merge(abcd, efgh, 90)
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch3-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <rect width={w} height={h} fill="#0f0f14" rx="4" />
             <text x={12} y={14} fill="#3a3a50" fontSize="5.5" fontFamily="JetBrains Mono,monospace" letterSpacing="1">DENDROGRAM — AGGLOMERATIVE CLUSTERING</text>
 
@@ -117,17 +117,17 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch3-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
-                <div key={item.year} className="ch3-tl-item">
-                    <div className="ch3-tl-year">{item.year}</div>
-                    <div className="ch3-tl-title">{item.title}</div>
-                    <div className="ch3-tl-section-label">The challenge</div>
-                    <div className="ch3-tl-body">{item.challenge}</div>
-                    <div className="ch3-tl-section-label">What was introduced</div>
-                    <div className="ch3-tl-body">{item.what}</div>
-                    <div className="ch3-tl-section-label">Why it mattered</div>
-                    <div className="ch3-tl-body ch3-tl-impact">{item.impact}</div>
+                <div key={item.year} className="ch-tl-item">
+                    <div className="ch-tl-year">{item.year}</div>
+                    <div className="ch-tl-title">{item.title}</div>
+                    <div className="ch-tl-section-label">The challenge</div>
+                    <div className="ch-tl-body">{item.challenge}</div>
+                    <div className="ch-tl-section-label">What was introduced</div>
+                    <div className="ch-tl-body">{item.what}</div>
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
                 </div>
             ))}
         </div>
@@ -286,7 +286,7 @@ function PythonTab() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="hierarchical.py" lang="python" langLabel="Python" />
-            <div className="ch3-callout">
+            <div className="ch-callout">
                 <strong>When to use hierarchical vs k-means:</strong> Use hierarchical when you need to <em>explore</em> structure at multiple resolutions (dendrograms let you pick K after fitting), when you have no idea how many clusters to expect, or when you need linkage methods like Ward's that are more robust than Euclidean k-means. For n &gt; 10,000, prefer k-means or mini-batch variants.
             </div>
         </>
@@ -361,7 +361,7 @@ function CodeTab() {
                 A complete agglomerative clustering implementation using complete linkage. The algorithm is O(n³) — at each of the n−1 merge steps, we scan all remaining pairs to find the minimum-distance pair.
             </p>
             <CodeBlock code={TS_CODE} filename="hierarchical.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch3-callout">
+            <div className="ch-callout">
                 <strong>Optimisation path:</strong> Replace the O(n²) pair scan with a priority queue (min-heap of distances). For Ward's and average linkage, use the Lance-Williams formula to update distances in O(n) after each merge instead of recomputing from scratch. This brings total complexity to O(n² log n).
             </div>
         </>

@@ -14,63 +14,63 @@ function HistoryTab() {
                 recipe that would become the industry standard for building helpful AI assistants.
             </p>
 
-            <div className="ch20-timeline">
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2020</div>
-                    <div className="ch20-tl-section-label">Problem</div>
-                    <div className="ch20-tl-title">GPT-3: Powerful but Misaligned</div>
-                    <div className="ch20-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020</div>
+                    <div className="ch-tl-section-label">Problem</div>
+                    <div className="ch-tl-title">GPT-3: Powerful but Misaligned</div>
+                    <div className="ch-tl-body">
                         GPT-3 could write poetry, code, and essays, but it would also happily generate
                         misinformation, biased stereotypes, or harmful instructions when prompted.
                         The model optimized for next-token prediction — not for being helpful, honest,
                         or harmless.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Exposed the alignment gap between pretraining objectives and user intent</div>
+                    <div className="ch-tl-impact">Impact: Exposed the alignment gap between pretraining objectives and user intent</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2021</div>
-                    <div className="ch20-tl-section-label">Precedent</div>
-                    <div className="ch20-tl-title">Stiennon et al. — Learning to Summarize with RLHF</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2021</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">Stiennon et al. — Learning to Summarize with RLHF</div>
+                    <div className="ch-tl-body">
                         OpenAI researchers demonstrated that Reinforcement Learning from Human Feedback
                         (RLHF) could significantly improve summary quality. Human labelers ranked model
                         outputs, a reward model learned these preferences, and PPO optimized the policy
                         — yielding summaries preferred by humans over reference summaries.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Proved RLHF works at scale for text generation</div>
+                    <div className="ch-tl-impact">Impact: Proved RLHF works at scale for text generation</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">March 2022</div>
-                    <div className="ch20-tl-section-label">Invention</div>
-                    <div className="ch20-tl-title">Ouyang et al. — Training Language Models to Follow Instructions</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">March 2022</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Ouyang et al. — Training Language Models to Follow Instructions</div>
+                    <div className="ch-tl-body">
                         InstructGPT applied RLHF to general instruction following. The key insight:
                         a relatively small model (1.3B parameters) fine-tuned with RLHF outperformed
                         GPT-3 (175B parameters) on human preference ratings — a <em>100× parameter
                         reduction</em> with better alignment. The paper introduced the now-standard
                         three-stage pipeline: SFT → Reward Model → PPO.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Established the dominant paradigm for aligned language models</div>
+                    <div className="ch-tl-impact">Impact: Established the dominant paradigm for aligned language models</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2022 – Present</div>
-                    <div className="ch20-tl-section-label">Legacy</div>
-                    <div className="ch20-tl-title">ChatGPT, Claude, and the RLHF Era</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022 – Present</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">ChatGPT, Claude, and the RLHF Era</div>
+                    <div className="ch-tl-body">
                         InstructGPT's recipe became the foundation for ChatGPT (November 2022), which
                         reached 100 million users in two months. Anthropic's Claude, Google's Bard,
                         and virtually every modern assistant use variants of this three-stage approach.
                         The field has since evolved toward Constitutional AI and direct preference
                         optimization, but InstructGPT remains the canonical starting point.
                     </div>
-                    <div className="ch20-tl-impact">Impact: The blueprint for modern conversational AI</div>
+                    <div className="ch-tl-impact">Impact: The blueprint for modern conversational AI</div>
                 </div>
             </div>
 
-            <div className="ch20-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Bigger isn't always better. A smaller model
                 explicitly trained to be helpful, honest, and harmless — using human feedback —
                 can outperform a giant model that merely predicts the next token. Alignment beats scale.
@@ -154,8 +154,8 @@ function HighSchoolTab() {
                 <li><strong>Result:</strong> Model that optimizes for human preference, not just likelihood</li>
             </ul>
 
-            <hr className="ch20-sep" />
-            <div className="ch20-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> InstructGPT 1.3B was preferred over GPT-3 175B by human
                 labelers 85% of the time on instruction-following tasks. Alignment via RLHF enabled
                 a 100× smaller model to outperform its giant predecessor.
@@ -207,7 +207,7 @@ function MathsTab() {
                 "state" is the prefix of tokens generated so far.
             </p>
 
-            <div className="ch20-callout">
+            <div className="ch-callout">
                 <strong>Why KL penalty:</strong> Without the KL constraint, the policy can exploit
                 the reward model by generating high-reward but nonsensical or repetitive text.
                 The KL term acts as a trust region, keeping the RL policy close to the well-behaved

@@ -15,25 +15,25 @@ function HistoryTab() {
                 every NLP task could be cast as a text-to-text problem?
             </p>
 
-            <div className="ch17-timeline">
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">2018</div>
-                    <div className="ch17-tl-section-label">Problem</div>
-                    <div className="ch17-tl-title">The Architecture Zoo</div>
-                    <div className="ch17-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">Problem</div>
+                    <div className="ch-tl-title">The Architecture Zoo</div>
+                    <div className="ch-tl-body">
                         The field had splintered into encoder-only (BERT), decoder-only (GPT), and
                         encoder-decoder (Transformer) camps. A researcher moving from sentiment
                         classification to translation had to switch frameworks, loss functions, and
                         even tokenizers. There was no universal recipe.
                     </div>
-                    <div className="ch17-tl-impact">Impact: High barrier to entry and duplicated engineering effort</div>
+                    <div className="ch-tl-impact">Impact: High barrier to entry and duplicated engineering effort</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">Oct 2019</div>
-                    <div className="ch17-tl-section-label">Breakthrough</div>
-                    <div className="ch17-tl-title">Exploring the Limits of Transfer Learning</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Oct 2019</div>
+                    <div className="ch-tl-section-label">Breakthrough</div>
+                    <div className="ch-tl-title">Exploring the Limits of Transfer Learning</div>
+                    <div className="ch-tl-body">
                         Colin Raffel and colleagues at Google published the T5 paper, introducing
                         the Text-to-Text Transfer Transformer. The core idea: feed the model an
                         input string like "translate English to German: {'{sentence}'}" and train it
@@ -41,38 +41,38 @@ function HistoryTab() {
                         "positive". QA becomes "question: {'{q}'} context: {'{c}'}" → "{'{answer}'}". One model,
                         one objective, every task.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Unified NLP under a single generative framework</div>
+                    <div className="ch-tl-impact">Impact: Unified NLP under a single generative framework</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">2019</div>
-                    <div className="ch17-tl-section-label">Dataset</div>
-                    <div className="ch17-tl-title">The Colossal Clean Crawled Corpus (C4)</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019</div>
+                    <div className="ch-tl-section-label">Dataset</div>
+                    <div className="ch-tl-title">The Colossal Clean Crawled Corpus (C4)</div>
+                    <div className="ch-tl-body">
                         T5 introduced C4, a cleaned version of the April 2019 Common Crawl snapshot.
                         Heuristic filters removed non-natural language (boilerplate, code, markup),
                         deduplication removed near-duplicates, and language detection kept only
                         English. The result: 750GB of high-quality, diverse text — roughly 170B tokens.
                     </div>
-                    <div className="ch17-tl-impact">Impact: A public, reproducible pretraining corpus at web scale</div>
+                    <div className="ch-tl-impact">Impact: A public, reproducible pretraining corpus at web scale</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">2019 – 2022</div>
-                    <div className="ch17-tl-section-label">Legacy</div>
-                    <div className="ch17-tl-title">T5 Becomes a Family</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019 – 2022</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">T5 Becomes a Family</div>
+                    <div className="ch-tl-body">
                         Google released T5 in five sizes (Small to 11B) and later variants: T5v1.1
                         (improved pretraining), mT5 (multilingual), UL2 (mixture of denoisers), and
                         FLAN-T5 (instruction-tuned). The text-to-text paradigm influenced PaLM,
                         BLOOM, and many instruction-following models that treat all tasks as
                         conditional generation.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Text-to-text is now the default paradigm for generative NLP</div>
+                    <div className="ch-tl-impact">Impact: Text-to-text is now the default paradigm for generative NLP</div>
                 </div>
             </div>
 
-            <div className="ch17-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> By adding a textual prefix to every input, you turn
                 any supervised learning problem into a sequence-to-sequence translation problem. The
                 model doesn't need to know it's doing "classification" or "NER" — it just learns to
@@ -169,8 +169,8 @@ function HighSchoolTab() {
                     pages with fewer than 3 sentences, and anything containing offensive words.</li>
             </ol>
 
-            <hr className="ch17-sep" />
-            <div className="ch17-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> T5-11B achieved state-of-the-art on GLUE, SuperGLUE,
                 SQuAD, and CNN/DailyMail summarization. On SuperGLUE, it was the first model to
                 surpass the average human baseline (though not on every task individually).
@@ -221,7 +221,7 @@ function MathsTab() {
                 embeddings, bringing the total to ~11B parameters.
             </p>
 
-            <div className="ch17-callout">
+            <div className="ch-callout">
                 <strong>Why encoder-decoder for text-to-text?</strong> The bidirectional encoder can
                 freely attend to the entire input prefix, capturing all contextual cues. The
                 autoregressive decoder then generates the output one token at a time, conditioned on

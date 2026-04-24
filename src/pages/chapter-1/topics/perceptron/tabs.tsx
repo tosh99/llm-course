@@ -73,38 +73,38 @@ function HistoryTab() {
         <>
             <h2>The First Trainable Neural Network</h2>
 
-            <div className="ch1-timeline">
-                <div className="ch1-tl-item">
-                    <div className="ch1-tl-year">1957</div>
-                    <div className="ch1-tl-title">Rosenblatt's Mark I Perceptron</div>
-                    <div className="ch1-tl-section-label">The breakthrough</div>
-                    <div className="ch1-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1957</div>
+                    <div className="ch-tl-title">Rosenblatt's Mark I Perceptron</div>
+                    <div className="ch-tl-section-label">The breakthrough</div>
+                    <div className="ch-tl-body">
                         Frank Rosenblatt built the first hardware implementation of a trainable neural network: the Mark I Perceptron. It used 400 photodetectors as input sensors, connected via adjustable potentiometers (weights) to 512 output units. The key innovation was the <em>perceptron learning rule</em> — a simple procedure that automatically adjusted the potentiometer settings based on errors, enabling the machine to learn from data rather than having weights set by hand.
                     </div>
-                    <div className="ch1-tl-section-label">Why it mattered</div>
-                    <div className="ch1-tl-body ch1-tl-impact">
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">
                         This was the first demonstration that a machine could learn a pattern classification task from examples. The New York Times reported it as "the first device to think like a human brain." It attracted massive government funding from ARPA and launched a decade of excitement around neural networks.
                     </div>
                 </div>
 
-                <div className="ch1-tl-item">
-                    <div className="ch1-tl-year">1958 – 1960</div>
-                    <div className="ch1-tl-title">Widrow & Hoff — The LMS Rule</div>
-                    <div className="ch1-tl-section-label">Parallel development</div>
-                    <div className="ch1-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1958 – 1960</div>
+                    <div className="ch-tl-title">Widrow & Hoff — The LMS Rule</div>
+                    <div className="ch-tl-section-label">Parallel development</div>
+                    <div className="ch-tl-body">
                         Bernard Widrow and Ted Hoff at Stanford independently developed the <strong>Least Mean Squares (LMS)</strong> algorithm, also called the Widrow-Hoff rule or delta rule. Instead of Rosenblatt's mistake-driven binary update, they used continuous error signals: <InlineMath tex="\Delta w_{ij} = \eta\,(y - \hat{y})\,x_i" />. This was a crucial step toward gradient-based learning — it used the actual error magnitude, not just its sign.
                     </div>
-                    <div className="ch1-tl-section-label">Why it mattered</div>
-                    <div className="ch1-tl-body ch1-tl-impact">
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">
                         LMS was faster and more stable than the perceptron rule, and it minimised mean squared error rather than just fixing misclassifications. The Widrow-Hoff rule is mathematically equivalent to gradient descent on the MSE loss — a direct precursor to backpropagation. Widrow networks (ADALINE, MADALINE) were deployed in real applications including echo cancellation and pattern recognition.
                     </div>
                 </div>
 
-                <div className="ch1-tl-item">
-                    <div className="ch1-tl-year">1969</div>
-                    <div className="ch1-tl-title">Minsky & Papert — The Shutdown</div>
-                    <div className="ch1-tl-section-label">The crash</div>
-                    <div className="ch1-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1969</div>
+                    <div className="ch-tl-title">Minsky & Papert — The Shutdown</div>
+                    <div className="ch-tl-section-label">The crash</div>
+                    <div className="ch-tl-body">
                         Marvin Minsky and Seymour Papert published Perceptrons: An Introduction to Computational Geometry, proving mathematically that single-layer perceptrons could not learn XOR or any non-linearly-separable function. Worse: they showed that adding hidden layers made training exponentially hard. The book essentially ended federal funding for neural network research for a decade. The field wouldn't recover until Rumelhart & Hinton's 1986 paper on backpropagation demonstrated that hidden layers could be trained efficiently.
                     </div>
                 </div>
@@ -177,7 +177,7 @@ function HighSchoolTab() {
                 through weight configurations forever without settling.
             </p>
 
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Key limitation:</strong> The perceptron can only learn hyperplanes. It will
                 <em>never</em> solve XOR because XOR points cannot be separated by a single straight line.
                 You need at least one hidden layer of neurons to bend the decision boundary.
@@ -228,7 +228,7 @@ function MathsTab() {
             <p>
                 The XOR data points in ℝ²:
             </p>
-            <table className="ch1-truth-table">
+            <table className="ch-truth-table">
                 <thead><tr><th>x₁</th><th>x₂</th><th>y</th><th>Label</th></tr></thead>
                 <tbody>
                     <tr><td>0</td><td>0</td><td>0</td><td>−1 (negative)</td></tr>
@@ -244,7 +244,7 @@ function MathsTab() {
                 at the time) that training such networks was intractable.
             </p>
 
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Resolution (1986):</strong> Rumelhart, Hinton & Williams showed that backpropagation
                 provides exactly the gradient signal needed to train hidden layers. A 2-layer network with
                 2 hidden units can solve XOR trivially. The crisis was not the architecture — it was the
@@ -331,7 +331,7 @@ function PythonTab() {
                 hyperplane; XOR oscillates forever because no such hyperplane exists.
             </p>
             <CodeBlock code={PY_CODE} filename="perceptron.py" lang="python" langLabel="Python" />
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Run it:</strong> The XOR plot will show a decision boundary that misclassifies
                 at least one point — no matter how long you train. This is the geometric consequence of
                 non-linear separability.
@@ -429,7 +429,7 @@ function CodeTab() {
                 Run it and observe: AND converges perfectly, XOR oscillates indefinitely.
             </p>
             <CodeBlock code={TS_CODE} filename="perceptron.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>The crucial difference:</strong> AND separates into two classes by a straight line.
                 XOR's positive and negative examples interleave — to separate them, you need at least two
                 intersecting lines, which requires a hidden layer.

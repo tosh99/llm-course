@@ -31,7 +31,7 @@ function HistoryTab() {
                 <li><strong>2014</strong>: Sutskever et al. showed LSTMs could achieve state-of-the-art in sequence-to-sequence tasks.</li>
                 <li><strong>2015–2020</strong>: LSTMs powered Google Translate, Apple's Siri, and early language models.</li>
             </ul>
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Legacy:</strong> LSTMs were eventually surpassed by Transformers for language modeling
                 tasks (attention can directly "look back" at any previous token). However, LSTMs remain
                 important for tasks where memory must be maintained over very long sequences with limited
@@ -119,8 +119,8 @@ function HighSchoolTab() {
                 as they propagate backwards.
             </p>
 
-            <hr className="ch5-sep" />
-            <div className="ch5-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key contrast with simple RNN:</strong> A simple RNN's hidden state transition
                 is <em>non-linear</em> (tanh applied after matrix multiplication). Small changes in
                 early weights get squashed by tanh and multiplied by W<sub>hh</sub> repeatedly, leading
@@ -191,7 +191,7 @@ function MathsTab() {
                 This allows the gates to make better decisions based on how much is currently stored.
             </p>
 
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> The LSTM's success is not that it prevents gradients from
                 vanishing — it's that it gives the network <em>control</em> over when to preserve and
                 when to discard gradient information. The gates learn what the right behaviour should be
@@ -422,7 +422,7 @@ function CodeTab() {
                 relevant memory and close it for irrelevant information.
             </p>
             <CodeBlock code={TS_CODE} filename="lstm_cell.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Architecture note:</strong> Modern LSTM implementations (PyTorch
                 <code>torch.nn.LSTM</code>) use a more efficient fused computation that evaluates
                 all four gate equations in a single matrix multiplication, which is ~4× faster

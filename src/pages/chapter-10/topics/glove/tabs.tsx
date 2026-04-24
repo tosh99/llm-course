@@ -16,12 +16,12 @@ function HistoryTab() {
                 methods (like Word2Vec).
             </p>
 
-            <div className="ch10-timeline">
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">1990s</div>
-                    <div className="ch10-tl-section-label">Matrix Factorization Era</div>
-                    <div className="ch10-tl-title">LSA — Latent Semantic Analysis</div>
-                    <div className="ch10-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1990s</div>
+                    <div className="ch-tl-section-label">Matrix Factorization Era</div>
+                    <div className="ch-tl-title">LSA — Latent Semantic Analysis</div>
+                    <div className="ch-tl-body">
                         Latent Semantic Analysis (Deerwester et al., 1990) built a term-document or
                         term-term co-occurrence matrix and applied Singular Value Decomposition (SVD)
                         to produce low-dimensional word representations. LSA captures global statistics
@@ -30,14 +30,14 @@ function HistoryTab() {
                         (SVD of a 100,000 × 100,000 matrix is expensive) and doesn't handle frequency
                         distributions well (very frequent words dominate).
                     </div>
-                    <div className="ch10-tl-impact">Context: LSA showed matrix factorization gives semantic structure; Word2Vec showed local context is enough</div>
+                    <div className="ch-tl-impact">Context: LSA showed matrix factorization gives semantic structure; Word2Vec showed local context is enough</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2013</div>
-                    <div className="ch10-tl-section-label">The Gap</div>
-                    <div className="ch10-tl-title">Word2Vec — local only</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013</div>
+                    <div className="ch-tl-section-label">The Gap</div>
+                    <div className="ch-tl-title">Word2Vec — local only</div>
+                    <div className="ch-tl-body">
                         Word2Vec's Skip-gram and CBOW train on individual (word, context) pairs from a
                         sliding window. Each training step sees only one pair — the global co-occurrence
                         statistics are never explicitly used. A word pair that co-occurs 10,000 times
@@ -45,14 +45,14 @@ function HistoryTab() {
                         This is statistically inefficient: the model needs to see each pair thousands
                         of times to converge to statistics that were already available in the corpus.
                     </div>
-                    <div className="ch10-tl-impact">Context: Word2Vec's window-based approach ignores the full co-occurrence count matrix</div>
+                    <div className="ch-tl-impact">Context: Word2Vec's window-based approach ignores the full co-occurrence count matrix</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2014</div>
-                    <div className="ch10-tl-section-label">Synthesis</div>
-                    <div className="ch10-tl-title">GloVe — Pennington, Socher, Manning (EMNLP 2014)</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014</div>
+                    <div className="ch-tl-section-label">Synthesis</div>
+                    <div className="ch-tl-title">GloVe — Pennington, Socher, Manning (EMNLP 2014)</div>
+                    <div className="ch-tl-body">
                         Pennington et al. proposed a global matrix factorization approach: first
                         compute the full word-word co-occurrence matrix X (X<sub>ij</sub> = number of
                         times word j appears in context of word i across the entire corpus). Then train
@@ -61,21 +61,21 @@ function HistoryTab() {
                         very frequent pairs (which would otherwise dominate) while preserving signal
                         from less frequent but meaningful co-occurrences.
                     </div>
-                    <div className="ch10-tl-impact">Impact: State-of-the-art on word similarity and analogy tasks; competitive with Word2Vec; widely used in NLP</div>
+                    <div className="ch-tl-impact">Impact: State-of-the-art on word similarity and analogy tasks; competitive with Word2Vec; widely used in NLP</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2015–2017</div>
-                    <div className="ch10-tl-section-label">Impact</div>
-                    <div className="ch10-tl-title">GloVe in pre-Transformer NLP</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015–2017</div>
+                    <div className="ch-tl-section-label">Impact</div>
+                    <div className="ch-tl-title">GloVe in pre-Transformer NLP</div>
+                    <div className="ch-tl-body">
                         GloVe vectors became one of the two standard initializations for NLP models
                         (alongside Word2Vec) in the pre-Transformer era. Nearly every NLP paper from
                         2014–2018 either initialized embeddings with GloVe or Word2Vec. Stanford's
                         pre-trained GloVe vectors on Common Crawl (840B tokens, 300-dimensional) were
                         downloaded millions of times and are still used today for smaller models.
                     </div>
-                    <div className="ch10-tl-impact">Impact: Standard pre-trained embedding for the NLP field 2015–2018; superseded by contextual embeddings (ELMo, BERT)</div>
+                    <div className="ch-tl-impact">Impact: Standard pre-trained embedding for the NLP field 2015–2018; superseded by contextual embeddings (ELMo, BERT)</div>
                 </div>
             </div>
         </>
@@ -165,8 +165,8 @@ function HighSchoolTab() {
                 implicitly factorizes.
             </p>
 
-            <hr className="ch10-sep" />
-            <div className="ch10-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Using GloVe in practice:</strong> Final embeddings are typically
                 w<sub>i</sub> + w̃<sub>i</sub> (sum of word and context vectors), which empirically
                 outperforms using either alone. Stanford provides pre-trained GloVe vectors on
@@ -225,7 +225,7 @@ function MathsTab() {
                 direction from "man" to "woman" should be the same as from "king" to "queen."
             </p>
 
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>GloVe vs Word2Vec in practice:</strong> On word similarity benchmarks
                 (WordSim-353, SimLex-999), GloVe and Word2Vec perform similarly. On analogy tasks
                 (Google Analogy), GloVe slightly outperforms. For downstream NLP tasks (POS tagging,

@@ -37,17 +37,17 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch3-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
-                <div key={item.year} className="ch3-tl-item">
-                    <div className="ch3-tl-year">{item.year}</div>
-                    <div className="ch3-tl-title">{item.title}</div>
-                    <div className="ch3-tl-section-label">The challenge</div>
-                    <div className="ch3-tl-body">{item.challenge}</div>
-                    <div className="ch3-tl-section-label">What was introduced</div>
-                    <div className="ch3-tl-body">{item.what}</div>
-                    <div className="ch3-tl-section-label">Why it mattered</div>
-                    <div className="ch3-tl-body ch3-tl-impact">{item.impact}</div>
+                <div key={item.year} className="ch-tl-item">
+                    <div className="ch-tl-year">{item.year}</div>
+                    <div className="ch-tl-title">{item.title}</div>
+                    <div className="ch-tl-section-label">The challenge</div>
+                    <div className="ch-tl-body">{item.challenge}</div>
+                    <div className="ch-tl-section-label">What was introduced</div>
+                    <div className="ch-tl-body">{item.what}</div>
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
                 </div>
             ))}
         </div>
@@ -230,7 +230,7 @@ function PythonTab() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="kmeans.py" lang="python" langLabel="Python" />
-            <div className="ch3-callout">
+            <div className="ch-callout">
                 <strong>Key tips:</strong> Always standardise features — k-means uses Euclidean distance, so a feature with range 0–1000 will dominate one with range 0–1. Use <code>n_init=10</code> (or 20) to run multiple random restarts. <code>silhouette_score</code> measures how well-separated clusters are (range −1 to 1; higher = better separated).
             </div>
         </>
@@ -318,7 +318,7 @@ function CodeTab() {
                 A complete k-means implementation with k-means++ initialisation. The key insight: the outer loop alternates assignment and centroid update until convergence — this is guaranteed to terminate because there are only finitely many possible assignments.
             </p>
             <CodeBlock code={TS_CODE} filename="kmeans.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch3-callout">
+            <div className="ch-callout">
                 <strong>Complexity note:</strong> The <code>assign</code> function is O(nK) per call. For large datasets, use a k-d tree (O(n log K) average) or approximate nearest-neighbour structures. For very large K, consider hierarchical k-means or FAISS.
             </div>
         </>

@@ -15,25 +15,25 @@ function HistoryTab() {
                 researchers to find clever ways to introduce parallelism into recurrent models.
             </p>
 
-            <div className="ch13-timeline">
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">1990s</div>
-                    <div className="ch13-tl-section-label">Prehistory</div>
-                    <div className="ch13-tl-title">The Inherent Serial Bottleneck</div>
-                    <div className="ch13-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1990s</div>
+                    <div className="ch-tl-section-label">Prehistory</div>
+                    <div className="ch-tl-title">The Inherent Serial Bottleneck</div>
+                    <div className="ch-tl-body">
                         From Elman (1990) through LSTM (1997), RNNs were trained on CPUs with
                         single sequences. The unrolled computation graph is a long chain —
                         inherently sequential, inherently slow. No one worried much because
                         datasets were small and sequences were short (hundreds of time steps).
                     </div>
-                    <div className="ch13-tl-impact">Impact: Established RNNs as the "slow but powerful" model class</div>
+                    <div className="ch-tl-impact">Impact: Established RNNs as the "slow but powerful" model class</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2014 – 2015</div>
-                    <div className="ch13-tl-section-label">Batching</div>
-                    <div className="ch13-tl-title">Minibatch Parallelism &amp; cuDNN</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014 – 2015</div>
+                    <div className="ch-tl-section-label">Batching</div>
+                    <div className="ch-tl-title">Minibatch Parallelism &amp; cuDNN</div>
+                    <div className="ch-tl-body">
                         NVIDIA's cuDNN library introduced highly optimized batched RNN kernels.
                         While time steps within a single sequence are still sequential, multiple
                         sequences in a minibatch can be processed in parallel. A batch of 64
@@ -41,14 +41,14 @@ function HistoryTab() {
                         hardware utilization. cuDNN fused the matrix multiplications for all gates
                         into single large GEMM calls, giving 5–10× speedups over naive loops.
                     </div>
-                    <div className="ch13-tl-impact">Impact: Made RNNs practical for large-scale training via data parallelism</div>
+                    <div className="ch-tl-impact">Impact: Made RNNs practical for large-scale training via data parallelism</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2016 – 2017</div>
-                    <div className="ch13-tl-section-label">Algorithm</div>
-                    <div className="ch13-tl-title">Parallel Scan &amp; Quasi-Recurrent Networks</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016 – 2017</div>
+                    <div className="ch-tl-section-label">Algorithm</div>
+                    <div className="ch-tl-title">Parallel Scan &amp; Quasi-Recurrent Networks</div>
+                    <div className="ch-tl-body">
                         Bradbury et al. (2016) proposed Quasi-Recurrent Neural Networks (QRNNs),
                         which decouple the convolutional "forget" computation (parallelizable across
                         time via convolutions) from the cumulative product (a parallel scan, or
@@ -58,14 +58,14 @@ function HistoryTab() {
                         scan for LSTM-style recurrences, showing that prefix-sum algorithms on GPUs
                         can achieve near-linear speedup for sufficiently long sequences.
                     </div>
-                    <div className="ch13-tl-impact">Impact: First algorithmic parallelization of recurrence, not just batching</div>
+                    <div className="ch-tl-impact">Impact: First algorithmic parallelization of recurrence, not just batching</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2019 – Present</div>
-                    <div className="ch13-tl-section-label">Modern Era</div>
-                    <div className="ch13-tl-title">Linear Attention &amp; State Space Models</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019 – Present</div>
+                    <div className="ch-tl-section-label">Modern Era</div>
+                    <div className="ch-tl-title">Linear Attention &amp; State Space Models</div>
+                    <div className="ch-tl-body">
                         The ultimate parallelization is to remove nonlinear interactions across
                         time. Katharopoulos et al. (2020) showed that if attention weights are
                         decomposed into feature maps, the attention computation becomes a cumulative
@@ -76,11 +76,11 @@ function HistoryTab() {
                         RNN-like memory usage at inference while training with Transformer-like
                         parallelization — the best of both worlds.
                     </div>
-                    <div className="ch13-tl-impact">Impact: SSMs are the modern successors to RNNs, solving the parallelism problem at the architectural level</div>
+                    <div className="ch-tl-impact">Impact: SSMs are the modern successors to RNNs, solving the parallelism problem at the architectural level</div>
                 </div>
             </div>
 
-            <div className="ch13-callout">
+            <div className="ch-callout">
                 <strong>The fundamental tension:</strong> Nonlinear recurrence across time is
                 what gives RNNs their expressive power — the ability to selectively remember and
                 forget. But nonlinearity destroys parallelizability. Every technique for RNN
@@ -173,8 +173,8 @@ function HighSchoolTab() {
                 loss on sentiment analysis tasks.
             </p>
 
-            <hr className="ch13-sep" />
-            <div className="ch13-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Why parallel scan doesn't solve everything:</strong> LSTM and GRU gates
                 involve nonlinear interactions between the input and the previous hidden state
                 (e.g., z<sub>t</sub> = σ(W<sub>z</sub>x<sub>t</sub> + U<sub>z</sub>h<sub>t−1</sub>)).
@@ -256,7 +256,7 @@ function MathsTab() {
                 </tbody>
             </table>
 
-            <div className="ch13-callout">
+            <div className="ch-callout">
                 <strong>S4/Mamba's dual mode:</strong> During training, S4 uses the convolutional
                 representation (parallel FFT) because the full sequence is known. During inference,
                 it switches to the recurrent representation (single step update) because only the

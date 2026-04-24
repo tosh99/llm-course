@@ -18,26 +18,26 @@ function HistoryTab() {
                 beat a giant trained on less.
             </p>
 
-            <div className="ch18-timeline">
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2020 – 2021</div>
-                    <div className="ch18-tl-section-label">Status quo</div>
-                    <div className="ch18-tl-title">The "Kaplan recipe" dominates</div>
-                    <div className="ch18-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020 – 2021</div>
+                    <div className="ch-tl-section-label">Status quo</div>
+                    <div className="ch-tl-title">The "Kaplan recipe" dominates</div>
+                    <div className="ch-tl-body">
                         Following Kaplan's laws, the major labs built progressively larger models
                         with roughly 1–2 tokens per parameter. GPT-3 used ~1.7 tokens/parameter.
                         Gopher used ~1.1. The implicit assumption: parameters are more valuable
                         than data, so you should max out model size within your compute budget.
                         This created a culture where parameter count became the headline metric.
                     </div>
-                    <div className="ch18-tl-impact">Impact: An arms race for parameter count, with data as an afterthought</div>
+                    <div className="ch-tl-impact">Impact: An arms race for parameter count, with data as an afterthought</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2022</div>
-                    <div className="ch18-tl-section-label">Correction</div>
-                    <div className="ch18-tl-title">Hoffmann et al. — Training Compute-Optimal Large Language Models</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022</div>
+                    <div className="ch-tl-section-label">Correction</div>
+                    <div className="ch-tl-title">Hoffmann et al. — Training Compute-Optimal Large Language Models</div>
+                    <div className="ch-tl-body">
                         DeepMind trained over 400 models ranging from 70M to 16B parameters, with
                         varying training lengths, and re-fit the scaling laws. They discovered
                         that Kaplan had systematically under-estimated the value of data because
@@ -47,14 +47,14 @@ function HistoryTab() {
                         1.4 trillion tokens, outperformed the 280B-parameter Gopher and the
                         530B-parameter Megatron-Turing on nearly every benchmark.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Flipped the industry from "bigger is better" to "balance size and data"</div>
+                    <div className="ch-tl-impact">Impact: Flipped the industry from "bigger is better" to "balance size and data"</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2022 – 2023</div>
-                    <div className="ch18-tl-section-label">Adoption</div>
-                    <div className="ch18-tl-title">LLaMA, Mistral, and the data-centric turn</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022 – 2023</div>
+                    <div className="ch-tl-section-label">Adoption</div>
+                    <div className="ch-tl-title">LLaMA, Mistral, and the data-centric turn</div>
+                    <div className="ch-tl-body">
                         Meta's LLaMA-1 (65B parameters, 1.4T tokens) and LLaMA-2 (70B, 2T tokens)
                         followed the Chinchilla recipe. Mistral 7B, trained on an unknown but
                         clearly large corpus, demonstrated that a modestly sized model could match
@@ -62,14 +62,14 @@ function HistoryTab() {
                         careful architecture. The community shifted from counting parameters to
                         counting tokens — and to curating higher-quality data.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Opened the era of efficient, open-weight models</div>
+                    <div className="ch-tl-impact">Impact: Opened the era of efficient, open-weight models</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2023 – Present</div>
-                    <div className="ch18-tl-section-label">Extension</div>
-                    <div className="ch18-tl-title">Over-training and the data wall</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2023 – Present</div>
+                    <div className="ch-tl-section-label">Extension</div>
+                    <div className="ch-tl-title">Over-training and the data wall</div>
+                    <div className="ch-tl-body">
                         Recent models like LLaMA-3 (8B trained on 15T tokens, ~1800 tokens/param)
                         go <em>beyond</em> Chinchilla optimality. Why? Because inference cost
                         matters: a smaller model is cheaper to deploy, even if training it is
@@ -79,11 +79,11 @@ function HistoryTab() {
                         gains to come from synthetic data, multimodal sources, or algorithmic
                         improvements.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Data curation, synthetic data, and multi-epoch training are now central research topics</div>
+                    <div className="ch-tl-impact">Impact: Data curation, synthetic data, and multi-epoch training are now central research topics</div>
                 </div>
             </div>
 
-            <div className="ch18-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Kaplan's laws were fitted on models that were
                 often data-limited. When you lift the data constraint and train to convergence,
                 data and parameters become equally important. The optimal strategy is to scale
@@ -173,8 +173,8 @@ function HighSchoolTab() {
                 </li>
             </ul>
 
-            <hr className="ch18-sep" />
-            <div className="ch18-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>The Chinchilla trade-off:</strong> Chinchilla-optimal training minimizes
                 <em>training</em> loss for a given <em>training</em> compute. But in practice,
                 you often care about <em>inference</em> compute too. A 7B model trained on 140B
@@ -270,7 +270,7 @@ function MathsTab() {
                 amortized over billions of inference calls.
             </p>
 
-            <div className="ch18-callout">
+            <div className="ch-callout">
                 <strong>Bottom line:</strong> Chinchilla taught the field that data is at least
                 as important as parameters. The modern recipe is D ≈ 20N for training-optimal
                 models, and often much more for inference-optimal ones.

@@ -15,65 +15,65 @@ function HistoryTab() {
                 that are both more harmless and more helpful.
             </p>
 
-            <div className="ch20-timeline">
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2021</div>
-                    <div className="ch20-tl-section-label">Problem</div>
-                    <div className="ch20-tl-title">The Scaling Bottleneck of Human Feedback</div>
-                    <div className="ch20-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2021</div>
+                    <div className="ch-tl-section-label">Problem</div>
+                    <div className="ch-tl-title">The Scaling Bottleneck of Human Feedback</div>
+                    <div className="ch-tl-body">
                         RLHF requires expensive human labelers, creating a bottleneck as models
                         improve. Better models need more feedback, but human labelers are finite,
                         slow, and expensive. Moreover, humans struggle to evaluate complex reasoning
                         or long-form outputs. Anthropic asked: can we replace human preference
                         labeling with AI self-critique?
                     </div>
-                    <div className="ch20-tl-impact">Impact: Identified human labeling as the critical scaling bottleneck</div>
+                    <div className="ch-tl-impact">Impact: Identified human labeling as the critical scaling bottleneck</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">Dec 2022</div>
-                    <div className="ch20-tl-section-label">Invention</div>
-                    <div className="ch20-tl-title">Bai et al. — Constitutional AI: Harmlessness from AI Feedback</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Dec 2022</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Bai et al. — Constitutional AI: Harmlessness from AI Feedback</div>
+                    <div className="ch-tl-body">
                         Anthropic introduced Constitutional AI: a two-stage process. First,
                         <em>self-critique and revision</em>: the model generates a response, critiques
                         it against constitutional principles, and revises it. Second, <em>RL from AI
                         Feedback (RLAIF)</em>: a preference model is trained on these AI-generated
                         revisions and used for RL — no human preference labels needed for harmlessness.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Demonstrated scalable alignment without human preference data</div>
+                    <div className="ch-tl-impact">Impact: Demonstrated scalable alignment without human preference data</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2023</div>
-                    <div className="ch20-tl-section-label">Evolution</div>
-                    <div className="ch20-tl-title">Claude and the RLAIF Pipeline</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2023</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">Claude and the RLAIF Pipeline</div>
+                    <div className="ch-tl-body">
                         Claude-1 and Claude-2 used Constitutional AI as their alignment backbone.
                         The constitution included principles like "choose the response that is most
                         helpful, honest, and harmless" and "avoid responses that could promote illegal
                         acts." The self-critique loop enabled the model to surface and correct its
                         own harmful tendencies before training the preference model.
                     </div>
-                    <div className="ch20-tl-impact">Impact: CAI became Anthropic's signature alignment approach</div>
+                    <div className="ch-tl-impact">Impact: CAI became Anthropic's signature alignment approach</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2023 – Present</div>
-                    <div className="ch20-tl-section-label">Broader Impact</div>
-                    <div className="ch20-tl-title">RLAIF Goes Mainstream</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2023 – Present</div>
+                    <div className="ch-tl-section-label">Broader Impact</div>
+                    <div className="ch-tl-title">RLAIF Goes Mainstream</div>
+                    <div className="ch-tl-body">
                         Google DeepMind's Sparrow, Meta's Llama 2, and numerous open-source projects
                         adopted AI feedback as a complement or replacement for human feedback.
                         Constitutional principles were extended to multilingual settings, coding
                         assistants, and reasoning tasks. The field converged on hybrid approaches:
                         human feedback for nuanced judgments, AI feedback for scalable harmlessness.
                     </div>
-                    <div className="ch20-tl-impact">Impact: RLAIF became a standard tool in the alignment toolkit</div>
+                    <div className="ch-tl-impact">Impact: RLAIF became a standard tool in the alignment toolkit</div>
                 </div>
             </div>
 
-            <div className="ch20-callout">
+            <div className="ch-callout">
                 <strong>The constitutional insight:</strong> Explicit principles generalize better
                 than implicit preferences. Rather than learning "don't say X" from thousands of
                 labeled examples, a model with a constitution learns "be respectful, be honest,
@@ -153,8 +153,8 @@ function HighSchoolTab() {
                 <li>"Prefer responses that acknowledge uncertainty rather than making things up."</li>
             </ul>
 
-            <hr className="ch20-sep" />
-            <div className="ch20-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Results:</strong> Anthropic found that CAI-trained models were rated as
                 <em>more</em> helpful by humans than RLHF-trained models, while being similarly
                 harmless. Self-critique appeared to improve not just safety but also reasoning
@@ -214,7 +214,7 @@ function MathsTab() {
                 of preferences that often transfers better than the raw preference dataset.
             </p>
 
-            <div className="ch20-callout">
+            <div className="ch-callout">
                 <strong>Limitations:</strong> Constitutional AI inherits the biases of the base model
                 used for self-critique. If the model fails to recognize a harmful output, the entire
                 pipeline fails. This is why Anthropic uses CAI in conjunction with — not as a

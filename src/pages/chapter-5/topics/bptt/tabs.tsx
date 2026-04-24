@@ -32,7 +32,7 @@ function HistoryTab() {
                 models), after which the gradient is cut. This trades off between capturing long-range
                 dependencies and computational tractability.
             </p>
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Note:</strong> Truncated BPTT doesn't solve the vanishing gradient problem — it
                 merely avoids it by never asking the network to backpropagate through very long sequences.
                 Transformers (Chapter 14) address the long-range dependency problem in an entirely
@@ -173,7 +173,7 @@ function MathsTab() {
                 <InlineMath tex="1.5^{20} \approx 3325" /> — gradients grow ~3,000× in 20 steps!
             </p>
 
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Pascanu et al. (2012)</strong> introduced gradient clipping specifically for RNNs.
                 Their key insight: the problem with exploding gradients isn't the gradient's magnitude per se —
                 it's that large updates destabilize learning. Clipping prevents destabilization while
@@ -291,7 +291,7 @@ function PythonTab() {
                 included to prevent NaN gradients from exploding updates.
             </p>
             <CodeBlock code={PY_CODE} filename="bptt.py" lang="python" langLabel="Python" />
-            <div className="ch5-callitout ch5-callout">
+            <div className="ch-callout">
                 <strong>Memory consideration:</strong> Full BPTT requires storing all hidden states
                 for a sequence (O(T × hidden_dim) memory). For GPT-3 with 2048 context length and
                 12288 hidden dimensions, this is 2048 × 12288 ≈ 25M activations per layer, per sample.
@@ -414,7 +414,7 @@ function CodeTab() {
                 Jacobian chain rule through time, and gradient accumulation.
             </p>
             <CodeBlock code={TS_CODE} filename="bptt.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> BPTT is simply the standard backpropagation algorithm
                 applied to an unrolled computational graph. The only difference from training a
                 feedforward network is that the same weight matrix appears at every time step — so

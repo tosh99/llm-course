@@ -14,36 +14,36 @@ function HistoryTab() {
                 to efficiently process visual data.
             </p>
 
-            <div className="ch6-timeline">
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">1980</div>
-                    <div className="ch6-tl-title">Neocognitron</div>
-                    <div className="ch6-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1980</div>
+                    <div className="ch-tl-title">Neocognitron</div>
+                    <div className="ch-tl-body">
                         Kunihiko Fukushima introduces the neocognitron — a hierarchical multi-layered network
                         with alternating simple and complex cells that could perform pattern recognition.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">1989</div>
-                    <div className="ch6-tl-title">First CNN Application</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1989</div>
+                    <div className="ch-tl-title">First CNN Application</div>
+                    <div className="ch-tl-body">
                         Yann LeCun applies backpropagation to train convolutional networks for handwritten digit
                         recognition at AT&T Bell Labs, demonstrating practical viability.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">1998</div>
-                    <div className="ch6-tl-title">LeNet-5 Architecture</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1998</div>
+                    <div className="ch-tl-title">LeNet-5 Architecture</div>
+                    <div className="ch-tl-body">
                         LeCun et al. publish LeNet-5, which becomes the definitive CNN architecture for the
                         era and is deployed in ATMs for check recognition across the US.
                     </div>
                 </div>
             </div>
 
-            <div className="ch6-analogy">
-                <div className="ch6-analogy-label">Analogy</div>
-                <div className="ch6-analogy-text">
+            <div className="ch-analogy">
+                <div className="ch-analogy-label">Analogy</div>
+                <div className="ch-analogy-text">
                     A fully-connected network reading an image is like examining a puzzle by randomly
                     scattering the pieces and memorizing each configuration. A CNN is like actually
                     looking at the picture — recognizing edges, textures, and patterns in their
@@ -51,7 +51,7 @@ function HistoryTab() {
                 </div>
             </div>
 
-            <hr className="ch6-sep" />
+            <hr className="ch-sep" />
 
             <h2>Key Characteristics of CNNs</h2>
             <p>
@@ -314,7 +314,7 @@ function PythonTab() {
                 for debugging and optimization.
             </p>
             <CodeBlock code={PY_CODE} filename="cnn_basics.py" lang="python" />
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> The Conv2d layer automatically handles sliding the
                 filter, computing dot products, and adding the bias. The weight shape is{' '}
                 <code>(out_channels, in_channels, height, width)</code>.
@@ -454,7 +454,7 @@ function CodeTab() {
                 just slower!
             </p>
             <CodeBlock code={TS_CODE} filename="cnn.ts" lang="typescript" />
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>Note:</strong> Real implementations use highly optimized libraries
                 (cuDNN, oneDNN) that run 100-1000× faster by exploiting parallelism on GPUs
                 and vectorized CPU instructions.

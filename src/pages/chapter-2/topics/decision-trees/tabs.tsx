@@ -42,17 +42,17 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch2-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
-                <div key={item.year} className="ch2-tl-item">
-                    <div className="ch2-tl-year">{item.year}</div>
-                    <div className="ch2-tl-title">{item.title}</div>
-                    <div className="ch2-tl-section-label">The challenge</div>
-                    <div className="ch2-tl-body">{item.challenge}</div>
-                    <div className="ch2-tl-section-label">What was introduced</div>
-                    <div className="ch2-tl-body">{item.what}</div>
-                    <div className="ch2-tl-section-label">Why it mattered</div>
-                    <div className="ch2-tl-body ch2-tl-impact">{item.impact}</div>
+                <div key={item.year} className="ch-tl-item">
+                    <div className="ch-tl-year">{item.year}</div>
+                    <div className="ch-tl-title">{item.title}</div>
+                    <div className="ch-tl-section-label">The challenge</div>
+                    <div className="ch-tl-body">{item.challenge}</div>
+                    <div className="ch-tl-section-label">What was introduced</div>
+                    <div className="ch-tl-body">{item.what}</div>
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
                 </div>
             ))}
         </div>
@@ -249,7 +249,7 @@ function PythonTab() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="decision_trees.py" lang="python" langLabel="Python" />
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Key hyperparameters:</strong> <code>max_depth</code> controls tree complexity (deeper → more overfitting). <code>min_samples_leaf</code> prevents leaves with tiny, unreliable groups. In Random Forests, increase <code>n_estimators</code> until accuracy plateaus; <code>max_features</code> controls tree diversity.
             </div>
         </>
@@ -314,7 +314,7 @@ function CodeTab() {
                 Gini impurity and information gain are the core splitting criteria used by CART, C4.5, and every decision tree variant. This implementation shows the mechanics — scikit-learn's <code>DecisionTreeClassifier</code> handles multi-dimensional features and recursive tree construction.
             </p>
             <CodeBlock code={TS_CODE} filename="decision-trees.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Next step:</strong> A full recursive tree builder would call <code>bestSplit</code> on every feature, pick the best (feature, threshold) pair, split the data, and recurse on each child. Stop when <code>max_depth</code> is reached, <code>giniImpurity</code> is zero, or <code>n_samples &lt; min_samples_leaf</code>.
             </div>
         </>

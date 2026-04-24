@@ -44,17 +44,17 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch2-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
-                <div key={item.year} className="ch2-tl-item">
-                    <div className="ch2-tl-year">{item.year}</div>
-                    <div className="ch2-tl-title">{item.title}</div>
-                    <div className="ch2-tl-section-label">The challenge</div>
-                    <div className="ch2-tl-body">{item.challenge}</div>
-                    <div className="ch2-tl-section-label">What was introduced</div>
-                    <div className="ch2-tl-body">{item.what}</div>
-                    <div className="ch2-tl-section-label">Why it mattered</div>
-                    <div className="ch2-tl-body ch2-tl-impact">{item.impact}</div>
+                <div key={item.year} className="ch-tl-item">
+                    <div className="ch-tl-year">{item.year}</div>
+                    <div className="ch-tl-title">{item.title}</div>
+                    <div className="ch-tl-section-label">The challenge</div>
+                    <div className="ch-tl-body">{item.challenge}</div>
+                    <div className="ch-tl-section-label">What was introduced</div>
+                    <div className="ch-tl-body">{item.what}</div>
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
                 </div>
             ))}
         </div>
@@ -273,7 +273,7 @@ function PythonTab() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="ensembles.py" lang="python" langLabel="Python" />
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Tuning tips:</strong> For Random Forests, increase <code>n_estimators</code> until OOB error plateaus (never hurts to add more trees, just slower). For GBM, lower <code>learning_rate</code> and increase <code>n_estimators</code> proportionally — more, smaller steps generalise better. Use <code>early_stopping_rounds</code> in XGBoost/LightGBM to avoid over-boosting.
             </div>
         </>
@@ -350,7 +350,7 @@ function CodeTab() {
                 Bagging and AdaBoost weight update in TypeScript. Both algorithms are simple in isolation — the power comes from their theoretical guarantees about variance reduction and loss minimisation.
             </p>
             <CodeBlock code={TS_CODE} filename="ensembles.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Real-world note:</strong> Use <code>xgboost</code> or <code>lightgbm</code> Python packages for production ensemble models — they're 10–100× faster than scikit-learn's GBM due to histogram-based split finding, parallelised tree construction, and cache-aware data access patterns.
             </div>
         </>

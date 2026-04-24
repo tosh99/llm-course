@@ -14,11 +14,13 @@ import type { TabId, TopicId } from "./types"
 export function Chapter20Page() {
     const [activeTopic, setActiveTopic] = useState<TopicId>("instructgpt")
     const [activeTab, setActiveTab] = useState<TabId>("history")
+    const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const contentRef = useRef<HTMLDivElement>(null)
 
     const topic = TOPIC_META[activeTopic]
-    const topicLabel = TOPICS.find((t) => t.id === activeTopic)?.label ?? ""
-    const isReady = TOPICS.find((t) => t.id === activeTopic)?.ready ?? false
+    const activeTopicEntry = TOPICS.find((t) => t.id === activeTopic)
+    const topicLabel = activeTopicEntry?.label ?? ""
+    const isReady = activeTopicEntry?.ready ?? false
 
     useEffect(() => {
         if (!contentRef.current || !window.renderMathInElement) return
@@ -33,6 +35,12 @@ export function Chapter20Page() {
 
     const categories = [...new Set(TOPICS.map((t) => t.category))]
 
+    const selectTopic = (id: TopicId) => {
+        setActiveTopic(id)
+        setActiveTab("history")
+        setMobileNavOpen(false)
+    }
+
     const tabContent: Record<TopicId, React.ReactNode> = {
         instructgpt:       INSTRUCTGPT_TABS[activeTab],
         sft:               SFT_TABS[activeTab],
@@ -42,55 +50,62 @@ export function Chapter20Page() {
     }
 
     return (
-        <div className="ch20">
+        <div className="ch">
             {/* ── Header ── */}
-            <header className="ch20-header">
-                <span className="ch20-header-chapter">Ch. 20</span>
-                <div className="ch20-header-sep" />
-                <span className="ch20-header-title">Instruction Tuning &amp; RLHF</span>
+            <header className="ch-header">
+                <span className="ch-header-chapter">Ch. 20</span>
+                <div className="ch-header-sep" />
+                <span className="ch-header-title">Instruction Tuning &amp; RLHF</span>
                 <Link to="/" style={{ textDecoration: "none" }}>
-                    <span className="ch20-header-badge">ML → LLM Course</span>
+                    <span className="ch-header-badge">ML → LLM Course</span>
                 </Link>
             </header>
-
             {/* ── Sidebar ── */}
-            <nav className="ch20-sidebar">
-                {categories.map((cat, ci) => (
-                    <div key={cat}>
-                        {ci > 0 && <div className="ch20-sidebar-divider" />}
-                        <div className="ch20-sidebar-label">{cat}</div>
-                        {TOPICS.filter((t) => t.category === cat).map((t) => (
-                            <div
-                                key={t.id}
-                                className={`ch20-nav-item${activeTopic === t.id ? " active" : ""}`}
-                                onClick={() => {
-                                    setActiveTopic(t.id)
-                                    setActiveTab("history")
-                                }}
-                            >
-                                <span className="ch20-nav-icon">{t.icon}</span>
-                                {t.label}
-                                <span className="ch20-nav-dot" />
-                            </div>
-                        ))}
-                    </div>
-                ))}
+            <nav className="ch-sidebar">
+                <button
+                    className={`ch-mobile-toggle${mobileNavOpen ? " open" : ""}`}
+                    onClick={() => setMobileNavOpen((v) => !v)}
+                >
+                    <span className="ch-nav-icon">{activeTopicEntry?.icon}</span>
+                    <span>{topicLabel}</span>
+                    <span className="ch-mobile-chevron">▾</span>
+                </button>
+
+                <div className={`ch-sidebar-items${mobileNavOpen ? " open" : ""}`}>
+                    {categories.map((cat, ci) => (
+                        <div key={cat}>
+                            {ci > 0 && <div className="ch-sidebar-divider" />}
+                            <div className="ch-sidebar-label">{cat}</div>
+                            {TOPICS.filter((t) => t.category === cat).map((t) => (
+                                <div
+                                    key={t.id}
+                                    className={`ch-nav-item${activeTopic === t.id ? " active" : ""}`}
+                                    onClick={() => selectTopic(t.id)}
+                                >
+                                    <span className="ch-nav-icon">{t.icon}</span>
+                                    {t.label}
+                                    <span className="ch-nav-dot" />
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
             </nav>
 
             {/* ── Main ── */}
-            <main className="ch20-main">
+            <main className="ch-main">
                 {/* Topic header */}
-                <div className="ch20-topic-header">
-                    <div className="ch20-eyebrow">{topic.eyebrow}</div>
-                    <div className="ch20-topic-title">{topicLabel}</div>
-                    <div className="ch20-topic-subtitle">{topic.subtitle}</div>
+                <div className="ch-topic-header">
+                    <div className="ch-eyebrow">{topic.eyebrow}</div>
+                    <div className="ch-topic-title">{topicLabel}</div>
+                    <div className="ch-topic-subtitle">{topic.subtitle}</div>
 
                     {/* Tabs */}
-                    <div className="ch20-tabs">
+                    <div className="ch-tabs">
                         {TABS.map((tab) => (
                             <button
                                 key={tab.id}
-                                className={`ch20-tab-btn${activeTab === tab.id ? " active" : ""}`}
+                                className={`ch-tab-btn${activeTab === tab.id ? " active" : ""}`}
                                 onClick={() => setActiveTab(tab.id)}
                             >
                                 {tab.label}
@@ -101,18 +116,18 @@ export function Chapter20Page() {
 
                 {/* Content */}
                 <div
-                    className="ch20-content ch20-fade"
+                    className="ch-content ch-fade"
                     ref={contentRef}
                     key={`${activeTopic}-${activeTab}`}
                 >
                     {isReady ? (
                         tabContent[activeTopic] ?? (
-                            <div className="ch20-coming-soon">
+                            <div className="ch-coming-soon">
                                 Content for <strong>{topicLabel}</strong> is coming soon.
                             </div>
                         )
                     ) : (
-                        <div className="ch20-coming-soon">
+                        <div className="ch-coming-soon">
                             Content for <strong>{topicLabel}</strong> is coming soon.
                         </div>
                     )}

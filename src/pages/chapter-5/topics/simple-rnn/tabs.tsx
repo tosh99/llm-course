@@ -13,15 +13,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch5-tl-item">
-            <div className="ch5-tl-year">{item.year}</div>
-            <div className="ch5-tl-title">{item.title}</div>
-            <div className="ch5-tl-section-label">The context</div>
-            <div className="ch5-tl-body">{item.challenge}</div>
-            <div className="ch5-tl-section-label">What was introduced</div>
-            <div className="ch5-tl-body">{item.what}</div>
-            <div className="ch5-tl-section-label">Why it mattered</div>
-            <div className="ch5-tl-body ch5-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The context</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -76,7 +76,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch5-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -158,9 +158,9 @@ function HighSchoolTab() {
                 the number of steps k. After 20 steps, the gradient might be on the order of 10<sup>-12</sup> — effectively zero.
             </p>
 
-            <hr className="ch5-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>The geometric picture:</strong> The hidden state space in a simple RNN is like a room with echoes. Information you inject at step 1 echoes louder and louder as it bounces off the walls — but every bounce also distorts it. After too many bounces, the echo becomes pure noise. LSTMs solve this by building a hallway (the cell state) where echoes travel unchanged — they just pass through.
             </div>
         </>
@@ -219,7 +219,7 @@ function MathsTab() {
                 and f<sub>t</sub> ≈ 0 for discarded information.
             </p>
 
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Key theorem (Hochreiter, 1991):</strong> A standard RNN with sigmoid or tanh activations
                 cannot learn long-range dependencies because the gradient of the loss with respect to
                 early parameters decays exponentially in the distance between that parameter's time step
@@ -347,7 +347,7 @@ function PythonTab() {
                 in modern PyTorch/TensorFlow traces back to these equations.
             </p>
             <CodeBlock code={PY_CODE} filename="rnn_numpy.py" lang="python" langLabel="Python" />
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Note:</strong> In production, you would use <code>torch.nn.RNN</code> or
                 <code>torch.nn.LSTM</code> which handle gradient clipping, cuDNN acceleration,
                 and variable-length sequences. But the equations above are exactly what those
@@ -462,7 +462,7 @@ function CodeTab() {
                 demo shows exactly why LSTMs solve what plain RNNs cannot.
             </p>
             <CodeBlock code={TS_CODE} filename="rnn_lstm.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch5-callout">
+            <div className="ch-callout">
                 <strong>Historical note:</strong> In 1997, Hochreiter &amp; Schmidhuber implemented
                 LSTM in C on specialized hardware. Training a model that today runs in milliseconds
                 on a phone took days on a workstation. The key mathematical insight — a linear

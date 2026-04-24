@@ -92,9 +92,9 @@ function HighSchoolTab() {
                 Prevents dead neurons by allowing a small gradient (typically α=0.01) for negative inputs.
             </p>
 
-            <hr className="ch4-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>Rule of thumb (pre-2015):</strong> use tanh in hidden layers for symmetric zero-centered activations.
                 <strong>Rule of thumb (2015–present):</strong> default to ReLU. Only use sigmoid for binary classification output layers.
             </div>
@@ -131,7 +131,7 @@ function MathsTab() {
                 The ReLU's derivative is 0 for x &lt; 0 (dead region) and 1 for x &gt; 0 (active region). At x = 0, it's undefined — in practice, subgradient <InlineMath tex="\partial f(0)/\partial x \in [0, 1]" /> (commonly set to 0).
             </p>
 
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>Why ReLU helps:</strong> positive inputs pass gradients unchanged (no vanishing for active neurons), and the function is computationally trivial. The combination of non-saturation and speed is why it replaced sigmoid/tanh so quickly.
             </div>
         </>
@@ -187,7 +187,7 @@ function PythonTab() {
                 visually obvious: sigmoid's gradient collapses for |x| &gt; 3.
             </p>
             <CodeBlock code={PY_CODE} filename="activations.py" lang="python" langLabel="Python" />
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>What to look for in the gradient plot:</strong> sigmoid's gradient approaches
                 zero for large |x|, while ReLU's is either 0 (dead) or 1 (active). Leaky ReLU
                 maintains a small positive gradient even for negative inputs.
@@ -242,7 +242,7 @@ function CodeTab() {
                 No libraries — just elementary math.
             </p>
             <CodeBlock code={TS_CODE} filename="activations.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>Key observation:</strong> for x = 5, sigmoid's gradient is ~0.0067 — 67× smaller
                 than ReLU's gradient of 1. In a 10-layer network, that 0.0067<sup>10</sup> ≈ 10<sup>−18</sup>
                 — effectively zero, making the first layers essentially untrainable with sigmoid.

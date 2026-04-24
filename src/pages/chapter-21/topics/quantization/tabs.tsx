@@ -16,49 +16,49 @@ function HistoryTab() {
                 and phones.
             </p>
 
-            <div className="ch21-timeline">
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">1990s</div>
-                    <div className="ch21-tl-section-label">Precedent</div>
-                    <div className="ch21-tl-title">Early Neural Net Quantization</div>
-                    <div className="ch21-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1990s</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">Early Neural Net Quantization</div>
+                    <div className="ch-tl-body">
                         Researchers in digital signal processing showed that weights could be
                         quantized to 8-bit integers with minimal accuracy loss. Fixed-point
                         arithmetic was common in embedded DSP chips, but the deep learning
                         community initially ignored these results.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Proved low-precision inference was feasible</div>
+                    <div className="ch-tl-impact">Impact: Proved low-precision inference was feasible</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">2016</div>
-                    <div className="ch21-tl-section-label">Milestone</div>
-                    <div className="ch21-tl-title">TensorRT and INT8 Inference</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016</div>
+                    <div className="ch-tl-section-label">Milestone</div>
+                    <div className="ch-tl-title">TensorRT and INT8 Inference</div>
+                    <div className="ch-tl-body">
                         NVIDIA introduced INT8 quantization support in TensorRT for CNN inference.
                         By calibrating on a small dataset to determine per-layer scale factors,
                         ResNet and VGG models could be compressed 4× with &lt;1% accuracy drop.
                         This was primarily for vision models; language models remained in FP16.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Brought quantization to production deep learning</div>
+                    <div className="ch-tl-impact">Impact: Brought quantization to production deep learning</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">2022 – 2023</div>
-                    <div className="ch21-tl-section-label">Breakthrough</div>
-                    <div className="ch21-tl-title">GPTQ, GGML, and llama.cpp</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022 – 2023</div>
+                    <div className="ch-tl-section-label">Breakthrough</div>
+                    <div className="ch-tl-title">GPTQ, GGML, and llama.cpp</div>
+                    <div className="ch-tl-body">
                         Frantar et al. introduced GPTQ, an approximate second-order method for
                         one-shot weight quantization. Simultaneously, Georgi Gerganov built
                         llama.cpp, demonstrating that LLaMA could run quantized to 4-bit on a
                         MacBook CPU in real time. The open-source community rushed to adopt these
                         tools, making local LLM inference ubiquitous.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Local LLM inference on consumer hardware became mainstream</div>
+                    <div className="ch-tl-impact">Impact: Local LLM inference on consumer hardware became mainstream</div>
                 </div>
             </div>
 
-            <div className="ch21-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Neural network weights have significant redundancy
                 in their precision. The information content of a weight matrix is far lower than
                 32 bits per parameter suggests. Quantization exploits this by mapping the continuous
@@ -128,8 +128,8 @@ function HighSchoolTab() {
                 quantization error in already-quantized weights.
             </p>
 
-            <hr className="ch21-sep" />
-            <div className="ch21-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> GPTQ quantizes LLaMA-65B to 4-bit in ~4 GPU-hours with
                 negligible perplexity degradation. llama.cpp runs LLaMA-7B at ~20 tokens/sec on
                 a MacBook Air M2 using 4-bit quantized weights.

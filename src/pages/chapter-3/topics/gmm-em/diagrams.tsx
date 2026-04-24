@@ -21,7 +21,7 @@ export function GMMDiagram() {
     const radii: [number, number][] = [[0.7,0.9],[0.8,0.7],[0.8,0.7]]
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch3-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <defs>
                 <marker id="gmm-ax" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto">
                     <polygon points="0 0,6 3,0 6" fill="#252535" />
@@ -99,7 +99,7 @@ export function EMStepsDiagram() {
     const by = 50
 
     return (
-        <svg viewBox={`0 0 ${w} ${h}`} className="ch3-diagram-svg">
+        <svg viewBox={`0 0 ${w} ${h}`} className="ch-diagram-svg">
             <rect width={w} height={h} fill="#0f0f14" rx="4" />
             <text x={12} y={14} fill="#3a3a50" fontSize="5.5" fontFamily="JetBrains Mono,monospace" letterSpacing="1">EM ALGORITHM — ITERATIVE STEPS</text>
 

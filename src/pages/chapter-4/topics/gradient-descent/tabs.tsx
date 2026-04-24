@@ -21,7 +21,7 @@ function HistoryTab() {
                 The modern standard: compute gradients over small batches (32–512 samples) rather than the full set or single samples. This balances gradient accuracy with computational efficiency (GPU parallelization) and provides regularization through noise. Every major deep learning framework uses mini-batch SGD as the default.
             </p>
 
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>Momentum (Polyak, 1964):</strong> add a velocity term to accumulate gradient direction — helps SGD carry through flat regions and dampens oscillations. The Nesterov variant (1983) looks ahead to where momentum will carry the weight before computing the gradient there.
             </div>
         </>
@@ -91,9 +91,9 @@ function HighSchoolTab() {
                 where <InlineMath tex="v" /> is the velocity (initially 0) and <InlineMath tex="\beta \in [0, 1)" /> (typically 0.9). Momentum accumulates an exponentially-weighted moving average of past gradients.
             </p>
 
-            <hr className="ch4-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>Learning rate schedule:</strong> start with a relatively high LR, then decrease it over time.
                 Common schedules: step decay (drop by factor every N epochs), cosine annealing, or warmup + constant.
             </div>
@@ -124,7 +124,7 @@ function MathsTab() {
                 Goyal et al. (2017) showed that for a fixed number of gradient updates, LR should scale linearly with batch size: if you double B, you can roughly double η to maintain similar convergence behavior.
             </p>
 
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>Generalization mystery:</strong> large-batch SGD (thousands of samples per step) often converges to <em>sharp minima</em> with poor generalization, while small-batch SGD finds <em>flat minima</em> that generalize better. The noise in small-batch gradients acts as an implicit regularizer.
             </div>
         </>
@@ -247,7 +247,7 @@ function CodeTab() {
                 landscape. Pure math — no libraries needed.
             </p>
             <CodeBlock code={TS_CODE} filename="gradient_descent.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch4-callout">
+            <div className="ch-callout">
                 <strong>What to observe:</strong> momentum SGD converges much faster than vanilla SGD
                 (the momentum term carries it through flat regions), while batch GD converges most
                 smoothly but is slowest per step.

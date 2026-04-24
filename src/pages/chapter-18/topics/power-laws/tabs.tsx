@@ -16,26 +16,26 @@ function HistoryTab() {
                 speech, and protein folding.
             </p>
 
-            <div className="ch18-timeline">
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2017</div>
-                    <div className="ch18-tl-section-label">Precedent</div>
-                    <div className="ch18-tl-title">Hestness et al. — Deep Learning Scaling is Predictable</div>
-                    <div className="ch18-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">Hestness et al. — Deep Learning Scaling is Predictable</div>
+                    <div className="ch-tl-body">
                         Before language models, Hestness and colleagues at Baidu showed that
                         image classifiers, speech recognizers, and machine translation systems
                         all followed power-law scaling with training set size. Their key finding:
                         error rate ∝ D<sup>−β</sup> over multiple orders of magnitude, with β
                         depending on the task but not on model architecture.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Established that power-law scaling is a general deep-learning phenomenon</div>
+                    <div className="ch-tl-impact">Impact: Established that power-law scaling is a general deep-learning phenomenon</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2020</div>
-                    <div className="ch18-tl-section-label">Characterization</div>
-                    <div className="ch18-tl-title">Kaplan et al. — Three Interacting Power Laws</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020</div>
+                    <div className="ch-tl-section-label">Characterization</div>
+                    <div className="ch-tl-title">Kaplan et al. — Three Interacting Power Laws</div>
+                    <div className="ch-tl-body">
                         Kaplan showed that language model loss is governed by three distinct
                         power laws — one for parameters N, one for data D, and one for compute
                         C — with exponents α<sub>N</sub> ≈ 0.076, α<sub>D</sub> ≈ 0.095, and
@@ -44,14 +44,14 @@ function HistoryTab() {
                         improvements, but those improvements compound across enough orders of
                         magnitude to produce transformative capabilities.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Quantified the "bitter lesson" — scale beats architecture</div>
+                    <div className="ch-tl-impact">Impact: Quantified the "bitter lesson" — scale beats architecture</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2021</div>
-                    <div className="ch18-tl-section-label">Extension</div>
-                    <div className="ch18-tl-title">Henighan et al. — Scaling Laws for Transfer</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2021</div>
+                    <div className="ch-tl-section-label">Extension</div>
+                    <div className="ch-tl-title">Henighan et al. — Scaling Laws for Transfer</div>
+                    <div className="ch-tl-body">
                         OpenAI researchers extended scaling laws to the transfer setting. They
                         found that fine-tuning loss on a downstream task also follows a power law
                         in pre-training compute, with a steeper exponent than the pre-training
@@ -59,11 +59,11 @@ function HistoryTab() {
                         from scratch — a small amount of pre-training compute yields
                         disproportionately large downstream gains.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Justified massive pre-training budgets even for narrow applications</div>
+                    <div className="ch-tl-impact">Impact: Justified massive pre-training budgets even for narrow applications</div>
                 </div>
             </div>
 
-            <div className="ch18-callout">
+            <div className="ch-callout">
                 <strong>The deeper pattern:</strong> Power-law scaling suggests that neural
                 networks are approximating some underlying structure of natural data distributions.
                 The exponent may reflect the intrinsic dimensionality or smoothness of the data
@@ -145,8 +145,8 @@ function HighSchoolTab() {
                 an undersized model will underfit no matter how much data you feed it.
             </p>
 
-            <hr className="ch18-sep" />
-            <div className="ch18-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Diminishing returns:</strong> A power law with exponent 0.07 means that
                 to cut the loss in half, you need to increase resources by 2<sup>1/0.07</sup> ≈
                 1000×. That is why GPT-3 is 100× larger than GPT-2, but its loss only improved
@@ -217,7 +217,7 @@ function MathsTab() {
                 motivates ongoing work at the intersection of physics and machine learning.
             </p>
 
-            <div className="ch18-callout">
+            <div className="ch-callout">
                 <strong>Breaking the power law:</strong> Power laws cannot continue forever.
                 Eventually, you run out of data, hit hardware limits, or reach the irreducible
                 entropy of the task. The key question for the 2020s is: where does the power law

@@ -15,12 +15,12 @@ function HistoryTab() {
                 by noisy, high-curvature loss surfaces.
             </p>
 
-            <div className="ch9-timeline">
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">1964</div>
-                    <div className="ch9-tl-section-label">Origin</div>
-                    <div className="ch9-tl-title">Polyak's Heavy Ball Method</div>
-                    <div className="ch9-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1964</div>
+                    <div className="ch-tl-section-label">Origin</div>
+                    <div className="ch-tl-title">Polyak's Heavy Ball Method</div>
+                    <div className="ch-tl-body">
                         Boris Polyak introduced the <em>heavy ball method</em> in his 1964 paper
                         "Some methods of speeding up the convergence of iteration methods." The update
                         rule v<sub>t</sub> = γv<sub>t-1</sub> + η∇L(θ) accumulates gradient history,
@@ -28,14 +28,14 @@ function HistoryTab() {
                         oscillations in inconsistent ones. The momentum coefficient γ was typically
                         set to 0.9 — meaning 90% of the previous velocity is retained at each step.
                     </div>
-                    <div className="ch9-tl-impact">Impact: First rigorous formulation of momentum for numerical optimization</div>
+                    <div className="ch-tl-impact">Impact: First rigorous formulation of momentum for numerical optimization</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">1983</div>
-                    <div className="ch9-tl-section-label">Theoretical Advance</div>
-                    <div className="ch9-tl-title">Nesterov Accelerated Gradient</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1983</div>
+                    <div className="ch-tl-section-label">Theoretical Advance</div>
+                    <div className="ch-tl-title">Nesterov Accelerated Gradient</div>
+                    <div className="ch-tl-body">
                         Yurii Nesterov published "A method for solving convex programming problem with
                         convergence rate O(1/k²)," achieving the optimal convergence rate for first-order
                         methods on smooth convex functions. His key insight: instead of computing the
@@ -44,14 +44,14 @@ function HistoryTab() {
                         gradient is more informative because it evaluates the gradient after the momentum
                         step, allowing the optimizer to correct course before it overshoots.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Optimal O(1/k²) convergence — theoretical gold standard for convex optimization</div>
+                    <div className="ch-tl-impact">Impact: Optimal O(1/k²) convergence — theoretical gold standard for convex optimization</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">1986</div>
-                    <div className="ch9-tl-section-label">Neural Networks</div>
-                    <div className="ch9-tl-title">Momentum in Backpropagation — Rumelhart et al.</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1986</div>
+                    <div className="ch-tl-section-label">Neural Networks</div>
+                    <div className="ch-tl-title">Momentum in Backpropagation — Rumelhart et al.</div>
+                    <div className="ch-tl-body">
                         Rumelhart, Hinton, and Williams' famous backpropagation paper "Learning
                         representations by back-propagating errors" included momentum as a standard
                         part of the training recipe. Momentum was essential for navigating the
@@ -60,14 +60,14 @@ function HistoryTab() {
                         curvature, while momentum damped these oscillations and accelerated progress
                         toward flat minima.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Established momentum as standard practice in neural network training</div>
+                    <div className="ch-tl-impact">Impact: Established momentum as standard practice in neural network training</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2013</div>
-                    <div className="ch9-tl-section-label">Deep Learning Validation</div>
-                    <div className="ch9-tl-title">Sutskever et al. — Nesterov is crucial for deep nets</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013</div>
+                    <div className="ch-tl-section-label">Deep Learning Validation</div>
+                    <div className="ch-tl-title">Sutskever et al. — Nesterov is crucial for deep nets</div>
+                    <div className="ch-tl-body">
                         Ilya Sutskever, James Martens, George Dahl, and Geoffrey Hinton published
                         "On the importance of initialization and momentum in deep learning," which
                         demonstrated that with careful initialization, Nesterov momentum could match
@@ -76,11 +76,11 @@ function HistoryTab() {
                         learning — and made a strong case that the choice of momentum type (classical
                         vs. Nesterov) matters significantly in non-convex settings.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Validated Nesterov as the momentum of choice for modern deep learning</div>
+                    <div className="ch-tl-impact">Impact: Validated Nesterov as the momentum of choice for modern deep learning</div>
                 </div>
             </div>
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>Legacy:</strong> Momentum remains the foundation of every modern optimizer.
                 Adam, AdaGrad, RMSProp — all incorporate momentum in their first-moment estimate.
                 Even when practitioners use Adam, they are implicitly using a variant of momentum
@@ -183,8 +183,8 @@ function HighSchoolTab() {
                 informative for the actual update direction.
             </p>
 
-            <hr className="ch9-sep" />
-            <div className="ch9-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Why Nesterov is better:</strong> On a convex function, Nesterov achieves
                 O(1/k²) convergence compared to O(1/k) for plain gradient descent.
                 Intuitively: if you know you're about to overshoot a minimum, computing the
@@ -251,7 +251,7 @@ function MathsTab() {
                 equivalent updates.
             </p>
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>Non-convex setting:</strong> In deep learning, loss surfaces are highly
                 non-convex. The theoretical guarantees above apply to convex functions, but
                 momentum still empirically helps by: (1) dampening gradient noise through

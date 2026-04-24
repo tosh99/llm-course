@@ -16,26 +16,26 @@ function HistoryTab() {
                 of model size, dataset size, and compute.
             </p>
 
-            <div className="ch18-timeline">
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2018 – 2019</div>
-                    <div className="ch18-tl-section-label">Predecessors</div>
-                    <div className="ch18-tl-title">Hints from smaller-scale experiments</div>
-                    <div className="ch18-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018 – 2019</div>
+                    <div className="ch-tl-section-label">Predecessors</div>
+                    <div className="ch-tl-title">Hints from smaller-scale experiments</div>
+                    <div className="ch-tl-body">
                         Early work on scaling neural networks showed that wider and deeper models
                         tended to perform better, but the relationship was murky. Hestness et al.
                         (2017) observed power-law scaling in vision and translation tasks, but
                         no one had systematically characterized language model scaling across
                         orders of magnitude.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Suggested that predictable scaling might be universal</div>
+                    <div className="ch-tl-impact">Impact: Suggested that predictable scaling might be universal</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2020</div>
-                    <div className="ch18-tl-section-label">Discovery</div>
-                    <div className="ch18-tl-title">Kaplan et al. — Scaling Laws for Neural Language Models</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020</div>
+                    <div className="ch-tl-section-label">Discovery</div>
+                    <div className="ch-tl-title">Kaplan et al. — Scaling Laws for Neural Language Models</div>
+                    <div className="ch-tl-body">
                         Kaplan and colleagues at OpenAI trained models ranging from 1.5M to 1.5B
                         parameters on web text. They discovered that cross-entropy loss scales as
                         a power law in each of three factors — model parameters N, dataset size D,
@@ -43,39 +43,39 @@ function HistoryTab() {
                         key insight: you can predict the final loss of a large model by fitting a
                         curve on small models, then extrapolating.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Made billion-dollar training runs economically justifiable</div>
+                    <div className="ch-tl-impact">Impact: Made billion-dollar training runs economically justifiable</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2020 – 2022</div>
-                    <div className="ch18-tl-section-label">Validation</div>
-                    <div className="ch18-tl-title">GPT-3, Gopher, and Megatron-Turing validate the curves</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020 – 2022</div>
+                    <div className="ch-tl-section-label">Validation</div>
+                    <div className="ch-tl-title">GPT-3, Gopher, and Megatron-Turing validate the curves</div>
+                    <div className="ch-tl-body">
                         GPT-3 (175B parameters) landed almost exactly on the loss predicted by
                         Kaplan's scaling laws. Google's Gopher (280B) and NVIDIA's Megatron-Turing
                         (530B) further confirmed the trends, though subtle deviations began to
                         appear at the largest scales. The laws were not perfect, but they were
                         good enough to guide billion-dollar decisions.
                     </div>
-                    <div className="ch18-tl-impact">Impact: Scaling laws became the central planning tool of the LLM industry</div>
+                    <div className="ch-tl-impact">Impact: Scaling laws became the central planning tool of the LLM industry</div>
                 </div>
 
-                <div className="ch18-tl-item">
-                    <div className="ch18-tl-year">2022 – Present</div>
-                    <div className="ch18-tl-section-label">Refinement</div>
-                    <div className="ch18-tl-title">Chinchilla and beyond</div>
-                    <div className="ch18-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022 – Present</div>
+                    <div className="ch-tl-section-label">Refinement</div>
+                    <div className="ch-tl-title">Chinchilla and beyond</div>
+                    <div className="ch-tl-body">
                         DeepMind's Chinchilla paper (2022) showed that Kaplan's laws had
                         systematically under-estimated the value of training data. Modern models
                         like GPT-4, Claude, and Gemini are trained with far more tokens per
                         parameter than Kaplan recommended, following the Chinchilla-optimal
                         compute budget instead.
                     </div>
-                    <div className="ch18-tl-impact">Impact: A 70B model trained on 1.4T tokens can beat a 280B model trained on 300B</div>
+                    <div className="ch-tl-impact">Impact: A 70B model trained on 1.4T tokens can beat a 280B model trained on 300B</div>
                 </div>
             </div>
 
-            <div className="ch18-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Language model performance is not magic. It is
                 a smooth, deterministic function of resources. If you know the power-law exponents,
                 you can answer questions like "Should I double my model size or my dataset?" before
@@ -151,7 +151,7 @@ function HighSchoolTab() {
             </p>
             <MathBlock tex="L(N, D) = \left(\frac{N_c}{N}\right)^{\alpha_N} + \left(\frac{D_c}{D}\right)^{\alpha_D} + L_\infty" />
 
-            <div className="ch18-callout">
+            <div className="ch-callout">
                 <strong>Key takeaway:</strong> Because α<sub>D</sub> &gt; α<sub>N</sub>, data is
                 slightly more valuable than parameters per FLOP. However, Kaplan's original paper
                 recommended training models with roughly 20 tokens per parameter, which was later
@@ -210,7 +210,7 @@ function MathsTab() {
                 <em>equally</em> — exponents near 0.5 for each.
             </p>
 
-            <div className="ch18-callout">
+            <div className="ch-callout">
                 <strong>Practical formula:</strong> The modern consensus is D ≈ 20N for
                 compute-optimal training. A 7B parameter model should see ~140B tokens, and a 70B
                 model should see ~1.4T tokens. Most early LLMs were severely under-trained.

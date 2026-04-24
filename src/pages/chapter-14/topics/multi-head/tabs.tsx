@@ -14,12 +14,12 @@ function HistoryTab() {
                 sentiment. Multi-head attention was designed to let the model do the same.
             </p>
 
-            <div className="ch14-timeline">
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2014 – 2016</div>
-                    <div className="ch14-tl-section-label">Predecessor</div>
-                    <div className="ch14-tl-title">Single-Score Attention in RNNs</div>
-                    <div className="ch14-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014 – 2016</div>
+                    <div className="ch-tl-section-label">Predecessor</div>
+                    <div className="ch-tl-title">Single-Score Attention in RNNs</div>
+                    <div className="ch-tl-body">
                         Bahdanau and Luong attention computed a single relevance score per
                         source token. This worked well for alignment in machine translation,
                         but a single vector dot product can only capture one type of relationship
@@ -27,14 +27,14 @@ function HistoryTab() {
                         tense simultaneously would have to squeeze both tasks into the same
                         attention distribution.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Showed attention works, but one head is limiting</div>
+                    <div className="ch-tl-impact">Impact: Showed attention works, but one head is limiting</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2017</div>
-                    <div className="ch14-tl-section-label">Invention</div>
-                    <div className="ch14-tl-title">Vaswani et al. — Multi-Head Attention</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Vaswani et al. — Multi-Head Attention</div>
+                    <div className="ch-tl-body">
                         The Transformer paper introduced multi-head attention as a way to run
                         h independent attention operations in parallel, each with its own
                         learned projections. The outputs are concatenated and projected once
@@ -43,39 +43,39 @@ function HistoryTab() {
                         a Transformer learns multiple attention heads to detect different
                         linguistic relationships.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Enabled the model to jointly attend to information from different representation subspaces</div>
+                    <div className="ch-tl-impact">Impact: Enabled the model to jointly attend to information from different representation subspaces</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2019</div>
-                    <div className="ch14-tl-section-label">Analysis</div>
-                    <div className="ch14-tl-title">Voita et al. — Analyzing Multi-Head Self-Attention</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019</div>
+                    <div className="ch-tl-section-label">Analysis</div>
+                    <div className="ch-tl-title">Voita et al. — Analyzing Multi-Head Self-Attention</div>
+                    <div className="ch-tl-body">
                         Elena Voita and colleagues at the University of Edinburgh showed that
                         different heads specialize: some attend to adjacent tokens (syntax),
                         some attend to distant coreferent mentions (semantics), and some attend
                         to fixed positions (positional bias). They also found that many heads
                         are redundant and can be pruned with minimal accuracy loss.
                     </div>
-                    <div className="ch14-tl-impact">Impact: Empirically validated the "specialized heads" hypothesis</div>
+                    <div className="ch-tl-impact">Impact: Empirically validated the "specialized heads" hypothesis</div>
                 </div>
 
-                <div className="ch14-tl-item">
-                    <div className="ch14-tl-year">2020 – 2024</div>
-                    <div className="ch14-tl-section-label">Evolution</div>
-                    <div className="ch14-tl-title">Multi-Query and Grouped-Query Attention</div>
-                    <div className="ch14-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020 – 2024</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">Multi-Query and Grouped-Query Attention</div>
+                    <div className="ch-tl-body">
                         To reduce memory bandwidth during autoregressive decoding, researchers
                         introduced Multi-Query Attention (MQA), where all heads share a single
                         Key and Value projection. Grouped-Query Attention (GQA) is a middle
                         ground, grouping heads to share K/V projections. These variants trade
                         a small amount of expressivity for significant inference speedups.
                     </div>
-                    <div className="ch14-tl-impact">Impact: MQA and GQA are now standard in production LLMs like LLaMA and Mistral</div>
+                    <div className="ch-tl-impact">Impact: MQA and GQA are now standard in production LLMs like LLaMA and Mistral</div>
                 </div>
             </div>
 
-            <div className="ch14-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> A single attention distribution is a
                 bottleneck. By splitting the model's representational space into h subspaces
                 and attending independently in each, the model can learn diverse relational
@@ -161,8 +161,8 @@ function HighSchoolTab() {
                 parameters are in W<sup>O</sup> ∈ ℝ<sup>d<sub>model</sub> × d<sub>model</sub></sup>.
             </p>
 
-            <hr className="ch14-sep" />
-            <div className="ch14-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Head specialization:</strong> In practice, different heads do specialize.
                 Some heads attend broadly to the next or previous token (local syntax). Others
                 attend to specific semantic relationships, like subject-verb agreement or
@@ -220,7 +220,7 @@ function MathsTab() {
                 speed but <em>representational diversity</em>.
             </p>
 
-            <div className="ch14-callout">
+            <div className="ch-callout">
                 <strong>Why concatenate and not add?</strong> Concatenation preserves the
                 information from each head in distinct slots. The output projection W<sup>O</sup>
                 learns to mix these slots. If we added instead, heads would interfere destructively

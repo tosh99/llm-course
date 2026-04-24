@@ -15,12 +15,12 @@ function HistoryTab() {
                 the feature dimension rather than the batch dimension.
             </p>
 
-            <div className="ch9-timeline">
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2015</div>
-                    <div className="ch9-tl-section-label">The Problem with BatchNorm</div>
-                    <div className="ch9-tl-title">BatchNorm breaks for RNNs and small batches</div>
-                    <div className="ch9-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">The Problem with BatchNorm</div>
+                    <div className="ch-tl-title">BatchNorm breaks for RNNs and small batches</div>
+                    <div className="ch-tl-body">
                         BatchNorm requires a large batch to compute reliable statistics. In an RNN,
                         the sequence length varies between examples, making it impossible to normalize
                         across a batch at each timestep. At inference time with batch size 1, the
@@ -28,14 +28,14 @@ function HistoryTab() {
                         normalization meaningless. BatchNorm's design assumptions were fundamentally
                         incompatible with the recurrent setting.
                     </div>
-                    <div className="ch9-tl-impact">Context: BatchNorm revolutionized CNNs but could not be applied to RNNs or NLP</div>
+                    <div className="ch-tl-impact">Context: BatchNorm revolutionized CNNs but could not be applied to RNNs or NLP</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2016</div>
-                    <div className="ch9-tl-section-label">Solution</div>
-                    <div className="ch9-tl-title">Layer Normalization — Ba, Kiros, Hinton (2016)</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016</div>
+                    <div className="ch-tl-section-label">Solution</div>
+                    <div className="ch-tl-title">Layer Normalization — Ba, Kiros, Hinton (2016)</div>
+                    <div className="ch-tl-body">
                         The fix: instead of normalizing over the batch dimension for each feature,
                         normalize over the feature dimension for each example. For a hidden state
                         h ∈ ℝ<sup>H</sup>, compute mean and variance across the H features —
@@ -44,14 +44,14 @@ function HistoryTab() {
                         demonstrated LayerNorm improved training stability and final performance for
                         RNNs on machine translation, reading comprehension, and order-agnostic tasks.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Made normalization viable for RNNs; later became the standard for Transformers</div>
+                    <div className="ch-tl-impact">Impact: Made normalization viable for RNNs; later became the standard for Transformers</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2017–present</div>
-                    <div className="ch9-tl-section-label">Transformer Era</div>
-                    <div className="ch9-tl-title">LayerNorm as the Transformer standard</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017–present</div>
+                    <div className="ch-tl-section-label">Transformer Era</div>
+                    <div className="ch-tl-title">LayerNorm as the Transformer standard</div>
+                    <div className="ch-tl-body">
                         "Attention Is All You Need" (Vaswani et al., 2017) used LayerNorm throughout
                         the Transformer architecture — after each sub-layer (attention and FFN).
                         Every major language model since then — BERT, GPT-2, GPT-3, LLaMA, Claude —
@@ -59,11 +59,11 @@ function HistoryTab() {
                         each sub-layer rather than after) became standard in large model training
                         due to better gradient flow in early training.
                     </div>
-                    <div className="ch9-tl-impact">Impact: The normalization layer in every major Transformer and LLM</div>
+                    <div className="ch-tl-impact">Impact: The normalization layer in every major Transformer and LLM</div>
                 </div>
             </div>
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>RMSNorm:</strong> A simplified variant — Root Mean Square Layer Normalization
                 (Zhang & Sennrich, 2019) — removes the mean subtraction: ŷ<sub>i</sub> = y<sub>i</sub>/RMS(y),
                 RMS = √(1/H Σy<sub>i</sub>²). LLaMA and many modern LLMs use RMSNorm for its
@@ -155,9 +155,9 @@ function HighSchoolTab() {
             </p>
             <MathBlock tex="x \leftarrow x + \text{Sublayer}(\text{LayerNorm}(x))" />
 
-            <hr className="ch9-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>No running statistics needed:</strong> Unlike BatchNorm, LayerNorm computes
                 statistics fresh for each example, at every step. There are no "running mean" or
                 "running variance" buffers to maintain. This makes LayerNorm simpler to implement
@@ -213,7 +213,7 @@ function MathsTab() {
                 Empirically matches LayerNorm performance while being computationally cheaper.
             </p>
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>Pre-LN vs Post-LN stability:</strong> Post-LN (original Transformer)
                 places LayerNorm after residual connections: x + Sublayer(x) → LN(...).
                 Pre-LN places it before: x + Sublayer(LN(x)). Pre-LN preserves the magnitude

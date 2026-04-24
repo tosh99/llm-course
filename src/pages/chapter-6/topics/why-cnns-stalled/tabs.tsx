@@ -16,41 +16,41 @@ function HistoryTab() {
 
             <h3>The Four Barriers</h3>
 
-            <div className="ch6-timeline">
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">Barrier 1</div>
-                    <div className="ch6-tl-title">Limited Compute</div>
-                    <div className="ch6-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Barrier 1</div>
+                    <div className="ch-tl-title">Limited Compute</div>
+                    <div className="ch-tl-body">
                         Training deep CNNs requires massive matrix operations. In the 1990s and 2000s,
                         CPUs were the only option. A modern ResNet-50 would take months to train on CPU.
                         GPUs, originally designed for graphics, would prove essential — but their general-purpose
                         computing capabilities (CUDA, 2006) were not yet mature.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">Barrier 2</div>
-                    <div className="ch6-tl-title">Scarcity of Labeled Data</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Barrier 2</div>
+                    <div className="ch-tl-title">Scarcity of Labeled Data</div>
+                    <div className="ch-tl-body">
                         LeNet worked because digits are simple and the MNIST dataset (60,000 examples)
                         was sufficient. Real-world images are far more complex and variable. There was no
                         ImageNet (14 million images, 21,000 categories) — collecting and labeling such data
                         was prohibitively expensive before crowdsourcing platforms like Amazon Mechanical Turk.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">Barrier 3</div>
-                    <div className="ch6-tl-title">Vanishing Gradients</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Barrier 3</div>
+                    <div className="ch-tl-title">Vanishing Gradients</div>
+                    <div className="ch-tl-body">
                         Training deep networks with sigmoid/tanh activations caused gradients to vanish
                         as they propagated backward. By the time updates reached early layers, they were
                         effectively zero. Techniques like ReLU (2010), batch normalization (2015), and better
                         initialization that would solve this problem were not yet discovered.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">Barrier 4</div>
-                    <div className="ch6-tl-title">Dominance of Feature Engineering</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Barrier 4</div>
+                    <div className="ch-tl-title">Dominance of Feature Engineering</div>
+                    <div className="ch-tl-body">
                         Computer vision researchers believed hand-crafted features (SIFT, HOG, SURF) were
                         superior to learned representations. The prevailing wisdom held that domain expertise
                         in designing features outweighed the benefits of end-to-end learning. LeCun's
@@ -68,7 +68,7 @@ function HistoryTab() {
                 shatter previous benchmarks.
             </p>
 
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>A Lesson in Timing</strong> — LeNet-5 was the right architecture but the wrong era.
                 Sometimes scientific breakthroughs depend as much on infrastructure (data, compute) as
                 on algorithmic insight. The "AI winter" of the 2000s wasn't a failure of ideas but
@@ -115,7 +115,7 @@ function KidTab() {
                 superhero suit was just a toy. They were wrong, but it took until 2012 to prove it!
             </Analogy>
 
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>The Happy Ending:</strong> By 2012, everything was ready! Fast computers (GPUs!),
                 millions of photos (ImageNet!), better learning tricks (ReLU!), and smart people who
                 were ready to try again. AlexNet won a big contest and everyone went: "Wow, the superhero
@@ -360,7 +360,7 @@ function PythonTab() {
                 and the computational explosion of training on large datasets.
             </p>
             <CodeBlock code={PY_CODE} filename="cnn_barriers.py" lang="python" langLabel="Python" />
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> ReLU maintains gradients for positive values, enabling
                 deep networks. Meanwhile, ImageNet-scale datasets require 20× more compute than
                 MNIST — feasible only with GPU acceleration.
@@ -496,7 +496,7 @@ function CodeTab() {
                 killed deep networks, and compute scaled linearly with dataset size.
             </p>
             <CodeBlock code={TS_CODE} filename="cnn_barriers.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>2012 was the inflection point:</strong> GPUs + ReLU + ImageNet + dropout
                 broke all four barriers simultaneously, enabling AlexNet's breakthrough.
             </div>

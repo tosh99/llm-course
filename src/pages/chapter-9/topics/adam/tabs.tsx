@@ -14,25 +14,25 @@ function HistoryTab() {
                 tracing the line of adaptive learning rate methods it synthesized.
             </p>
 
-            <div className="ch9-timeline">
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">1988</div>
-                    <div className="ch9-tl-section-label">Foundation</div>
-                    <div className="ch9-tl-title">Momentum — Polyak, Rumelhart et al.</div>
-                    <div className="ch9-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1988</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">Momentum — Polyak, Rumelhart et al.</div>
+                    <div className="ch-tl-body">
                         Momentum accumulates gradient history via an exponential moving average
                         (the first moment). This is the first step toward Adam: m<sub>t</sub> = β₁m<sub>t-1</sub> + (1−β₁)g<sub>t</sub>.
                         Adam's first moment is exactly this — the core momentum mechanism with a
                         specific bias-correction twist added later.
                     </div>
-                    <div className="ch9-tl-impact">Impact: First moment estimate — the foundation of Adam's momentum term</div>
+                    <div className="ch-tl-impact">Impact: First moment estimate — the foundation of Adam's momentum term</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2011</div>
-                    <div className="ch9-tl-section-label">Per-Parameter LR</div>
-                    <div className="ch9-tl-title">Adagrad — Duchi, Hazan, Singer</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2011</div>
+                    <div className="ch-tl-section-label">Per-Parameter LR</div>
+                    <div className="ch-tl-title">Adagrad — Duchi, Hazan, Singer</div>
+                    <div className="ch-tl-body">
                         Adagrad introduced per-parameter learning rates: infrequently updated
                         parameters receive larger steps; frequently updated ones receive smaller steps.
                         Update rule: θ<sub>t</sub> = θ<sub>t-1</sub> − η/√(G<sub>t</sub> + ε) · g<sub>t</sub>,
@@ -40,14 +40,14 @@ function HistoryTab() {
                         Fatal flaw: G<sub>t</sub> grows monotonically → effective learning rate
                         shrinks to zero. Excellent for sparse data (NLP), unusable for long training.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Established adaptive per-parameter learning rates; revealed the vanishing LR problem</div>
+                    <div className="ch-tl-impact">Impact: Established adaptive per-parameter learning rates; revealed the vanishing LR problem</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2012</div>
-                    <div className="ch9-tl-section-label">Fix for Adagrad</div>
-                    <div className="ch9-tl-title">RMSProp — Hinton (unpublished)</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2012</div>
+                    <div className="ch-tl-section-label">Fix for Adagrad</div>
+                    <div className="ch-tl-title">RMSProp — Hinton (unpublished)</div>
+                    <div className="ch-tl-body">
                         Geoffrey Hinton introduced RMSProp in his Coursera lecture notes (never
                         formally published). The fix: use an exponential moving average of squared
                         gradients instead of accumulating all of them.
@@ -56,14 +56,14 @@ function HistoryTab() {
                         old gradients are gradually "forgotten." Adam's second moment is exactly
                         RMSProp's estimate.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Fixed Adagrad's monotonic decay; became Adam's second moment</div>
+                    <div className="ch-tl-impact">Impact: Fixed Adagrad's monotonic decay; became Adam's second moment</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2014</div>
-                    <div className="ch9-tl-section-label">Synthesis</div>
-                    <div className="ch9-tl-title">Adam — Kingma & Ba (ICLR 2015)</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014</div>
+                    <div className="ch-tl-section-label">Synthesis</div>
+                    <div className="ch-tl-title">Adam — Kingma & Ba (ICLR 2015)</div>
+                    <div className="ch-tl-body">
                         Kingma and Ba combined momentum (first moment) and RMSProp (second moment),
                         adding a crucial insight: <em>bias correction</em>. Because both moments are
                         initialized at zero, the early estimates are biased toward zero. Adam divides
@@ -71,14 +71,14 @@ function HistoryTab() {
                         this. Defaults β₁=0.9, β₂=0.999, ε=1e-8, α=0.001 work reliably across an
                         extraordinary range of architectures and datasets.
                     </div>
-                    <div className="ch9-tl-impact">Impact: Became the default optimizer in deep learning within 2 years; 100,000+ citations</div>
+                    <div className="ch-tl-impact">Impact: Became the default optimizer in deep learning within 2 years; 100,000+ citations</div>
                 </div>
 
-                <div className="ch9-tl-item">
-                    <div className="ch9-tl-year">2017–present</div>
-                    <div className="ch9-tl-section-label">Variants</div>
-                    <div className="ch9-tl-title">AMSGrad, AdamW, and beyond</div>
-                    <div className="ch9-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017–present</div>
+                    <div className="ch-tl-section-label">Variants</div>
+                    <div className="ch-tl-title">AMSGrad, AdamW, and beyond</div>
+                    <div className="ch-tl-body">
                         <strong>AMSGrad</strong> (Reddi et al., 2018): proved Adam can fail to converge in
                         certain convex problems; proposed a fix with maximum of past second moments.
                         <strong>AdamW</strong> (Loshchilov & Hutter, 2019): decouples L2 regularization
@@ -86,7 +86,7 @@ function HistoryTab() {
                         weight decay. AdamW is now the default for Transformers (BERT, GPT, LLaMA all
                         use AdamW).
                     </div>
-                    <div className="ch9-tl-impact">Impact: AdamW is the standard optimizer for large language models</div>
+                    <div className="ch-tl-impact">Impact: AdamW is the standard optimizer for large language models</div>
                 </div>
             </div>
         </>
@@ -177,7 +177,7 @@ function HighSchoolTab() {
                 Defaults: α=0.001 (learning rate), β₁=0.9, β₂=0.999, ε=1e-8.
             </p>
 
-            <hr className="ch9-sep" />
+            <hr className="ch-sep" />
 
             <h3>Effective Learning Rate Per Parameter</h3>
             <p>
@@ -189,7 +189,7 @@ function HighSchoolTab() {
                 the adaptive second moment normalizes the step to have unit scale.
             </p>
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>AdamW vs Adam:</strong> In Adam, L2 regularization adds λθ to the gradient,
                 which then gets divided by √v̂ — making weight decay weaker for parameters with
                 large gradients. AdamW applies weight decay directly to the parameter: θ ← θ(1−αλ)
@@ -248,7 +248,7 @@ function MathsTab() {
             <p>AdamW decouples weight decay from the adaptive gradient update:</p>
             <MathBlock tex="\theta_t = \theta_{t-1}(1 - \alpha\lambda) - \alpha \cdot \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \varepsilon}" />
 
-            <div className="ch9-callout">
+            <div className="ch-callout">
                 <strong>Why ε matters:</strong> ε = 1e-8 prevents division by zero. But its choice
                 affects behavior: larger ε (e.g. 1e-4) makes Adam more like SGD with momentum
                 (the denominator dominates). Smaller ε makes it more fully adaptive.

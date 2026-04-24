@@ -15,61 +15,61 @@ function HistoryTab() {
                 that dominated NLP benchmarks for years.
             </p>
 
-            <div className="ch16-timeline">
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">2017</div>
-                    <div className="ch16-tl-section-label">Foundation</div>
-                    <div className="ch16-tl-title">The Transformer</div>
-                    <div className="ch16-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">The Transformer</div>
+                    <div className="ch-tl-body">
                         Vaswani et al. introduced self-attention, allowing every token to attend to every
                         other token in a single layer. The original paper used an encoder-decoder architecture
                         for translation, but the encoder stack alone held untapped potential.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Provided the architectural substrate for deep bidirectional models</div>
+                    <div className="ch-tl-impact">Impact: Provided the architectural substrate for deep bidirectional models</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">2018</div>
-                    <div className="ch16-tl-section-label">Precedent</div>
-                    <div className="ch16-tl-title">GPT-1 and ELMo</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">GPT-1 and ELMo</div>
+                    <div className="ch-tl-body">
                         GPT-1 proved decoder-only pretraining worked; ELMo proved deep contextualized
                         representations worked. But GPT could only see left context, and ELMo's bidirectionality
                         was shallow — two independent LSTMs concatenated, not true fused attention.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Showed the need for deep, unified bidirectional context</div>
+                    <div className="ch-tl-impact">Impact: Showed the need for deep, unified bidirectional context</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">Oct 2018</div>
-                    <div className="ch16-tl-section-label">Invention</div>
-                    <div className="ch16-tl-title">Devlin et al. — BERT</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Oct 2018</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Devlin et al. — BERT</div>
+                    <div className="ch-tl-body">
                         "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
                         introduced two innovations: (1) a deep bidirectional Transformer encoder trained with
                         Masked Language Modeling, and (2) a simple fine-tuning recipe where the same pretrained
                         model handles classification, question answering, and NLI with minimal task-specific
                         architecture changes. BERT-Base: 12 layers, 110M params. BERT-Large: 24 layers, 340M params.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Set new SOTA on 11 NLP benchmarks; the template for modern encoder models</div>
+                    <div className="ch-tl-impact">Impact: Set new SOTA on 11 NLP benchmarks; the template for modern encoder models</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">2019 – 2022</div>
-                    <div className="ch16-tl-section-label">Legacy</div>
-                    <div className="ch16-tl-title">The BERT Era</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019 – 2022</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">The BERT Era</div>
+                    <div className="ch-tl-body">
                         BERT became the default starting point for NLP practitioners. Variants multiplied:
                         RoBERTa optimized the training recipe, ALBERT reduced parameters, DistilBERT compressed
                         for speed, ELECTRA replaced masking with token detection. Google's search ranking
                         began using BERT in 2019. Even today, encoder-only models dominate classification,
                         retrieval, and embedding tasks.
                     </div>
-                    <div className="ch16-tl-impact">Impact: BERT established the encoder-only paradigm that still powers production NLP</div>
+                    <div className="ch-tl-impact">Impact: BERT established the encoder-only paradigm that still powers production NLP</div>
                 </div>
             </div>
 
-            <div className="ch16-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> True bidirectionality requires masking. If a model is
                 allowed to see every word, it can trivially predict any target. By masking 15% of input
                 tokens and forcing the model to reconstruct them from all surrounding context, BERT learns
@@ -151,8 +151,8 @@ function HighSchoolTab() {
                 <li><strong>Tagging:</strong> A linear layer on every token's hidden state</li>
             </ul>
 
-            <hr className="ch16-sep" />
-            <div className="ch16-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> BERT-Large achieved 93.2 F1 on SQuAD 1.1 (beating human
                 performance), 86.7% on GLUE, and 80.5% on MultiNLI — all with the same pretrained model
                 and minimal task-specific changes.
@@ -206,7 +206,7 @@ function MathsTab() {
                 final hidden state of the special <code>[CLS]</code> token prepended to every input.
             </p>
 
-            <div className="ch16-callout">
+            <div className="ch-callout">
                 <strong>Why MLM works:</strong> By masking tokens randomly, the model cannot rely on
                 positional shortcuts. It must build a rich contextual representation of every position
                 that incorporates syntax (subject-verb agreement), semantics (word sense disambiguation),

@@ -14,61 +14,61 @@ function HistoryTab() {
                 judgments, creating a differentiable proxy for human preference.
             </p>
 
-            <div className="ch20-timeline">
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">1952</div>
-                    <div className="ch20-tl-section-label">Foundation</div>
-                    <div className="ch20-tl-title">Bradley-Terry Model</div>
-                    <div className="ch20-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1952</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">Bradley-Terry Model</div>
+                    <div className="ch-tl-body">
                         Ralph Bradley and Milton Terry introduced a probabilistic model for paired
                         comparisons. The probability that item i beats item j depends on their
                         underlying "strength" parameters. This model would later become the
                         theoretical foundation for learning from human preference rankings.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Mathematical framework for pairwise preference learning</div>
+                    <div className="ch-tl-impact">Impact: Mathematical framework for pairwise preference learning</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2012</div>
-                    <div className="ch20-tl-section-label">Application</div>
-                    <div className="ch20-tl-title">Learning to Rank in Information Retrieval</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2012</div>
+                    <div className="ch-tl-section-label">Application</div>
+                    <div className="ch-tl-title">Learning to Rank in Information Retrieval</div>
+                    <div className="ch-tl-body">
                         RankSVM, LambdaMART, and other learning-to-rank algorithms used pairwise
                         preferences to train ranking models. The insight: relative judgments are
                         more reliable and easier to collect than absolute ratings. This preceded
                         the application to language models by nearly a decade.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Proved pairwise ranking scales better than absolute scoring</div>
+                    <div className="ch-tl-impact">Impact: Proved pairwise ranking scales better than absolute scoring</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2017</div>
-                    <div className="ch20-tl-section-label">Breakthrough</div>
-                    <div className="ch20-tl-title">Christiano et al. — Deep RL from Human Preferences</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Breakthrough</div>
+                    <div className="ch-tl-title">Christiano et al. — Deep RL from Human Preferences</div>
+                    <div className="ch-tl-body">
                         OpenAI researchers showed that a reward model trained on human comparisons
                         could guide deep reinforcement learning for complex tasks like Atari games
                         and robot manipulation. The key innovation was scale: collecting thousands
                         of human judgments and training a neural network to generalize preferences.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Extended preference learning from linear models to deep neural networks</div>
+                    <div className="ch-tl-impact">Impact: Extended preference learning from linear models to deep neural networks</div>
                 </div>
 
-                <div className="ch20-tl-item">
-                    <div className="ch20-tl-year">2022</div>
-                    <div className="ch20-tl-section-label">Standardization</div>
-                    <div className="ch20-tl-title">InstructGPT Reward Model</div>
-                    <div className="ch20-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022</div>
+                    <div className="ch-tl-section-label">Standardization</div>
+                    <div className="ch-tl-title">InstructGPT Reward Model</div>
+                    <div className="ch-tl-body">
                         InstructGPT trained a reward model on ~100K comparisons of model outputs.
                         Labelers ranked multiple completions for the same prompt. The RM — initialized
                         from the SFT model with a regression head — learned to predict these rankings
                         with high accuracy. This scalar reward signal became the objective for PPO.
                     </div>
-                    <div className="ch20-tl-impact">Impact: Established the reward model as the standard RLHF component</div>
+                    <div className="ch-tl-impact">Impact: Established the reward model as the standard RLHF component</div>
                 </div>
             </div>
 
-            <div className="ch20-callout">
+            <div className="ch-callout">
                 <strong>The comparison advantage:</strong> Human labelers agree much more consistently
                 on "A is better than B" than on "A is a 7.5/10." Pairwise comparisons reduce
                 inter-annotator variance and enable scalable data collection.
@@ -147,8 +147,8 @@ function HighSchoolTab() {
                 scores to preferred outputs.
             </p>
 
-            <hr className="ch20-sep" />
-            <div className="ch20-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Reward hacking:</strong> The reward model is not perfect — it is a learned
                 approximation of human preferences. The RL policy can exploit RM weaknesses to
                 achieve high scores while producing low-quality text. This is the fundamental
@@ -200,7 +200,7 @@ function MathsTab() {
                 rather than the full Plackett-Luce likelihood for computational simplicity.
             </p>
 
-            <div className="ch20-callout">
+            <div className="ch-callout">
                 <strong>RM calibration:</strong> The reward model learns relative preferences, not
                 absolute utilities. Adding a constant to all rewards doesn't change the preference
                 probabilities. This means the RM is only defined up to an additive constant — the

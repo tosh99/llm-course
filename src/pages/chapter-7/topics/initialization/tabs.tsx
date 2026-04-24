@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch7-tl-item">
-            <div className="ch7-tl-year">{item.year}</div>
-            <div className="ch7-tl-title">{item.title}</div>
-            <div className="ch7-tl-section-label">The context</div>
-            <div className="ch7-tl-body">{item.challenge}</div>
-            <div className="ch7-tl-section-label">What was introduced</div>
-            <div className="ch7-tl-body">{item.what}</div>
-            <div className="ch7-tl-section-label">Why it mattered</div>
-            <div className="ch7-tl-body ch7-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The context</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -59,7 +59,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch7-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -132,9 +132,9 @@ function HighSchoolTab() {
                 Using Xavier with ReLU leads to vanishing activations in deep networks.
             </p>
 
-            <hr className="ch7-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Modern default:</strong> PyTorch and TensorFlow use Kaiming (He)
                 initialization by default for Conv2d and Linear layers with ReLU.
             </div>
@@ -191,7 +191,7 @@ function MathsTab() {
                 For ReLU which passes only positive values, multiply by 2.
             </p>
 
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Why not always use He?</strong> For activations that don't zero
                 out values (tanh, sigmoid), Xavier is still appropriate. But for ReLU
                 and its variants, He initialization is essential for deep networks.
@@ -334,7 +334,7 @@ function PythonTab() {
                 the vanishing/exploding gradient problem with different schemes.
             </p>
             <CodeBlock code={PY_CODE} filename="initialization_demo.py" lang="python" langLabel="Python" />
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Experiment:</strong> Run this code to see how different
                 initializations affect signal propagation through 20+ layers.
             </div>
@@ -490,7 +490,7 @@ function CodeTab() {
                 with simulation of variance through deep networks.
             </p>
             <CodeBlock code={TS_CODE} filename="initialization.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Key concept:</strong> The variance of activations should
                 neither explode nor vanish as signals propagate through layers.
                 Proper initialization ensures this balance.

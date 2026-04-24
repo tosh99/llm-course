@@ -14,74 +14,74 @@ function HistoryTab() {
                 choose the right model for their constraints.
             </p>
 
-            <div className="ch16-timeline">
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">Oct 2018</div>
-                    <div className="ch16-tl-section-label">Foundation</div>
-                    <div className="ch16-tl-title">BERT</div>
-                    <div className="ch16-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Oct 2018</div>
+                    <div className="ch-tl-section-label">Foundation</div>
+                    <div className="ch-tl-title">BERT</div>
+                    <div className="ch-tl-body">
                         The original bidirectional encoder. BERT-Base (110M params) and BERT-Large (340M).
                         Trained with MLM + NSP on BooksCorpus + Wikipedia. Set the template for all
                         encoder-only models.
                     </div>
-                    <div className="ch16-tl-impact">Impact: The ancestor of the encoder family</div>
+                    <div className="ch-tl-impact">Impact: The ancestor of the encoder family</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">Feb 2019</div>
-                    <div className="ch16-tl-section-label">Distillation</div>
-                    <div className="ch16-tl-title">DistilBERT</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Feb 2019</div>
+                    <div className="ch-tl-section-label">Distillation</div>
+                    <div className="ch-tl-title">DistilBERT</div>
+                    <div className="ch-tl-body">
                         Sanh et al. distilled BERT-Base into a 6-layer model with 40% fewer parameters
                         (66M) that retains 97% of BERT's language understanding and runs 60% faster.
                         Used a triple loss: MLM distillation, supervised distillation from BERT's softmax,
                         and cosine embedding loss on hidden states.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Proved that large encoders can be compressed for production</div>
+                    <div className="ch-tl-impact">Impact: Proved that large encoders can be compressed for production</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">Sep 2019</div>
-                    <div className="ch16-tl-section-label">Compression</div>
-                    <div className="ch16-tl-title">ALBERT</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Sep 2019</div>
+                    <div className="ch-tl-section-label">Compression</div>
+                    <div className="ch-tl-title">ALBERT</div>
+                    <div className="ch-tl-body">
                         Lan et al. introduced two parameter-sharing techniques: (1) factorized embeddings
                         that decompose the large vocabulary embedding matrix, and (2) cross-layer parameter
                         sharing where all Transformer layers share the same weights. ALBERT-xxlarge has
                         only 235M unique parameters but outperforms BERT-Large with 340M. Replaced NSP
                         with SOP.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Showed that parameter efficiency can match or exceed raw scale</div>
+                    <div className="ch-tl-impact">Impact: Showed that parameter efficiency can match or exceed raw scale</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">Oct 2019</div>
-                    <div className="ch16-tl-section-label">Efficiency</div>
-                    <div className="ch16-tl-title">ELECTRA</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Oct 2019</div>
+                    <div className="ch-tl-section-label">Efficiency</div>
+                    <div className="ch-tl-title">ELECTRA</div>
+                    <div className="ch-tl-body">
                         Clark et al. replaced MLM with "replaced token detection": a small generator
                         model corrupts input tokens, and the discriminator (the main model) predicts
                         which tokens were replaced. This means <em>every token</em> is a training signal,
                         not just 15%. ELECTRA trains faster and outperforms BERT at the same compute budget.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Replaced masking with a more sample-efficient pretraining task</div>
+                    <div className="ch-tl-impact">Impact: Replaced masking with a more sample-efficient pretraining task</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">Jun 2020</div>
-                    <div className="ch16-tl-section-label">Disentanglement</div>
-                    <div className="ch16-tl-title">DeBERTa</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Jun 2020</div>
+                    <div className="ch-tl-section-label">Disentanglement</div>
+                    <div className="ch-tl-title">DeBERTa</div>
+                    <div className="ch-tl-body">
                         He et al. disentangled content and position in self-attention, using separate
                         vectors for word content and relative position. An enhanced mask decoder also
                         improved MLM by decoding masked tokens with absolute positions. DeBERTa surpassed
                         human performance on the SuperGLUE benchmark in 2021.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Pushed encoder-only performance to superhuman levels</div>
+                    <div className="ch-tl-impact">Impact: Pushed encoder-only performance to superhuman levels</div>
                 </div>
             </div>
 
-            <div className="ch16-callout">
+            <div className="ch-callout">
                 <strong>How to choose:</strong> Use DistilBERT for latency-sensitive production APIs.
                 Use ALBERT when memory is constrained. Use ELECTRA when you have limited training compute.
                 Use DeBERTa when you need maximum accuracy on classification or NLU tasks. For embeddings
@@ -163,8 +163,8 @@ function HighSchoolTab() {
                 <li><strong>Multilingual:</strong> XLM-RoBERTa (trained on 100 languages)</li>
             </ul>
 
-            <hr className="ch16-sep" />
-            <div className="ch16-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key trend:</strong> The encoder-only family shows that architectural innovation
                 (ALBERT's sharing, ELECTRA's detection, DeBERTa's disentanglement) and training optimization
                 (RoBERTa's scaling) both matter. No single model dominates every task; the best choice
@@ -222,7 +222,7 @@ function MathsTab() {
                 compute — every token contributes to learning.
             </p>
 
-            <div className="ch16-callout">
+            <div className="ch-callout">
                 <strong>DeBERTa's disentangled attention:</strong> Standard attention computes
                 <InlineMath tex="\\mathbf{Q}\\mathbf{K}^T" /> where each vector contains both content and position. DeBERTa
                 separates them: <InlineMath tex="\\mathbf{Q}_c, \\mathbf{Q}_r" /> and <InlineMath tex="\\mathbf{K}_c, \\mathbf{K}_r" />, computing

@@ -14,62 +14,62 @@ function HistoryTab() {
                 to teach the model sentence-level coherence and discourse structure.
             </p>
 
-            <div className="ch16-timeline">
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">2018</div>
-                    <div className="ch16-tl-section-label">Motivation</div>
-                    <div className="ch16-tl-title">Sentence Pair Tasks</div>
-                    <div className="ch16-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">Motivation</div>
+                    <div className="ch-tl-title">Sentence Pair Tasks</div>
+                    <div className="ch-tl-body">
                         NLP benchmarks like Natural Language Inference (NLI) and question answering require
                         understanding how two sentences relate. A model trained only on single-sentence
                         word prediction has no explicit incentive to learn inter-sentence coherence. BERT
                         needed a pretraining task that created this incentive.
                     </div>
-                    <div className="ch16-tl-impact">Impact: NSP was designed to bootstrap sentence-level reasoning</div>
+                    <div className="ch-tl-impact">Impact: NSP was designed to bootstrap sentence-level reasoning</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">Oct 2018</div>
-                    <div className="ch16-tl-section-label">Invention</div>
-                    <div className="ch16-tl-title">Next Sentence Prediction</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Oct 2018</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Next Sentence Prediction</div>
+                    <div className="ch-tl-body">
                         BERT's pretraining samples pairs of sentences (A, B) from a corpus. 50% of the
                         time, B is the actual sentence that follows A. 50% of the time, B is a random
                         sentence from elsewhere in the corpus. The model must predict which case it is,
                         using the <code>[CLS]</code> token's representation after processing both
                         sentences separated by <code>[SEP]</code>.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Gave BERT an initial edge on NLI and QA tasks</div>
+                    <div className="ch-tl-impact">Impact: Gave BERT an initial edge on NLI and QA tasks</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">2019</div>
-                    <div className="ch16-tl-section-label">Controversy</div>
-                    <div className="ch16-tl-title">Is NSP Necessary?</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019</div>
+                    <div className="ch-tl-section-label">Controversy</div>
+                    <div className="ch-tl-title">Is NSP Necessary?</div>
+                    <div className="ch-tl-body">
                         Liu et al. (RoBERTa) found that removing NSP and training on full sentences
                         without the 50/50 pairing actually improved downstream performance. The task was
                         arguably too easy — models achieved ~97% accuracy quickly, suggesting it taught
                         surface-level topic matching rather than deep discourse understanding.
                     </div>
-                    <div className="ch16-tl-impact">Impact: Sparked debate about whether NSP was helpful or harmful</div>
+                    <div className="ch-tl-impact">Impact: Sparked debate about whether NSP was helpful or harmful</div>
                 </div>
 
-                <div className="ch16-tl-item">
-                    <div className="ch16-tl-year">2019 – 2020</div>
-                    <div className="ch16-tl-section-label">Alternatives</div>
-                    <div className="ch16-tl-title">ALBERT and Sentence Order</div>
-                    <div className="ch16-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019 – 2020</div>
+                    <div className="ch-tl-section-label">Alternatives</div>
+                    <div className="ch-tl-title">ALBERT and Sentence Order</div>
+                    <div className="ch-tl-body">
                         ALBERT replaced NSP with Sentence Order Prediction (SOP): given two consecutive
                         sentences, predict whether they appear in the correct order or are swapped. SOP
                         is strictly harder than NSP (you can't cheat with topic matching) and consistently
                         improved performance on multi-sentence reasoning tasks.
                     </div>
-                    <div className="ch16-tl-impact">Impact: SOP replaced NSP as the preferred sentence-level objective</div>
+                    <div className="ch-tl-impact">Impact: SOP replaced NSP as the preferred sentence-level objective</div>
                 </div>
             </div>
 
-            <div className="ch16-callout">
+            <div className="ch-callout">
                 <strong>The verdict:</strong> NSP was well-intentioned but flawed. Its ease made it a
                 weak signal, and the topic-matching shortcut meant models weren't learning true discourse.
                 Modern encoder models use SOP, span prediction, or skip sentence-level objectives entirely,
@@ -154,8 +154,8 @@ function HighSchoolTab() {
                 anaphora resolution to detect swapped order.
             </p>
 
-            <hr className="ch16-sep" />
-            <div className="ch16-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Modern practice:</strong> RoBERTa removed NSP entirely and outperformed BERT.
                 Many subsequent models (DeBERTa, ELECTRA) also dropped sentence-level pretraining tasks.
                 The consensus: large-scale MLM on long contiguous text is sufficient; explicit sentence
@@ -212,7 +212,7 @@ function MathsTab() {
                 semantically plausible, requiring deeper understanding to discriminate.
             </p>
 
-            <div className="ch16-callout">
+            <div className="ch-callout">
                 <strong>Empirical result:</strong> ALBERT with SOP achieved 89.4% on SQuAD 2.0 versus
                 86.5% with NSP — a 2.9 point improvement from simply making the sentence task harder.
             </div>

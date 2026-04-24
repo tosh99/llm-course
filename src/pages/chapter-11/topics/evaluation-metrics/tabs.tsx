@@ -15,12 +15,12 @@ function HistoryTab() {
                 though modern research has increasingly questioned their limitations.
             </p>
 
-            <div className="ch11-timeline">
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2002</div>
-                    <div className="ch11-tl-section-label">Translation metric</div>
-                    <div className="ch11-tl-title">BLEU — Papineni, Roukos, Ward & Zhu</div>
-                    <div className="ch11-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2002</div>
+                    <div className="ch-tl-section-label">Translation metric</div>
+                    <div className="ch-tl-title">BLEU — Papineni, Roukos, Ward & Zhu</div>
+                    <div className="ch-tl-body">
                         Kishore Papineni and colleagues at IBM published "BLEU: a Method for Automatic
                         Evaluation of Machine Translation." BLEU scores a candidate translation by
                         counting matching n-grams (contiguous word sequences) against one or more
@@ -28,14 +28,14 @@ function HistoryTab() {
                         overly short outputs. It was designed to approximate human judgment at a
                         fraction of the cost.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Became the default MT evaluation metric for nearly two decades</div>
+                    <div className="ch-tl-impact">Impact: Became the default MT evaluation metric for nearly two decades</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2004</div>
-                    <div className="ch11-tl-section-label">Summarization metric</div>
-                    <div className="ch11-tl-title">ROUGE — Lin</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2004</div>
+                    <div className="ch-tl-section-label">Summarization metric</div>
+                    <div className="ch-tl-title">ROUGE — Lin</div>
+                    <div className="ch-tl-body">
                         Chin-Yew Lin introduced ROUGE (Recall-Oriented Understudy for Gisting Evaluation)
                         for automatic summarization evaluation. While BLEU is precision-focused,
                         ROUGE is recall-focused: it measures how many n-grams from the reference
@@ -43,14 +43,14 @@ function HistoryTab() {
                         bigrams, and ROUGE-L uses the longest common subsequence to capture word
                         order without requiring exact contiguous matches.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Standard metric for summarization and later for text generation tasks</div>
+                    <div className="ch-tl-impact">Impact: Standard metric for summarization and later for text generation tasks</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2010s</div>
-                    <div className="ch11-tl-section-label">Dominance and criticism</div>
-                    <div className="ch11-tl-title">The BLEU ceiling and semantic blindness</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2010s</div>
+                    <div className="ch-tl-section-label">Dominance and criticism</div>
+                    <div className="ch-tl-title">The BLEU ceiling and semantic blindness</div>
+                    <div className="ch-tl-body">
                         As neural MT improved, BLEU's limitations became acute. It ignores synonymy
                         ("large" vs. "big" are treated as mismatches), fails to capture semantic
                         equivalence, and rewards fluent but inaccurate translations. Research showed
@@ -58,14 +58,14 @@ function HistoryTab() {
                         The community began searching for alternatives that evaluate meaning, not
                         just surface-form overlap.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Sparked a wave of research into semantic evaluation metrics</div>
+                    <div className="ch-tl-impact">Impact: Sparked a wave of research into semantic evaluation metrics</div>
                 </div>
 
-                <div className="ch11-tl-item">
-                    <div className="ch11-tl-year">2019–present</div>
-                    <div className="ch11-tl-section-label">Modern alternatives</div>
-                    <div className="ch11-tl-title">BERTScore, COMET, and LLM-as-a-judge</div>
-                    <div className="ch11-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019–present</div>
+                    <div className="ch-tl-section-label">Modern alternatives</div>
+                    <div className="ch-tl-title">BERTScore, COMET, and LLM-as-a-judge</div>
+                    <div className="ch-tl-body">
                         BERTScore (Zhang et al., 2019) uses contextual embeddings to measure semantic
                         similarity between candidate and reference tokens, solving the synonymy problem.
                         COMET (Rei et al., 2020) trains a neural regressor on human quality judgments.
@@ -74,11 +74,11 @@ function HistoryTab() {
                         dimensions. These methods are more expensive but correlate far better with
                         human assessments.
                     </div>
-                    <div className="ch11-tl-impact">Impact: Evaluation is shifting from n-gram overlap to deep semantic and neural metrics</div>
+                    <div className="ch-tl-impact">Impact: Evaluation is shifting from n-gram overlap to deep semantic and neural metrics</div>
                 </div>
             </div>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Why BLEU and ROUGE still matter:</strong> Despite their flaws, BLEU and ROUGE
                 remain ubiquitous because they are fast, deterministic, and implementation-independent.
                 Modern papers still report them alongside newer metrics so results remain comparable
@@ -169,7 +169,7 @@ function HighSchoolTab() {
             </ul>
 
             <h3>Key Differences</h3>
-            <table className="ch11-table">
+            <table className="ch-table">
                 <thead>
                     <tr>
                         <th>Property</th>
@@ -201,7 +201,7 @@ function HighSchoolTab() {
                 </tbody>
             </table>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Both metrics share a critical weakness:</strong> they are surface-form metrics.
                 They count exact word matches and cannot recognize paraphrases, synonyms, or meaning
                 equivalence that doesn't share the same words. A translation that is semantically
@@ -262,7 +262,7 @@ function MathsTab() {
                 no brevity penalty and no precision term unless combined into F1.
             </p>
 
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Smoothing note:</strong> When a candidate contains no matching 4-grams,
                 <em>p<sub>4</sub> = 0</em> and BLEU becomes zero. In practice, smoothing techniques
                 (e.g., adding a small constant to zero precisions) are applied to avoid this collapse.
@@ -468,7 +468,7 @@ function CodeTab() {
                 so you can trace every count by hand.
             </p>
             <CodeBlock code={TS_CODE} filename="bleu_rouge.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch11-callout">
+            <div className="ch-callout">
                 <strong>Simplification note:</strong> Real BLEU implementations (like sacrebleu)
                 handle multiple references, smoothing for zero n-gram matches, and tokenization
                 standards. This code illustrates the core formulas without the full engineering

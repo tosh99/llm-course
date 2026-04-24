@@ -8,30 +8,30 @@ function HistoryTab() {
         <>
             <h2>Weight Sharing: The Breakthrough Insight</h2>
 
-            <div className="ch6-timeline">
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">1962</div>
-                    <div className="ch6-tl-title">Hubel & Wiesel's Discovery</div>
-                    <div className="ch6-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1962</div>
+                    <div className="ch-tl-title">Hubel & Wiesel's Discovery</div>
+                    <div className="ch-tl-body">
                         Studying cats' visual cortex, they found neurons with localized receptive fields
                         — each neuron only responds to stimuli in a specific area. Simple cells detect
                         edges at specific orientations; complex cells pool simple cell outputs to detect
                         patterns regardless of exact position.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">1980</div>
-                    <div className="ch6-tl-title">Fukushima's Neocognitron</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1980</div>
+                    <div className="ch-tl-title">Fukushima's Neocognitron</div>
+                    <div className="ch-tl-body">
                         The first CNN implementation. Used weight sharing explicitly — the same feature
                         detectors were replicated across spatial locations, mirroring the biological
                         findings of pattern-selective cells with translation-invariant responses.
                     </div>
                 </div>
-                <div className="ch6-tl-item">
-                    <div className="ch6-tl-year">1989–1998</div>
-                    <div className="ch6-tl-title">LeCun's Practical CNNs</div>
-                    <div className="ch6-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1989–1998</div>
+                    <div className="ch-tl-title">LeCun's Practical CNNs</div>
+                    <div className="ch-tl-body">
                         Applying backpropagation to CNNs for real-world problems. The ATMs that read
                         checks used weight sharing: an edge detector learned once works everywhere
                         in the image, cutting parameters by 97% versus fully-connected layers.
@@ -39,9 +39,9 @@ function HistoryTab() {
                 </div>
             </div>
 
-            <div className="ch6-analogy">
-                <div className="ch6-analogy-label">The Power of Sharing</div>
-                <div className="ch6-analogy-text">
+            <div className="ch-analogy">
+                <div className="ch-analogy-label">The Power of Sharing</div>
+                <div className="ch-analogy-text">
                     Imagine teaching a robot to find cats in photos. Instead of teaching it to look for
                     ears at specific coordinates (top-left: x=50,y=30, bottom-right: x=200,y=180), you
                     teach it to find ears — <em>anywhere</em> in the image. The same skill applies everywhere.
@@ -85,7 +85,7 @@ function KidTab() {
                 If you had 100 different places to check, without weight sharing you'd need 9×100=900 numbers!
             </Analogy>
 
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>Fun fact:</strong> Your brain does the same thing! Neurons in your visual cortex
                 use the same pattern detectors for different locations in your field of view. Mother Nature
                 invented weight sharing millions of years ago!
@@ -308,7 +308,7 @@ function PythonTab() {
                 how large the input is!
             </p>
             <CodeBlock code={PY_CODE} filename="weight_sharing.py" lang="python" />
-            <div className="ch6-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> The weight shape is{' '}
                 <code>(out_channels, in_channels, k, k)</code> — no spatial dimensions!
                 This is why CNNs work on any size image with the same parameter count.

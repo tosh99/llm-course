@@ -8,42 +8,42 @@ function HistoryTab() {
         <>
             <h2>Hebb's Rule — The Biological Origin of Learning</h2>
 
-            <div className="ch1-timeline" style={{ paddingLeft: 26 }}>
-                <div className="ch1-tl-item">
-                    <div className="ch1-tl-year">1949</div>
-                    <div className="ch1-tl-title">The Organization of Behavior</div>
-                    <div className="ch1-tl-section-label">The question</div>
-                    <div className="ch1-tl-body">
+            <div className="ch-timeline" style={{ paddingLeft: 26 }}>
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1949</div>
+                    <div className="ch-tl-title">The Organization of Behavior</div>
+                    <div className="ch-tl-section-label">The question</div>
+                    <div className="ch-tl-body">
                         How does the brain physically store memories? And how do synaptic connections between neurons change based on experience? There was no mechanistic account of learning in biological neural networks.
                     </div>
-                    <div className="ch1-tl-section-label">What Hebb proposed</div>
-                    <div className="ch1-tl-body">
+                    <div className="ch-tl-section-label">What Hebb proposed</div>
+                    <div className="ch-tl-body">
                         Hebb's central postulate: when neuron A repeatedly and persistently takes part in firing neuron B, some growth process or metabolic change occurs in one or both cells such that A's efficiency in firing B is increased. In modern shorthand: <em>"Neurons that fire together, wire together."</em>
                     </div>
-                    <div className="ch1-tl-section-label">Why it mattered</div>
-                    <div className="ch1-tl-body ch1-tl-impact">
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">
                         Hebb's rule was the first scientifically grounded theory of synaptic plasticity. It explained how experience could physically alter the brain. It also inspired every artificial learning rule — from the perceptron's weight updates to modern backpropagation, all are Hebbian in spirit: reinforce connections that contribute to desired outcomes.
                     </div>
                 </div>
 
-                <div className="ch1-tl-item">
-                    <div className="ch1-tl-year">1957 – 1973</div>
-                    <div className="ch1-tl-title">From Biology to Engineering</div>
-                    <div className="ch1-tl-section-label">The bridge</div>
-                    <div className="ch1-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1957 – 1973</div>
+                    <div className="ch-tl-title">From Biology to Engineering</div>
+                    <div className="ch-tl-section-label">The bridge</div>
+                    <div className="ch-tl-body">
                         researchers quickly translated Hebb's biological intuition into a mathematical rule: <InlineMath tex="\Delta w_{ij} = \eta \cdot x_i \cdot y_j" /> — when presynaptic neuron i fires and postsynaptic neuron j fires, strengthen the connection by η. The term became <strong>Hebbian learning</strong>.
                     </div>
-                    <div className="ch1-tl-section-label">Key developments</div>
-                    <div className="ch1-tl-body">
+                    <div className="ch-tl-section-label">Key developments</div>
+                    <div className="ch-tl-body">
                         <strong>ECHO</strong> (Farley & Selfridge, 1955): first simulation of Hebbian-like reinforcement. <strong>Widrow-Hoff</strong> (1960): the least-mean-square (LMS) rule, a continuous analogue of Hebbian learning with error signals. <strong> SOM</strong> (Kohonen, 1982): self-organising maps using competitive Hebbian learning.
                     </div>
                 </div>
 
-                <div className="ch1-tl-item">
-                    <div className="ch1-tl-year">1986 – present</div>
-                    <div className="ch1-tl-title">Hebbian Learning in Deep Networks</div>
-                    <div className="ch1-tl-section-label">The modern picture</div>
-                    <div className="ch1-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1986 – present</div>
+                    <div className="ch-tl-title">Hebbian Learning in Deep Networks</div>
+                    <div className="ch-tl-section-label">The modern picture</div>
+                    <div className="ch-tl-body">
                         Backpropagation is technically not Hebbian — it uses error gradients rather than simultaneous firing. But modern insights reconnect them: <strong>contrastive Hebbian learning</strong>, <strong>TD learning</strong>, and <strong>STDP</strong> (spike-timing-dependent plasticity, Bi & Poo 1998) all show that biological neurons use Hebbian principles. Modern self-supervised methods (e.g., BYOL, SimCLR) are effectively Hebbian — maximising agreement between two views of the same input.
                     </div>
                 </div>
@@ -113,9 +113,9 @@ function HighSchoolTab() {
                 Hebbian learning is sometimes called <strong>correlation-based learning</strong>.
             </p>
 
-            <hr className="ch1-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>The big picture:</strong> Hebbian learning is the foundation of all neural network learning.
                 Every algorithm — from perceptron updates to backpropagation — modifies synaptic weights based on
                 correlated activity. Hebb's 1949 intuition was remarkably prescient.
@@ -174,7 +174,7 @@ function MathsTab() {
                 and weight decay are all solutions to this instability.
             </p>
 
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Connection to modern ML:</strong> Oja's rule and the covariance rule are ancestors of
                 <strong> contrastive learning</strong> (SimCLR, BYOL). These methods also maximise the correlation
                 between representations of the same input under different views — a Hebbian objective with modern
@@ -267,7 +267,7 @@ function PythonTab() {
                 rule, which is equivalent to extracting the first principal component of data.
             </p>
             <CodeBlock code={PY_CODE} filename="hebbian_learning.py" lang="python" langLabel="Python" />
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> Oja's rule is Hebbian learning with a built-in normalising term.
                 It automatically discovers the direction of maximum variance in the data — the same direction
                 that PCA would find, but learned online without a batch computation of the covariance matrix.
@@ -364,7 +364,7 @@ function CodeTab() {
                 weight explosion and automatically discovers the principal axis of input data.
             </p>
             <CodeBlock code={TS_CODE} filename="hebbian-oja.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch1-callout">
+            <div className="ch-callout">
                 <strong>Note:</strong> Modern contrastive learning (SimCLR, BYOL) can be viewed as
                 Hebbian learning on two different "views" of the same input, with explicit engineering
                 to prevent collapse. The principle — reinforce correlated representations — is pure Hebb.

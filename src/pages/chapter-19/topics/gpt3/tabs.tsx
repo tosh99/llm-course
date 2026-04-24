@@ -15,60 +15,60 @@ function HistoryTab() {
                 in the prompt.
             </p>
 
-            <div className="ch19-timeline">
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">Feb 2019</div>
-                    <div className="ch19-tl-section-label">Precedent</div>
-                    <div className="ch19-tl-title">GPT-2 (1.5B parameters)</div>
-                    <div className="ch19-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Feb 2019</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">GPT-2 (1.5B parameters)</div>
+                    <div className="ch-tl-body">
                         OpenAI released GPT-2, demonstrating that scaling up Transformer decoders improved
                         zero-shot task performance. The model showed rudimentary summarization, translation,
                         and question-answering abilities without explicit fine-tuning.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Proved that scale alone unlocks emergent capabilities</div>
+                    <div className="ch-tl-impact">Impact: Proved that scale alone unlocks emergent capabilities</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">Oct 2019</div>
-                    <div className="ch19-tl-section-label">Theory</div>
-                    <div className="ch19-tl-title">Kaplan et al. — Scaling Laws for Neural LMs</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Oct 2019</div>
+                    <div className="ch-tl-section-label">Theory</div>
+                    <div className="ch-tl-title">Kaplan et al. — Scaling Laws for Neural LMs</div>
+                    <div className="ch-tl-body">
                         OpenAI researchers derived power-law relationships between model size, dataset size,
                         compute budget, and test loss. The laws predicted that models 10–100× larger than
                         GPT-2 would yield dramatic qualitative improvements.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Provided the theoretical justification for training GPT-3</div>
+                    <div className="ch-tl-impact">Impact: Provided the theoretical justification for training GPT-3</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">May 2020</div>
-                    <div className="ch19-tl-section-label">Invention</div>
-                    <div className="ch19-tl-title">Brown et al. — GPT-3 (175B)</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">May 2020</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Brown et al. — GPT-3 (175B)</div>
+                    <div className="ch-tl-body">
                         GPT-3 was trained on ~300B tokens of filtered Common Crawl, WebText2, Books1,
                         Books2, and Wikipedia. It used the same decoder-only architecture as GPT-2 but
                         with 96 layers, 12,288 hidden dimensions, and 96 attention heads. The key finding:
                         at 175B parameters, the model could perform many NLP tasks competitively simply
                         by reading a few examples in its context window.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Redefined the paradigm from fine-tuning to prompt engineering</div>
+                    <div className="ch-tl-impact">Impact: Redefined the paradigm from fine-tuning to prompt engineering</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">2020 – 2022</div>
-                    <div className="ch19-tl-section-label">Legacy</div>
-                    <div className="ch19-tl-title">The API Era Begins</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020 – 2022</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">The API Era Begins</div>
+                    <div className="ch-tl-body">
                         OpenAI launched the GPT-3 API, spawning an entire industry of prompt-based
                         applications. Copywriting, code generation, chatbots, and creative tools emerged
                         almost overnight. The model's few-shot capabilities meant developers could build
                         NLP products without training custom models.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Democratized access to state-of-the-art NLP</div>
+                    <div className="ch-tl-impact">Impact: Democratized access to state-of-the-art NLP</div>
                 </div>
             </div>
 
-            <div className="ch19-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> As model capacity grows, the "knowledge" stored in
                 its parameters becomes sufficiently rich and compositional that conditioning on a prompt
                 — a sequence of instructions and examples — is enough to elicit complex behaviors that
@@ -149,8 +149,8 @@ function HighSchoolTab() {
                 <li>Could generate coherent multi-paragraph essays and simple code</li>
             </ul>
 
-            <hr className="ch19-sep" />
-            <div className="ch19-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> GPT-3's few-shot performance often matched or exceeded
                 fine-tuned models, particularly on tasks requiring broad world knowledge, reading
                 comprehension, and open-ended generation. On TriviaQA, few-shot GPT-3 outperformed
@@ -205,7 +205,7 @@ function MathsTab() {
             </p>
             <MathBlock tex="\hat{y} = \arg\max_{v \in \mathcal{V}} P(v \mid x^{(1)}, y^{(1)}, \dots, x^{(k)}, y^{(k)}, x)" />
 
-            <div className="ch19-callout">
+            <div className="ch-callout">
                 <strong>Why no fine-tuning?</strong> Gradient updates on a 175B parameter model are
                 prohibitively expensive for most practitioners. More importantly, the in-context
                 learning mechanism allows the model to adapt to a new task in a single forward pass,

@@ -42,17 +42,17 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch2-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
-                <div key={item.year} className="ch2-tl-item">
-                    <div className="ch2-tl-year">{item.year}</div>
-                    <div className="ch2-tl-title">{item.title}</div>
-                    <div className="ch2-tl-section-label">The challenge</div>
-                    <div className="ch2-tl-body">{item.challenge}</div>
-                    <div className="ch2-tl-section-label">What was introduced</div>
-                    <div className="ch2-tl-body">{item.what}</div>
-                    <div className="ch2-tl-section-label">Why it mattered</div>
-                    <div className="ch2-tl-body ch2-tl-impact">{item.impact}</div>
+                <div key={item.year} className="ch-tl-item">
+                    <div className="ch-tl-year">{item.year}</div>
+                    <div className="ch-tl-title">{item.title}</div>
+                    <div className="ch-tl-section-label">The challenge</div>
+                    <div className="ch-tl-body">{item.challenge}</div>
+                    <div className="ch-tl-section-label">What was introduced</div>
+                    <div className="ch-tl-body">{item.what}</div>
+                    <div className="ch-tl-section-label">Why it mattered</div>
+                    <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
                 </div>
             ))}
         </div>
@@ -170,7 +170,7 @@ function MathsTab() {
                 Hinge loss is zero when yŷ &gt; 1 (confident correct), grows linearly for wrong predictions. Logistic loss penalises all predictions smoothly. At scale, logistic regression (or SVM with linear kernel) is often preferred because it can be trained with stochastic gradient descent on massive datasets.
             </p>
 
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Why SVMs were replaced:</strong> On image and text tasks, deep neural networks learned task-specific features that outperformed any fixed-kernel SVM. But on structured tabular data (genomics, finance, fraud detection), gradient boosted trees often still compete with or beat SVMs. The margin theory of SVMs lives on in deep learning regularisation research.
             </div>
         </>
@@ -221,7 +221,7 @@ function PythonTab() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="svm_demo.py" lang="python" langLabel="Python" />
-            <div className="ch2-callout">
+            <div className="ch-callout">
                 <strong>Key hyperparameters:</strong> <code>C</code> (regularisation) — higher = narrower margin. <code>gamma</code> (RBF only) — controls how far each training point's influence reaches. gamma='scale' (1 / (n_features · Var(x))) is a good default. Use <code>LinearSVC</code> for large n (faster than kernel SVC).
             </div>
         </>

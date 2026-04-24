@@ -16,47 +16,47 @@ function HistoryTab() {
                 trainable, while matching full fine-tuning quality.
             </p>
 
-            <div className="ch21-timeline">
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">2021</div>
-                    <div className="ch21-tl-section-label">Precedent</div>
-                    <div className="ch21-tl-title">Adapter Layers and Prefix Tuning</div>
-                    <div className="ch21-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2021</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">Adapter Layers and Prefix Tuning</div>
+                    <div className="ch-tl-body">
                         Earlier parameter-efficient methods inserted small bottleneck layers
                         (adapters) or prepended learned vectors (prefix tuning) to each layer.
                         These worked but added inference latency or reduced sequence capacity.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Proved you don't need all parameters, but had trade-offs</div>
+                    <div className="ch-tl-impact">Impact: Proved you don't need all parameters, but had trade-offs</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">Oct 2021</div>
-                    <div className="ch21-tl-section-label">Invention</div>
-                    <div className="ch21-tl-title">Hu et al. — LoRA: Low-Rank Adaptation of Large Language Models</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Oct 2021</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Hu et al. — LoRA: Low-Rank Adaptation of Large Language Models</div>
+                    <div className="ch-tl-body">
                         LoRA replaced full weight updates with a low-rank decomposition W' = W₀ + BA,
                         where W₀ is frozen and BA are small trainable matrices (rank r ≪ d). During
                         inference, the low-rank terms can be merged back into W₀ with zero overhead.
                         No additional latency, no sequence capacity lost.
                     </div>
-                    <div className="ch21-tl-impact">Impact: The dominant parameter-efficient fine-tuning method</div>
+                    <div className="ch-tl-impact">Impact: The dominant parameter-efficient fine-tuning method</div>
                 </div>
 
-                <div className="ch21-tl-item">
-                    <div className="ch21-tl-year">2023</div>
-                    <div className="ch21-tl-section-label">Adoption</div>
-                    <div className="ch21-tl-title">Hugging Face PEFT and the Ecosystem</div>
-                    <div className="ch21-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2023</div>
+                    <div className="ch-tl-section-label">Adoption</div>
+                    <div className="ch-tl-title">Hugging Face PEFT and the Ecosystem</div>
+                    <div className="ch-tl-body">
                         Libraries like Hugging Face PEFT and lit-gpt made LoRA a one-line API call.
                         Thousands of open-source fine-tunes (Alpaca-LoRA, WizardLM-LoRA, etc.)
                         demonstrated that 7B–65B models could be adapted on consumer GPUs in hours,
                         not days on A100 clusters.
                     </div>
-                    <div className="ch21-tl-impact">Impact: Democratized model customization</div>
+                    <div className="ch-tl-impact">Impact: Democratized model customization</div>
                 </div>
             </div>
 
-            <div className="ch21-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> The intrinsic rank of weight updates during
                 fine-tuning is surprisingly low. Instead of updating a d×d matrix, two thin
                 matrices (d×r and r×d) capture nearly all the task-specific signal.
@@ -122,8 +122,8 @@ function HighSchoolTab() {
                 layers for stronger adaptation.
             </p>
 
-            <hr className="ch21-sep" />
-            <div className="ch21-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> On GPT-3 175B, LoRA with rank r=4 matched full fine-tuning
                 on multiple downstream tasks while training only 0.004% of parameters. At rank r=64,
                 it exceeded full fine-tuning on some benchmarks.

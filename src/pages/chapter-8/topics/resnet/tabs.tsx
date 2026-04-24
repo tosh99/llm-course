@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch8-tl-item">
-            <div className="ch8-tl-year">{item.year}</div>
-            <div className="ch8-tl-title">{item.title}</div>
-            <div className="ch8-tl-section-label">Context</div>
-            <div className="ch8-tl-body">{item.context}</div>
-            <div className="ch8-tl-section-label">What Changed</div>
-            <div className="ch8-tl-body">{item.what}</div>
-            <div className="ch8-tl-section-label">Impact</div>
-            <div className="ch8-tl-body ch8-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">Context</div>
+            <div className="ch-tl-body">{item.context}</div>
+            <div className="ch-tl-section-label">What Changed</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Impact</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -49,7 +49,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch8-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -105,7 +105,7 @@ function KidTab() {
                 It also made 1000+ layer networks possible (though they're rarely needed).
             </Analogy>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Everywhere now:</strong> The skip connection idea is used in EVERY modern
                 AI—from GPT writing text to DALL-E creating images! It started with ResNet but
                 became a universal building block.
@@ -165,7 +165,7 @@ function HighSchoolTab() {
                 residual learning principle.
             </p>
 
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>BatchNorm is crucial:</strong> ResNet pairs skip connections with BatchNorm
                 to normalize activations. This combination enables training networks with 1000+
                 layers. Without BatchNorm, gradients would still destabilize during training.
@@ -424,7 +424,7 @@ function PythonTab() {
                 shortcut with proper dimension matching.
             </p>
             <CodeBlock code={PYTHON_CODE} filename="resnet.py" lang="python" langLabel="Python" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Key implementation details:</strong> 1) BatchNorm is crucial for
                 ResNet training. 2) Projection shortcuts handle dimension changes.
                 3) Bottleneck blocks use 1×1→3×3→1×1 structure for efficiency.
@@ -781,7 +781,7 @@ function CodeTab() {
                 batch normalization, and the identity/projection shortcut logic.
             </p>
             <CodeBlock code={TS_CODE} filename="resnet.ts" lang="typescript" />
-            <div className="ch8-callout">
+            <div className="ch-callout">
                 <strong>Skip connection math:</strong> The residual formulation y = F(x) + x
                 means gradients flow through both paths during backprop. Even if F(x) has
                 near-zero gradients, ∂y/∂x includes the identity term (1), preventing

@@ -16,64 +16,64 @@ function HistoryTab() {
                 from Reddit. The results were startling — and controversial.
             </p>
 
-            <div className="ch17-timeline">
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">June 2018</div>
-                    <div className="ch17-tl-section-label">Precedent</div>
-                    <div className="ch17-tl-title">GPT-1</div>
-                    <div className="ch17-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">June 2018</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">GPT-1</div>
+                    <div className="ch-tl-body">
                         GPT-1 established that a transformer decoder, pretrained with language modeling
                         on a large corpus and fine-tuned with task-specific heads, could outperform
                         approaches trained from scratch. But it was still small by modern standards and
                         required supervised fine-tuning for every new task.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Proof of concept for generative pretraining</div>
+                    <div className="ch-tl-impact">Impact: Proof of concept for generative pretraining</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">Late 2018</div>
-                    <div className="ch17-tl-section-label">Build</div>
-                    <div className="ch17-tl-title">WebText &amp; Scaling</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Late 2018</div>
+                    <div className="ch-tl-section-label">Build</div>
+                    <div className="ch-tl-title">WebText &amp; Scaling</div>
+                    <div className="ch-tl-body">
                         OpenAI scraped outbound links from Reddit posts with at least 3 karma, yielding
                         roughly 40GB of diverse, human-written text. They trained progressively larger
                         models: 117M, 345M, 762M, and 1.5B parameters. Each increase in size produced
                         smoother, more coherent text — and unexpectedly strong performance on downstream
                         tasks <em>without any fine-tuning at all</em>.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Showed that scale alone unlocks new capabilities</div>
+                    <div className="ch-tl-impact">Impact: Showed that scale alone unlocks new capabilities</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">Feb 2019</div>
-                    <div className="ch17-tl-section-label">Release</div>
-                    <div className="ch17-tl-title">GPT-2 and the Staged Rollout</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Feb 2019</div>
+                    <div className="ch-tl-section-label">Release</div>
+                    <div className="ch-tl-title">GPT-2 and the Staged Rollout</div>
+                    <div className="ch-tl-body">
                         OpenAI published "Language Models are Unsupervised Multitask Learners" but
                         initially withheld the full 1.5B model, citing concerns about misuse for
                         generating fake news, spam, and impersonation. They released the 124M and 355M
                         versions first, then 762M, and finally the full model over six months. The
                         decision sparked intense debate about responsible AI publication norms.
                     </div>
-                    <div className="ch17-tl-impact">Impact: First major "staged release" of a powerful generative model</div>
+                    <div className="ch-tl-impact">Impact: First major "staged release" of a powerful generative model</div>
                 </div>
 
-                <div className="ch17-tl-item">
-                    <div className="ch17-tl-year">2019 – 2020</div>
-                    <div className="ch17-tl-section-label">Legacy</div>
-                    <div className="ch17-tl-title">Zero-Shot Becomes Real</div>
-                    <div className="ch17-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019 – 2020</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">Zero-Shot Becomes Real</div>
+                    <div className="ch-tl-body">
                         GPT-2 achieved competitive or state-of-the-art results on language modeling,
                         reading comprehension, summarization, translation, and question answering —
                         all without task-specific training. The "zero-shot" paradigm was born: prompt
                         the model with a natural language instruction and let it generate the answer.
                         This directly inspired GPT-3 and the entire instruction-following era.
                     </div>
-                    <div className="ch17-tl-impact">Impact: Foundation for zero-shot and few-shot prompting</div>
+                    <div className="ch-tl-impact">Impact: Foundation for zero-shot and few-shot prompting</div>
                 </div>
             </div>
 
-            <div className="ch17-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> When a language model is trained at sufficient scale
                 on diverse data, it learns to perform tasks implicitly. You don't need a separate classifier
                 head — you just prompt the model in natural language and it figures out what you want.
@@ -160,8 +160,8 @@ function HighSchoolTab() {
                     followed by "Q: {'{question}'} A:{'"'}"</li>
             </ul>
 
-            <hr className="ch17-sep" />
-            <div className="ch17-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key result:</strong> GPT-2 (1.5B) achieved 63.2% F1 on CoQA reading
                 comprehension without any fine-tuning — competitive with supervised baselines from
                 just two years earlier. On language modeling, it set a new state-of-the-art on
@@ -212,7 +212,7 @@ function MathsTab() {
             </p>
             <MathBlock tex="P'(w) = \\frac{P(w)}{\\sum_{w' \\in V_k} P(w')} \\quad \\text{for } w \\in V_k, \\quad 0 \\text{ otherwise}" />
 
-            <div className="ch17-callout">
+            <div className="ch-callout">
                 <strong>Why pre-norm helps:</strong> In the post-norm formulation (original Transformer),
                 the gradient path is LayerNorm'(x + F(x)) · (1 + F'(x)). At initialization F(x) ≈ 0
                 and LayerNorm'(0) can vanish. Pre-norm computes x + F(LayerNorm(x)), keeping the

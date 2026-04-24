@@ -14,60 +14,60 @@ function HistoryTab() {
                 reasoning patterns without a single parameter update.
             </p>
 
-            <div className="ch19-timeline">
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">2019</div>
-                    <div className="ch19-tl-section-label">Precedent</div>
-                    <div className="ch19-tl-title">GPT-2 Zero-Shot Transfer</div>
-                    <div className="ch19-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019</div>
+                    <div className="ch-tl-section-label">Precedent</div>
+                    <div className="ch-tl-title">GPT-2 Zero-Shot Transfer</div>
+                    <div className="ch-tl-body">
                         GPT-2 demonstrated that language models could perform some tasks without any
                         task-specific training, but performance was far below supervised baselines.
                         The model needed to be fine-tuned for competitive results.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Hinted that models were learning implicit task representations</div>
+                    <div className="ch-tl-impact">Impact: Hinted that models were learning implicit task representations</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">May 2020</div>
-                    <div className="ch19-tl-section-label">Discovery</div>
-                    <div className="ch19-tl-title">GPT-3 Few-Shot Learning</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">May 2020</div>
+                    <div className="ch-tl-section-label">Discovery</div>
+                    <div className="ch-tl-title">GPT-3 Few-Shot Learning</div>
+                    <div className="ch-tl-body">
                         Brown et al. showed that conditioning GPT-3 on 10–100 examples in the prompt
                         yielded performance competitive with fine-tuned models. The model appeared to
                         "read" the pattern from the examples and generalize to new inputs within the
                         same forward pass.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Demonstrated that gradient-free adaptation was possible at scale</div>
+                    <div className="ch-tl-impact">Impact: Demonstrated that gradient-free adaptation was possible at scale</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">2021</div>
-                    <div className="ch19-tl-section-label">Analysis</div>
-                    <div className="ch19-tl-title">Xie et al. — An Explanation of In-Context Learning</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2021</div>
+                    <div className="ch-tl-section-label">Analysis</div>
+                    <div className="ch-tl-title">Xie et al. — An Explanation of In-Context Learning</div>
+                    <div className="ch-tl-body">
                         Researchers proposed that in-context learning occurs because the pretraining
                         distribution contains a mixture of latent tasks. When shown examples in a prompt,
                         the Bayesian model implicitly locates the relevant task concept and applies it
                         to the query.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Framed in-context learning as implicit Bayesian inference</div>
+                    <div className="ch-tl-impact">Impact: Framed in-context learning as implicit Bayesian inference</div>
                 </div>
 
-                <div className="ch19-tl-item">
-                    <div className="ch19-tl-year">2022 – 2024</div>
-                    <div className="ch19-tl-section-label">Evolution</div>
-                    <div className="ch19-tl-title">Chain-of-Thought &amp; Beyond</div>
-                    <div className="ch19-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2022 – 2024</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">Chain-of-Thought &amp; Beyond</div>
+                    <div className="ch-tl-body">
                         Wei et al. showed that including reasoning steps in few-shot examples dramatically
                         improved performance on math and logic tasks. This "chain-of-thought prompting"
                         leverages in-context learning not just for task recognition, but for step-by-step
                         reasoning patterns.
                     </div>
-                    <div className="ch19-tl-impact">Impact: Extended in-context learning from pattern matching to algorithmic reasoning</div>
+                    <div className="ch-tl-impact">Impact: Extended in-context learning from pattern matching to algorithmic reasoning</div>
                 </div>
             </div>
 
-            <div className="ch19-callout">
+            <div className="ch-callout">
                 <strong>The puzzle:</strong> In-context learning is not the same as gradient-based
                 learning. The model does not update its weights. Instead, it appears to use the
                 attention mechanism to compare the query against the provided examples and infer
@@ -147,8 +147,8 @@ function HighSchoolTab() {
                 <li><strong>No true retention:</strong> The "learning" is ephemeral — it vanishes with the next prompt</li>
             </ul>
 
-            <hr className="ch19-sep" />
-            <div className="ch19-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key insight:</strong> In-context learning is not generalization in the
                 traditional sense. The model does not update its parameters. Instead, it performs
                 <em> task inference</em>: given examples, it infers the latent task and applies it
@@ -202,7 +202,7 @@ function MathsTab() {
                 surface patterns.
             </p>
 
-            <div className="ch19-callout">
+            <div className="ch-callout">
                 <strong>Attention visualization studies</strong> show that specific attention heads
                 specialize in "induction heads" — attending to previous tokens that match the current
                 token, enabling pattern completion. These heads are critical for in-context learning

@@ -11,15 +11,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch7-tl-item">
-            <div className="ch7-tl-year">{item.year}</div>
-            <div className="ch7-tl-title">{item.title}</div>
-            <div className="ch7-tl-section-label">The context</div>
-            <div className="ch7-tl-body">{item.challenge}</div>
-            <div className="ch7-tl-section-label">What was introduced</div>
-            <div className="ch7-tl-body">{item.what}</div>
-            <div className="ch7-tl-section-label">Why it mattered</div>
-            <div className="ch7-tl-body ch7-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The context</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -59,7 +59,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch7-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -125,9 +125,9 @@ function HighSchoolTab() {
                 <li><strong>Induces sparsity:</strong> About 50% of neurons are typically inactive</li>
             </ul>
 
-            <hr className="ch7-sep" />
+            <hr className="ch-sep" />
 
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Historical impact:</strong> ReLU made training AlexNet feasible.
                 With sigmoid, the 8-layer network would have taken weeks to train.
                 ReLU reduced this to days.
@@ -179,7 +179,7 @@ function MathsTab() {
             <p><strong>Exponential Linear Unit (ELU):</strong></p>
             <MathBlock tex="f(x) = \\begin{cases} x & x > 0 \\ \\alpha(e^x - 1) & x \\leq 0 \\end{cases}" />
 
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Why simplicity wins:</strong> Despite many proposed variants,
                 standard ReLU remains the default because it is simple, fast, and works
                 well in practice. The benefits of more complex activations are often marginal.
@@ -268,7 +268,7 @@ function PythonTab() {
                 NumPy implementation comparing ReLU with sigmoid, demonstrating the vanishing gradient problem.
             </p>
             <CodeBlock code={PY_CODE} filename="relu_demo.py" lang="python" langLabel="Python" />
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Key observation:</strong> Sigmoid derivatives become vanishingly small
                 for large inputs. ReLU maintains full gradient (1) for all positive activations.
             </div>
@@ -376,7 +376,7 @@ function CodeTab() {
                 Pure TypeScript implementation of ReLU and variants.
             </p>
             <CodeBlock code={TS_CODE} filename="relu.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch7-callout">
+            <div className="ch-callout">
                 <strong>Simplicity is power:</strong> ReLU's implementation is just
                 Math.max(0, x), yet it solved one of deep learning's biggest obstacles.
             </div>

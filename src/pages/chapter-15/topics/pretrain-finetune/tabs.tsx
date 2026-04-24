@@ -15,63 +15,63 @@ function HistoryTab() {
                 to any task with a tiny amount of labeled data.
             </p>
 
-            <div className="ch15-timeline">
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">Pre-2012</div>
-                    <div className="ch15-tl-section-label">Old Paradigm</div>
-                    <div className="ch15-tl-title">Task-Specific Training from Scratch</div>
-                    <div className="ch15-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">Pre-2012</div>
+                    <div className="ch-tl-section-label">Old Paradigm</div>
+                    <div className="ch-tl-title">Task-Specific Training from Scratch</div>
+                    <div className="ch-tl-body">
                         Every NLP task required its own labeled dataset, feature engineering, and model
                         architecture. A part-of-speech tagger used HMMs or CRFs. A parser used PCFGs.
                         A sentiment classifier used bag-of-words with SVMs. There was almost no transfer
                         of knowledge between tasks. Labeled data was the bottleneck.
                     </div>
-                    <div className="ch15-tl-impact">Impact: Progress was gated by the cost and time of manual annotation</div>
+                    <div className="ch-tl-impact">Impact: Progress was gated by the cost and time of manual annotation</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2013</div>
-                    <div className="ch15-tl-section-label">Stepping Stone</div>
-                    <div className="ch15-tl-title">Word Embeddings as Weak Transfer</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013</div>
+                    <div className="ch-tl-section-label">Stepping Stone</div>
+                    <div className="ch-tl-title">Word Embeddings as Weak Transfer</div>
+                    <div className="ch-tl-body">
                         Word2Vec and GloVe introduced the first form of transfer in NLP: pretrained word
                         vectors that could be reused across tasks. But the heavy model (LSTM, CNN) was
                         still trained from scratch. Transfer was limited to the input layer. The rest
                         of the model had to relearn syntax and semantics for every new task.
                     </div>
-                    <div className="ch15-tl-impact">Impact: Proved that pretrained representations help, but only at the surface level</div>
+                    <div className="ch-tl-impact">Impact: Proved that pretrained representations help, but only at the surface level</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2018</div>
-                    <div className="ch15-tl-section-label">Paradigm Shift</div>
-                    <div className="ch15-tl-title">The Pre-train → Fine-tune Era</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">Paradigm Shift</div>
+                    <div className="ch-tl-title">The Pre-train → Fine-tune Era</div>
+                    <div className="ch-tl-body">
                         Three papers in 2018 — ULMFiT, ELMo, and GPT — independently converged on the same
                         recipe: pretrain a deep language model on massive unlabeled text, then fine-tune
                         on the target task. The difference from word embeddings was profound: the <em>entire
                         model</em> was pretrained, not just the input layer. Syntax, semantics, reasoning,
                         and world knowledge were all transferred.
                     </div>
-                    <div className="ch15-tl-impact">Impact: Reduced labeled data requirements by 100× and unified NLP under one paradigm</div>
+                    <div className="ch-tl-impact">Impact: Reduced labeled data requirements by 100× and unified NLP under one paradigm</div>
                 </div>
 
-                <div className="ch15-tl-item">
-                    <div className="ch15-tl-year">2019 – 2024</div>
-                    <div className="ch15-tl-section-label">Evolution</div>
-                    <div className="ch15-tl-title">From Fine-tuning to Prompting</div>
-                    <div className="ch15-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2019 – 2024</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">From Fine-tuning to Prompting</div>
+                    <div className="ch-tl-body">
                         As models grew larger (GPT-2, GPT-3, PaLM, LLaMA), fine-tuning became expensive.
                         The community discovered that sufficiently large models could perform tasks with
                         <em>in-context learning</em> — no gradient updates, just a carefully written prompt.
                         Instruction tuning and RLHF refined this further. But the fundamental insight of
                         2018 remains: pretrain once on unlabeled data, then use the model for everything.
                     </div>
-                    <div className="ch15-tl-impact">Impact: The dominant paradigm in modern NLP and the foundation of all LLMs</div>
+                    <div className="ch-tl-impact">Impact: The dominant paradigm in modern NLP and the foundation of all LLMs</div>
                 </div>
             </div>
 
-            <div className="ch15-callout">
+            <div className="ch-callout">
                 <strong>The core insight:</strong> Unsupervised pretraining on raw text forces a model
                 to learn the full structure of language — syntax, semantics, facts, and reasoning —
                 without any human labels. Task-specific fine-tuning then acts as a lightweight steering
@@ -166,8 +166,8 @@ function HighSchoolTab() {
                     natural language instructions, creating a general instruction-following model.</li>
             </ul>
 
-            <hr className="ch15-sep" />
-            <div className="ch15-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Why it works:</strong> Language is a universal proxy for intelligence. To predict
                 the next word well, a model must understand grammar, logic, facts, and even social norms.
                 Pretraining on raw text is therefore a form of <em>unsupervised multi-task learning</em>,
@@ -225,7 +225,7 @@ function MathsTab() {
                 converge faster.
             </p>
 
-            <div className="ch15-callout">
+            <div className="ch-callout">
                 <strong>Scaling perspective:</strong> As model size grows, the gap between pretraining and
                 from-scratch training widens. For GPT-3 (175B parameters), fine-tuning is often unnecessary;
                 in-context learning with a prompt achieves comparable results. The pretrain-then-finetune

@@ -15,12 +15,12 @@ function HistoryTab() {
                 running two RNNs in opposite directions and concatenating their hidden states.
             </p>
 
-            <div className="ch13-timeline">
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">1997</div>
-                    <div className="ch13-tl-section-label">Invention</div>
-                    <div className="ch13-tl-title">Schuster &amp; Paliwal — Bidirectional Recurrent Neural Networks</div>
-                    <div className="ch13-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1997</div>
+                    <div className="ch-tl-section-label">Invention</div>
+                    <div className="ch-tl-title">Schuster &amp; Paliwal — Bidirectional Recurrent Neural Networks</div>
+                    <div className="ch-tl-body">
                         Mike Schuster and Kuldip K. Paliwal at NTT published "Bidirectional Recurrent
                         Neural Networks" in IEEE Transactions on Signal Processing. They proposed
                         running one RNN forward over the input sequence and another backward, then
@@ -28,53 +28,53 @@ function HistoryTab() {
                         prefix context; the backward layer captures suffix context. Both are trained
                         jointly by backpropagation through time.
                     </div>
-                    <div className="ch13-tl-impact">Impact: Instant accuracy gains on phoneme classification and speech recognition</div>
+                    <div className="ch-tl-impact">Impact: Instant accuracy gains on phoneme classification and speech recognition</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2005</div>
-                    <div className="ch13-tl-section-label">Generalization</div>
-                    <div className="ch13-tl-title">Bidirectional LSTM</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2005</div>
+                    <div className="ch-tl-section-label">Generalization</div>
+                    <div className="ch-tl-title">Bidirectional LSTM</div>
+                    <div className="ch-tl-body">
                         Alex Graves and Jürgen Schmidhuber combined bidirectional processing with
                         LSTM cells to create Bidirectional LSTM (BLSTM). This became the dominant
                         architecture for handwriting recognition (IAM dataset) and phoneme recognition
                         (TIMIT) throughout the 2000s. The forward and backward LSTMs each had their
                         own cell states, creating four parallel information highways through time.
                     </div>
-                    <div className="ch13-tl-impact">Impact: BLSTM became the go-to architecture for sequence labeling before CNNs and Transformers</div>
+                    <div className="ch-tl-impact">Impact: BLSTM became the go-to architecture for sequence labeling before CNNs and Transformers</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2013 – 2015</div>
-                    <div className="ch13-tl-section-label">NLP Adoption</div>
-                    <div className="ch13-tl-title">Bidirectional RNNs in Neural MT and Tagging</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013 – 2015</div>
+                    <div className="ch-tl-section-label">NLP Adoption</div>
+                    <div className="ch-tl-title">Bidirectional RNNs in Neural MT and Tagging</div>
+                    <div className="ch-tl-body">
                         As neural NLP matured, bidirectional encoders became standard. Bahdanau's
                         2014 attention model used a bidirectional encoder to give each source position
                         context from both directions. Named entity recognition systems (Lample et al.,
                         2016) used bidirectional LSTMs with CRF output layers. The principle was
                         simple and universal: if you can see the whole sentence, use both directions.
                     </div>
-                    <div className="ch13-tl-impact">Impact: Became the default encoder design in every seq2seq and tagging system</div>
+                    <div className="ch-tl-impact">Impact: Became the default encoder design in every seq2seq and tagging system</div>
                 </div>
 
-                <div className="ch13-tl-item">
-                    <div className="ch13-tl-year">2017 – Present</div>
-                    <div className="ch13-tl-section-label">Legacy</div>
-                    <div className="ch13-tl-title">From Bi-RNN to Bidirectional Transformer</div>
-                    <div className="ch13-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017 – Present</div>
+                    <div className="ch-tl-section-label">Legacy</div>
+                    <div className="ch-tl-title">From Bi-RNN to Bidirectional Transformer</div>
+                    <div className="ch-tl-body">
                         The Transformer is inherently bidirectional in its encoder (every position
                         attends to every other position). BERT's masked language model pre-training
                         is a direct descendant of the bidirectional principle — reading the full
                         context to predict a masked word. The bidirectional RNN was the first
                         practical neural architecture to operationalize this idea.
                     </div>
-                    <div className="ch13-tl-impact">Impact: Conceptual ancestor of BERT and all bidirectional pre-training</div>
+                    <div className="ch-tl-impact">Impact: Conceptual ancestor of BERT and all bidirectional pre-training</div>
                 </div>
             </div>
 
-            <div className="ch13-callout">
+            <div className="ch-callout">
                 <strong>The fundamental trade-off:</strong> Bidirectional RNNs require the entire
                 input sequence before producing any output. This makes them unsuitable for
                 real-time streaming tasks but ideal for offline tasks like translation, sentiment
@@ -160,8 +160,8 @@ function HighSchoolTab() {
                 at the output layer), their gradients are independent until the final concatenation.
             </p>
 
-            <hr className="ch13-sep" />
-            <div className="ch13-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Why doubling the parameters is worth it:</strong> In a unidirectional RNN,
                 information from position t+1 must travel through the recurrence to reach position t,
                 attenuating at every step. In a Bi-RNN, position t receives direct, unattenuated
@@ -211,7 +211,7 @@ function MathsTab() {
                 it) is often used to trade compute for memory.
             </p>
 
-            <div className="ch13-callout">
+            <div className="ch-callout">
                 <strong>Bidirectional masking in Transformers:</strong> BERT uses a "masked language
                 model" because a Transformer encoder is fully bidirectional — every position attends
                 to every other position. GPT, being autoregressive, is strictly unidirectional.

@@ -16,12 +16,12 @@ function HistoryTab() {
                 catastrophically failed. Bahdanau attention was the direct response.
             </p>
 
-            <div className="ch12-timeline">
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2014 Jun</div>
-                    <div className="ch12-tl-section-label">The Problem</div>
-                    <div className="ch12-tl-title">Cho et al. — Encoder-Decoder for MT</div>
-                    <div className="ch12-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014 Jun</div>
+                    <div className="ch-tl-section-label">The Problem</div>
+                    <div className="ch-tl-title">Cho et al. — Encoder-Decoder for MT</div>
+                    <div className="ch-tl-body">
                         Kyunghyun Cho, Bart van Merrienboer, and Yoshua Bengio published the
                         encoder-decoder architecture for neural machine translation. The encoder RNN
                         reads the source sentence and produces a context vector c — the final hidden
@@ -29,14 +29,14 @@ function HistoryTab() {
                         themselves noted that performance degraded badly for sentences longer than about
                         20 words: one fixed vector could not carry all the information.
                     </div>
-                    <div className="ch12-tl-impact">Impact: Established encoder-decoder; immediately revealed the fixed-context bottleneck</div>
+                    <div className="ch-tl-impact">Impact: Established encoder-decoder; immediately revealed the fixed-context bottleneck</div>
                 </div>
 
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2014 Sep</div>
-                    <div className="ch12-tl-section-label">The Solution</div>
-                    <div className="ch12-tl-title">Bahdanau, Cho, Bengio — Jointly Learning to Align</div>
-                    <div className="ch12-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2014 Sep</div>
+                    <div className="ch-tl-section-label">The Solution</div>
+                    <div className="ch-tl-title">Bahdanau, Cho, Bengio — Jointly Learning to Align</div>
+                    <div className="ch-tl-body">
                         Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio posted "Neural Machine
                         Translation by Jointly Learning to Align and Translate" to arXiv in September
                         2014 (published ICLR 2015). The core idea: instead of compressing the source
@@ -45,14 +45,14 @@ function HistoryTab() {
                         weighted mixture of the encoder states, effectively letting the model decide
                         which parts of the source to focus on when generating each target word.
                     </div>
-                    <div className="ch12-tl-impact">Impact: Removed the fixed-context constraint; BLEU improved especially on long sentences</div>
+                    <div className="ch-tl-impact">Impact: Removed the fixed-context constraint; BLEU improved especially on long sentences</div>
                 </div>
 
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2015</div>
-                    <div className="ch12-tl-section-label">Insight</div>
-                    <div className="ch12-tl-title">Alignment Matrices — Interpretability Surprise</div>
-                    <div className="ch12-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Insight</div>
+                    <div className="ch-tl-title">Alignment Matrices — Interpretability Surprise</div>
+                    <div className="ch-tl-body">
                         A striking result from the original paper: visualizing the attention weights
                         α<sub>tj</sub> as a matrix (target position t, source position j) revealed
                         near-diagonal structure for English↔French translation, with off-diagonal
@@ -61,14 +61,14 @@ function HistoryTab() {
                         linguistically meaningful alignments without any alignment supervision — only
                         from translation pairs.
                     </div>
-                    <div className="ch12-tl-impact">Impact: Attention weights became the first interpretability tool in neural NLP</div>
+                    <div className="ch-tl-impact">Impact: Attention weights became the first interpretability tool in neural NLP</div>
                 </div>
 
-                <div className="ch12-tl-item">
-                    <div className="ch12-tl-year">2015 – 2017</div>
-                    <div className="ch12-tl-section-label">Proliferation</div>
-                    <div className="ch12-tl-title">Attention Everywhere</div>
-                    <div className="ch12-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015 – 2017</div>
+                    <div className="ch-tl-section-label">Proliferation</div>
+                    <div className="ch-tl-title">Attention Everywhere</div>
+                    <div className="ch-tl-body">
                         Within two years, attention appeared in image captioning (Xu et al., 2015),
                         reading comprehension, question answering, speech recognition (Chan et al.
                         Listen Attend Spell, 2015), and summarization. Luong et al. (2015) refined the
@@ -76,11 +76,11 @@ function HistoryTab() {
                         extreme: remove the RNN entirely and build a model from attention alone —
                         the Transformer. Every modern LLM is built on that paper.
                     </div>
-                    <div className="ch12-tl-impact">Impact: Became the universal building block; the direct predecessor of self-attention and Transformers</div>
+                    <div className="ch-tl-impact">Impact: Became the universal building block; the direct predecessor of self-attention and Transformers</div>
                 </div>
             </div>
 
-            <div className="ch12-callout">
+            <div className="ch-callout">
                 <strong>Why it mattered beyond MT:</strong> Bahdanau attention established that
                 neural networks could learn <em>where to look</em> rather than being told where to
                 look. The alignment is end-to-end differentiable — no hand-engineered rules, no
@@ -194,8 +194,8 @@ function HighSchoolTab() {
                 where E is the target-word embedding matrix.
             </p>
 
-            <hr className="ch12-sep" />
-            <div className="ch12-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Key difference from standard seq2seq:</strong> In vanilla seq2seq, the
                 context vector c is constant — the final encoder state used for all decoder steps.
                 In Bahdanau attention, c<sub>t</sub> is recomputed at every step, attending
@@ -258,7 +258,7 @@ function MathsTab() {
             <h3>Gradient w.r.t. Attention Parameters</h3>
             <MathBlock tex="\frac{\partial \mathcal{L}}{\partial \mathbf{v}_a} = \sum_t \sum_j \frac{\partial \mathcal{L}}{\partial e_{tj}} \tanh\!\bigl(\mathbf{W}_a \mathbf{s}_{t-1} + \mathbf{U}_a \mathbf{h}_j\bigr)" />
 
-            <div className="ch12-callout">
+            <div className="ch-callout">
                 <strong>Why additive attention has O(d) parameters vs O(d²) for bilinear:</strong>
                 The additive formulation projects s and h into a shared d-dimensional space via two
                 separate matrices, then combines them with a scalar projection. The bilinear form

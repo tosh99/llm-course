@@ -15,12 +15,12 @@ function HistoryTab() {
                 language processing. It requires no labeled data; text itself is both input and label.
             </p>
 
-            <div className="ch10-timeline">
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">1948–1980s</div>
-                    <div className="ch10-tl-section-label">Classical Era</div>
-                    <div className="ch10-tl-title">N-gram language models</div>
-                    <div className="ch10-tl-body">
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">1948–1980s</div>
+                    <div className="ch-tl-section-label">Classical Era</div>
+                    <div className="ch-tl-title">N-gram language models</div>
+                    <div className="ch-tl-body">
                         Shannon's information theory (1948) established the probabilistic framework:
                         a language model is a probability distribution over sequences. N-gram models
                         estimate P(w<sub>t</sub> | w<sub>t-n+1</sub>, ..., w<sub>t-1</sub>) from
@@ -31,14 +31,14 @@ function HistoryTab() {
                         sat" and "the feline rested" share no 3-grams, so the model can't know they
                         mean similar things.
                     </div>
-                    <div className="ch10-tl-impact">Impact: Dominated speech recognition and machine translation 1970–2010</div>
+                    <div className="ch-tl-impact">Impact: Dominated speech recognition and machine translation 1970–2010</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2003</div>
-                    <div className="ch10-tl-section-label">Neural Era Begins</div>
-                    <div className="ch10-tl-title">Neural Language Model — Bengio et al.</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2003</div>
+                    <div className="ch-tl-section-label">Neural Era Begins</div>
+                    <div className="ch-tl-title">Neural Language Model — Bengio et al.</div>
+                    <div className="ch-tl-body">
                         Bengio's neural probabilistic language model jointly learned word embeddings
                         and an LM in one model. The neural model could generalize across synonyms —
                         "cat" and "kitten" share similar embeddings, so sentences about one inform
@@ -46,14 +46,14 @@ function HistoryTab() {
                         words) and the model was a fixed-window architecture (no true sequential
                         memory).
                     </div>
-                    <div className="ch10-tl-impact">Impact: First demonstration that neural LMs could outperform n-grams; introduced the LM pretraining concept</div>
+                    <div className="ch-tl-impact">Impact: First demonstration that neural LMs could outperform n-grams; introduced the LM pretraining concept</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2010–2015</div>
-                    <div className="ch10-tl-section-label">RNN Language Models</div>
-                    <div className="ch10-tl-title">Mikolov's RNN-LM</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2010–2015</div>
+                    <div className="ch-tl-section-label">RNN Language Models</div>
+                    <div className="ch-tl-title">Mikolov's RNN-LM</div>
+                    <div className="ch-tl-body">
                         Tomáš Mikolov (before Word2Vec) published "Recurrent Neural Network Based
                         Language Model" (2010), showing that RNNs could be competitive language models
                         without the fixed-window restriction. The model processes the sequence
@@ -62,14 +62,14 @@ function HistoryTab() {
                         benchmarks, and Mikolov showed that LSTM-LMs were even better. This
                         established LSTM as the standard architecture for language modeling.
                     </div>
-                    <div className="ch10-tl-impact">Impact: LSTM became the standard language model; set records on Penn Treebank benchmark</div>
+                    <div className="ch-tl-impact">Impact: LSTM became the standard language model; set records on Penn Treebank benchmark</div>
                 </div>
 
-                <div className="ch10-tl-item">
-                    <div className="ch10-tl-year">2018</div>
-                    <div className="ch10-tl-section-label">The Bridge</div>
-                    <div className="ch10-tl-title">ELMo, GPT-1 — LM as universal pretraining</div>
-                    <div className="ch10-tl-body">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">The Bridge</div>
+                    <div className="ch-tl-title">ELMo, GPT-1 — LM as universal pretraining</div>
+                    <div className="ch-tl-body">
                         Two papers transformed NLP in 2018. ELMo (Peters et al.) used bidirectional
                         LSTM LMs to produce contextual word representations, achieving state-of-the-art
                         on 6 NLP tasks by simply using the LM's hidden states as features. GPT-1
@@ -78,11 +78,11 @@ function HistoryTab() {
                         learn rich enough representations to transfer across every NLP task. This
                         moment redefined NLP: language modeling was not a task, it was universal pretraining.
                     </div>
-                    <div className="ch10-tl-impact">Impact: Language modeling became the foundation of all modern NLP; direct predecessor to GPT-3, GPT-4, Claude</div>
+                    <div className="ch-tl-impact">Impact: Language modeling became the foundation of all modern NLP; direct predecessor to GPT-3, GPT-4, Claude</div>
                 </div>
             </div>
 
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>Why LM is self-supervised:</strong> No human labeling needed. Every sentence
                 in every book, webpage, or conversation is training data: the model sees words
                 1 through t−1, and word t is the label. At 1 trillion tokens of training data,
@@ -183,8 +183,8 @@ function HighSchoolTab() {
                 A PP of 100 means the model is as uncertain as if choosing uniformly among 100 words.
             </p>
 
-            <hr className="ch10-sep" />
-            <div className="ch10-callout">
+            <hr className="ch-sep" />
+            <div className="ch-callout">
                 <strong>Autoregressive generation:</strong> At inference time, the LM generates
                 text by sampling from P(w<sub>t</sub> | w<sub>1</sub>,...,w<sub>t-1</sub>), appending
                 the sampled word to the context, then generating the next word. This autoregressive
@@ -247,7 +247,7 @@ function MathsTab() {
                 teacher-forced tokens with model predictions during training.
             </p>
 
-            <div className="ch10-callout">
+            <div className="ch-callout">
                 <strong>LM → GPT scaling insight:</strong> Kaplan et al. (OpenAI, 2020) showed
                 that LM cross-entropy loss scales as a power law in model parameters N, dataset
                 size D, and compute C: L(N, D) ≈ (N<sub>c</sub>/N)<sup>α</sup> + (D<sub>c</sub>/D)<sup>β</sup>.

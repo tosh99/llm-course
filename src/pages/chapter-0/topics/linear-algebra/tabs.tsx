@@ -21,15 +21,15 @@ interface TlItem {
 
 function TimelineItem({ item }: { item: TlItem }) {
     return (
-        <div className="ch0-tl-item">
-            <div className="ch0-tl-year">{item.year}</div>
-            <div className="ch0-tl-title">{item.title}</div>
-            <div className="ch0-tl-section-label">The challenge</div>
-            <div className="ch0-tl-body">{item.challenge}</div>
-            <div className="ch0-tl-section-label">What was introduced</div>
-            <div className="ch0-tl-body">{item.what}</div>
-            <div className="ch0-tl-section-label">Why it mattered</div>
-            <div className="ch0-tl-body ch0-tl-impact">{item.impact}</div>
+        <div className="ch-tl-item">
+            <div className="ch-tl-year">{item.year}</div>
+            <div className="ch-tl-title">{item.title}</div>
+            <div className="ch-tl-section-label">The challenge</div>
+            <div className="ch-tl-body">{item.challenge}</div>
+            <div className="ch-tl-section-label">What was introduced</div>
+            <div className="ch-tl-body">{item.what}</div>
+            <div className="ch-tl-section-label">Why it mattered</div>
+            <div className="ch-tl-body ch-tl-impact">{item.impact}</div>
         </div>
     )
 }
@@ -99,7 +99,7 @@ function HistoryTab() {
     ]
 
     return (
-        <div className="ch0-timeline">
+        <div className="ch-timeline">
             {items.map((item) => (
                 <TimelineItem key={item.year} item={item} />
             ))}
@@ -329,7 +329,7 @@ function HighSchoolTab() {
                 <CovarianceDiagram />
             </DiagramBlock>
 
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Connection to ML:</strong> Eigenvalues appear everywhere. The learning dynamics
                 of gradient descent are governed by the eigenvalues of the loss Hessian. Transformer
                 attention heads implicitly learn low-rank structure that SVD (a generalisation of
@@ -597,7 +597,7 @@ function PythonTab() {
                 PyTorch's CPU path.
             </p>
             <CodeBlock code={PY_CODE} filename="linear_algebra.py" lang="python" langLabel="Python" />
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Key insight:</strong> The <code>@</code> operator is matrix multiplication.{" "}
                 <code>np.linalg.eig</code> returns eigenvalues and eigenvectors; prefer{" "}
                 <code>np.linalg.eigh</code> for symmetric matrices (faster and numerically stable).{" "}
@@ -698,7 +698,7 @@ function CodeTab() {
                 NumPy or PyTorch.
             </p>
             <CodeBlock code={TS_CODE} filename="linear-algebra.ts" lang="typescript" langLabel="TypeScript" />
-            <div className="ch0-callout">
+            <div className="ch-callout">
                 <strong>Next step:</strong> Replace these loops with <code>numpy</code> in Python, which
                 calls optimised BLAS routines — the same operations, 100–1000× faster due to SIMD and
                 cache-aware memory layouts.
