@@ -53,7 +53,7 @@ export function Chapter21Page() {
         <div className="ch">
             {/* ── Header ── */}
             <header className="ch-header">
-                <span className="ch-header-chapter">Ch. 21</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 21</span></Link>
                 <div className="ch-header-sep" />
                 <span className="ch-header-title">Open LLMs &amp; Efficiency</span>
                 <Link to="/" style={{ textDecoration: "none" }}>

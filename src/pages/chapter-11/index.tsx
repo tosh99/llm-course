@@ -56,7 +56,7 @@ export function Chapter11Page() {
         <div className="ch">
             {/* ── Header ── */}
             <header className="ch-header">
-                <span className="ch-header-chapter">Ch. 11</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 11</span></Link>
                 <div className="ch-header-sep" />
                 <span className="ch-header-title">Encoder-Decoder &amp; Seq2Seq</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>

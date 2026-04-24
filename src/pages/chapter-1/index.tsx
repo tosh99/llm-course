@@ -51,7 +51,7 @@ export function Chapter1Page() {
         <div className="ch">
             {/* ── Header ── */}
             <header className="ch-header">
-                <span className="ch-header-chapter">Ch. 1</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 1</span></Link>
                 <div className="ch-header-sep" />
                 <span className="ch-header-title">The Perceptron &amp; Early Neural Concepts</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>

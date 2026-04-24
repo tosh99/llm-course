@@ -51,7 +51,7 @@ export function Chapter13Page() {
         <div className="ch">
             {/* ── Header ── */}
             <header className="ch-header">
-                <span className="ch-header-chapter">Ch. 13</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 13</span></Link>
                 <div className="ch-header-sep" />
                 <span className="ch-header-title">Gated Units &amp; Advanced RNNs</span>
                 <Link to="/" style={{ textDecoration: "none" }}>

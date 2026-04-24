@@ -51,7 +51,7 @@ export function Chapter17Page() {
         <div className="ch">
             {/* ── Header ── */}
             <header className="ch-header">
-                <span className="ch-header-chapter">Ch. 17</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 17</span></Link>
                 <div className="ch-header-sep" />
                 <span className="ch-header-title">Scaling Up: GPT-2 &amp; T5</span>
                 <Link to="/" style={{ textDecoration: "none" }}>

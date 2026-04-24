@@ -51,7 +51,7 @@ export function Chapter5Page() {
         <div className="ch">
             {/* ── Header ── */}
             <header className="ch-header">
-                <span className="ch-header-chapter">Ch. 5</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 5</span></Link>
                 <div className="ch-header-sep" />
                 <span className="ch-header-title">Recurrent Neural Networks</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>

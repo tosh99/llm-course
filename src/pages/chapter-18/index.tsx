@@ -51,7 +51,7 @@ export function Chapter18Page() {
         <div className="ch">
             {/* ── Header ── */}
             <header className="ch-header">
-                <span className="ch-header-chapter">Ch. 18</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 18</span></Link>
                 <div className="ch-header-sep" />
                 <span className="ch-header-title">The Scaling Hypothesis</span>
                 <Link to="/" style={{ textDecoration: "none" }}>

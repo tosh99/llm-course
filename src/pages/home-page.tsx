@@ -26,7 +26,7 @@ const CURRICULUM: Part[] = [
             {
                 num: "Ch. 0",
                 title: "Prerequisites & Foundations",
-                topics: ["Linear Algebra", "Calculus", "Probability", "Information Theory", "Python", "Computing"],
+                topics: ["Linear Algebra", "Calculus", "Probability", "Python"],
                 route: "/chapter/0",
             },
         ],
@@ -96,14 +96,14 @@ const CURRICULUM: Part[] = [
                 num: "Ch. 7",
                 title: "Deep Learning Reignition",
                 era: "2006 – 2012",
-                topics: ["Deep Belief Nets", "RBMs", "ReLU", "Dropout"],
+                topics: ["Deep Belief Nets", "RBMs", "ReLU", "Dropout", "GANs"],
                 route: "/chapter/7",
             },
             {
                 num: "Ch. 8",
                 title: "CNN Architectures",
                 era: "2012 – 2016",
-                topics: ["AlexNet", "VGGNet", "GoogLeNet", "ResNet", "DenseNet", "GANs", "ViT"],
+                topics: ["AlexNet", "VGGNet", "GoogLeNet", "ResNet", "DenseNet"],
                 route: "/chapter/8",
             },
             {
@@ -159,7 +159,7 @@ const CURRICULUM: Part[] = [
                 num: "Ch. 14",
                 title: "The Transformer",
                 era: "2017",
-                topics: ["Scaled Dot-Product Attention", "Multi-Head Attention", "Positional Encoding", "Encoder / Decoder"],
+                topics: ["Scaled Dot-Product Attention", "Multi-Head Attention", "Positional Encoding", "Encoder / Decoder", "ViT"],
                 route: "/chapter/14",
             },
             {
