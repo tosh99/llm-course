@@ -33,21 +33,31 @@ function HistoryTab() {
             year: "1873 – 1874",
             title: "Beltrami & Jordan — The SVD Discovered",
             challenge:
-                "Mathematicians had long known that symmetric matrices could be diagonalised (eigendecomposition), but most matrices in applications were rectangular — more rows than columns, or vice versa. There was no way to decompose a general matrix into simple, interpretable pieces.",
+                "Eigendecomposition (Σ = QΛQ^T) works beautifully for square symmetric matrices like covariance matrices. But most real data matrices are rectangular — m samples and n features, with m ≠ n. These matrices have no eigenvalues in the traditional sense, because eigenvectors must live in the same space as their images and rectangular matrices map between two different spaces. The 'natural axes' story had no rectangular analogue.",
             what:
-                "Eugenio Beltrami and Camille Jordan independently discovered that any matrix — even rectangular ones — can be written as a product of three special matrices: a rotation, a diagonal scaling matrix, and another rotation. This is the Singular Value Decomposition (SVD).",
+                "Eugenio Beltrami (1873) and Camille Jordan (1874) independently discovered that any matrix A — even rectangular — can be written as A = UΣV^T: a rotation U of the output space, a diagonal scaling Σ stretching each axis by a non-negative singular value, and a rotation V^T of the input space. The singular values are the square roots of the eigenvalues of A^T A. Every linear transformation, regardless of shape, does exactly these three things.",
             impact:
-                "SVD is the Swiss Army knife of numerical linear algebra. It works for any matrix shape, unlike eigendecomposition which requires square matrices. In ML, it underpins PCA, recommendation systems (matrix factorisation), image compression, and modern parameter-efficient fine-tuning methods like LoRA.",
+                "SVD is the Swiss Army knife of numerical linear algebra. It works for any matrix shape, is more numerically stable than eigendecomposition, and applies everywhere eigendecomposition does — plus everywhere it doesn't. In ML: PCA via SVD of the centred data matrix (more stable than forming X^T X), image compression (keep top-k singular values), recommendation systems (matrix factorisation), and LoRA fine-tuning (constraining weight updates to a low-rank subspace). The next question — how good is a truncated SVD approximation? — is what Eckart and Young answered.",
         },
         {
             year: "1936",
-            title: "Eckart & Young — The Low-Rank Approximation Theorem",
+            title: "Eckart & Young — The Optimal Low-Rank Approximation",
             challenge:
-                "Once you have an SVD, you can throw away small singular values and reconstruct an approximation of the original matrix. But how good is this approximation? Is there a better way to approximate a matrix with a lower-rank one?",
+                "Once you have an SVD, you can zero out small singular values and reconstruct an approximation of the original matrix — but is this actually the best possible rank-k approximation? Could some other rank-k matrix be closer to the original? There are infinitely many rank-k matrices to search over, and without a theorem, truncated SVD was just a heuristic.",
             what:
-                "Carl Eckart and Gale Young proved that the truncated SVD — keeping only the top k singular values and vectors — yields the best possible rank-k approximation of the original matrix, as measured by either the spectral norm or the Frobenius norm.",
+                "Carl Eckart and Gale Young proved that the truncated SVD — keeping only the top k singular values — gives the best possible rank-k approximation of A, in both the spectral norm and the Frobenius norm. No other rank-k matrix is closer. The approximation error is exactly: ||A − A_k||²_F = σ²_{k+1} + σ²_{k+2} + ... The singular values themselves tell you precisely how much information you lose at each truncation level.",
             impact:
-                "This theorem justifies almost every matrix compression technique in ML. From compressing weight matrices in neural networks to building compact embeddings in recommendation systems, the Eckart-Young theorem tells us that SVD-based truncation is optimal. LoRA (2022) exploits this by learning only the top few singular directions of weight updates.",
+                "The Eckart-Young theorem justifies every matrix compression technique in ML. PCA is optimal linear dimensionality reduction. LoRA's claim that weight updates live in a low-rank subspace is validated by Eckart-Young — it guarantees the SVD approximation is the best you can do for a given rank budget. The theorem also reveals when low-rank approximation is appropriate: if singular values decay rapidly, a few components capture almost everything.",
+        },
+        {
+            year: "1965",
+            title: "Golub & Reinsch — A Stable Algorithm for Computing SVD",
+            challenge:
+                "Beltrami, Jordan, and Eckart-Young gave the theory of SVD, but computing it reliably for large matrices was numerically treacherous. Early implementations often failed to converge or produced inaccurate results due to floating-point cancellation. There was no algorithm that a practitioner could apply to any matrix and trust.",
+            what:
+                "Gene Golub and Christian Reinsch developed the algorithm that is still the default in every numerical library. Their two-phase approach: first reduce A to bidiagonal form using numerically stable Householder reflections; then apply an iterative QR algorithm to the bidiagonal matrix, converging rapidly to the diagonal Σ. The algorithm runs in O(m·n·min(m,n)) time with rigorous numerical stability guarantees.",
+            impact:
+                "Every call to torch.linalg.svd() or np.linalg.svd() uses Golub-Reinsch under the hood. The algorithm's reliability made SVD the practical workhorse of numerical computing. This brings us to an important question: given a best-fit matrix decomposition, how do we know if the decomposition is statistically meaningful — are those singular values real signal or just noise? That question of statistical significance is the subject of our next topic.",
         },
     ]
 
@@ -65,24 +75,34 @@ function KidTab() {
         <>
             <h2>Breaking down big machines into simple parts</h2>
 
+            <p className="ch-story-intro">
+                Eigenvectors reveal the natural axes of square matrices. But most real data is rectangular — more examples than features, or vice versa. SVD is the generalisation: it finds the natural axes of <em>any</em> matrix, regardless of shape.
+            </p>
+
             <Analogy label="SVD = disassemble, scale, reassemble">
-                Imagine a complicated LEGO machine. Instead of trying to understand all the bricks at once,
-                you can take it apart into three simpler steps: first rotate the whole thing, then stretch
-                or squish each axis independently, then rotate it again. That is what SVD does to a matrix.
+                Imagine a complicated LEGO machine. Instead of trying to understand all the bricks at once, take it apart into three simpler steps: first rotate the whole thing (V^T), then stretch or squish each axis independently (Σ), then rotate it again (U). That is what SVD does to any matrix — even a rectangular one with more rows than columns.
+                <br /><br />
+                The three steps together can reproduce any linear transformation exactly — and they make the structure of the transformation transparent.
             </Analogy>
 
-            <Analogy label="Low-rank approximation = keep the important parts">
-                If your LEGO machine has 1000 bricks but only 10 of them do all the interesting work, you
-                can throw away the other 990 and still have a machine that behaves almost the same. SVD
-                tells you exactly which 10 bricks matter most — the ones with the biggest stretch factors
-                (singular values).
+            <Analogy label="Singular values = a ranking of importance">
+                The stretch factors in the middle step are called <strong>singular values</strong> — σ₁ ≥ σ₂ ≥ ... ≥ 0. The first direction gets stretched the most (most important). The second gets stretched less (second most important). And so on, all the way down to near-zero (almost meaningless).
+                <br /><br />
+                In Netflix's recommendation system, the largest singular values capture dominant patterns: "people who like action" and "people who like romance." The tiny ones capture rare, idiosyncratic preferences affecting very few users. Keeping only the big ones gives a compact, useful summary of millions of ratings.
             </Analogy>
 
-            <Analogy label="Why this matters for AI">
-                Modern AI models have <strong>billions</strong> of numbers (parameters). Storing and
-                training them is expensive. SVD lets us compress these models by keeping only the most
-                important directions. It is also how Netflix recommends movies: they factorise a giant
-                user-movie ratings matrix into two smaller matrices that capture hidden patterns.
+            <Analogy label="Low-rank approximation = keep only the important bricks">
+                If your LEGO machine has 1000 bricks but only 10 do all the interesting work, throw away the other 990. SVD tells you exactly which 10 matter most. Eckart and Young (1936) proved this is not just convenient — it's the <em>best possible</em> approximation for any given number of bricks you want to keep.
+            </Analogy>
+
+            <Analogy label="LoRA = fine-tuning with only the important directions">
+                A giant AI model has billions of parameters — like a LEGO machine with billions of bricks. When you want to teach it a new skill (like writing medical reports), you don't retrain everything. LoRA adds two small matrices (a few hundred bricks) that capture the most important update directions. SVD's Eckart-Young theorem guarantees you're keeping the right ones.
+                <br /><br />
+                Result: 1–2% of the parameters, 90%+ of the performance.
+            </Analogy>
+
+            <Analogy label="What comes next — is this pattern real or just noise?">
+                SVD gives us the best possible decomposition. But here's a nagging worry: what if the top singular values we found are just random noise — a coincidence of the specific data we happened to see? How do we know our patterns are <em>real</em> and not just lucky? That question of distinguishing signal from noise is exactly what <strong>statistical inference</strong> — our next topic — is designed to answer.
             </Analogy>
         </>
     )
@@ -146,11 +166,34 @@ function HighSchoolTab() {
                 singular values divided by (n-1) are the eigenvalues of the covariance matrix. SVD avoids
                 explicitly forming X^T X, which is numerically more stable.
             </p>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Definitions</h2>
@@ -191,11 +234,15 @@ function MathsTab() {
                 </li>
                 <li>
                     <strong>LoRA (2022)</strong> — fine-tune LLMs efficiently by learning a low-rank{" "}
-                    update Delta W = BA where B in <InlineMath tex="\mathbb{R}^{m \times r}" />, A in <InlineMath tex="\mathbb{R}^{r \times n}" />, r much less than min(m,n)
+                    update ΔW = BA where B in <InlineMath tex="\mathbb{R}^{m \times r}" />, A in <InlineMath tex="\mathbb{R}^{r \times n}" />, r much less than min(m,n)
                 </li>
                 <li>
                     <strong>Matrix factorisation for recommendations</strong> — decompose a sparse
-                    user-item rating matrix R approx U V^T where U and V have few columns
+                    user-item rating matrix R ≈ UV^T where U and V have few columns
+                </li>
+                <li>
+                    <strong>Statistical interpretation</strong> — which singular values represent real signal
+                    versus sampling noise? This is a statistical inference question, and it is the subject of our next topic.
                 </li>
             </ul>
         </>
@@ -272,7 +319,7 @@ print(f"  input:  {list(batch.shape)}")
 print(f"  U: {list(U_b.shape)}, S: {list(S_b.shape)}, Vh: {list(Vh_b.shape)}")
 print(f"  64 independent SVDs computed as a single BLAS call")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -300,6 +347,6 @@ export const SVD_DECOMPOSITIONS_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

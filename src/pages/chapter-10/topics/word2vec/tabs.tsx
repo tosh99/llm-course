@@ -181,11 +181,34 @@ function HighSchoolTab() {
                 W is the embedding for a word as a center word; each row of W' is its embedding
                 as a context word. In practice we discard W' and use W as the final embeddings.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Objective, gradient, noise contrastive estimation</h2>
@@ -330,7 +353,7 @@ print(f"Pos P(real):    {pos:.4f}  (want → 1.0)")
 print(f"Neg P(noise):   {negs.mean():.4f}  (want → 1.0 i.e. u·v → -inf)")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -352,6 +375,6 @@ export const WORD2VEC_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

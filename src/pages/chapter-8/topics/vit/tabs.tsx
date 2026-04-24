@@ -185,11 +185,34 @@ function HighSchoolTab() {
                 datasets (JFT-300M, ImageNet-21k). This reveals a key insight: self-attention
                 is more expressive but needs more data to learn its inductive biases.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>ViT: Mathematical Details</h2>
@@ -426,7 +449,7 @@ if __name__ == "__main__":
     print(f"Input:  {x.shape}")
     print(f"Output: {y.shape}")`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -452,6 +475,6 @@ export const VIT_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

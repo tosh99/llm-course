@@ -193,11 +193,33 @@ function HighSchoolTab() {
                 <li><strong>Logistic regression:</strong> Replace ŷ with σ(wx + b) to model probabilities — used for classification</li>
                 <li><strong>Poisson regression:</strong> For count data (y ≥ 0, integer) — models log(E[y]) = Xβ</li>
             </ul>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal proofs · Gauss-Markov · bias-variance</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">NumPy · OLS · Ridge · LASSO · CV</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Statistical Framework</h2>
@@ -320,7 +342,7 @@ ridge = RidgeCV(alphas=[0.01, 0.1, 0.5, 1.0, 5.0, 10.0], cv=5)
 ridge.fit(X[:, 1:], y)         # sklearn adds intercept automatically
 print(f"Best λ by CV: {ridge.alpha_:.2f}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -343,6 +365,6 @@ export const LINEAR_REGRESSION_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths: null,
+    python: null,
 }

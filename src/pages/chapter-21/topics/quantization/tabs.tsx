@@ -134,11 +134,34 @@ function HighSchoolTab() {
                 negligible perplexity degradation. llama.cpp runs LLaMA-7B at ~20 tokens/sec on
                 a MacBook Air M2 using 4-bit quantized weights.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Quantization mathematics</h2>
@@ -229,7 +252,7 @@ W_q = dequantize_affine(q, s).reshape(W.shape)
 print("INT8 RMSE:", np.sqrt(np.mean((W - W_q)**2)).round(6))
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -250,6 +273,6 @@ export const QUANTIZATION_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

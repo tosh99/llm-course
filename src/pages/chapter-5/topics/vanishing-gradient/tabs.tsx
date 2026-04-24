@@ -137,11 +137,34 @@ function HighSchoolTab() {
                 like subject-verb agreement across clauses ("The cars that the woman who lives in
                 the house bought...").
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal characterisation of the vanishing and exploding gradient</h2>
@@ -285,7 +308,7 @@ print()
 print("This is why LSTM can learn dependencies of arbitrary length:")
 print("gradients flow through the cell state unchanged (weight = 1.0 by design)")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -307,6 +330,6 @@ export const VANISHING_GRADIENT_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

@@ -195,11 +195,34 @@ function HighSchoolTab() {
                 training steps. The cosine minimum is typically 10% of the peak LR. This combination
                 — warmup + cosine — is used by GPT-3, LLaMA, and most modern LLMs.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Convergence theory, warmup necessity, and cosine properties</h2>
@@ -335,7 +358,7 @@ print("Train 1 epoch with LR increasing from 1e-7 to 10")
 print("Find the LR where loss is decreasing fastest → use 10× below that as peak LR")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -357,6 +380,6 @@ export const LR_SCHEDULES_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

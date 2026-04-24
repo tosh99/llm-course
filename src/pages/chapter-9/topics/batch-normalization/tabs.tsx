@@ -176,11 +176,34 @@ function HighSchoolTab() {
                 away from well-behaved distributions. BatchNorm normalizes at <em>each layer</em>,
                 ensuring all layers always receive well-conditioned inputs.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Gradients through BatchNorm, landscape smoothing, and variants</h2>
@@ -332,7 +355,7 @@ print("Large sigma → smaller gradient → more stable updates")
 print("This is why BatchNorm allows 10× higher learning rates!")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -354,6 +377,6 @@ export const BATCH_NORMALIZATION_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

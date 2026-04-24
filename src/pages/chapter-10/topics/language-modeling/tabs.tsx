@@ -191,11 +191,34 @@ function HighSchoolTab() {
                 process is how GPT models generate text — one token at a time, conditioning on
                 everything generated so far.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Information theory, perplexity bounds, and the cross-entropy gap</h2>
@@ -381,7 +404,7 @@ print("Note: with random weights, PP ≈ V (uniform guess over 5 words)")
 print("After training: PP should be much lower than V")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -403,6 +426,6 @@ export const LANGUAGE_MODELING_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

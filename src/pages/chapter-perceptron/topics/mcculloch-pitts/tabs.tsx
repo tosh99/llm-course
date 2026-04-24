@@ -170,11 +170,34 @@ function HighSchoolTab() {
             <div className="ch-callout">
                 <strong>The geometric picture:</strong> The perceptron is drawing a hyperplane through data. If such a hyperplane exists, the perceptron will eventually find it (it converges). If not, it will oscillate forever without finding a solution.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Neuron Models and Their Limitations</h2>
@@ -321,7 +344,7 @@ preds_xor = perceptron_predict(X_xor, w_xor, b_xor)
 print(f"\\nPerceptron XOR: {preds_xor} (targets: {y_xor})")
 print(f"Never converges — no hyperplane exists!")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -346,6 +369,6 @@ export const MCCULLOCH_PITTS_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

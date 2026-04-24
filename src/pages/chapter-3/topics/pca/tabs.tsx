@@ -121,11 +121,34 @@ function HighSchoolTab() {
                 <li><strong>Sensitive to scale</strong> — always standardise features to unit variance before PCA unless all features are in the same units</li>
                 <li><strong>Linear only</strong> — PCA cannot capture non-linear structure; use t-SNE or UMAP for that</li>
             </ul>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Derivation</h2>
@@ -203,7 +226,7 @@ print(f"Reconstruction MSE: {mse:.4f}")
 # For digits, reshape to 8x8 image to visualise "eigendigits"
 # plt.imshow(pca.components_[0].reshape(8, 8))`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="pca.py" lang="python" langLabel="Python" />
@@ -221,6 +244,6 @@ export const PCA_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

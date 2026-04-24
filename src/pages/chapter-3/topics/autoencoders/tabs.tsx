@@ -204,11 +204,34 @@ function HighSchoolTab() {
                 <li><strong>Anomaly detection:</strong> Train on normal data; anomalies have high reconstruction error</li>
                 <li><strong>Generative modelling (VAE):</strong> Sample z ~ 𝒩(0,I), decode to generate new data</li>
             </ul>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Variational Autoencoders — The Full Framework</h2>
@@ -320,7 +343,7 @@ optimiser = torch.optim.Adam(model.parameters(), lr=1e-3)
 #     samples = model.decode(z)          # decode to pixel space
 #     samples = samples.view(16, 1, 28, 28)`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="vae.py" lang="python" langLabel="Python" />
@@ -338,6 +361,6 @@ export const AUTOENCODERS_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

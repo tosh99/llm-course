@@ -207,11 +207,34 @@ function HighSchoolTab() {
                 equivalence that doesn't share the same words. A translation that is semantically
                 perfect but lexically different will score poorly on both.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal definitions of BLEU and ROUGE</h2>
@@ -329,7 +352,7 @@ for n in [1, 2, 3]:
     print(f"{n}-gram: {m}/{total} match  (precision = {m/total:.4f})")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -351,6 +374,6 @@ export const EVALUATION_METRICS_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

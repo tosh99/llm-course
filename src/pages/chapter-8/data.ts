@@ -114,6 +114,4 @@ export const TABS: { id: TabId; label: string }[] = [
     { id: "history", label: "History" },
     { id: "kid", label: "Kid Explanation" },
     { id: "highschool", label: "High School" },
-    { id: "maths", label: "Maths" },
-    { id: "python", label: "Sample Code" },
 ]

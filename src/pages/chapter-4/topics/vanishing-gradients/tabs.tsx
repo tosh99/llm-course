@@ -102,11 +102,34 @@ function HighSchoolTab() {
             <div className="ch-callout">
                 <strong>Fixes:</strong> careful weight initialization (Xavier: <InlineMath tex="W \sim \mathcal{N}(0, \sqrt{2/n_{in}})" />; He init for ReLU), batch normalization (Ioffe & Szegedy, 2015), residual connections (ResNet, 2015), and using ReLU instead of sigmoid/tanh.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal analysis of gradient flow</h2>
@@ -187,7 +210,7 @@ print("Key insight: with sigmoid (max grad=0.25) and W≈1, gradients vanish")
 print("exponentially. With ReLU (active neurons) and W=2.0, gradients flow")
 print("normally. With W=4.0 and sigmoid, gradients EXPLODE (see W=4.0 column).")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -209,6 +232,6 @@ export const VANISHING_GRADIENTS_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

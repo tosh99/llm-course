@@ -189,11 +189,34 @@ function HighSchoolTab() {
                 features were inferior. AlexNet's 2012 victory — 10% error vs. 26% for hand-crafted
                 features — changed this paradigm forever.
             </p>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Mathematical Analysis of Training Barriers</h2>
@@ -352,7 +375,7 @@ print(f"Total training FLOPs (large):  {images_large * epochs * dataset_flops * 
 
 # The factor of 3 accounts for forward + 2 backward passes (simplified estimate)`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -378,6 +401,6 @@ export const WHY_CNNS_STALLED_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

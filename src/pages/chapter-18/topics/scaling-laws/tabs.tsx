@@ -157,11 +157,34 @@ function HighSchoolTab() {
                 recommended training models with roughly 20 tokens per parameter, which was later
                 shown to be far too little.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Derivation and functional forms</h2>
@@ -269,7 +292,7 @@ print(f"  D_opt ≈ {D_opt:.2e} tokens")
 print(f"  Predicted loss: {loss_joint(N_opt, D_opt):.3f}")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -291,6 +314,6 @@ export const SCALING_LAWS_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

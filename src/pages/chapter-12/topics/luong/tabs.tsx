@@ -150,11 +150,34 @@ function HighSchoolTab() {
                 where σ = D/2 and align is the same softmax-normalized scoring. Only positions
                 within the window are computed; all others get weight 0.
             </p>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Architecture comparison and local attention derivation</h2>
@@ -318,7 +341,7 @@ for j, a in enumerate(alphas_l):
     print(f"  pos {j}: {a:.4f}  {bar}{marker}")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -340,6 +363,6 @@ export const LUONG_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

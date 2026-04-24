@@ -202,11 +202,34 @@ function HighSchoolTab() {
                 to the full encoder output sequence. This adds O(T<sub>x</sub>) computation
                 per decoder step but completely solves the bottleneck.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Full derivation and gradient analysis</h2>
@@ -348,7 +371,7 @@ for step in range(3):
           f"  (α={alp[top_pos]:.3f})  ||c|| = {np.linalg.norm(ctx):.3f}")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -370,6 +393,6 @@ export const BAHDANAU_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

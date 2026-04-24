@@ -33,21 +33,31 @@ function HistoryTab() {
             year: "1843 – 1858",
             title: "Cayley & Hamilton — The Characteristic Equation",
             challenge:
-                "Mathematicians knew that some directions survived matrix transformations unchanged, but there was no systematic way to find them. Every matrix required ad hoc guessing and checking.",
+                "For centuries, geometers had known that some geometric transformations have 'special directions' — lines that the transformation maps onto themselves. A scaling transformation has every direction as a special direction; a shear keeps the x-axis fixed. But identifying these invariant directions for an arbitrary matrix required solving ad-hoc polynomial equations with no unifying method. Every new matrix was a fresh puzzle.",
             what:
-                "Cayley showed that for any square matrix A, the equation det(A - lambda I) = 0 yields a polynomial whose roots are exactly the scale factors (eigenvalues) of those special directions. Hamilton proved that every matrix satisfies its own characteristic equation: if p(lambda) = det(A - lambda I), then p(A) = 0.",
+                "Cayley showed that for any square matrix A, the equation det(A − λI) = 0 yields a degree-n polynomial whose n roots are exactly the eigenvalues — the scale factors of the invariant directions. Hamilton then proved the Cayley–Hamilton theorem: every matrix satisfies its own characteristic polynomial. That is, if p(λ) = det(A − λI), then substituting A for λ gives p(A) = 0. This remarkable identity means you can always express A^n as a polynomial in A of degree at most n−1.",
             impact:
-                "This turned eigenvalue hunting from an art into an algorithm. The characteristic polynomial is why we can compute eigenvalues systematically, and it underpins everything from stability analysis in control theory to principal component analysis in machine learning.",
+                "This turned eigenvalue hunting from an art into an algorithm. The characteristic polynomial gives a computable procedure for finding all n eigenvalues of any n×n matrix. In ML, eigenvalues appear constantly: the eigenvalues of the Hessian matrix govern training stability (gradient descent diverges if step size exceeds 2/λ_max), the eigenvalues of an attention weight matrix reveal the 'modes' a head has learned, and the eigenvalue of 1 in a Markov chain's transition matrix defines the stationary distribution — the foundation of PageRank.",
         },
         {
-            year: "1900 – 1930",
-            title: "Principal Component Analysis",
+            year: "1901 – 1933",
+            title: "Pearson & Hotelling — Principal Component Analysis",
             challenge:
-                "Statisticians working with multivariate data — measurements of many traits across many individuals — had no way to visualise or compress high-dimensional datasets. How do you summarise 20 measurements per person in a way that preserves the most important patterns?",
+                "In the early 20th century, fields like anthropology, economics, and psychology were accumulating multi-variable datasets. An anthropologist measuring 20 skull dimensions on hundreds of specimens had no way to ask: how many genuinely independent patterns of variation are there in this data? Are 20 measurements really 20 independent dimensions, or do most of the variation live in just 3 or 4 'natural' directions? There was no mathematical language for this question.",
             what:
-                "Karl Pearson and later Harold Hotelling developed PCA: form the covariance matrix of the data, find its eigenvectors and eigenvalues, and project the data onto the directions of maximum variance (the eigenvectors with largest eigenvalues).",
+                "Karl Pearson (1901) and Harold Hotelling (1933) developed PCA in two independent streams. Pearson approached it geometrically: find the line that minimises the sum of squared distances from each data point — the direction of maximum variance. Hotelling formalised the algebraic connection: form the covariance matrix Σ = X^T X / n, find its eigendecomposition Σ = QΛQ^T, and project data onto the top-k eigenvectors. The eigenvectors are the directions of maximum variance; the eigenvalues measure how much variance each direction contains.",
             impact:
-                "PCA is one of the most widely used dimensionality-reduction techniques in all of data science. It is the ancestor of modern autoencoders and the conceptual foundation for understanding why neural networks can learn compressed representations. In computer vision, eigenfaces (PCA on face images) were an early landmark in facial recognition.",
+                "PCA is one of the most widely used dimensionality-reduction techniques in all of data science: used to visualise high-dimensional data, initialise neural network weights, and extract features before clustering. The 'eigenfaces' algorithm (Turk & Pentland, 1991) — PCA on face images — was a landmark in facial recognition and directly inspired autoencoders, which learn nonlinear generalisations of PCA. LoRA fine-tuning (2022) is conceptually PCA applied to weight-update matrices: find the low-dimensional subspace where important changes live.",
+        },
+        {
+            year: "1907 – 1912",
+            title: "Perron & Frobenius — The Dominant Eigenvalue",
+            challenge:
+                "Mathematicians studying systems that evolved over time — disease spreading in populations, heat diffusing through materials, money flowing through an economy — modelled them as matrices applied repeatedly: x_{t+1} = Ax_t. But with n variables and n² matrix entries, predicting the long-run behaviour directly seemed intractable. Would repeated multiplication always converge, or could it cycle endlessly?",
+            what:
+                "Oskar Perron (1907) proved that any matrix with all strictly positive entries has a unique largest real eigenvalue (the Perron root) with a corresponding eigenvector of all-positive components. Georg Frobenius extended this to irreducible non-negative matrices (1908–1912). The theorem guarantees that repeated application of such a matrix always converges to a direction proportional to this dominant eigenvector — regardless of where you start.",
+            impact:
+                "The Perron-Frobenius theorem is the mathematical foundation of Google's PageRank: the web's link matrix is non-negative and irreducible, so a unique dominant eigenvector exists and power iteration (repeatedly multiplying by the matrix) converges to it. In ML, any recurrent process — Markov chains, diffusion models, RNNs — has long-run behaviour governed by its dominant eigenvalue. A dominant eigenvalue greater than 1 means the system diverges; less than 1 means it contracts to a fixed point. Understanding this is why careful weight initialisation matters: if the initial recurrent weight matrix has spectral radius > 1, gradients explode.",
         },
     ]
 
@@ -65,52 +75,42 @@ function KidTab() {
         <>
             <h2>Special arrows that do not change direction</h2>
 
-            <Analogy label="Special Arrows — Eigenvectors">
-                Most arrows change direction when they go through a matrix machine. But some very special
-                arrows come out <em>pointing exactly the same way</em> — they only get longer or shorter.
-                These are called <strong>eigenvectors</strong> (from the German word <em>eigen</em>,
-                meaning "own" or "special"). The number that says <em>how much</em> it stretched is called
-                the <strong>eigenvalue</strong>.
-                <br />
-                <br />
-                Think of it like a bouncy ball thrown at a wall. Most balls bounce off at a weird angle.
-                But if you throw it perfectly straight at the wall, it bounces straight back — same
-                direction, just reversed. That "perfect direction" is like an eigenvector!
-            </Analogy>
+            <p className="ch-story-intro">
+                Matrices are arrow-reshaping machines. Most arrows change direction when they go through a matrix. But some very special arrows come out pointing exactly the same way — they only get stretched or shrunk. These are eigenvectors, and they reveal the hidden structure of the matrix.
+            </p>
 
-            <Analogy label="Why eigenvectors matter for AI">
-                When a computer looks at a huge pile of data — say, 1000 photos — there are hidden
-                "important directions" in all that information. <strong>PCA</strong> (Principal Component
-                Analysis) finds the eigenvectors of that data to discover which directions carry the most
-                useful information. It is like finding the best angle to look at a 3D sculpture so you can
-                draw a flat picture that still shows everything important.
-            </Analogy>
-
-            <Analogy label="The Covariance Matrix — a friendship table">
-                Imagine you measure two things about every kid in your school: their height and their shoe
-                size. You will notice that <strong>tall kids tend to have bigger feet</strong>. They
-                "go together." The <strong>covariance matrix</strong> is a table that records, for every
-                pair of measurements you are tracking, whether they tend to go up together (positive), go
-                opposite ways (negative), or just do not care about each other at all (zero).
+            <Analogy label="Eigenvectors = arrows that survive unchanged in direction">
+                Most arrows change direction when they go through a matrix machine. But some very special arrows come out <em>pointing exactly the same way</em> — they only get longer or shorter. These are called <strong>eigenvectors</strong> (from the German word <em>eigen</em>, meaning "own" or "characteristic"). The stretch factor is the <strong>eigenvalue</strong>.
                 <br /><br />
-                If you track three things — height, shoe size, and hair colour — the covariance matrix is
-                a 3x3 table. The diagonal shows how "spread out" each measurement is on its own. The
-                off-diagonals show how strongly each pair moves together.
+                Think of a rubber band stretched along a diagonal. If you compress the whole sheet, most diagonal directions will be distorted. But one direction — the axis of compression — will just shrink straight down. That axis is an eigenvector.
+            </Analogy>
+
+            <Analogy label="The Covariance Matrix — a friendship table with hidden axes">
+                The covariance matrix from probability theory records, for every pair of measurements, whether they tend to go up together (positive), opposite ways (negative), or not at all (zero). Tall kids tend to have bigger feet — positive covariance between height and shoe size.
+                <br /><br />
+                Now here's the key question: what are the <em>eigenvectors</em> of this covariance matrix? They point in the directions where the data is most spread out — the "natural axes" of the data cloud.
             </Analogy>
 
             <DiagramBlock title="Covariance — data points and their natural axes">
                 <CovarianceDiagram compact />
             </DiagramBlock>
 
-            <Analogy label="The secret shape hiding in the data">
-                The covariance matrix has its own eigenvectors. These eigenvectors point in the directions
-                where the data is most spread out. In the scatter plot above, the <strong>amber arrow</strong>
-                points in the direction of maximum spread — the "main direction" the data runs along. The
-                <strong>blue arrow</strong> is perpendicular: the direction of least spread.
+            <Analogy label="PCA = finding the best angle to look at your data">
+                The <strong>amber arrow</strong> in the scatter plot above points in the direction of maximum spread — the "main direction" the data runs along. The <strong>blue arrow</strong> is perpendicular: the direction of least spread. These two arrows are the eigenvectors of the covariance matrix.
                 <br /><br />
-                This is exactly what <strong>PCA</strong> (Principal Component Analysis) does — it finds
-                those arrows automatically. It is how AI shrinks a dataset with 1000 measurements per
-                person down to just 10 numbers, keeping the most important information.
+                <strong>PCA</strong> (Principal Component Analysis) finds these arrows automatically. It shrinks a dataset with 1000 measurements per person down to just 10 numbers — keeping the most important directions and discarding the rest. This is the single most widely-used dimensionality reduction technique in all of data science.
+            </Analogy>
+
+            <Analogy label="Eigenvalue = how important is this direction?">
+                Each eigenvector comes with an <strong>eigenvalue</strong> — the stretch factor. A large eigenvalue means the data is spread out a lot in that direction (important direction). A small eigenvalue means very little spread (possibly just noise). Sort eigenvectors by their eigenvalues from largest to smallest, and you've ranked the directions of a dataset from most important to least.
+            </Analogy>
+
+            <Analogy label="Dominant eigenvector = the 'favourite direction' after many multiplications">
+                If you apply a matrix over and over again — multiply a vector by A, then by A again, and again — what happens? Eventually, the result gets dominated by one special direction: the <strong>dominant eigenvector</strong>. This is exactly how Google's PageRank works. The web's link structure is a matrix, and after multiplying by it thousands of times, you end up at the dominant eigenvector — which ranks every webpage by importance.
+            </Analogy>
+
+            <Analogy label="What comes next — when the matrix is rectangular">
+                Eigenvectors work perfectly when the matrix is square. But most real data matrices are rectangular — many rows (examples) and many columns (features). Extending the 'natural axes' idea to rectangular matrices requires a new tool: <strong>Singular Value Decomposition (SVD)</strong>. That's our next topic.
             </Analogy>
         </>
     )
@@ -218,17 +218,42 @@ function HighSchoolTab() {
             </DiagramBlock>
 
             <div className="ch-callout">
-                <strong>Connection to ML:</strong> Eigenvalues appear everywhere. The learning dynamics
-                of gradient descent are governed by the eigenvalues of the loss Hessian. Transformer
-                attention heads implicitly learn low-rank structure that SVD (a generalisation of
-                eigendecomposition) captures. LoRA fine-tuning exploits this by learning only the
-                high-eigenvalue directions of weight updates.
+                <strong>Connection to ML — and what comes next:</strong> Eigenvalues appear everywhere.
+                The learning dynamics of gradient descent are governed by the eigenvalues of the loss Hessian.
+                Transformer attention heads implicitly learn low-rank structure. LoRA fine-tuning exploits
+                this by learning only the high-eigenvalue directions of weight updates. But eigendecomposition
+                requires a <em>square</em> matrix. Most real data matrices — m samples × n features —
+                are rectangular. The tool that generalises eigendecomposition to any matrix shape is
+                Singular Value Decomposition (SVD), our next topic.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Definitions</h2>
@@ -356,7 +381,7 @@ eigvals_b, eigvecs_b = torch.linalg.eigh(batch_covs)
 print(f"  input:   {list(batch_covs.shape)}")
 print(f"  eigvals: {list(eigvals_b.shape)}  (32 decompositions, one LAPACK call)")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -384,6 +409,6 @@ export const EIGENVALUES_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

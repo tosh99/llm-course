@@ -195,11 +195,34 @@ function HighSchoolTab() {
                 large gradients. AdamW applies weight decay directly to the parameter: θ ← θ(1−αλ)
                 before the gradient step. This is mathematically correct and critical for Transformers.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Bias correction derivation, convergence, and AdamW</h2>
@@ -363,7 +386,7 @@ for t in [1, 2, 5, 10, 50, 100]:
     print(f"{t:>6}  {bc1:>12.6f}  {bc2:>12.6f}")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -385,6 +408,6 @@ export const ADAM_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

@@ -119,11 +119,34 @@ function HighSchoolTab() {
                 <li>Run backward pass only for the last k steps, accumulating gradients.</li>
                 <li>Discard gradients from earlier steps and update weights.</li>
             </ul>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal derivation of BPTT and its limitations</h2>
@@ -282,7 +305,7 @@ print("BPTT and Truncated BPTT implementations ready.")
 print("Full BPTT: O(T) memory, backprops through entire sequence")
 print("Truncated BPTT: O(k) memory, backprops through k most recent steps")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -310,6 +333,6 @@ export const BPTT_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

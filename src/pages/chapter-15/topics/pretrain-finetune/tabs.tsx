@@ -173,11 +173,34 @@ function HighSchoolTab() {
                 Pretraining on raw text is therefore a form of <em>unsupervised multi-task learning</em>,
                 where the single task of language modeling implicitly covers all other language tasks.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Information-theoretic foundations</h2>
@@ -277,7 +300,7 @@ print("Key observation: pretrained model starts near-optimal")
 print("and converges 5-10x faster than training from scratch.")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -299,6 +322,6 @@ export const PRETRAIN_FINETUNE_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

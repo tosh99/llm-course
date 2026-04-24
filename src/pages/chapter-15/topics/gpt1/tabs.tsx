@@ -167,11 +167,34 @@ function HighSchoolTab() {
                 state-of-the-art by 5.5 absolute points on average across 12 NLP tasks. On natural
                 language inference, it outperformed task-specific architectures with 10× more parameters.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Masked self-attention and the generative objective</h2>
@@ -275,7 +298,7 @@ for i in range(seq_len):
     print(f"  pos {i}: ||out|| = {np.linalg.norm(out[i]):.4f}")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -297,6 +320,6 @@ export const GPT1_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

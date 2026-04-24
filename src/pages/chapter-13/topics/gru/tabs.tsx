@@ -173,11 +173,34 @@ function HighSchoolTab() {
                 is the blend coefficient — when z ≈ 1, the state updates fully; when z ≈ 0, it copies
                 the previous state, creating a direct gradient highway through time.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Full specification and gradient analysis</h2>
@@ -312,7 +335,7 @@ print(f"Sensitivity of h_T to h_0 perturbation: {sensitivity:.4f}")
 print("(Values >> 1 indicate healthy gradient flow)")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -334,6 +357,6 @@ export const GRU_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

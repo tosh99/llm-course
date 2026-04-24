@@ -35,7 +35,7 @@ function HistoryTab() {
             challenge:
                 "Engineers at Bell Labs designing early telegraph and radio systems needed a way to quantify how much information a signal could carry. Was there a fundamental limit to how many distinct messages you could send over a noisy channel?",
             what: "Ralph Hartley proposed that if you have N equally likely possible messages, the natural measure of information content is log(N). Why logarithm? Because adding a new binary digit (bit) doubles the number of distinguishable messages — a logarithmic relationship. A system with 8 possible symbols carries log₂(8) = 3 bits of information per symbol.",
-            impact: "Hartley's insight was the first mathematical definition of information. Though limited to equally-likely cases, it established the logarithmic foundation that Shannon later generalised. Every digital communication system — from Morse code to 5G to WiFi — uses Hartley's principle as its theoretical bedrock.",
+            impact: "Hartley's insight was the first mathematical definition of information. Fisher's likelihood framework (our previous topic) measured how well a model fit observed data — but couldn't measure how much information the data contained in the first place. Hartley showed information scales logarithmically with possibilities: doubling the vocabulary adds exactly 1 bit. Every digital communication system — from Morse code to 5G to WiFi, and every tokeniser in every LLM — uses this logarithmic foundation.",
         },
         {
             year: "1948",
@@ -43,7 +43,7 @@ function HistoryTab() {
             challenge:
                 "Communication engineers had struggled for decades with a paradox: why does adding redundancy (repeating a message) help fight noise, but reduce the effective data rate? Is there a fundamental capacity limit for any channel, and if so, what determines it?",
             what: "Claude Shannon's landmark paper 'A Mathematical Theory of Communication' solved both problems simultaneously. He introduced entropy H(X) = −Σ p(x) log₂ p(x) as the fundamental measure of information, proved that any discrete channel has a finite capacity C (bits/second), and showed that you can communicate arbitrarily close to capacity with codes that add just enough structured redundancy — without sacrificing efficiency.",
-            impact: "Shannon single-handedly founded the field of information theory. His source-coding theorem says entropy is the lower bound for lossless compression. His channel-coding theorem says capacity is the upper bound for reliable communication. Together they define the two fundamental limits of all digital systems. Every modern error-correcting code (used in CDs, satellite TV, LTE, and deep-space communication) is a practical implementation of Shannon's theorems.",
+            impact: "Shannon single-handedly founded information theory. His source-coding theorem says entropy is the lower bound for lossless compression. His channel-coding theorem says capacity is the upper bound for reliable communication. Together they define the two fundamental limits of all digital systems. In ML: the cross-entropy loss H(P, Q) = −Σ p(x) log q(x) is Shannon entropy evaluated at the model's predictions. Shannon also proved that reliable communication up to capacity is theoretically achievable — but achieving it requires hardware fast enough to implement his codes. That engineering challenge is exactly what the computing topic addresses next.",
         },
         {
             year: "1951",
@@ -51,7 +51,7 @@ function HistoryTab() {
             challenge:
                 "Shannon's entropy measured uncertainty in a single distribution. But in statistics and communication, you constantly need to compare two distributions: the true distribution P over outcomes versus an approximation Q that you use instead. How do you quantify the 'loss' from using Q instead of P?",
             what: "Solomon Kullback and Richard Leibler introduced the relative entropy — now called KL divergence: D(P‖Q) = Σ P(x) log(P(x)/Q(x)). This measures the extra bits needed to encode samples from P using a code optimised for Q. Crucially, it is always ≥ 0, and = 0 only when P = Q exactly.",
-            impact: "KL divergence is everywhere in modern ML. It appears as the cross-entropy loss when Q is your model and P is the true data distribution. Variational inference uses KL divergence to approximate intractable posteriors. The ELBO (evidence lower bound) in VAEs is a KL regulariser. Generative models like VAEs, diffusion models, and language models all minimise KL-style objectives.",
+            impact: "KL divergence is everywhere in modern ML. It appears as the cross-entropy loss when Q is your model and P is the true data distribution (from probability foundations). Variational inference uses KL divergence to approximate intractable posteriors. The ELBO in VAEs is a KL regulariser. RLHF's KL penalty keeps the fine-tuned model close to the original. Asymmetry matters: minimising D(P‖Q) and D(Q‖P) are different optimisation problems with different solutions, explaining why VAEs (reverse KL) and flow models (forward KL) learn qualitatively different distributions.",
         },
     ]
 
@@ -69,8 +69,12 @@ function KidTab() {
         <>
             <h2>Surprise and information are the same thing</h2>
 
+            <p className="ch-story-intro">
+                Statistical inference told us whether a learned pattern was real. Now there's a deeper question: how much information does the data contain in the first place — regardless of what patterns we're looking for? Shannon answered this with entropy, and it turns out to be the foundation of every loss function in modern deep learning.
+            </p>
+
             <Analogy label="Information = Surprise">
-                Think about a friend telling you something. If they say <em>"The sun rose this morning"</em> — you already knew that. No new information. Zero surprise. But if they say <em>"A snowstorm hit Hawaii!"</em> — that's shocking. A lot of new information. The more surprised you are, the more information you just received.
+                Think about a friend telling you something. If they say <em>"The sun rose this morning"</em> — you already knew that. No new information. Zero surprise. But if they say <em>"A snowstorm hit Hawaii!"</em> — that's shocking. A lot of new information. The more surprised you are by an outcome, the more information it contained. This is not a metaphor: it's a mathematical definition.
             </Analogy>
 
             <Analogy label="The fair coin = maximum suspense">
@@ -94,12 +98,16 @@ function KidTab() {
             </Analogy>
 
             <Analogy label="KL divergence = how much your approximation costs you">
-                Imagine the true distribution of outcomes is P — the actual world. You approximate it with Q — your model or hypothesis. KL(P‖Q) measures the <em>extra cost</em> in surprise bits when you use Q to encode P. It's always ≥ 0, and it's only zero if your approximation is perfect. In ML, your model is Q and the real data is P — you want to minimise KL(P‖Q) as a loss.
+                Imagine the true distribution of outcomes is P — the actual world. You approximate it with Q — your model. KL(P‖Q) measures the <em>extra cost</em> in surprise bits when you use Q to encode events from P. It's always ≥ 0, and equals zero only if your approximation is perfect. In ML, your model is Q and the real data distribution is P — minimising KL(P‖Q) is what cross-entropy loss does.
             </Analogy>
 
             <DiagramBlock title="KL divergence — the extra cost of using Q instead of P">
                 <KLDiagram />
             </DiagramBlock>
+
+            <Analogy label="What comes next — actually running these computations">
+                Shannon proved that reliable communication up to capacity is theoretically possible. But implementing this — computing entropy over millions of tokens, applying cross-entropy loss to billions of parameters, backpropagating gradients through enormous models — requires hardware that can perform billions of operations per second. That hardware story is our next topic: computing.
+            </Analogy>
         </>
     )
 }
@@ -187,11 +195,34 @@ function HighSchoolTab() {
                     fine-tuning (to keep the new model close to the original).
                 </li>
             </ul>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Foundations</h2>
@@ -369,7 +400,7 @@ ppl = torch.exp(token_nll.mean())
 print(f"  mean NLL = {token_nll.mean():.4f}  →  PPL = {ppl:.1f}")
 print(f"  (as uncertain as a {ppl:.0f}-sided die per next token)")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -397,6 +428,6 @@ export const ENTROPY_KL_DIVERGENCE_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

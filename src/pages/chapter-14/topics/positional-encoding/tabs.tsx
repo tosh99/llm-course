@@ -173,11 +173,34 @@ function HighSchoolTab() {
                 and often perform slightly better on fixed-length tasks. Modern models like
                 LLaMA use RoPE, which combines the best of both worlds.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal definitions and extrapolation analysis</h2>
@@ -294,7 +317,7 @@ print("Learned embedding extrapolation would produce random similarity for unsee
 print("Sinusoidal encodings produce stable, predictable similarities.")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -316,6 +339,6 @@ export const POSITIONAL_ENCODING_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

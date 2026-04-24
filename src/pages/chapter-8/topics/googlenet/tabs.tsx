@@ -167,11 +167,34 @@ function HighSchoolTab() {
                 gradient signal during training, combating vanishing gradients in deep networks.
                 They're discarded at test time.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>GoogLeNet: Mathematical Analysis</h2>
@@ -345,7 +368,7 @@ if __name__ == "__main__":
     print("\nKey insight: 1x1 bottlenecks reduce parameters dramatically!")
     print("Without them, inception would be ~4x larger.")`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -370,6 +393,6 @@ export const GOOGLENET_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

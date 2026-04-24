@@ -127,11 +127,34 @@ function HighSchoolTab() {
                 LoRA and full fine-tuning on MMLU, achieving 99.9% of 16-bit accuracy while using
                 less than one-third the GPU memory.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Quantization and memory arithmetic</h2>
@@ -227,7 +250,7 @@ est = memory_estimate(65e9, bits=4, lora_r=64)
 print("QLoRA memory estimate (GB):", {k: round(v, 1) for k, v in est.items()})
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -248,6 +271,6 @@ export const QLORA_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

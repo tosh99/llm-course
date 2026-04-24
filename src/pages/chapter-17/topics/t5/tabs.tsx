@@ -175,11 +175,34 @@ function HighSchoolTab() {
                 SQuAD, and CNN/DailyMail summarization. On SuperGLUE, it was the first model to
                 surpass the average human baseline (though not on every task individually).
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Encoder-decoder attention and span corruption</h2>
@@ -276,7 +299,7 @@ print("Input:   ", " ".join(inp))
 print("Target:  ", " ".join(tgt))
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -298,6 +321,6 @@ export const T5_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

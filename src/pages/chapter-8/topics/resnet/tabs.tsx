@@ -170,11 +170,34 @@ function HighSchoolTab() {
                 to normalize activations. This combination enables training networks with 1000+
                 layers. Without BatchNorm, gradients would still destabilize during training.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>ResNet: Mathematical Analysis</h2>
@@ -415,7 +438,7 @@ if __name__ == "__main__":
 
     print("\nResNet made 152-layer networks possible—thanks to skip connections!")`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -440,6 +463,6 @@ export const RESNET_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

@@ -147,11 +147,34 @@ function HighSchoolTab() {
                 AlexNet: 15.3% → Previous best: 26.2% → The gap was unprecedented.<br />
                 By 2015, deep nets achieved 3.6% — below human error rate (5.1%).
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>AlexNet: Technical details</h2>
@@ -294,7 +317,7 @@ print(f"\nInput shape: {x.shape}")
 print(f"Output shape: {output.shape}")
 print(f"Output means (per sample): {output.mean(dim=1).detach()}")`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -318,6 +341,6 @@ export const ALEXNET_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

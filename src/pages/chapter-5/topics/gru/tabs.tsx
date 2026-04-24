@@ -188,11 +188,34 @@ function HighSchoolTab() {
                 ≈ 1. This is the same constant-error-carousel intuition from LSTM: the network learns
                 to set z ≈ 0 at steps where memory should be preserved, keeping gradients from vanishing.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal equations, parameter count, and gradient analysis</h2>
@@ -339,7 +362,7 @@ for z_val in [0.0, 0.1, 0.5, 0.9, 1.0]:
           f"({'preserves memory' if z_val < 0.3 else 'discards memory' if z_val > 0.7 else 'mixes'})")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -361,6 +384,6 @@ export const GRU_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

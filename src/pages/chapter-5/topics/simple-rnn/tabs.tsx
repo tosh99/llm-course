@@ -163,11 +163,34 @@ function HighSchoolTab() {
             <div className="ch-callout">
                 <strong>The geometric picture:</strong> The hidden state space in a simple RNN is like a room with echoes. Information you inject at step 1 echoes louder and louder as it bounces off the walls — but every bounce also distorts it. After too many bounces, the echo becomes pure noise. LSTMs solve this by building a hallway (the cell state) where echoes travel unchanged — they just pass through.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal analysis of RNN dynamics and the vanishing gradient</h2>
@@ -338,7 +361,7 @@ print("Simple RNN and LSTM implementations ready.")
 print("Key insight: LSTM's c = f*c_prev + i*c_tilde has self-loop weight = 1")
 print("→ gradients flow unchanged: ∂c_t/∂c_{t-k} = 1 → no vanishing!")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -365,6 +388,6 @@ export const SIMPLE_RNN_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

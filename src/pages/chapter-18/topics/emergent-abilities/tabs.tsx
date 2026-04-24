@@ -180,11 +180,34 @@ function HighSchoolTab() {
                 steepness of the curve near the threshold means that small improvements in scale
                 can have outsized real-world impact.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal definitions and the metric-dependence argument</h2>
@@ -301,7 +324,7 @@ print(f"\\nAccuracy 'emerges' near {Ns[threshold_idx]:.2e} parameters")
 print(f"But underlying skill p(N) is perfectly smooth!")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -322,6 +345,6 @@ export const EMERGENT_ABILITIES_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

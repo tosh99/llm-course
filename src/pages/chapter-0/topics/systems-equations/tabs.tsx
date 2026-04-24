@@ -32,41 +32,41 @@ function HistoryTab() {
             year: "approx 200 BCE",
             title: "The Nine Chapters on the Mathematical Art",
             challenge:
-                "Ancient Chinese administrators needed to divide land, allocate grain, and settle trade disputes involving multiple simultaneous unknowns — for instance, finding the price of each of three different grades of rice given only their mixed totals.",
+                "Setting the derivative of a loss to zero — as calculus tells us to do — produces a set of equations that all must be satisfied simultaneously. Ancient Chinese administrators faced exactly this kind of multi-equation problem in their daily work: finding the price of each of three grades of rice given only their mixed purchase totals. These problems scaled to five or six unknowns, with no algebraic notation available. Every step had to be tracked physically on counting boards.",
             what:
-                "The text laid out a method of arranging coefficients in a rectangular grid of counting rods and systematically eliminating unknowns row by row — the same procedure we now call Gaussian elimination. It even handled what we would call overdetermined and underdetermined systems.",
+                "The text arranged coefficients in a rectangular grid of counting rods and systematically eliminated unknowns row by row — the same procedure we now call Gaussian elimination. The key insight: combining rows (adding a multiple of one equation to another) eliminates one unknown without disturbing the solution. The text handled all three cases: a unique solution, no solution (inconsistent equations), and infinitely many solutions — the complete classification still used today.",
             impact:
-                "This is arguably the first recorded algorithm for solving systems of linear equations. It predates the European rediscovery by nearly two thousand years and demonstrates that linear algebra was born from commerce and administration, not abstraction.",
+                "This is the first recorded algorithm for solving linear systems — a deterministic, step-by-step procedure applicable to any system of the described type. The elimination structure is identical to the code that runs inside every call to torch.linalg.solve() today. Two thousand years of computational history, one algorithm.",
         },
         {
             year: "1683 – 1693",
             title: "Leibniz & the Idea of Determinants",
             challenge:
-                "When trying to solve systems of two or three equations algebraically, mathematicians kept running into the same structural question: is there a single compact quantity that tells you immediately whether a unique solution exists, without actually solving the system?",
+                "When solving systems of two or three equations, mathematicians kept encountering the same structural question: is there a single compact quantity that reveals whether a unique solution exists, without actually solving the system? Leibniz was systematically studying what information was encoded in a matrix's coefficients, independent of the right-hand side values.",
             what:
-                "Gottfried Wilhelm Leibniz introduced arrays of coefficients and a quantity derived from them — what we now call the determinant — that collapses the entire solvability question to a single number. If that number is zero, the system either has no solution or infinitely many; otherwise, exactly one.",
+                "Leibniz introduced arrays of coefficients and a quantity derived from them — what we now call the determinant — that collapses the entire solvability question to a single number. If that number is zero, the system either has no solution or infinitely many; otherwise, exactly one. He also discovered the alternating-sign pattern of cofactor expansion, enabling recursive computation of determinants for large systems.",
             impact:
-                "The determinant became the first example of a function that takes an entire matrix as input and returns meaningful structural information about it. This idea — distilling a matrix into a scalar — reappears constantly in ML: the determinant of a covariance matrix measures the volume of the data's spread in feature space.",
+                "The determinant became the first function that takes an entire matrix as input and returns meaningful structural information. Geometrically, |det(A)| equals the volume-scaling factor of the transformation A — how much it stretches or compresses space. When det(A) = 0, the transformation collapses space to a lower dimension, explaining why no unique solution exists. In ML, a covariance matrix with det = 0 means the data has perfectly correlated features and PCA will fail.",
         },
         {
             year: "1750",
-            title: "Cramer's Rule",
+            title: "Cramer's Rule — A Formula, Not Just a Concept",
             challenge:
-                "Leibniz had the concept of a determinant, but no clean formula that others could readily apply. Solving three equations in three unknowns still meant pages of algebraic substitution, with no systematic pattern a practitioner could follow.",
+                "Leibniz's work on determinants was scattered across private manuscripts. Mathematicians knew the concept existed but had no portable formula they could teach or apply. Solving a 4×4 system meant pages of ad-hoc elimination, with every new problem requiring starting from scratch.",
             what:
-                "Gabriel Cramer published an explicit formula expressing each unknown as a ratio of two determinants. Given Ax = b, the i-th variable equals the determinant of A with column i replaced by b, divided by the determinant of A itself.",
+                "Gabriel Cramer published an explicit formula: given Ax = b, the i-th variable xᵢ = det(Aᵢ)/det(A), where Aᵢ is A with its i-th column replaced by b. The geometric meaning is elegant — the ratio measures how much the volume changes when b replaces one column. This gave practitioners a mechanical recipe that required only computing determinants.",
             impact:
-                "Cramer's Rule made linear systems approachable to anyone who could compute determinants — a major step toward treating linear algebra as a calculational tool rather than an art. It also crystallised the idea that matrices encode structure, and that you can extract information by surgically modifying them.",
+                "Cramer's Rule is almost never used computationally — it costs O(n!) naively versus O(n³) for Gaussian elimination. But it crystallised the key idea: matrices encode structure, and you can extract information by surgically modifying them. This is the conceptual origin of the pseudoinverse x = A⁺b = (A^T A)^{-1} A^T b — the matrix-level Cramer formula for overdetermined systems that appears in every linear regression.",
         },
         {
             year: "1801 – 1809",
             title: "Gauss — Elimination & Least Squares",
             challenge:
-                "Astronomers of the early 1800s had a problem that no prior mathematics could cleanly handle: they had more observations than unknowns. When trying to compute the orbit of the dwarf planet Ceres from noisy telescope measurements, any two data points gave a slightly different orbit.",
+                "Astronomers faced a problem calculus created: setting the derivative of the squared-error sum to zero produced a system of equations, but with more observations than unknowns, the system was overdetermined. Any two telescope measurements of Ceres's position gave a slightly different orbit — the data contradicted itself, and no exact solution existed.",
             what:
-                "Carl Friedrich Gauss formalised the method of systematic row elimination (now named after him) and independently invented the method of least squares — choosing the solution that minimises the sum of squared differences between observed and predicted values. He used it to successfully predict where Ceres would reappear after passing behind the Sun.",
+                "Gauss formalised systematic row elimination and invented least squares: minimise the sum of squared differences between observed and predicted values. Setting the gradient of Σ(Ax − b)² to zero yields the normal equations A^T Ax = A^T b — a square, solvable linear system. He used it to predict where Ceres would reappear after passing behind the Sun — and was correct to within half a degree.",
             impact:
-                "Least squares is the direct ancestor of linear regression, and linear regression is the direct ancestor of neural networks. Every gradient descent step in a modern LLM is chasing the same fundamental idea: minimise a sum of squared errors. Gauss's 1809 work is the conceptual origin of the loss function.",
+                "Least squares is the direct ancestor of linear regression, and linear regression is the direct ancestor of neural networks. Gauss also proved that least squares gives the most probable estimate when measurement errors follow a bell-shaped (Gaussian) distribution — the first rigorous connection between solving equations and modelling probability. This bridge — from algebra to uncertainty — leads directly to our next topic: probability itself.",
         },
     ]
 
@@ -84,32 +84,36 @@ function KidTab() {
         <>
             <h2>Solving puzzles with equations</h2>
 
+            <p className="ch-story-intro">
+                In the last topic, we learned that setting a derivative to zero finds the minimum of a function. But when a model has multiple parameters — multiple "knobs" to adjust — setting all partial derivatives to zero gives us <em>multiple equations at once</em>. We need to solve them simultaneously. That's a system of equations.
+            </p>
+
             <Analogy label="A system of equations = a locked chest">
                 Imagine a treasure chest with three numbered locks. You have three clues:
                 <em>"Lock A plus Lock B equals 10"</em>, <em>"Lock B minus Lock C equals 2"</em>, and
-                <em>"Lock A plus Lock C equals 8"</em>. To open the chest, you need to find all three
-                numbers at once. That is a <strong>system of equations</strong>.
+                <em>"Lock A plus Lock C equals 8"</em>. To open the chest, you need to find all three numbers at once — changing one changes everything. That is a <strong>system of equations</strong>, and it arises naturally any time a model has multiple unknowns.
             </Analogy>
 
-            <Analogy label="Gaussian elimination = simplifying clues">
-                Instead of guessing, you can <strong>eliminate</strong> one lock at a time. If you know
-                A + B = 10, you can rewrite everything else in terms of just B and C. Then you eliminate
-                B, leaving only C. Once you know C, you work backwards to find B and A. This step-by-step
-                elimination is exactly what Gaussian elimination does.
+            <Analogy label="Gaussian elimination = simplifying clues one at a time">
+                Instead of guessing, you can <strong>eliminate</strong> one lock at a time. If you know A + B = 10, subtract it from another equation to cancel A. Then eliminate B, leaving only C. Once you know C, work backwards to find B, then A. This step-by-step simplification is exactly what Gaussian elimination does — and it's the algorithm inside every call to numpy.linalg.solve().
             </Analogy>
 
-            <Analogy label="The determinant = a magic test">
-                Before solving, you can do a quick magic test. Multiply certain numbers together in a
-                special pattern — this gives you the <strong>determinant</strong>. If it is zero, the
-                locks are broken: either no combination works, or infinitely many do. If it is not zero,
-                there is exactly one secret combination.
+            <Analogy label="The determinant = a quick check before you start">
+                Before solving, you can run a quick test. Multiply certain numbers together in a special criss-cross pattern — this gives you the <strong>determinant</strong>. If it's zero, something is wrong: either no combination of locks works, or infinitely many do. If it's not zero, there is exactly one secret combination. It's faster to check solvability first than to run elimination and discover midway that the system is broken.
             </Analogy>
 
-            <Analogy label="Least squares = the best guess">
-                What if you have <em>four</em> clues but only <em>three</em> locks? The clues might
-                contradict each other. Instead of giving up, you find the numbers that make <strong>most</strong>
-                of the clues <strong>almost</strong> happy — minimising the total error. That is least
-                squares, and it is how AI finds the best line through messy data.
+            <Analogy label="Least squares = the best guess when clues contradict each other">
+                What if you have <em>four</em> clues but only <em>three</em> locks — and the four clues slightly disagree? A noisy measurement from a different day gives a different answer. Instead of giving up, you find the numbers that make <em>most</em> of the clues <em>almost</em> happy — minimising the total error. That is <strong>least squares</strong>, and it is exactly how Gauss found Ceres's orbit — and how every linear regression model is trained.
+            </Analogy>
+
+            <Analogy label="Underdetermined systems = too many solutions">
+                What if you only have <em>one</em> clue for three locks — "Lock A + Lock B + Lock C = 30"? That's not enough: infinitely many combinations work. The system is <strong>underdetermined</strong> — not enough equations to pin down a unique answer.
+                <br /><br />
+                Neural networks with billions of parameters and only millions of training examples are deeply underdetermined. Many parameter settings fit the training data equally well. That's why regularisation exists — it adds extra preferences (like "keep weights small") to select one solution from among the infinitely many.
+            </Analogy>
+
+            <Analogy label="What comes next — where do the numbers come from?">
+                We've learned to solve systems of equations — but where do the coefficients come from? In Gauss's Ceres problem, they came from telescope measurements with random errors. Those errors followed a specific bell-shaped pattern. Understanding that pattern — and reasoning carefully about uncertainty — is the job of <strong>probability theory</strong>, our next topic.
             </Analogy>
         </>
     )
@@ -197,11 +201,34 @@ function HighSchoolTab() {
                 f(x; theta), and gradient descent minimises a loss function — conceptually the same as
                 least squares, but with a vastly more complex model.
             </p>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Definitions</h2>
@@ -327,7 +354,7 @@ for _ in range(300):
     w.grad.zero_()
 print(f"  GD: y = {w[0].item():.3f}x + {w[1].item():.3f}  loss={loss.item():.6f}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -341,7 +368,10 @@ function PythonTab() {
                 converges to the same solution as <code>lstsq</code> — but GD generalises
                 to any loss and any model architecture. Linear regression is the
                 degenerate case where one step of Newton's method (the normal equations)
-                gives the exact answer.
+                gives the exact answer. Gauss also proved that least squares is the
+                maximum-likelihood estimate when measurement errors are Gaussian —
+                the first bridge between algebra and probability. That bridge is where our next
+                topic, probability foundations, begins.
             </div>
         </>
     )
@@ -356,6 +386,6 @@ export const SYSTEMS_EQUATIONS_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

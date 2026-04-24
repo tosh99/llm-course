@@ -138,11 +138,34 @@ function HighSchoolTab() {
                 <strong>Modern default:</strong> PyTorch and TensorFlow use Kaiming (He)
                 initialization by default for Conv2d and Linear layers with ReLU.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Weight initialization: Mathematical derivation</h2>
@@ -326,7 +349,7 @@ print(f"\nGlorot initialization:")
 print(f"  Std: {np.std(W_glorot):.4f} (theoretical: {np.sqrt(2/(n_in+n_out)):.4f})")
 print(f"  Range: [{np.min(W_glorot):.4f}, {np.max(W_glorot):.4f}]")`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -349,6 +372,6 @@ export const INITIALIZATION_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

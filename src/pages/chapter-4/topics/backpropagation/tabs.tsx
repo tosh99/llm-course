@@ -144,11 +144,34 @@ function HighSchoolTab() {
             <div className="ch-callout">
                 <strong>The efficiency insight:</strong> naive computation of each weight's gradient would require a forward pass per weight. Backprop reuses computed gradients across layers, making a full gradient computation cost roughly the same as a single forward pass — about 2× the forward pass total.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal derivation of backpropagation</h2>
@@ -279,7 +302,7 @@ print("\\nFinal predictions:")
 for i in range(4):
     print(f"  Input {[int(x) for x in X[i]]} -> {a2_final[i,0]:.4f} (target: {int(y[i,0])})")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -305,6 +328,6 @@ export const BACKPROPAGATION_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

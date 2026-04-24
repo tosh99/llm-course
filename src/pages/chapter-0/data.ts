@@ -10,9 +10,16 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "vectors-matrices",
-        label: "Vectors & Matrices",
-        icon: "⟨⟩",
+        id: "integral-calculus",
+        label: "Integral Calculus",
+        icon: "∫",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "derivatives-gradients",
+        label: "Derivatives & Gradients",
+        icon: "∂",
         category: "Mathematics",
         ready: true,
     },
@@ -20,6 +27,20 @@ export const TOPICS: {
         id: "systems-equations",
         label: "Systems of Equations",
         icon: "∑",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "probability-foundations",
+        label: "Probability Foundations",
+        icon: "∼",
+        category: "Mathematics",
+        ready: true,
+    },
+    {
+        id: "vectors-matrices",
+        label: "Vectors & Matrices",
+        icon: "⟨⟩",
         category: "Mathematics",
         ready: true,
     },
@@ -38,27 +59,6 @@ export const TOPICS: {
         ready: true,
     },
     {
-        id: "derivatives-gradients",
-        label: "Derivatives & Gradients",
-        icon: "∂",
-        category: "Mathematics",
-        ready: true,
-    },
-    {
-        id: "integral-calculus",
-        label: "Integral Calculus",
-        icon: "∫",
-        category: "Mathematics",
-        ready: true,
-    },
-    {
-        id: "probability-foundations",
-        label: "Probability Foundations",
-        icon: "∼",
-        category: "Mathematics",
-        ready: true,
-    },
-    {
         id: "statistical-inference",
         label: "Statistical Inference",
         icon: "σ",
@@ -73,6 +73,13 @@ export const TOPICS: {
         ready: true,
     },
     {
+        id: "computing",
+        label: "Computing",
+        icon: "⚙",
+        category: "Computing",
+        ready: true,
+    },
+    {
         id: "mutual-information",
         label: "Mutual Information",
         icon: "I",
@@ -84,13 +91,6 @@ export const TOPICS: {
         label: "Python",
         icon: "🐍",
         category: "Programming",
-        ready: true,
-    },
-    {
-        id: "computing",
-        label: "Computing",
-        icon: "⚙",
-        category: "Computing",
         ready: true,
     },
 ]
@@ -160,6 +160,5 @@ export const TABS: { id: TabId; label: string }[] = [
     { id: "history", label: "History" },
     { id: "kid", label: "Kid Explanation" },
     { id: "highschool", label: "High School" },
-    { id: "maths", label: "Maths" },
-    { id: "python", label: "Sample Code" },
+
 ]

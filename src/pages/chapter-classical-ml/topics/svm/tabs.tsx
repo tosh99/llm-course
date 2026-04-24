@@ -136,11 +136,34 @@ function HighSchoolTab() {
                 <li><strong>Polynomial (degree d):</strong> captures d-way feature interactions</li>
                 <li><strong>RBF (Gaussian):</strong> K(x,z) = exp(−γ||x−z||²) — universal approximator</li>
             </ul>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Structural Risk Minimisation</h2>
@@ -217,7 +240,7 @@ n_sv = sum(rbf_svm.n_support_)
 print(f"Number of support vectors: {n_sv} / {len(y)} ({100*n_sv/len(y):.1f}%)")
 print(f"  Class 0 SVs: {rbf_svm.n_support_[0]},  Class 1 SVs: {rbf_svm.n_support_[1]}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="svm_demo.py" lang="python" langLabel="Python" />
@@ -234,6 +257,6 @@ export const SVM_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

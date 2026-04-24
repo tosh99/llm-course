@@ -149,11 +149,34 @@ function HighSchoolTab() {
             <p>
                 Train several diverse base models (level-0 learners). Collect their out-of-fold predictions and use those as features for a meta-learner (level-1). This is more flexible than voting but requires careful cross-validation to avoid leakage between levels.
             </p>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Analysis</h2>
@@ -269,7 +292,7 @@ stack = StackingClassifier(
 )
 print(f"Stacking CV score:        {cross_val_score(stack, X, y, cv=3).mean():.3f}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="ensembles.py" lang="python" langLabel="Python" />
@@ -287,6 +310,6 @@ export const ENSEMBLES_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

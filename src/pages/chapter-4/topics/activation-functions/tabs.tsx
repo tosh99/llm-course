@@ -98,11 +98,34 @@ function HighSchoolTab() {
                 <strong>Rule of thumb (pre-2015):</strong> use tanh in hidden layers for symmetric zero-centered activations.
                 <strong>Rule of thumb (2015–present):</strong> default to ReLU. Only use sigmoid for binary classification output layers.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal properties of activation functions</h2>
@@ -178,7 +201,7 @@ plt.tight_layout()
 plt.savefig("activations.png", dpi=150, facecolor="#0d0d10")
 print("Saved activations.png")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -205,6 +228,6 @@ export const ACTIVATION_FUNCTIONS_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

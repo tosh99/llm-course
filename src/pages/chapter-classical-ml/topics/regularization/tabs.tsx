@@ -144,11 +144,34 @@ function HighSchoolTab() {
             <p>
                 During training, zero each activation with probability p (independently per unit, per batch). This prevents co-adaptation — no single unit can rely on other specific units always being present. At test time, multiply weights by (1−p) to maintain expected activation magnitude.
             </p>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Analysis of Regularised Estimators</h2>
@@ -252,7 +275,7 @@ for i, a in enumerate(alphas[::20]):
     max_c = max(abs(c) for c in coef_paths[i])
     print(f"  alpha={a:8.2f}  max|coef|={max_c:.3f}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="regularization.py" lang="python" langLabel="Python" />
@@ -270,6 +293,6 @@ export const REGULARIZATION_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

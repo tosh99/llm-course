@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { Link } from "react-router"
+import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-0.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
 import { COMPUTING_TABS } from "./topics/computing/tabs"
@@ -21,7 +21,14 @@ const TAB_IDS = TABS.map((t) => t.id)
 // ── Main component ────────────────────────────────────────────────────────────
 
 export function Chapter0Page() {
-    const [activeTopic, setActiveTopic] = useState<TopicId>("vectors-matrices")
+    const navigate = useNavigate()
+    const location = useLocation()
+    const chapterNum = parseInt(location.pathname.split('/').pop() ?? '0')
+    const [activeTopic, setActiveTopic] = useState<TopicId>(() =>
+        (location.state as { startAtLastTopic?: boolean })?.startAtLastTopic
+            ? TOPICS[TOPICS.length - 1].id
+            : TOPICS[0].id
+    )
     const [activeTab, setActiveTab] = useState<TabId>("history")
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const contentRef = useRef<HTMLDivElement>(null)
@@ -63,7 +70,16 @@ export function Chapter0Page() {
         if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return
         const idx = TAB_IDS.indexOf(activeTab)
         if (dx < 0 && idx < TAB_IDS.length - 1) setActiveTab(TAB_IDS[idx + 1])
+        else if (dx < 0 && idx === TAB_IDS.length - 1) {
+            const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
+            if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
+            else navigate(`/chapter/${chapterNum + 1}`)
+        }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
+        else if (dx > 0 && idx === 0) {
+            const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
+            if (topicIdx > 0) selectTopic(TOPICS[topicIdx - 1].id)
+        }
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {

@@ -31,37 +31,37 @@ function HistoryTab() {
         {
             year: "Archimedes (c. 250 BCE) — The Method of Exhaustion",
             title: "Squaring curves with polygons",
-            challenge: "Greek mathematicians could find areas of polygons exactly, but curves — circles, parabolas, ellipses — had no straight edges. There was no method for computing the area enclosed by a curved boundary. Computing the area of a circle or parabola was an unsolved problem.",
-            what: "Archimedes inscribed and circumscribed polygons around curves, doubling the number of sides to squeeze the true area between inner and outer approximations. He computed π ≈ 3.1416 and found exact areas of parabolas, spheres, and spirals — all without limits or calculus, using pure geometric reasoning.",
-            impact: "Archimedes' method of exhaustion is the direct ancestor of the Riemann integral. He showed that curved problems can be approximated by straight ones, with the approximation improving without bound. Every numerical integration method — trapezoidal rule, Simpson's rule, Monte Carlo — is a descendant of this insight.",
+            challenge: "Greek mathematicians could find areas of polygons exactly, but curves — circles, parabolas, ellipses — had no straight edges and no formula. There was no method for computing the area enclosed by a curved boundary, and no proof that a rigorous answer even existed. Archimedes applied this not just to circles: he computed the area of a parabola, the surface area of a sphere, and the volume of a cone — each requiring a fresh geometric argument invented from scratch.",
+            what: "Archimedes inscribed and circumscribed polygons around curves, doubling the number of sides to squeeze the true area between inner and outer approximations. He computed π ≈ 3.1416 and found exact areas of parabolas, spheres, and spirals — all without limits or calculus, using pure geometric reasoning. The method works because the gap between inner and outer approximations halves with each doubling of sides, making it smaller than any pre-specified bound.",
+            impact: "Archimedes' method of exhaustion is the direct ancestor of the Riemann integral. He showed that curved problems yield to straight-line approximations that improve without bound. Every numerical integration method — trapezoidal rule, Monte Carlo sampling, ELBO estimation in VAEs — descends from this insight. His method also planted the conceptual seed that would define the next two thousand years: how fast does the accumulated area change as the boundary shifts? That rate-of-change question is what derivatives formalise — our next topic.",
         },
         {
             year: "Cavalieri (1635) — Indivisibles",
             title: "Curves as infinitely thin lines",
-            challenge: "Archimedes' method worked but required clever geometric tricks for each new curve. Mathematicians wanted a more general principle: a way to treat curves as made up of infinitely many infinitely thin pieces that could be recombined into known shapes.",
-            what: "Bonaventura Cavalieri argued that a solid could be decomposed into an infinite number of parallel cross-sectional 'indivisibles' (lices), and that comparing these collections of slices could give exact areas and volumes. His principle: figures of equal height with equal cross-sections at every height have equal area/volume.",
-            impact: "Cavalieri's principle anticipated the fundamental theorem of calculus and the change-of-variables formula. In ML, the same idea appears in: computing the expected value of a function over a distribution (integrate over slices of the probability space), and in Monte Carlo integration where we sample 'indivisible' points.",
+            challenge: "Archimedes' method worked but required a unique geometric argument for each new curve — a fresh proof for every shape. Mathematicians wanted a general principle: a way to treat any region as built from infinitely many infinitely thin pieces, so that the same reasoning would apply everywhere without starting from scratch each time.",
+            what: "Bonaventura Cavalieri argued that a solid could be decomposed into an infinite collection of parallel cross-sectional slices, and that comparing these collections could give exact areas and volumes. His principle: two figures of equal height with equal cross-sections at every level have equal area or volume. This anticipated the fundamental theorem of calculus and the change-of-variables formula, making Cavalieri the conceptual bridge between ancient geometry and modern calculus.",
+            impact: "Cavalieri's principle appears directly in ML when computing expected values: E[f(X)] = ∫ f(x) p(x) dx is exactly summing infinitely thin slices of f weighted by the probability density p. Monte Carlo integration — drawing random samples and averaging — is a finite-sample realisation of this idea. His framing also gave Newton and Leibniz a shared language for their unification: areas are sums of infinitely thin pieces, and this sum is linked to rate-of-change by the Fundamental Theorem.",
         },
         {
             year: "Newton & Leibniz (1665–1687) — The Fundamental Theorem",
             title: "Differentiation and integration as inverses",
-            challenge: "For decades, finding areas (integration) and finding tangents (differentiation) were separate techniques with no known connection. The fundamental theorem of calculus — that these are exact inverses — was not yet proven or even suspected.",
-            what: "Newton and Leibniz independently proved that differentiation and integration are inverse operations: if F'(x) = f(x), then the integral of f from a to b equals F(b) − F(a). This meant you could find areas by working backwards from derivatives, and find antiderivatives by working forwards from areas. The notation ∫ (sum) and d (difference) captured this duality.",
-            impact: "The fundamental theorem turns the intractable problem of computing areas under arbitrary curves into a mechanical exercise of finding antiderivatives. In ML, this appears everywhere: the expected value E[f(X)] = ∫ f(x)p(x)dx is defined as an integral, and many analytical results (normalising constants, partition functions) rely on finding antiderivatives or their inverses.",
+            challenge: "For decades, finding areas (integration) and finding tangents (differentiation) were treated as entirely separate techniques with no known connection. Mathematicians had a bag of tricks, not a unified theory, and could not confidently extend these methods to new problems. The fundamental theorem — that integration and differentiation are exact inverses — was not yet suspected, let alone proved.",
+            what: "Newton and Leibniz independently proved that if F'(x) = f(x), then ∫ₐᵇ f(x)dx = F(b) − F(a). This meant you could find areas by working backwards from derivatives, transforming an infinite summation into a simple finite evaluation. Leibniz introduced the notation ∫ and d, designed so that algebraic manipulation of symbols produces correct calculus results automatically — a notational revolution that made calculus teachable and extensible.",
+            impact: "The fundamental theorem makes otherwise intractable integrals computable from antiderivatives. In ML, this appears in normalising constants for probability distributions, partition functions in energy-based models, and the Bayesian evidence ∫ p(x|θ) p(θ) dθ. Most importantly, the theorem forges an explicit bridge: if F(x) = ∫ₐˣ f(t) dt accumulates area, then F'(x) = f(x) is how fast that area grows at each point x. Computing that rate — the derivative — is the entire subject of our next topic, and it turns out to be the engine of every learning algorithm.",
         },
         {
             year: "Cauchy (1823) — The Integral as a Limit",
-            title: "Rigorising the integral",
-            challenge: "Newton and Leibniz could compute, but their foundations were intuitive — Cavalieri's indivisibles and geometric intuition about 'infinitely small' quantities. A rigorous definition of the integral that didn't rely on metaphysics was needed.",
-            what: "Augustin-Louis Cauchy gave the first rigorous definition: for a continuous function on [a, b], partition the interval into n subintervals, evaluate f at a sample point in each, sum f(xᵢ)·Δxᵢ, and take the limit as n → ∞ and the largest subinterval → 0. This 'Riemann sum' gives the exact integral.",
-            impact: "Cauchy's definition made the integral a precise mathematical object. Every numerical integration algorithm — from trapezoidal rule to Gaussian quadrature to Monte Carlo — is an approximation of Cauchy's limit. In ML, we often can't compute integrals analytically, so we approximate them numerically using the same principle.",
+            title: "Rigourising the integral",
+            challenge: "Newton and Leibniz could compute, but their foundations were informal — Cavalieri's indivisibles and geometric intuition about 'infinitely small' quantities. Bishop Berkeley's 1734 attack 'The Analyst' accurately pointed out that infinitesimals were used both as non-zero (to form a ratio) and as zero (to discard error terms). The contradiction was real, and calculus needed rigorous foundations before it could be trusted.",
+            what: "Augustin-Louis Cauchy gave the first rigorous definition: for a continuous function on [a, b], partition the interval into n subintervals, evaluate f at a sample point in each, sum f(xᵢ)·Δxᵢ, and take the limit as n → ∞. This eliminates infinitesimals entirely — they are replaced by the ε-δ limit. Cauchy also proved the extreme value theorem: a continuous function on a closed interval always achieves its maximum, guaranteeing that optima exist in many ML problems.",
+            impact: "Cauchy's definition made the integral a precise, trustworthy mathematical object. Every numerical integration algorithm in ML — trapezoidal rule, Gaussian quadrature, Monte Carlo estimation of ELBOs and KL divergences — is an approximation of Cauchy's limit. The rigorous foundation also matters for theory: convergence proofs for gradient descent, error bounds for variational inference, and stability analysis for numerical methods all require this precision.",
         },
         {
-            year: "Riemann (1854) — Generalising to Any Function",
-            title: "When does the integral exist?",
-            challenge: "Cauchy's integral worked for continuous functions, but mathematicians wanted to know exactly which functions could be integrated — and which couldn't. What happens when a function has infinitely many discontinuities?",
-            what: "Bernhard Riemann extended Cauchy's construction to any bounded function on [a, b]. The integral exists (Riemann integrable) if the upper sum and lower sum converge to the same value as the partition gets infinitely fine. He showed that any function with a countable number of discontinuities is still integrable.",
-            impact: "Riemann's framework covers nearly every function that engineers and scientists encounter. In ML, the functions we integrate over (probability density functions, loss landscapes, activation functions) are overwhelmingly Riemann-integrable. Only very pathological functions fail this test, and we never meet them in practice.",
+            year: "Riemann (1854) — When Does the Integral Exist?",
+            title: "The conditions for integrability",
+            challenge: "Cauchy's integral worked for continuous functions. But mathematicians wanted to know exactly which functions could be integrated — and which couldn't. Real data functions are rarely perfectly smooth: they have jumps, spikes, and gaps. What happens when a function has infinitely many discontinuities?",
+            what: "Bernhard Riemann extended Cauchy's construction to any bounded function on [a, b]. The integral exists if the upper and lower Riemann sums converge to the same value as the partition gets infinitely fine. He showed that any function with a countable number of discontinuities is still integrable — a generous condition. The Riemann framework generalised the fundamental theorem to a much wider class of functions, completing the analytic foundation of calculus.",
+            impact: "Riemann's framework covers every probability density function, activation function, and loss landscape we encounter in ML. Only very pathological functions — like the indicator of the rationals — fail integrability, and we never meet them in practice. The theoretical comfort matters: the expected values, KL divergences, and mutual information quantities that appear in later topics are all Riemann integrals, and Riemann's theorem guarantees they are well-defined.",
         },
     ]
 
@@ -79,29 +79,36 @@ function KidTab() {
         <>
             <h2>Adding up infinitely many infinitely small pieces</h2>
 
+            <p className="ch-story-intro">
+                This is where our story begins. Before neural networks, before computers, mathematicians spent centuries building the tools that AI would eventually need. Integration was one of the first — and it shows up everywhere, from probability distributions to loss functions to generative models.
+            </p>
+
             <Analogy label="Integral = Area under a curve">
-                Imagine drawing a mountain on graph paper. The <strong>integral</strong> of the mountain's height tells you the total area underneath it — the space it occupies on the ground. To find this area exactly, you'd need to cut the mountain into infinitely thin vertical slices, find the area of each slice, and add them all up. That's integration!
-                <br />
-                <br />
-                In ML, if the curve represents a probability distribution, the integral tells you the probability of being in a range of values.
+                Imagine drawing a mountain on graph paper. The <strong>integral</strong> of the mountain's height tells you the total area underneath it — the space it takes up on the ground. To find this area exactly, you'd cut the mountain into infinitely thin vertical slices, find the area of each slice (height × tiny width), and add them all up. That's integration!
+                <br /><br />
+                In ML, if the curve represents a probability distribution — like the bell curve of people's heights — the integral over a range tells you the probability of landing in that range. Crucially, the integral over the <em>entire</em> range must always equal exactly 1.
             </Analogy>
 
-            <Analogy label="Integral = The opposite of derivative">
-                Think of the derivative as a <em>speedometer</em> — it tells you how fast something is changing right now. The integral is like a <em>odometer</em> — it tells you the total distance travelled, even though the speed was changing the whole time. Knowing the speed at every moment (derivative) lets you recover the total distance (integral).
-                <br />
-                <br />
-                This is the <strong>fundamental theorem of calculus</strong>: integration and differentiation are exact opposites.
+            <Analogy label="Integral = The opposite of a derivative">
+                Think of the derivative as a <em>speedometer</em> — it tells you how fast something is changing right now. The integral is the <em>odometer</em> — it tells you the total distance travelled, even though the speed was changing the whole time.
+                <br /><br />
+                This is the <strong>Fundamental Theorem of Calculus</strong>: integration and differentiation are exact opposites. Knowing the speed at every moment (derivative) lets you recover the total distance (integral). And knowing the total distance (integral) lets you find the speed at each point (derivative). They are two sides of the same coin.
             </Analogy>
 
-            <Analogy label="Riemann sum = Stacking thin slices">
-                Take a curve and slice it into very thin vertical strips. Each strip is almost a rectangle. The area of a thin rectangle is height × width. Add up all those areas — height of each strip times the strip width — and you get the total area. Make the strips thinner and thinner, and the answer gets more precise. In the limit of infinitely thin strips, you get the exact integral.
-                <br />
-                <br />
-                This is exactly how neural networks approximate expected values: take many small samples, multiply each by its weight, and sum them up.
+            <Analogy label="Riemann sum = Stacking thin rectangles">
+                Take a curve and slice it into very thin vertical strips. Each strip is almost a rectangle. The area of each rectangle is height × width. Add them all up — and you get a close approximation of the total area. Make the strips thinner and thinner: the answer gets more precise. In the limit of infinitely thin strips, you get the exact integral.
+                <br /><br />
+                This is exactly how computers estimate integrals in practice: use many thin slices (or random samples) and average them out. Every time an AI computes an expected value, it's doing a version of this.
             </Analogy>
 
             <Analogy label="Integral calculus in AI">
-                When a model predicts a probability distribution over outcomes, the integral of that distribution must equal 1 (total probability = 100%). Computing this normalisation constant — making sure probabilities sum to 1 — often requires integration. In Bayesian inference, we integrate over parameters to compute posterior predictive distributions.
+                When a neural network outputs a probability distribution — "40% cat, 50% dog, 10% rabbit" — the integral of that distribution must equal exactly 1 (100% total). Ensuring this is called <strong>normalisation</strong>, and it often requires computing an integral. For complex generative models, the normalising constant is an integral over millions of dimensions that can't be computed exactly — which is why researchers invented variational inference, MCMC, and score matching: clever ways to avoid computing the integral directly.
+            </Analogy>
+
+            <Analogy label="What comes next — how fast is the area growing?">
+                We can now measure accumulated totals. But there's an immediate next question: <em>how fast</em> is a quantity growing at each specific point? If we've accumulated a certain area up to position x, what is the rate of growth at x?
+                <br /><br />
+                The Fundamental Theorem gives the answer: the rate of growth IS the original function. That rate-of-change — the <strong>derivative</strong> — is the subject of our next topic. And it turns out to be the core mechanism behind every single learning algorithm ever written.
             </Analogy>
         </>
     )
@@ -176,15 +183,40 @@ function HighSchoolTab() {
             <div className="ch-callout">
                 <strong>Connection to ML:</strong> Computing expected values E[f(X)] = ∫ f(x)p(x)dx
                 over high-dimensional spaces is the core of probabilistic ML. In low dimensions we
-                can use analytical antiderivatives. In high dimensions (like the parameter spaces of
-                neural networks), we rely on numerical methods — Monte Carlo integration draws
-                samples and averages them, which is just a finite Riemann sum.
+                can use analytical antiderivatives. In high dimensions, we rely on Monte Carlo integration —
+                drawing samples and averaging, a finite Riemann sum with O(1/√n) convergence regardless
+                of dimension. The Fundamental Theorem sets up our next topic: if F(x) = ∫ₐˣ f(t) dt, then
+                F'(x) = f(x). That rate-of-change — how quickly the accumulated value is growing — is what
+                derivatives measure. And derivatives, as we will see, are what make learning possible.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Measure, integration, and the fundamental theorem</h2>
@@ -347,7 +379,7 @@ z  = torch.randn(500_000, 10)
 p0 = torch.softmax(z, dim=1)[:, 0].mean()
 print(f"  E[p₀] ≈ {p0.item():.4f}  (exact = 0.1000)  — no closed form exists")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -375,6 +407,6 @@ export const INTEGRAL_CALCULUS_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

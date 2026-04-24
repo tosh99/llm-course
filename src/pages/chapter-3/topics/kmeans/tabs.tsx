@@ -134,11 +134,34 @@ function HighSchoolTab() {
                 <li><strong>Sensitive to scale:</strong> Always standardise features before running k-means</li>
                 <li><strong>Non-convex clusters:</strong> Fails on ring-shaped or moon-shaped clusters — use DBSCAN instead</li>
             </ul>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Framework</h2>
@@ -226,7 +249,7 @@ print(f"Cluster sizes: {np.bincount(labels)}")
 centroids_orig = scaler.inverse_transform(km.cluster_centers_)
 print(f"Centroids:\\n{centroids_orig}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="kmeans.py" lang="python" langLabel="Python" />
@@ -244,6 +267,6 @@ export const KMEANS_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

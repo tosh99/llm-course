@@ -175,11 +175,34 @@ function HighSchoolTab() {
                 CNNs replicate this structure: conv layers = simple cells, pooling = complex cells,
                 stacked convs = hypercomplex and higher visual areas.
             </p>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>The Mathematics of Feature Hierarchies</h2>
@@ -313,7 +336,7 @@ for i, f in enumerate(filters):
 #
 # Or rotated versions for different orientations`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -339,6 +362,6 @@ export const FEATURE_HIERARCHIES_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

@@ -37,7 +37,7 @@ function HistoryTab() {
             what:
                 "The Electronic Numerical Integrator and Computer (ENIAC) was the first programmable general-purpose electronic computer: 18,000 vacuum tubes, 5,000 additions per second. It followed the von Neumann architecture that all computers still use — a CPU fetches an instruction from memory, decodes it, executes it, writes the result back, and repeats. One instruction stream, one step at a time.",
             impact:
-                "Every CPU today descends from this sequential model. Over 70 years it evolved into an extraordinarily fast single-threaded processor with deep caches, branch prediction, and out-of-order execution. But it remained fundamentally sequential. ML requires a radically different shape of computation — the same arithmetic done millions of times in parallel — which the von Neumann CPU was never designed for.",
+                "Shannon's 1948 theorems proved that reliable communication up to channel capacity is achievable — but implementing them required hardware that could process millions of bits per second. ENIAC was the first such machine: 5,000 additions per second, programmable, electronic. But it followed the von Neumann sequential model — one instruction at a time — and ML requires computing the same arithmetic on millions of data points simultaneously. The gap between sequential and parallel hardware is the central story of computing for AI.",
         },
         {
             year: "1965 — Gordon Moore — Moore's Law",
@@ -77,7 +77,7 @@ function HistoryTab() {
             what:
                 "The Tensor Processing Unit (TPU) is an ASIC (Application-Specific Integrated Circuit) designed exclusively for matrix multiply. Its core is a 256×256 systolic array: a mesh of multiply-accumulate units where data flows through like water in a pipe — each unit multiplies two values, accumulates the result, and passes outputs to the next unit. No cache hierarchy, no branch prediction, no wasted logic.",
             impact:
-                "TPU v1 achieved 92 TOPS (tera-operations per second) with a fraction of the power of a contemporary GPU — 30–80× more efficient for inference. This proved that hardware-software co-design (building silicon specifically for a known workload) crushes general-purpose hardware. Google's LLMs (PaLM, Gemini) train on pods of thousands of TPUs, and this hardware advantage is one reason large-scale LLM training is economically feasible at all.",
+                "TPU v1 achieved 92 TOPS with a fraction of the power of a contemporary GPU — 30–80× more efficient for inference. This proved that hardware-software co-design crushes general-purpose hardware for known workloads. Google's LLMs (PaLM, Gemini) train on pods of thousands of TPUs. Fast, programmable hardware didn't just make existing algorithms faster — it made previously impossible algorithms practical. Contrastive learning (our next topic) maximises mutual information over 400 million image pairs: the mathematics existed in 1961; the hardware made it tractable in 2021.",
         },
     ]
 
@@ -94,6 +94,10 @@ function KidTab() {
     return (
         <>
             <h2>How computers run AI — in plain terms</h2>
+
+            <p className="ch-story-intro">
+                Entropy told us <em>what</em> to compute — cross-entropy loss, KL divergence, mutual information. Computing tells us <em>how to compute it fast enough</em> to be useful. Shannon's theorems existed on paper in 1948. The hardware to implement them took decades.
+            </p>
 
             <Analogy label="CPU = one brilliant chef, GPU = 1000 line cooks">
                 Imagine making sandwiches for a school. A brilliant chef can make any sandwich —
@@ -132,14 +136,13 @@ function KidTab() {
             </Analogy>
 
             <Analogy label="Moving data between CPU and GPU is expensive">
-                Your GPU is like a fast kitchen far from the main pantry (CPU RAM). Every time you need
-                new ingredients, someone has to carry them down the hallway (PCIe bus). That hallway is
-                much slower than working inside the kitchen.
+                Your GPU is like a fast kitchen far from the main pantry (CPU RAM). Every time you need new ingredients, someone has to carry them down the hallway (PCIe bus). That hallway is much slower than working inside the kitchen.
                 <br /><br />
-                Good AI code loads all the data into the kitchen at the start (move tensors to GPU once)
-                and keeps cooking (computation) without running back to the pantry (avoid CPU↔GPU transfers
-                in hot loops). When you see <code>tensor.cuda()</code> in PyTorch, that is the carry trip.
-                Do it once per batch, not once per operation.
+                Good AI code loads all the data into the kitchen at the start (move tensors to GPU once) and keeps cooking without running back to the pantry (avoid CPU↔GPU transfers in hot loops). When you see <code>tensor.cuda()</code> in PyTorch, that is the carry trip. Do it once per batch, not once per operation.
+            </Analogy>
+
+            <Analogy label="What comes next — using GPUs to maximise mutual information">
+                With fast GPUs, an algorithm that maximises the mutual information between 400 million image-text pairs — once theoretically possible but computationally out of reach — became a weekend experiment. That algorithm is CLIP, and the concept it exploits — mutual information — is our next topic.
             </Analogy>
         </>
     )
@@ -234,11 +237,34 @@ function HighSchoolTab() {
                 complex control flow, no dependency between outputs of the same layer. This is
                 exactly the workload GPUs were built to handle — even before ML existed.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>FLOP counting, arithmetic intensity, and the roofline model</h2>
@@ -447,7 +473,7 @@ y = x @ W                                  # stays on device
 print(f"x: {tuple(x.shape)} on {x.device}")
 print(f"y: {tuple(y.shape)} on {y.device}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -473,6 +499,6 @@ export const COMPUTING_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

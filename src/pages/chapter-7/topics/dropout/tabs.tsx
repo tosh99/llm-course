@@ -136,11 +136,34 @@ function HighSchoolTab() {
                 fully-connected layers of AlexNet with p=0.5. This was crucial for achieving
                 their ImageNet breakthrough.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Dropout: Mathematical formulation</h2>
@@ -278,7 +301,7 @@ print(f"Input shape: {x.shape}")
 print(f"Training output sparsity: {(out_train == 0).mean()*100:.1f}%")
 print(f"Test output sparsity: {(out_test == 0).mean()*100:.1f}%")`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -300,6 +323,6 @@ export const DROPOUT_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

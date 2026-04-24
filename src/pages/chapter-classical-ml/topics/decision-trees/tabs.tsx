@@ -146,11 +146,34 @@ function HighSchoolTab() {
                 <li><strong>✗ Axis-aligned splits</strong> — can't capture diagonal decision boundaries efficiently</li>
                 <li><strong>✗ Greedy</strong> — locally optimal splits may not be globally optimal</li>
             </ul>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Framework</h2>
@@ -245,7 +268,7 @@ print(f"  Decision Tree: {dt.feature_importances_}")
 print(f"  Random Forest: {rf.feature_importances_}")
 print(f"  GBM:           {gbm.feature_importances_}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="decision_trees.py" lang="python" langLabel="Python" />
@@ -263,6 +286,6 @@ export const DECISION_TREES_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

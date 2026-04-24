@@ -128,11 +128,34 @@ function HighSchoolTab() {
             <p>
                 where p = number of free parameters = K·(d + d(d+1)/2 + 1) − 1 for full covariance GMMs.
             </p>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>EM as Coordinate Ascent on the ELBO</h2>
@@ -222,7 +245,7 @@ print(f"Best K by BIC: {best_k}")  # → 3
 X_new, y_new = gmm.sample(50)
 print(f"Sampled {X_new.shape[0]} new points from the GMM")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="gmm_em.py" lang="python" langLabel="Python" />
@@ -240,6 +263,6 @@ export const GMM_EM_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

@@ -128,11 +128,34 @@ function HighSchoolTab() {
                 learns the best f<sub>t</sub> and i<sub>t</sub> values for the task, giving it the
                 expressiveness of a non-linear model with the gradient stability of a linear one.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>The constant error carousel and learned gating</h2>
@@ -291,7 +314,7 @@ print()
 print("∂c_t/∂c_{t-1} = f ≈ 1.0 → gradient does NOT vanish!")
 print("After 100 steps with f≈1: gradient ≈ 1^100 = 1.0 (constant!)")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -314,6 +337,6 @@ export const LSTM_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

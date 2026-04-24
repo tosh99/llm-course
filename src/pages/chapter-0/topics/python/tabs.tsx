@@ -37,7 +37,7 @@ function HistoryTab() {
             what:
                 "Guido van Rossum released Python as a general-purpose language prioritising code readability: significant whitespace instead of braces, clear English keywords, and a batteries-included standard library. It supported multiple paradigms — procedural, object-oriented, and (later) functional — so it adapted to the problem rather than forcing the problem into a paradigm.",
             impact:
-                "Python became the lingua franca of data science and machine learning. Its readability means researchers can share code that others can actually understand. Every major ML framework — PyTorch, TensorFlow, JAX, scikit-learn — is a Python library. When you call model.train() in Python, the heavy lifting happens in C++/CUDA underneath, but you express ideas in readable Python.",
+                "Every concept in Chapter 0 — Riemann sums, gradient descent, matrix decompositions, Bayesian inference, Shannon entropy, mutual information, GPU kernels — can be expressed in Python in a handful of lines. Python became the lingua franca of data science and ML because its readability means researchers can share and replicate code across teams and institutions. Every major ML framework — PyTorch, TensorFlow, JAX, scikit-learn — is a Python library. When you call loss.backward() in Python, the chain rule we covered in derivatives runs automatically across the computation graph.",
         },
         {
             year: "2006 — Travis Oliphant — NumPy 1.0",
@@ -64,7 +64,7 @@ function HistoryTab() {
             what:
                 "PyTorch adopted a dynamic computation graph: operations execute immediately (eager mode), tensors behave like NumPy arrays that happen to track gradients, and you can mix regular Python control flow (loops, conditionals, print statements) with tensor operations. It felt like writing NumPy code that automatically differentiated.",
             impact:
-                "PyTorch became the dominant framework for ML research. Its Python-first philosophy means the language you use for data loading (Pandas), numerical computing (NumPy), and model training (PyTorch) are the same. Autograd — automatic differentiation — tracks every operation on a tensor and computes gradients with .backward(). This is the engine that makes backpropagation automatic.",
+                "PyTorch became the dominant framework for ML research. Its Python-first philosophy means the language you use for data loading (Pandas), numerical computing (NumPy), and model training (PyTorch) are the same. Autograd — automatic differentiation — tracks every operation on a tensor and computes gradients with .backward(). This is Leibniz's chain rule (from derivatives & gradients), applied to a computation graph, implemented in C++/CUDA, and called from a single Python line. Chapter 0 ends here: the tools are in your hands.",
         },
     ]
 
@@ -82,14 +82,14 @@ function KidTab() {
         <>
             <h2>Teaching computers with recipes</h2>
 
-            <Analogy label="Python = A simple language for giving instructions">
-                Imagine you're writing a recipe, but the person reading it is very literal — they follow
-                every step exactly. <strong>Python</strong> is a language designed to be easy for humans
-                to write and read. Instead of complicated symbols, it uses plain English words like
-                <code>if</code>, <code>for</code>, and <code>def</code> (short for "define").
+            <p className="ch-story-intro">
+                Chapter 0 has covered eleven mathematical topics: integration, differentiation, linear systems, probability, vectors, eigenvalues, SVD, statistical inference, entropy, computing hardware, and mutual information. Every one of these concepts is a formula on paper — until you write it in code. Python is the language that collapses the gap between mathematical idea and running experiment.
+            </p>
+
+            <Analogy label="Python = A language designed for ideas, not just instructions">
+                Imagine you're writing a recipe, but the person reading it is very literal — they follow every step exactly. <strong>Python</strong> is a language designed to be easy for humans to write and read. Instead of complicated symbols, it uses plain English words like <code>if</code>, <code>for</code>, and <code>def</code> (short for "define").
                 <br /><br />
-                In AI, Python is like the language scientists use to explain their ideas to the computer.
-                Almost every AI program you'll ever see is written in Python.
+                In AI, Python is the language researchers use to express mathematical ideas directly. The derivative of a function is <code>loss.backward()</code>. A matrix multiply is <code>A @ B</code>. A probability distribution is <code>Normal(mu, sigma)</code>. The math and the code look nearly identical.
             </Analogy>
 
             <Analogy label="NumPy = A super-fast calculator for lists of numbers">
@@ -129,11 +129,13 @@ function KidTab() {
             </DiagramBlock>
 
             <Analogy label="Why Python matters for AI">
-                Python is the <em>language</em> of AI. When researchers discover a new technique, they
-                write it in Python. When companies deploy AI models, they use Python. When you want to
-                experiment with neural networks, you'll write Python. The three tools you'll use most —
-                <strong>NumPy</strong> (numbers), <strong>Pandas</strong> (tables), and
-                <strong>PyTorch</strong> (neural networks) — are all Python libraries.
+                Python is the <em>language</em> of AI. When researchers discover a new technique, they write it in Python. When companies deploy AI models, they use Python. The three tools you'll use most — <strong>NumPy</strong> (numbers and matrix operations from linear algebra), <strong>Pandas</strong> (tables and data cleaning), and <strong>PyTorch</strong> (neural networks with automatic differentiation) — are all Python libraries that directly implement the mathematics from this chapter.
+            </Analogy>
+
+            <Analogy label="Chapter 0 is complete — everything is in your hands">
+                You started with integration (measuring accumulated totals). You learned differentiation (measuring rates of change). You learned how to solve systems of equations, reason under probability and uncertainty, organise data with vectors and matrices, find natural structure with eigenvalues and SVD, test statistical significance, measure information with entropy, run fast computations on GPUs, and quantify what two variables share with mutual information.
+                <br /><br />
+                Every one of those topics is now a Python function away. <code>torch.linalg.svd()</code>. <code>torch.distributions.Normal()</code>. <code>F.cross_entropy()</code>. <code>loss.backward()</code>. Chapter 1 uses all of them — in the first actual neural network.
             </Analogy>
         </>
     )
@@ -230,17 +232,42 @@ function HighSchoolTab() {
             </p>
 
             <div className="ch-callout">
-                <strong>Connection to ML:</strong> PyTorch tensors are NumPy arrays with two extras:
-                (1) they live on the GPU instead of the CPU, and (2) they track every operation for
-                automatic differentiation. If you understand NumPy, you understand 80% of PyTorch.
-                The API is nearly identical: <code>torch.from_numpy(a)</code> converts between them
-                with zero copying.
+                <strong>Chapter 0 complete:</strong> PyTorch tensors are NumPy arrays with two extras:
+                (1) they live on the GPU (from the computing topic) instead of the CPU, and (2) they track
+                every operation for automatic differentiation (the chain rule from derivatives &amp; gradients).
+                If you understand NumPy, you understand 80% of PyTorch. The API is nearly identical:
+                <code>torch.from_numpy(a)</code> converts between them with zero copying.
+                You now have the complete mathematical and computational vocabulary of Chapter 0.
+                Chapter 1 uses every one of these tools — starting with the perceptron.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Memory layout, computational complexity, and autograd</h2>
@@ -425,7 +452,7 @@ X = df[["feature_1", "feature_2"]].values   # shape (4, 2)
 y = df["label"].values                       # shape (4,)
 print(f"\\nX shape: {X.shape}, y shape: {y.shape}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -454,6 +481,6 @@ export const PYTHON_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

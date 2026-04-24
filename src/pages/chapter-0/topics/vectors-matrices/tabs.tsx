@@ -33,21 +33,31 @@ function HistoryTab() {
             year: "1843 – 1858",
             title: "Cayley & Hamilton — Matrix Algebra as an Object",
             challenge:
-                "By the mid-1800s, mathematicians were applying linear transformations constantly — in mechanics, optics, and abstract algebra. But they had no unified notation. Every transformation had to be spelled out as a full system of equations, making composition laborious and error-prone.",
+                "Probability over many variables simultaneously — the joint distribution of height, weight, age, and income for a thousand people — requires tracking relationships between every pair of variables. Writing this out as separate equations is unworkable beyond three or four variables. By the mid-1800s, mathematicians applying linear transformations in mechanics, optics, and statistics desperately needed compact notation. Every transformation had to be spelled out as a full system of equations, making composition laborious and error-prone.",
             what:
-                "Arthur Cayley published A Memoir on the Theory of Matrices (1858), defining matrices as first-class mathematical objects with their own addition and multiplication rules. He showed that composing two transformations corresponds exactly to multiplying their matrices, and proved the Cayley–Hamilton theorem.",
+                "Arthur Cayley published A Memoir on the Theory of Matrices (1858), defining matrices as first-class mathematical objects with their own addition and multiplication rules. He showed that composing two transformations corresponds exactly to multiplying their matrices, and proved the Cayley–Hamilton theorem: every matrix satisfies its own characteristic polynomial. He also established that matrix multiplication is associative but not commutative — AB ≠ BA in general — a fact with deep consequences for the order of operations in neural networks.",
             impact:
-                "This is the moment linear algebra became a language rather than a technique. Once you can write Ax = b, AB, and Aⁿ as single expressions, the theory becomes both concise and general. Modern neural network notation — forward pass as Wx + b — is a direct descendant of this notational leap.",
+                "This is the moment linear algebra became a language. Once you can write Ax = b, AB, and Aⁿ as single expressions, the theory generalises cleanly to any dimension. The covariance matrix Σ from probability theory — encoding how every pair of features co-varies — is now a first-class object you can invert, multiply, decompose. Modern neural network notation (Wx + b for a layer) is a direct descendant of this notational leap.",
         },
         {
             year: "1888",
             title: "Peano — Abstract Vector Spaces",
             challenge:
-                "By the late 1800s, mathematicians noticed that the same algebraic rules kept reappearing in wildly different settings: arrays of numbers, sets of polynomials, spaces of continuous functions. Each required separate theorems proved separately.",
+                "By the late 1800s, mathematicians noticed that the same algebraic rules kept reappearing in wildly different settings: arrays of numbers, polynomial functions, spaces of continuous functions, and — from our previous topic — probability distributions over multiple variables. Each required separate theorems proved separately. The repetition was a sign of one underlying structure.",
             what:
-                "Giuseppe Peano wrote down the eight axioms of a vector space — abstract rules about addition and scalar multiplication. He showed that polynomials, functions, and sequences all fit the same mould as ordinary Euclidean vectors.",
+                "Giuseppe Peano wrote down the eight axioms of a vector space — abstract rules about addition (commutativity, associativity, identity, inverses) and scalar multiplication (two distributivity laws). He showed that polynomials, functions, sequences, and ordinary Euclidean arrows all satisfy exactly these axioms, unifying them into a single mathematical object. Nothing more is needed: the axioms are intentionally minimal.",
             impact:
-                "In ML, word embeddings, image patches, and audio spectrograms all live in different spaces, but because each is a vector space, the same algorithms (nearest-neighbour search, PCA, linear classifiers) apply uniformly. Peano's axioms are why one framework like PyTorch can handle text, images, and audio with the same code.",
+                "In ML, word embeddings, image patches, and audio spectrograms all live in different vector spaces, but because each satisfies Peano's axioms, the same algorithms — nearest-neighbour search, cosine similarity, linear classifiers — apply uniformly. This is why PyTorch can handle text, images, and audio with identical code. The data point you push through a network is a vector; the weights at each layer form a matrix; Peano's axioms guarantee the operations are well-defined.",
+        },
+        {
+            year: "1879 – 1907",
+            title: "Gram & Schmidt — Orthogonalization",
+            challenge:
+                "Probability theory gave us the covariance matrix Σ, encoding how features vary together. But to understand Σ — to find the 'natural axes' of variation in data — we need vectors that are mutually perpendicular (orthogonal). Most naturally arising sets of vectors are not orthogonal. Without a systematic method to construct an orthonormal basis from an arbitrary one, the geometric power of orthogonality was locked away.",
+            what:
+                "Jørgen Pedersen Gram (1879) and Erhard Schmidt (1907) independently described the algorithm: normalise the first vector to unit length; for each subsequent vector, subtract its projections onto all previously orthogonalised vectors and normalise the residual. The result is a set of orthonormal vectors spanning the same space as the originals. The algorithm is simple enough to apply by hand and numerically stable enough for large-scale computation.",
+            impact:
+                "Gram-Schmidt is the foundation of QR decomposition, the most numerically stable algorithm for solving least-squares problems. It avoids squaring the condition number that afflicts forming A^T A. QR also underlies the QR algorithm for computing eigenvalues. The eigenvectors of the covariance matrix — the 'natural axes' of the data — are orthogonal, and Gram-Schmidt is the computational tool that finds them. That eigenvalue story is our very next topic.",
         },
     ]
 
@@ -65,29 +75,42 @@ function KidTab() {
         <>
             <h2>Let's talk about arrows and grids</h2>
 
-            <Analogy label="Vectors = Arrows">
-                Imagine you are standing in your bedroom. A <strong>vector</strong> is like an instruction:
-                <em>"walk 3 steps forward and 2 steps to the right."</em> That arrow has two things — how
-                far and which way. You can add two arrows together by following them one after the other.
+            <p className="ch-story-intro">
+                Probability gave us tools to reason about uncertain, many-variable situations — but writing out "the probability that height, weight, AND age are all in some range" for a thousand people quickly becomes unmanageable. We need a compact notation. Vectors pack many measurements into one object; matrices organise the relationships between them.
+            </p>
+
+            <Analogy label="Vectors = Arrows full of numbers">
+                A <strong>vector</strong> is like an instruction: "walk 3 steps forward and 2 steps right." That arrow has two things — direction and distance. But you can have an arrow in 100 dimensions: "move this much on feature 1, this much on feature 2, ..., this much on feature 100."
+                <br /><br />
+                In AI, every data point is a vector. A photo is a vector of pixel values. A word is a vector of 768 numbers (its embedding). A patient's medical record is a vector of test results. Vectors are how AI sees the world.
             </Analogy>
 
-            <Analogy label="Matrices = Magic Machines">
-                A <strong>matrix</strong> is like a machine with buttons. You put your arrow in, and out
-                comes a <em>different</em> arrow — maybe stretched, rotated, or flipped. The numbers inside
-                the matrix decide exactly what the machine does to your arrow.
+            <Analogy label="Matrices = Arrow-reshaping machines">
+                A <strong>matrix</strong> is like a machine: you put your arrow in, and a different arrow comes out — maybe stretched, rotated, or flipped. The numbers inside decide what happens. Stack two machines together and you get one combined machine: that is matrix multiplication.
+                <br /><br />
+                Every layer in a neural network is a matrix machine. The layer takes the previous layer's arrow (activations) and reshapes it. Training is adjusting the machine's settings until it reshapes arrows the way we want.
             </Analogy>
 
-            <Analogy label="Dot Product = How Similar?">
-                If you and your friend both point arrows, the <strong>dot product</strong> tells you how
-                much your arrows "agree." Same direction = big number. Opposite directions = negative.
-                Pointing at right angles = zero. Totally different directions!
+            <Analogy label="Dot Product = How much do two arrows agree?">
+                If you and your friend both point arrows, the <strong>dot product</strong> tells you how much they agree. Same direction = big positive number. Opposite = negative. Right angles = zero.
+                <br /><br />
+                In a Transformer's attention mechanism, each query arrow and each key arrow are dot-producted together — measuring how relevant that token is. The entire attention mechanism is one giant collection of dot products.
             </Analogy>
 
-            <Analogy label="Why does all this matter for AI?">
-                In a neural network, every word, image, and sound is turned into an arrow (a vector of
-                numbers). The network uses matrix machines to slowly bend and reshape those arrows until
-                <strong>similar things end up pointing in similar directions</strong>. That is how it learns
-                to tell a cat from a dog!
+            <Analogy label="Norm = How long is your arrow?">
+                Every arrow has a length — a single number measuring how big the vector is. Square each component, add them, take the square root. That's the <strong>norm</strong> (Euclidean length).
+                <br /><br />
+                In AI, gradient norms tell you how large an update step is. If the norm is enormous, the model might take a wild step and training blows up. That's why "gradient clipping" exists — cap the norm so no single update is too large.
+            </Analogy>
+
+            <Analogy label="Covariance matrix = a table of 'go-together' scores">
+                The covariance matrix from probability theory is a specific kind of matrix. Entry (i, j) says "how much do feature i and feature j tend to move together?" Tall people tend to be heavy — positive covariance. Unrelated things — near zero.
+                <br /><br />
+                This matrix has a hidden secret: certain directions in the data have high variance (lots of spread) and others have low variance. Finding those directions — the "natural axes" of the data — is the next topic: eigenvalues and eigenvectors.
+            </Analogy>
+
+            <Analogy label="What comes next — the special arrows that survive unchanged">
+                When you apply the covariance matrix to a vector, most vectors come out pointing a completely different direction. But some special vectors come out pointing <em>exactly the same way</em> they went in — just longer or shorter. Those are <strong>eigenvectors</strong>: the natural axes of the data. Finding them is what PCA does, and it's the subject of our next topic.
             </Analogy>
         </>
     )
@@ -137,11 +160,34 @@ function HighSchoolTab() {
                 This matrix stretched x by 2 and y by 3. Every neural network layer does something like
                 this — projecting input into a new space where patterns are easier to see.
             </p>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Formal Definitions</h2>
@@ -219,7 +265,10 @@ function MathsTab() {
             <MathBlock tex="\mathbf{x}_{t+1} = \mathbf{x}_t - \eta\,\nabla_\mathbf{x} \mathcal{L}(\mathbf{x}_t)" />
             <p>
                 For a neural network with millions of parameters, this is one giant high-dimensional vector
-                update per step. The learning rate eta controls step size.
+                update per step. The learning rate eta controls step size. The covariance matrix Σ of the
+                data — encoding how features vary together — is a central object in the next topic.
+                Its eigenvectors reveal the directions of maximum variance, and its eigenvalues measure how
+                much variance each direction contains. That eigenvalue story is precisely what comes next.
             </p>
         </>
     )
@@ -291,7 +340,7 @@ loss.backward()                          # ∂loss/∂W and ∂loss/∂b compute
 print(f"  W.grad shape: {list(layer.weight.grad.shape)}")
 print(f"  b.grad shape: {list(layer.bias.grad.shape)}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -318,6 +367,6 @@ export const VECTORS_MATRICES_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

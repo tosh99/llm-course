@@ -30,49 +30,39 @@ function TlItem({ item }: { item: TimelineItem }) {
 function HistoryTab() {
     const items: TimelineItem[] = [
         {
-            year: "Archimedes (c. 250 BCE) — The Method of Exhaustion",
-            title: "Finding areas without limits",
-            challenge: "Ancient Greek mathematicians could compute exact areas of polygons using geometry. But curves like circles and parabolas were fundamentally different — they had no straight edges, so polygon formulas didn't apply. No one knew how to rigorously compute the area bounded by a curve.",
-            what:
-                "Archimedes invented the 'method of exhaustion': inscribe a polygon inside a curve, circumscribe one around it, and keep increasing the number of sides. The true area is 'exhausted' — squeezed between two polygons that converge to the same value. Using this, he computed π to extraordinary precision and proved formulas for the area of a parabola.",
-            impact:
-                "This is the conceptual ancestor of the integral. Even without a formal notion of 'limit', Archimedes demonstrated that you can approach curved problems with straight-line approximations that converge to the truth. Neural network training today does exactly the same: it approximates complex loss landscapes with tiny straight steps.",
+            year: "Archimedes (c. 250 BCE) — The Seeds of Differentiation",
+            title: "Tangent lines before algebra existed",
+            challenge: "The previous topic showed how Archimedes measured accumulated areas. But accumulated totals raise an immediate question: at any given point, how fast is the area growing? That rate-of-change question stumped Greek mathematicians. The tangent line to a curve — the line that just barely touches it at one point — captures this rate, but no general method existed to find it.",
+            what: "Archimedes computed tangent lines to spirals using a geometric construction: he showed that the tangent at any point on the Archimedean spiral is perpendicular to the line from the origin to the point, offset by a specific distance derived from the rate of rotation. This is not a formula — it was a one-off geometric proof — but it reveals the core concept: a tangent is determined by the curve's instantaneous rate of change at that point.",
+            impact: "Archimedes' tangent to the spiral is the earliest documented computation of what we would now call a derivative. The geometric construction he used — measuring how far a curve moves per unit of a parameter — is conceptually identical to the difference quotient [f(x+h) − f(x)]/h that defines the modern derivative. This conceptual thread runs unbroken from 250 BCE to every backward() call in PyTorch.",
         },
         {
-            year: "Fermat (1601–1665) — The Method of Ad-Equality",
-            title: "Finding maxima before calculus existed",
-            challenge: "Mathematicians and merchants of the 17th century needed to solve optimization problems without calculus. How do you find the maximum area of a field given fixed fencing, or the optimal trajectory of a projectile? Without derivative formulas, these were ad-hoc geometric puzzles.",
-            what:
-                "Pierre de Fermat developed a method he called 'ad-equality': treat two values as 'approximately equal' and set them equal to each other, then later let the approximation become exact. This is essentially setting derivatives to zero — finding where the slope is flat, which identifies maxima and minima.",
-            impact:
-                "Fermat's method is the geometric precursor to the derivative f'(x) = 0. Every neural network optimizer today — gradient descent, Adam, RMSProp — is a direct descendant of the insight that zero gradient indicates optimum. The chain rule, discovered later, gave this approach compositional power.",
+            year: "Fermat (1629–1638) — Finding Maxima Before Calculus",
+            title: "The method of adequality",
+            challenge: "Merchants, architects, and military engineers of the 17th century routinely needed optimal designs — maximum enclosure for a fixed fence, the cannon angle for maximum range, the bridge arch that best distributes weight. Without a general method, each problem required a clever geometric argument invented from scratch. There was no systematic way to find where a function stops increasing and starts decreasing.",
+            what: "Pierre de Fermat developed 'adequality': to find the maximum of f(x), treat f(x) ≈ f(x + e) for small e, expand, cancel the non-e terms, then let e → 0. The surviving condition is exactly f'(x) = 0. He applied this to find the refraction angle satisfying Snell's law (maximising light speed through a medium), extreme values of polynomials, and optimal areas — all without the formal derivative.",
+            impact: "Fermat's adequality is the direct ancestor of the first-order optimality condition. Every gradient-based optimiser today — gradient descent, Adam, RMSProp — is searching for (or descending toward) a point where the gradient is zero. Fermat also understood that zero gradient identifies local optima but doesn't distinguish minima from maxima from saddle points — the same challenge that makes nonconvex optimisation of neural networks difficult today.",
         },
         {
-            year: "Newton & Leibniz (1665–1687) — The Fundamental Theorem",
-            title: "Calculus as a unified system",
-            challenge: "Fermat and Descartes had methods for finding tangents and areas, but they were separate techniques. No one understood that these were two sides of the same coin. This meant calculus was a bag of tricks, not a general theory, and mathematicians couldn't confidently extend it to new problems.",
-            what:
-                "Isaac Newton and Gottfried Wilhelm Leibniz independently created a unified calculus framework. They introduced the notation (dx, ∫), the fundamental theorem of calculus (integrals are anti-derivatives), and the chain rule for composition. This turned ad-hoc methods into a general-purpose tool that could solve problems in physics, astronomy, and engineering.",
-            impact:
-                "The fundamental theorem made it possible to compute integrals by finding derivatives rather than doing geometric exhaustion. This is why automatic differentiation in modern ML works: we can compute gradients at scale because calculus is a single, unified system. Backpropagation is just the chain rule applied repeatedly through a computation graph.",
+            year: "Newton & Leibniz (1665–1687) — The Unified System",
+            title: "Calculus as a language, not a collection of tricks",
+            challenge: "Fermat could find tangents; Archimedes could find areas. But these were separate techniques with no known connection. No one understood that differentiation and integration were the same operation seen from opposite sides. Without this unification, calculus was a bag of clever tricks rather than a general theory, and mathematicians couldn't systematically extend it to new problems.",
+            what: "Newton and Leibniz independently proved the Fundamental Theorem — integrals are antiderivatives — and introduced the chain rule for compositions. Leibniz's notation (dy/dx, ∫) was designed so that algebraic manipulation of symbols produces correct calculus results automatically: d(uv) = u dv + v du, d(f ∘ g)/dx = (df/dg)(dg/dx). This turned ad-hoc methods into a general system that anyone who could learn the rules could apply.",
+            impact: "The chain rule is backpropagation. In a neural network, the output depends on weights through a chain of compositions: loss → activation → linear layer → activation → input. The chain rule computes d(loss)/d(weight) for any weight at any layer by multiplying local derivatives along the chain. Leibniz invented the abstract rule in 1675; Rumelhart, Hinton, and Williams realised in 1986 that it applied to neural computation graphs, and modern deep learning became possible.",
         },
         {
-            year: "Cauchy (1823) — Rigorous Foundations of Limits",
-            title: "Calculus without ghosts",
-            challenge: "For 150 years, calculus had been built on intuition about 'infinitely small' quantities — infinitesimals, 'ghosts of departed quantities' as Berkeley called them. Mathematicians could compute, but they couldn't prove their results were formally correct. In analysis and physics, this was becoming unacceptable.",
-            what:
-                "Augustin-Louis Cauchy defined the limit rigorously using ε-δ arguments: a sequence approaches a value if you can bound its error with an arbitrarily small epsilon. This removed infinitesimals entirely and grounded calculus in the language of real analysis. The derivative became a limit of difference quotients, not a ratio of infinitesimals.",
-            impact:
-                "Rigorous limits are essential for understanding gradient-based optimization. The 'learning rate' is choosing how small our epsilon is — we can't literally take an infinitesimal step, so we approximate the derivative with a finite difference. The entire analysis of convergence proofs in machine learning rests on Cauchy's foundation.",
+            year: "Cauchy (1823) — Limits Without Infinitesimals",
+            title: "Rigorous foundations, practical consequences",
+            challenge: "For 150 years, calculus rested on 'infinitesimals' — quantities simultaneously nonzero (to divide by them and form a ratio) and zero (to discard error terms). Bishop Berkeley's 1734 attack 'The Analyst' correctly identified this contradiction. Mathematicians could compute, but couldn't prove their results were formally correct. Convergence proofs and error analyses were impossible without rigorous foundations.",
+            what: "Cauchy defined the limit using ε-δ arguments: f(x) → L means that for any ε > 0 there exists δ > 0 such that |f(x) − L| < ε whenever |x − a| < δ. This eliminates infinitesimals entirely — they are replaced by the challenge of making the error smaller than any pre-specified bound. The derivative f'(x) = lim_{h→0} [f(x+h) − f(x)]/h is now precisely this limit, not a ratio of ghosts.",
+            impact: "Rigorous limits underpin every convergence proof in ML. The statement 'gradient descent converges at rate O(1/t) for L-Lipschitz gradients' is a theorem about ε-δ limits, not an observation. The learning rate η is choosing how large a step approximates the infinitesimal step — too large and the limit argument breaks, divergence occurs. The entire mathematical analysis of optimiser behaviour depends on Cauchy's foundation.",
         },
         {
-            year: "Weierstrass (1872) — The Smoothness Illusion",
-            title: "Not every function is differentiable",
-            challenge: "Early calculus assumed that continuous functions had derivatives — you could always compute a slope at every point. Mathematicians thought differentiability was guaranteed for 'nice' functions. This assumption was unex- amined and mostly untested.",
-            what:
-                "Karl Weierstrass shocked the mathematical community by constructing a continuous function that is nowhere differentiable — it's a fractal-like curve with wiggles at every scale. No matter how far you zoom in, you never see a straight line, so no tangent exists.",
-            impact:
-                "This changed how we think about optimization. Most modern neural network optimizers assume smoothness (twice-differentiable, even). The Weierstrass function tells us that pathologies exist and that smoothness is a privileged property, not a default. This is why we use activation functions like ReLU (smooth almost everywhere) instead of pathological ones.",
+            year: "Weierstrass (1872) — Pathologies and the Smoothness Assumption",
+            title: "Not every continuous function has a derivative",
+            challenge: "Early calculus assumed that any 'nice' continuous function had derivatives — a tangent line existed at every point. Mathematicians thought differentiability was automatic for curves you could draw without lifting your pen. This assumption was natural but completely untested for pathological cases.",
+            what: "Karl Weierstrass constructed a continuous function that is nowhere differentiable: W(x) = Σ aⁿ cos(bⁿπx), with 0 < a < 1 and ab > 1 + 3π/2. This function is fractal-like — it has infinitely many oscillations at every scale. No matter how far you zoom in, you never see a straight line, so no tangent ever exists anywhere on the curve. Continuity and differentiability are genuinely different properties.",
+            impact: "Weierstrass's function is a warning that gradient computation cannot be taken for granted. Modern ML sidesteps this through deliberate design: ReLU is not differentiable at exactly one point (zero measure), handled by defining a subgradient. GELU and SiLU are chosen to be smooth almost everywhere. The deeper lesson is that smoothness is a privilege, not a default — and the fact that neural network loss surfaces are smooth enough for gradient descent to work is a non-trivial consequence of careful architecture design. Solving the Ceres orbit problem and computing the normal equations also required solving a system of linear equations — the bridge to our next topic.",
         },
     ]
 
@@ -90,82 +80,46 @@ function KidTab() {
         <>
             <h2>Slopes, speed, and climbing hills</h2>
 
-            <Analogy label="Derivative = Speed on a speedometer">
-                Imagine you're driving a car. Your <strong>speedometer</strong>
+            <p className="ch-story-intro">
+                We just learned how to measure accumulated totals — areas under curves, total probabilities. But there's an immediate follow-up question: at any given moment, <em>how fast</em> is that total growing? That rate-of-change is the derivative, and it turns out to be the single most important concept in all of machine learning.
+            </p>
 
-                shows how fast you're going at this exact moment — not how far you've driven, but how{" "}
-                <em>quickly</em> your position is changing. A derivative is exactly that: it measures{" "}
-                <strong>how fast something is changing</strong> right now.
-                <br />
-                <br />
-                If you drive 60 miles in one hour, your average speed is 60 mph. Your instantaneous
-                speed at any moment is what the speedometer shows — that's the derivative.
+            <Analogy label="Derivative = Speed on a speedometer">
+                Imagine you're driving a car. Your <strong>speedometer</strong> shows how fast you're going at this exact moment — not how far you've driven, but how <em>quickly</em> your position is changing. A derivative is exactly that: it measures <strong>how fast something is changing right now</strong>.
+                <br /><br />
+                If you drive 60 miles in one hour, your average speed is 60 mph. But your actual speed at each moment — what the speedometer shows — is the instantaneous rate of change: the derivative. The integral of speed gives you distance. The derivative of distance gives you speed. They are inverses.
             </Analogy>
 
             <Analogy label="Derivative = Steepness of a hill">
-                Picture yourself walking up a hill. The <strong>steeper</strong> the hill, the harder it
-                is to climb. The derivative tells you exactly how steep the hill is at each point: a big
-                derivative means a steep hill, a zero derivative means flat ground (no change), and a
-                negative derivative means you're going downhill.
-                <br />
-                <br />
-                In machine learning, our "hill" is the loss function. We want to find the bottom. The{" "}
-                derivative tells us which way is downhill, so we know which direction to step.
+                Picture yourself walking up a hill. The <strong>steeper</strong> the hill, the harder it is to climb. The derivative tells you exactly how steep the hill is at each point: a big derivative means steep, zero derivative means flat, negative derivative means going downhill.
+                <br /><br />
+                In machine learning, our "hill" is the <strong>loss function</strong> — a measure of how wrong the model's predictions are. We want to find the bottom of this hill (the minimum loss). The derivative tells us which direction is downhill at each step.
             </Analogy>
 
-            <Analogy label="Partial derivative = Looking in one direction">
-                Imagine you're playing a game where you can move left-right, forward-backward, and up-down
-                (like a bird). The <strong>partial derivative</strong>
-
-                is like turning your head in one
-                direction and asking: "if I only move THIS way, how fast does the height change?"
-                <br />
-                <br />
-                You compute the slope in the x-direction, then the y-direction, then the z-direction.
-                Together, they tell you the steepness in every possible direction.
+            <Analogy label="Partial derivative = Looking in one direction at a time">
+                Imagine you're on a mountain and you can move in any direction — north, east, northeast, and so on. The <strong>partial derivative</strong> is like asking: "if I only move due north, how fast does the height change?" Then ask the same for east, west, south.
+                <br /><br />
+                A neural network has millions of parameters — millions of directions to move in. Computing the partial derivative for each direction tells you how much each parameter contributes to the loss. All partial derivatives together form the <strong>gradient</strong>.
             </Analogy>
 
             <Analogy label="Chain rule = Nested machines">
-                Think about baking a cake. The <strong>chain rule</strong>
-
-                handles nested changes: the oven
-                temperature affects the batter consistency, which affects how long it bakes, which affects
-                whether it burns. To know how changing the thermostat affects burning, you multiply each
-                link's effect together.
-                <br />
-                <br />
-                In neural networks, weights affect outputs, outputs affect loss, loss affects everything.
-                The chain rule tells us how to trace this chain of influence backward — that's what{" "}
-                <strong>backpropagation</strong> does.
+                Think about a factory assembly line. Station A feeds into Station B, which feeds into Station C. If you speed up Station A, how does that change the final output? You multiply: (effect of A on B) × (effect of B on C). That's the <strong>chain rule</strong>.
+                <br /><br />
+                In a neural network, each layer feeds into the next. Weights at layer 1 affect activations at layer 2, which affect activations at layer 3, which affect the final loss. The chain rule tells us how to trace this chain of influence backwards — that's what <strong>backpropagation</strong> does.
             </Analogy>
 
-            <Analogy label="Gradient = The arrow pointing downhill">
-                The <strong>gradient</strong>
-
-                is like a compass needle that always points toward the steepest
-                uphill. The negative gradient points downhill — exactly the direction we want to step to
-                reduce our loss.
-                <br />
-                <br />
-                Gradient descent is simple: compute this arrow, take a step that way, and repeat. It's
-                how every modern neural network learns.
-            </Analogy>
-
-            <Analogy label="Why calculus matters for AI">
-                Imagine you're trying to teach a computer to recognize cats in photos. The computer has
-                millions of tiny "knobs" (parameters) that it can adjust. Calculus tells us{" "}
-                <em>which knobs to turn, and by how much</em>, to make the computer better at spotting
-                cats. The derivative is the signal that guides every learning step.
+            <Analogy label="Gradient = The arrow pointing uphill">
+                The <strong>gradient</strong> is a single arrow that points in the direction of steepest <em>uphill</em> on the loss surface. The <em>negative</em> gradient points downhill — the direction that reduces the loss the fastest.
+                <br /><br />
+                Gradient descent is beautifully simple: compute this arrow, take a small step in the downhill direction, and repeat. Millions of times. That is what "training a neural network" means.
             </Analogy>
 
             <DiagramBlock title="Gradient descent on a loss surface">
                 <GradientDescentDiagram />
             </DiagramBlock>
 
-            <Analogy label="The gradient compass">
-                The gradient is like a compass that always points uphill. The negative gradient points
-                downhill — the direction that reduces the loss. Gradient descent follows that compass,
-                taking small steps downhill until it reaches the bottom (minimum).
+            <Analogy label="What comes next — setting the derivative to zero">
+                Gradient descent follows the slope until it's nearly flat — until the gradient is nearly zero. When the gradient is exactly zero, we're at a minimum (or a saddle point). But finding the exact zero of a gradient often means solving a system of equations: one equation per parameter. When Gauss minimised his least-squares sum in 1809, setting the gradient to zero gave him exactly this — a system of linear equations to solve. That's our next topic.
             </Analogy>
         </>
     )
@@ -266,13 +220,38 @@ function HighSchoolTab() {
                 <strong>Connection to ML:</strong> The loss function L(θ) has thousands to billions of
                 parameters θ. We compute ∇θL using backpropagation (the chain rule applied through the
                 network), then update θ ← θ − η·∇θL. Repeating this millions of times is what "training a
-                neural network" means.
+                neural network" means. Setting ∇L = 0 and solving for θ analytically is only possible for simple
+                linear models — it produces the <em>normal equations</em> A^⊤Ax = A^⊤b, a linear system.
+                Solving that system efficiently is the subject of our next topic: systems of equations.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Differentiation and gradients</h2>
@@ -494,7 +473,7 @@ loss.backward()              # ∂loss/∂every-weight in one pass
 for name, p in net.named_parameters():
     print(f"  {name:25s}  {str(list(p.shape)):14s}  grad_norm={p.grad.norm():.4f}")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -523,6 +502,6 @@ export const DERIVATIVES_GRADIENTS_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

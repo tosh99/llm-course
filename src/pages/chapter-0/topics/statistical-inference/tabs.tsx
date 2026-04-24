@@ -33,14 +33,14 @@ function HistoryTab() {
             title: "Small sample statistics",
             challenge: "William Gosset (\u201CStudent\u201D) worked at Guinness Brewery. He needed to make quality decisions from tiny samples — tasting just a few batches to decide whether a new brewing process was better. The normal distribution assumption required large samples, but Guinness could only afford to test a few batches at a time.",
             what: "Gosset derived the t-distribution — a heavy-tailed distribution that properly accounts for uncertainty when estimating the mean of a normally distributed population with unknown variance and small sample size n. The t-distribution approaches the normal as n → ∞, but for small n it properly inflates the confidence intervals.",
-            impact: "Every A/B test, clinical trial, and model comparison in the world uses the t-test when sample sizes are small. In ML, we use t-tests to compare model performance when we have limited test sets or when comparing few runs. Without Gosset, we'd either waste samples or report overconfident conclusions.",
+            impact: "Every A/B test, clinical trial, and model comparison uses the t-test when sample sizes are small. In ML, t-tests compare model performance with limited test sets or few training runs. Without Gosset, practitioners would report overconfident conclusions — exactly the statistical error behind many irreproducible ML benchmarks. This gap between 'best fit' and 'statistically confirmed' is what statistical inference is designed to close.",
         },
         {
             year: "1922 — Fisher — Maximum Likelihood & Significance",
             title: "Fitting models to data rigorously",
             challenge: "Scientists wanted a principled method for fitting models to data and quantifying how confident they should be. Existing methods (like method of moments) were ad-hoc. There was no unified framework for: (1) estimating parameters from data, (2) measuring how good the fit is, (3) deciding whether a model is 'true' or the data just looks that way by chance.",
             what: "Ronald Fisher developed Maximum Likelihood Estimation (MLE) as the unifying framework: choose parameters that maximise the probability of observing the data you got. He also formalised p-values and null hypothesis significance testing: compute the probability of observing data this extreme if the null hypothesis were true — if p < 0.05, call it statistically significant.",
-            impact: "MLE is the foundation of every trained ML model. Cross-entropy loss = minimising negative log-likelihood. Fisher's significance testing framework is how the field decides what is a real result vs noise. When Google reports 'model X outperforms Y with p < 0.001', they are using Fisher's framework.",
+            impact: "MLE is the foundation of every trained ML model. Cross-entropy loss equals minimising negative log-likelihood. Perplexity is the exponentiated average negative log-likelihood. Fisher's significance framework is how the field decides what is a real result versus noise. But Fisher measured how much data supports a specific hypothesis. Shannon (1948) went further and asked: how much information does the data contain, independent of any hypothesis? That shift — from likelihood to information — is the bridge to our next topic.",
         },
         {
             year: "1933 — Neyman-Pearson — Decision Theory",
@@ -61,7 +61,7 @@ function HistoryTab() {
             title: "Decision theory as the unifying framework",
             challenge: "Estimation, hypothesis testing, and prediction all seemed like different problems. There was no unified theory that could tell you: given a loss function and a data distribution, what is the optimal decision procedure?",
             what: "Abraham Wald unified statistics and decision theory: every statistical problem is a decision problem. Choose an action (estimate, reject, predict) that minimises the expected loss (risk). The Bayes risk minimises expected loss over the prior. The minimax risk minimises the worst-case expected loss. MLE, MAP, and Bayes estimators are all special cases of this framework.",
-            impact: "Wald's framework is the precise mathematical language for model selection, regularisation, and RLHF alignment. Regularisation = adding a penalty (increased loss) to prevent overfitting. When we choose λ in LASSO or set the KL divergence weight in VAEs, we're doing Wald-style decision theory.",
+            impact: "Wald's framework is the precise mathematical language for model selection, regularisation, and RLHF alignment. L2 regularisation adds a Gaussian prior penalty; choosing its strength λ is choosing the prior variance — a decision-theoretic choice. RLHF's KL penalty constrains how far the policy moves from the reference model — a Wald-style bound on decision cost. Statistical inference completes the mathematical toolkit from probability and linear algebra. The next question is deeper: how do we measure the information content of data itself, independent of any model or hypothesis? That is entropy.",
         },
     ]
 
@@ -79,39 +79,36 @@ function KidTab() {
         <>
             <h2>Is this result real, or just lucky?</h2>
 
+            <p className="ch-story-intro">
+                SVD and least squares find the best-fitting patterns in data. But "best fit on the data I saw" doesn't mean "real pattern in the world." What if the pattern was a coincidence — a fluke of the specific examples I happened to use? Statistical inference is how we tell the difference.
+            </p>
+
             <Analogy label="Sample mean vs true mean">
-                If you want to know the average height of all 18-year-olds in your city, you can't measure everyone. So you pick 100 people at random and compute their average. Your <strong>sample mean</strong> is an estimate of the true average. But your estimate is never exactly right — there is always some error from random sampling.
-                <br />
-                <br />
-                In ML, we split data into train and test sets. The model's performance on the test set is a sample estimate of its true generalisation performance.
+                You want to know the average height of all teenagers in your city, but you can't measure everyone. So you pick 100 at random and compute the average. Your <strong>sample mean</strong> is an estimate — but never exactly right. There is always some error from random sampling.
+                <br /><br />
+                In ML, we split data into train and test sets. The model's test performance is a sample estimate of true generalisation. The gap between training accuracy and test accuracy is exactly this sampling error — and understanding it is the whole point of statistical inference.
             </Analogy>
 
-            <Analogy label="Confidence interval = our best guess plus uncertainty">
-                Instead of saying "the average height is 170 cm," you could say "I'm 95% confident the true average is between 168 cm and 172 cm." That <strong>confidence interval</strong> tells you not just the estimate but how uncertain we should be about it. A wider interval means we're less sure.
-                <br />
-                <br />
-                In ML, reporting accuracy as "65% ± 2%" (with a confidence interval) is much more honest than just "65%".
+            <Analogy label="Confidence interval = estimate plus honest uncertainty">
+                Instead of "the average height is 170 cm," say "I'm 95% confident it's between 168 and 172 cm." That <strong>confidence interval</strong> tells you not just the estimate but how uncertain you should be. A wider interval means less certainty.
+                <br /><br />
+                In ML, reporting test accuracy as "82.3% ± 1.4%" is far more honest than just "82.3%." The ± comes from statistical inference, and leaving it out is one of the ways benchmark results mislead.
             </Analogy>
 
-            <Analogy label="Statistical significance = unlikely to be chance">
-                If you flip a coin 10 times and get 8 heads, is the coin biased? Not necessarily — there's a small chance a fair coin does that. <strong>Statistical significance</strong> quantifies this: we say a result is "significant" if the probability of seeing it by pure chance is very small (typically less than 5%).
-                <br />
-                <br />
-                In ML, when we say "Model A beats Model B with p = 0.003", we mean: if they were truly equal, there's only a 0.3% chance of seeing this big a difference by random sampling.
+            <Analogy label="Statistical significance = unlikely to be a coincidence">
+                You flip a coin 10 times and get 8 heads. Is the coin biased? Not necessarily — a fair coin does this about 5.5% of the time. <strong>Statistical significance</strong> quantifies the doubt: if p = 0.055, that means "if the coin were fair, you'd see this result 5.5% of the time." Small p = strong evidence against coincidence.
+                <br /><br />
+                In ML, "Model A beats Model B with p = 0.003" means: if they were truly equal, there's only a 0.3% chance of seeing this big a gap by random test-set sampling. That's strong evidence the difference is real.
             </Analogy>
 
             <Analogy label="Bias-variance tradeoff = underfitting vs overfitting">
-                Imagine trying to predict exam scores. A model that just predicts "50%" for everyone (the mean) is <strong>biased</strong> — it's always wrong in the same way (missing individual variation). A model that memorises every training example is <strong>high variance</strong> — it changes wildly if you swap in a different training set.
-                <br />
-                <br />
-                The bias-variance tradeoff says: as you make the model more complex, bias decreases but variance increases. The best model minimises total error = bias² + variance.
+                A model that predicts "50%" for everyone is <strong>biased</strong> — systematically wrong in the same direction. A model that memorises every training example is <strong>high variance</strong> — it changes wildly if you swap in different training data.
+                <br /><br />
+                The fundamental theorem of statistical learning: total error = bias² + variance + irreducible noise. Making the model more complex reduces bias but increases variance. The best model finds the sweet spot — and statistical inference gives us the tools to measure where that sweet spot is.
             </Analogy>
 
-            <Analogy label="Bayesian inference = updating beliefs with evidence">
-                Start with a guess (prior belief): "this coin is probably fair." Then flip it 10 times and get 8 heads. Update your belief: "hmm, 8 heads is unusual for a fair coin — maybe it's biased." <strong>Bayesian inference</strong> does this formally: it starts with a prior, incorporates data to get a posterior, and makes predictions by averaging over all possible parameter values weighted by how probable they are.
-                <br />
-                <br />
-                Bayesian neural networks do exactly this: instead of point estimates of weights, they maintain a distribution over weights.
+            <Analogy label="What comes next — measuring information itself">
+                Statistical inference tells us whether a learned pattern is real. But there's a deeper question underneath: how much <em>information</em> does the data actually contain — regardless of what patterns we're looking for? Shannon (1948) answered this with the concept of entropy. And entropy turns out to be the foundation of every loss function in modern deep learning.
             </Analogy>
         </>
     )
@@ -202,11 +199,34 @@ function HighSchoolTab() {
                 shrinkage toward a prior. Understanding these ideas means understanding why training
                 works, not just how to call the APIs.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Estimation theory, testing, and decision theory</h2>
@@ -390,7 +410,7 @@ sigma_n = prec_n**-0.5
 print(f"  Prior:     N({mu_0}, {sigma_0}²)")
 print(f"  Posterior: N({mu_n:.3f}, {sigma_n:.3f}²)  (true μ={true_mu})")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -417,6 +437,6 @@ export const STATISTICAL_INFERENCE_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

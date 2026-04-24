@@ -182,11 +182,34 @@ function HighSchoolTab() {
                 accuracy with only 8M vs 25M parameters—roughly 3× fewer! This is achieved
                 through aggressive feature reuse rather than learning redundant representations.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>DenseNet: Mathematical Analysis</h2>
@@ -423,7 +446,7 @@ if __name__ == "__main__":
     print(f"\nFor reference, ResNet-50 has ~25.6M parameters")
     print(f"DenseNet-121 achieves similar accuracy with ~8M parameters!")`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -448,6 +471,6 @@ export const DENSENET_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

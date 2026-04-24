@@ -182,11 +182,34 @@ function HighSchoolTab() {
                 <em>never</em> solve XOR because XOR points cannot be separated by a single straight line.
                 You need at least one hidden layer of neurons to bend the decision boundary.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Perceptron: Theory and Limitations</h2>
@@ -323,7 +346,7 @@ plt.subplot(1,2,2)
 plot_decision_boundary(X_xor, y_xor, w_xor, b_xor, "XOR — perceptron fails")
 plt.show()`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -349,6 +372,6 @@ export const PERCEPTRON_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

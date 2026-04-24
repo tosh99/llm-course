@@ -168,11 +168,34 @@ function HighSchoolTab() {
                 <li><strong>Computational efficiency</strong> — fewer calculations in later layers</li>
                 <li><strong>Regularization</strong> — makes the network more robust to small variations</li>
             </ul>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>The Mathematics of Convolution</h2>
@@ -305,7 +328,7 @@ print(f"\\nConv params: {conv_params}")  # ~320
 print(f"FC params:   {fc_params}")    # ~25,088
 print(f"Savings:     {fc_params/conv_params:.1f}x")`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -332,6 +355,6 @@ export const INTRODUCTION_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

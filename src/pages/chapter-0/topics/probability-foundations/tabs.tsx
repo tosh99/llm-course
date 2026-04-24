@@ -33,37 +33,37 @@ function HistoryTab() {
         {
             year: "1654 — Pascal & Fermat — The Problem of Points",
             title: "Probability is born from a gambling dispute",
-            challenge: "The Chevalier de Méré, a French nobleman and gambler, posed a problem: a game of chance is interrupted before completion. Two players have different scores. How should the pot be divided fairly? Classical mathematics had no framework for reasoning about incomplete random events.",
-            what: "Blaise Pascal and Pierre de Fermat exchanged a series of letters that solved the Problem of Points by systematically enumerating all possible future outcomes and assigning each a proportional share. This was the first time 'expected value' was computed — the weighted average of outcomes by their likelihoods. They didn't just solve one game; they invented a general calculus of uncertainty.",
-            impact: "Every machine learning model outputs probabilities. The expected value they defined is exactly the quantity that loss functions compute: the average outcome across a distribution of possibilities. Cross-entropy loss, the standard loss for classification in neural networks, is a direct descendant of their idea of weighting outcomes by probability.",
+            challenge: "Gauss's least-squares method (from systems of equations) assumed that measurement errors followed a specific distribution. But what is a distribution, and where do the probability rules come from? To answer these questions, we need to go back further — to 1654 and a gambling dispute. The Chevalier de Méré needed to divide a prize pot when a game of chance was interrupted midway. Classical mathematics had no framework for reasoning about incomplete random events.",
+            what: "Blaise Pascal and Pierre de Fermat exchanged a series of letters that solved the Problem of Points by systematically enumerating all possible future outcomes and assigning each a proportional share. This was the first rigorous computation of 'expected value' — the weighted average of outcomes by their likelihoods. They didn't just solve one game; they invented a general calculus of uncertainty that applies to any probabilistic situation.",
+            impact: "Every machine learning model outputs probabilities. The expected value they defined is exactly the quantity that loss functions compute: L(θ) = E[ℓ(f(x; θ), y)] — the average loss across a distribution of possibilities. Cross-entropy loss, the standard loss for classification, is a direct descendant of their idea of weighting outcomes by probability.",
         },
         {
             year: "1713 — Bernoulli — The Law of Large Numbers",
             title: "From uncertainty to stability",
-            challenge: "Pascal and Fermat could compute probabilities for dice and cards, but could anyone trust that observed frequencies converge to theoretical probabilities? A coin flipped 10 times might show 7 heads — does that mean it's biased? No mathematical proof connected theory to observation.",
-            what: "Jacob Bernoulli proved the Law of Large Numbers: as the number of independent trials increases, the observed frequency of an event converges to its true probability. Flip a fair coin enough times and the proportion of heads will approach 50%. This wasn't just intuition — it was a rigorous theorem with a proof that took him 20 years.",
-            impact: "This is why training works. A neural network sees thousands of examples and its average performance converges to its expected performance on the true data distribution. Stochastic gradient descent relies on this: small random batches approximate the full gradient. Without Bernoulli's law, there would be no statistical guarantee that training converges.",
+            challenge: "Pascal and Fermat could compute probabilities for specific games, but could anyone trust that observed frequencies would converge to theoretical probabilities in practice? A coin flipped 10 times might show 7 heads — does that mean it's biased? Without a mathematical proof connecting theory to observation, probability remained a intellectual exercise, not a practical science.",
+            what: "Jacob Bernoulli proved the Law of Large Numbers: as the number of independent trials increases, the observed frequency of an event converges to its true probability. Flip a fair coin enough times and the proportion of heads approaches exactly 50%. This wasn't intuition — it was a rigorous theorem whose proof took him 20 years and was published posthumously in 1713.",
+            impact: "This is why training works. A neural network sees thousands of examples and its average empirical performance converges to its true expected performance on the data distribution. Stochastic gradient descent relies on this directly: computing the gradient on a random mini-batch of 32 examples approximates the true gradient over millions of examples. Without Bernoulli's law, there would be no statistical guarantee that SGD-based training converges.",
         },
         {
             year: "1763 — Bayes — Inverse Probability",
             title: "Learning from evidence",
-            challenge: "Probability theory could compute 'given a fair coin, what's the chance of 3 heads?' But the real question in science is the reverse: 'given 3 heads, what's the chance the coin is fair?' This inverse problem — reasoning from evidence back to causes — had no formal solution.",
-            what: "Thomas Bayes (published posthumously by Richard Price) derived a formula for updating beliefs in light of new evidence. Bayes' theorem states that the posterior probability of a hypothesis is proportional to the likelihood of the data given that hypothesis, times the prior probability of the hypothesis. It provides a mathematical recipe for changing your mind rationally.",
-            impact: "Bayes' theorem is the foundation of Bayesian machine learning, Bayesian optimisation (used for hyperparameter tuning), naive Bayes classifiers, and Bayesian neural networks that output uncertainty estimates. The concept of 'updating beliefs from data' is what all learning algorithms do — Bayes just made it rigorous. Modern LLM fine-tuning methods like RLHF have Bayesian interpretations.",
+            challenge: "Probability theory could compute 'given a fair coin, what's the chance of 3 heads?' But science constantly needs the reverse: 'given 3 heads, what's the chance the coin is fair?' This inverse problem — reasoning from evidence back to causes — had no formal solution. Gauss's least-squares had implicitly solved a version of this, but without a general framework.",
+            what: "Thomas Bayes (published posthumously by Richard Price in 1763) derived a formula for updating beliefs in light of new evidence. Given a prior belief P(hypothesis) and the likelihood of the data P(data | hypothesis), the posterior is P(hypothesis | data) ∝ P(data | hypothesis) · P(hypothesis). It provides a mathematical recipe for rational belief revision.",
+            impact: "Bayes' theorem is the foundation of Bayesian ML, Bayesian optimisation (hyperparameter tuning), naive Bayes classifiers, and Bayesian neural networks. Every learning algorithm updates its 'beliefs' (model parameters) from data — Bayes just makes this update rule mathematically explicit and optimal. Modern RLHF fine-tuning has a Bayesian interpretation: the prior is the pre-trained model, the evidence is human feedback, and the posterior is the aligned model.",
         },
         {
             year: "1809 — Gauss — The Normal Distribution",
-            title: "The bell curve explains everything",
-            challenge: "Astronomers, surveyors, and physicists all encountered measurement errors. Every telescope reading was slightly off. No one knew the mathematical shape of these errors — only that small errors were more common than large ones. Without a model for error, there was no principled way to combine multiple noisy measurements.",
-            what: "Carl Friedrich Gauss showed that if measurement errors are independent and identically distributed, they follow a specific bell-shaped curve — the Gaussian (normal) distribution. He used it to justify least-squares estimation: the mean of repeated measurements is the most probable true value. The shape is fully described by two parameters: the mean (centre) and variance (spread).",
-            impact: "The normal distribution is everywhere in ML. Weight initialisation uses N(0, 0.02). Batch normalisation explicitly forces activations toward a Gaussian. Variational autoencoders model latent spaces as Gaussian. The central limit theorem guarantees that sums of random effects tend toward Gaussian — which is why it appears so often in real data. Understanding this single distribution unlocks half of ML theory.",
+            title: "The bell curve and the justification for least squares",
+            challenge: "Least squares was powerful, but Gauss needed to justify why minimising squared errors — rather than absolute errors or fourth-power errors — was the right choice. What mathematical model of measurement error makes squared errors the natural objective? Without an answer, least squares was just a convenient technique, not a principled method.",
+            what: "Gauss showed that if measurement errors are independent, identically distributed, and satisfy minimal regularity conditions, they follow the normal distribution N(μ, σ²) — the bell curve. Under this model, the maximum likelihood estimate of the true value is exactly the least-squares solution. The normal distribution is fully described by two parameters: the mean μ (centre) and variance σ² (spread). The Central Limit Theorem later showed why it appears so naturally: sums of many independent random effects always converge to a normal, regardless of the original distribution.",
+            impact: "The normal distribution is the most important distribution in ML. Weight initialisation uses N(0, σ²). Batch normalisation forces activations toward N(0, 1). Variational autoencoders model latent spaces as Gaussian. Diffusion models corrupt data with Gaussian noise and learn to reverse it. Understanding this distribution unlocks the mathematical explanation for nearly half of ML theory.",
         },
         {
             year: "1900 — Pearson — Statistical Hypothesis Testing",
             title: "Is this result real or just noise?",
-            challenge: "By the late 19th century, scientists could collect data and compute averages, but they had no principled way to ask: 'is this difference statistically significant, or could it have arisen by chance?' Biology, medicine, and social science were drowning in data but starved of rigorous inference.",
-            what: "Karl Pearson invented the chi-squared test, a method for determining whether observed data is consistent with a hypothesised distribution. He introduced the concept of a null hypothesis and a test statistic with a known probability distribution. If the observed statistic was extreme enough (low p-value), you could reject the null hypothesis with confidence.",
-            impact: "Every A/B test in industry, every clinical trial, every ML model comparison uses hypothesis testing. When you compare two models and ask 'is model A really better than model B?', you're doing a statistical test. Cross-validation with statistical significance tests is how we distinguish real improvements from random variation in benchmarks.",
+            challenge: "By 1900, scientists could compute expected values and fit Gaussian curves to data. But they had no principled way to ask: 'is this difference significant, or could it have arisen by chance?' Biology, medicine, and economics were drowning in data but starved of rigorous inference. How do you tell signal from noise?",
+            what: "Karl Pearson invented the chi-squared test and formalised the concept of a null hypothesis: the assumption that nothing interesting is happening. He showed how to compute a test statistic with a known probability distribution under the null hypothesis. If the observed statistic was extreme enough (low p-value), you could reject the null with quantifiable confidence. This introduced the idea that you reason about the probability of the data, not the probability of the hypothesis.",
+            impact: "Every A/B test, every clinical trial, every model comparison in ML uses this framework. When we report 'model A beats model B with p < 0.01', we are using Pearson's methodology. This also bridges directly to the next topic: as we handle many variables simultaneously — many measurements per data point — we need vectors and matrices to organise them. Probability over many variables simultaneously is multivariate probability, and its natural language is linear algebra.",
         },
     ]
 
@@ -81,60 +81,46 @@ function KidTab() {
         <>
             <h2>Guessing, dice, and changing your mind</h2>
 
+            <p className="ch-story-intro">
+                Systems of equations assumed we knew the right answers and just had to find them. But in the real world, measurements have random errors, outcomes are uncertain, and the data itself is noisy. Probability is the mathematics of uncertainty — and it's the language that all of AI speaks.
+            </p>
+
             <Analogy label="Probability = How likely something is">
-                Imagine you have a bag with 3 red marbles and 1 blue marble. You reach in without looking.
-                The <strong>probability</strong> of pulling out a red marble is 3 out of 4 — it's pretty likely!
-                Probability is just a way of saying <em>"how many ways can this happen"</em> divided by{" "}
-                <em>"how many total things could happen."</em>
+                Imagine you have a bag with 3 red marbles and 1 blue marble. You reach in without looking. The <strong>probability</strong> of pulling red is 3 out of 4 — pretty likely! Probability is just: <em>"how many ways can this happen"</em> divided by <em>"how many total things could happen."</em>
+                <br /><br />
+                In AI, probabilities are everywhere: the model says "I'm 92% sure this email is spam." The 92% is a probability — not a yes or a no, but a degree of confidence.
             </Analogy>
 
             <Analogy label="Expected value = The long-run average">
-                If a game pays you $1 for heads and nothing for tails, and you play 100 times, you'd expect
-                about $50. Your <strong>expected value</strong> per flip is $0.50 — the average you'd get if you
-                played forever. It's not what happens each time; it's what tends to happen over many tries.
-                <br />
-                <br />
-                In AI, the "game" is the model making predictions, and the "prize" is getting the answer right.
-                Training is about making the expected prize as big as possible.
+                If a game pays you $1 for heads and $0 for tails, and you play 100 times, you'd expect about $50 total. Your <strong>expected value</strong> per flip is $0.50 — the average you'd get if you played forever. It's not what happens each time; it's what tends to happen over many tries.
+                <br /><br />
+                In AI, the loss function is an expected value: the <em>average</em> prediction error across all possible inputs. Training is about reducing this expected error as much as possible.
             </Analogy>
 
             <Analogy label="Mean and variance = Centre and spread">
-                Imagine two classes take a test. Both get an average of 70%. But in Class A, everyone scored
-                between 65–75%. In Class B, scores ranged from 40–100%. Same average, very different pictures!
-                <br />
-                <br />
-                The <strong>mean</strong> (average) tells you where the centre is. The <strong>variance</strong>{" "}
-                tells you how spread out things are. High variance = wild, unpredictable. Low variance = consistent,
-                bunched together.
+                Two classes take a test. Both average 70%. But Class A scores between 65–75%, while Class B scores between 40–100%. Same average, very different picture.
+                <br /><br />
+                The <strong>mean</strong> tells you the centre. The <strong>variance</strong> tells you the spread. In ML, variance measures how much the model's predictions would change if you trained on different data. High variance = overfitting. The bias-variance tradeoff is one of the most important ideas in all of ML.
             </Analogy>
 
             <Analogy label="Bayes' theorem = Changing your mind with evidence">
-                Suppose your friend says "I'm thinking of an animal." You guess: it's probably a dog (because
-                dogs are common). Then they say "it has stripes." Now you change your guess to a cat or a zebra!
-                <br />
-                <br />
-                <strong>Bayes' theorem</strong> is the mathematical rule for exactly this: how to update your
-                belief when you get new clues. You start with a <em>prior</em> guess (dogs are common), you get{" "}
-                <em>evidence</em> (stripes), and you compute a <em>posterior</em> (new guess). AI systems do this
-                millions of times per second.
+                Your friend says "I'm thinking of an animal." You guess: probably a dog — dogs are common. Then they say "it has stripes." Now you update to a cat or a zebra!
+                <br /><br />
+                <strong>Bayes' theorem</strong> is the mathematical rule for exactly this update. You start with a <em>prior</em> belief (dogs are common), receive <em>evidence</em> (stripes), and compute a <em>posterior</em> (new belief after evidence). Every learning algorithm is doing this — adjusting beliefs based on data.
             </Analogy>
 
             <Analogy label="The bell curve = Nature's favourite shape">
-                If you measure the heights of 1000 people and plot them, you get a bell shape: most people are
-                near average, with fewer very tall or very short people. This is the <strong>normal distribution</strong>{" "}
-                (bell curve), and it shows up everywhere — test scores, measurement errors, even the weights inside
-                a neural network when it starts training.
+                Measure the heights of 1000 people. Plot them. You get a bell: most people near the average, fewer very tall or short. This <strong>normal distribution</strong> shows up everywhere — measurement errors, test scores, the random noise in training data, even the initial weights in a neural network.
+                <br /><br />
+                Why does it appear everywhere? Because whenever many small, independent random effects add up, the total always follows the bell curve — no matter what the individual effects look like. That's the <strong>Central Limit Theorem</strong>.
             </Analogy>
 
             <DiagramBlock title="The normal distribution — nature's favourite shape">
                 <NormalDistributionDiagram />
             </DiagramBlock>
 
-            <Analogy label="Why probability matters for AI">
-                An AI doesn't know anything for certain. When it looks at a photo, it doesn't say "this IS a cat."
-                It says "I'm 94% sure this is a cat." Everything in AI is a probability — a degree of confidence.
-                Probability theory is the language AI uses to express how sure it is, and to get surer over time
-                by learning from data.
+            <Analogy label="What comes next — many variables at once">
+                Probability over one variable is manageable. But a real dataset has thousands of variables — one measurement per feature, per data point. When you want to ask "do these features tend to go up together?" or "which combinations are most informative?" you need to organise all those measurements into a compact notation. That's exactly what <strong>vectors and matrices</strong> — our next topic — provide.
             </Analogy>
         </>
     )
@@ -235,12 +221,38 @@ function HighSchoolTab() {
                 comes directly from probability theory: it measures how surprised the model is by the correct
                 answer. Weight initialisation draws from N(0, 0.02). Batch normalisation centres activations
                 to μ=0, σ=1. Variance measures model confidence. Every core ML concept is statistical.
+                As probability scales to many variables simultaneously — the joint distribution of all features
+                in a dataset — we need matrices to represent covariances and vectors to represent data points.
+                That language of vectors and matrices is our next topic.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Probability spaces, distributions, and inference</h2>
@@ -446,7 +458,7 @@ Q = Categorical(probs=torch.tensor([0.6, 0.25, 0.15]))
 kl = kl_divergence(P, Q)
 print(f"  KL(P||Q) = {kl.item():.6f} nats  (≥ 0, = 0 iff P = Q)")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -474,6 +486,6 @@ export const PROBABILITY_FOUNDATIONS_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

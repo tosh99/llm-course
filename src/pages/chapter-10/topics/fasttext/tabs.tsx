@@ -62,11 +62,34 @@ function HighSchoolTab() {
                 <strong>Bucket size = 2M</strong>: n-grams are hashed into 2M buckets to cap memory. Hash collisions are acceptable — rare n-grams share a bucket with an occasional false match.<br /><br />
                 <strong>Final vector = v_w + mean(z_g)</strong>: word and n-gram vectors are trained jointly; the final representation combines both.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>FastText objective and hash-based vocabulary</h2>
@@ -135,7 +158,7 @@ for w in oov_words:
     v = get_word_vector(w)
     print(f"  {w:20s}: [{', '.join(f'{x:.3f}' for x in v[:4])}...]")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <CodeBlock code={PY_CODE} filename="fasttext.py" lang="python" langLabel="Python" />
@@ -152,6 +175,6 @@ export const FASTTEXT_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

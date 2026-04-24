@@ -166,11 +166,34 @@ function HighSchoolTab() {
                 the middle blocks. Surprisingly, this small change often improves accuracy.
                 Depth matters more than width!
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>VGGNet: Mathematical Analysis</h2>
@@ -323,7 +346,7 @@ if __name__ == "__main__":
     vgg19_params = sum(p.numel() for p in vgg19.parameters())
     print(f"\nVGG-19 parameters: {vgg19_params:,}")`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -348,6 +371,6 @@ export const VGGNET_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

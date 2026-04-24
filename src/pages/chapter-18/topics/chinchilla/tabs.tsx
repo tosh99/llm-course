@@ -182,11 +182,34 @@ function HighSchoolTab() {
                 (140×) will be even better at serving time — even though the extra training was
                 not "compute-optimal" in the strict sense.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>The Chinchilla scaling laws</h2>
@@ -334,7 +357,7 @@ print(f"  Chinchilla-style: N={N_chin:.2e}, D={D_chin:.2e}, Loss={L_chin:.3f}")
 print(f"  Improvement: {(L_kaplan - L_chin):.3f} nats/token")
 `
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -355,6 +378,6 @@ export const CHINCHILLA_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      <MathsTab />,
-    python:     <PythonTab />,
+    maths:      null,
+    python:     null,
 }

@@ -158,11 +158,34 @@ function HighSchoolTab() {
                 scaled by the dropout probability (0.5). This approximates averaging predictions
                 from many "thinned" networks.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>AlexNet: Mathematical Details</h2>
@@ -331,7 +354,7 @@ if __name__ == "__main__":
     modern_total = sum(p.numel() for p in modern.parameters())
     print(f"\nModern version parameters: {modern_total:,}")`;
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -354,6 +377,6 @@ export const ALEXNET_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }

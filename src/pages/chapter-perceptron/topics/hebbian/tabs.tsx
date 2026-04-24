@@ -120,11 +120,34 @@ function HighSchoolTab() {
                 Every algorithm — from perceptron updates to backpropagation — modifies synaptic weights based on
                 correlated activity. Hebb's 1949 intuition was remarkably prescient.
             </div>
+
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Deep Dive — Mathematics</span>
+                    <span className="ch-expandable-desc">Formal derivations · proofs</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <MathsContent />
+                </div>
+            </details>
+
+            <details className="ch-expandable">
+                <summary>
+                    <span className="ch-expandable-arrow">▶</span>
+                    <span className="ch-expandable-label">Sample Code</span>
+                    <span className="ch-expandable-desc">Implementation · NumPy · PyTorch</span>
+                </summary>
+                <div className="ch-expandable-body">
+                    <PythonContent />
+                </div>
+            </details>
         </>
     )
 }
 
-function MathsTab() {
+function MathsContent() {
     return (
         <>
             <h2>Hebbian Learning: Formulation and Analysis</h2>
@@ -259,7 +282,7 @@ def trace_update(w, x, y, eligibility, lr=0.01, gamma=0.9):
 
 print("\\nHebbian & variants implemented.")`
 
-function PythonTab() {
+function PythonContent() {
     return (
         <>
             <p>
@@ -285,6 +308,6 @@ export const HEBBIAN_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths: <MathsTab />,
-    python: <PythonTab />,
+    maths:      null,
+    python:     null,
 }
