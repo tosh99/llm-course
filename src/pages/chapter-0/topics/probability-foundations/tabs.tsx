@@ -368,108 +368,98 @@ function MathsTab() {
     )
 }
 
-const PY_CODE = `import numpy as np
+const PY_CODE = `import torch
+from torch.distributions import Normal, Bernoulli, Categorical, kl_divergence
+import torch.nn.functional as F
 
-# ── Basic probability ──────────────────────────────────────
-# Coin flip: P(heads) = 0.5
-flips = np.random.choice(["H", "T"], size=1000)
-p_heads = (flips == "H").mean()
-print(f"P(heads) ≈ {p_heads}")  # ≈ 0.5 (Law of Large Numbers)
+# ── 1. Sampling with torch.distributions ─────────────────────────────────
+print("[Sampling] torch.distributions")
 
-# ── Mean, variance, standard deviation ─────────────────────
-data = np.array([2.1, 3.5, 1.8, 4.2, 3.1, 2.7, 3.9, 2.4])
+torch.manual_seed(42)
+coin    = Bernoulli(probs=torch.tensor(0.5))
+flips   = coin.sample((1000,))
+print(f"  P(heads) ≈ {flips.mean():.3f}  (Law of Large Numbers)")
 
-mu = data.mean()
-var = data.var()           # population variance
-std = data.std()           # population std deviation
-var_ddof = data.var(ddof=1)  # sample variance (unbiased)
+dist    = Normal(loc=torch.tensor(0.0), scale=torch.tensor(1.0))
+samples = dist.sample((10_000,))
+print(f"  N(0,1):  mean={samples.mean():.4f}  std={samples.std():.4f}")
+print(f"  within 1σ: {(samples.abs() < 1).float().mean()*100:.1f}%  (true: 68.3%)")
+print(f"  log_prob(0.0) = {dist.log_prob(torch.tensor(0.0)).item():.4f}")
 
-print(f"Mean:     {mu:.3f}")
-print(f"Variance: {var:.3f}")
-print(f"Std Dev:  {std:.3f}")
-print(f"Sample Var (n-1): {var_ddof:.3f}")
+# ── 2. Batched distributions — many at once ───────────────────────────────
+print("\\n[Batched] 100 distributions sampled simultaneously")
 
-# ── Normal distribution ────────────────────────────────────
-# The most important distribution in ML
-# PDF: f(x) = (1/σ√2π) exp(-(x-μ)²/2σ²)
+means   = torch.linspace(-3, 3, 100)
+stds    = torch.ones(100) * 0.5
+batch_d = Normal(means, stds)
+s       = batch_d.sample((200,))     # (200, 100) — 200 draws from each of 100 dists
+print(f"  max mean error: {(s.mean(0) - means).abs().max():.4f}")
 
-mu, sigma = 0.0, 1.0
-samples = np.random.normal(mu, sigma, 10000)
+# ── 3. Bayes' theorem — conjugate Normal-Normal update ────────────────────
+print("\\n[Bayes] conjugate Normal-Normal update")
 
-print(f"\\nSamples from N({mu}, {sigma}²):")
-print(f"  Sample mean: {samples.mean():.4f}")
-print(f"  Sample std:  {samples.std():.4f}")
-print(f"  % within 1σ: {((samples > -1) & (samples < 1)).mean():.3f}")   # ≈ 0.683
-print(f"  % within 2σ: {((samples > -2) & (samples < 2)).mean():.3f}")   # ≈ 0.954
+torch.manual_seed(0)
+true_mu = torch.tensor(3.0)
+obs     = Normal(true_mu, torch.tensor(1.0)).sample((20,))
 
-# ── Covariance matrix ──────────────────────────────────────
-np.random.seed(42)
-X = np.random.randn(100, 3)
-X[:, 1] += 0.5 * X[:, 0]   # make feature 1 correlated with feature 0
+mu_0, sigma_pr, sigma_lik, n = 0.0, 2.0, 1.0, 20
+x_bar  = obs.mean()
+prec_n = 1/sigma_pr**2 + n/sigma_lik**2
+mu_n   = (mu_0/sigma_pr**2 + n*x_bar/sigma_lik**2) / prec_n
+sig_n  = prec_n**-0.5
 
-cov_matrix = np.cov(X, rowvar=False)
-print(f"\\nCovariance matrix (3×3):")
-print(cov_matrix.round(3))
+prior = Normal(torch.tensor(mu_0), torch.tensor(sigma_pr))
+post  = Normal(mu_n, sig_n)
+print(f"  Prior:     N({mu_0:.1f}, {sigma_pr:.1f}²)   log_prob(true) = {prior.log_prob(true_mu):.3f}")
+print(f"  Posterior: N({mu_n:.2f}, {sig_n:.2f}²)  log_prob(true) = {post.log_prob(true_mu):.3f}")
 
-# ── Maximum Likelihood Estimation ──────────────────────────
-# Suppose data comes from N(μ, σ²) — find μ, σ that maximise likelihood
-# MLE for Gaussian: μ̂ = x̄, σ̂² = (1/n) Σ(xᵢ - x̄)²
+# ── 4. MLE — gradient ascent on log-likelihood ────────────────────────────
+print("\\n[MLE] fit parameters by gradient ascent")
 
-true_mu, true_sigma = 5.0, 2.0
-data = np.random.normal(true_mu, true_sigma, 500)
+torch.manual_seed(0)
+data = Normal(torch.tensor(5.0), torch.tensor(2.0)).sample((500,))
 
-mu_mle = data.mean()
-sigma2_mle = data.var()
-sigma_mle = np.sqrt(sigma2_mle)
+mu_hat    = torch.tensor(0.0, requires_grad=True)
+sigma_hat = torch.tensor(1.0, requires_grad=True)
 
-print(f"\\nMLE for N(μ, σ²):")
-print(f"  True:  μ={true_mu}, σ={true_sigma}")
-print(f"  MLE:   μ̂={mu_mle:.3f}, σ̂={sigma_mle:.3f}")
+for _ in range(500):
+    log_lik = Normal(mu_hat, sigma_hat.abs() + 1e-6).log_prob(data).sum()
+    (-log_lik).backward()
+    with torch.no_grad():
+        mu_hat    -= 0.01 * mu_hat.grad
+        sigma_hat -= 0.01 * sigma_hat.grad
+    mu_hat.grad.zero_();  sigma_hat.grad.zero_()
 
-# Log-likelihood: Σ log N(xᵢ | μ, σ²)
-def log_likelihood(data, mu, sigma):
-    return np.sum(-0.5 * ((data - mu) / sigma)**2 - np.log(sigma) - 0.5 * np.log(2 * np.pi))
+print(f"  True:  μ=5.0, σ=2.0")
+print(f"  MLE:   μ̂={mu_hat.item():.3f}, σ̂={sigma_hat.abs().item():.3f}")
 
-ll = log_likelihood(data, mu_mle, sigma_mle)
-print(f"  Log-likelihood: {ll:.2f}")
+# ── 5. Cross-entropy and KL divergence ────────────────────────────────────
+print("\\n[Cross-entropy & KL]")
 
-# ── Cross-entropy (the standard ML loss) ───────────────────
-# Cross-entropy = -Σ yᵢ log(pᵢ)  where y are true labels, p are predicted probs
+logits  = torch.tensor([[2.0, 1.0, 0.1], [0.5, 2.1, 0.3]])
+targets = torch.tensor([0, 1])
+ce      = F.cross_entropy(logits, targets)
+print(f"  CE loss: {ce.item():.4f}  (= -log P(true class))")
 
-def cross_entropy(y_true, y_pred):
-    """Binary cross-entropy for a single example."""
-    return -(y_true * np.log(y_pred + 1e-15) + (1 - y_true) * np.log(1 - y_pred + 1e-15))
-
-# Perfect prediction
-print(f"\\nCross-entropy (perfect):  {cross_entropy(1, 0.99):.4f}")
-print(f"Cross-entropy (wrong):    {cross_entropy(1, 0.01):.4f}")
-print(f"Cross-entropy (uncertain): {cross_entropy(1, 0.5):.4f}")
-
-# ── KL divergence ──────────────────────────────────────────
-def kl_divergence(p, q):
-    """KL(P || Q) = Σ P(x) log(P(x) / Q(x))"""
-    return np.sum(p * np.log((p + 1e-15) / (q + 1e-15)))
-
-p = np.array([0.4, 0.3, 0.2, 0.1])
-q1 = np.array([0.4, 0.3, 0.2, 0.1])   # same as p
-q2 = np.array([0.25, 0.25, 0.25, 0.25]) # uniform
-
-print(f"\\nKL(p||p) = {kl_divergence(p, q1):.4f}")    # 0 (identical)
-print(f"KL(p||uniform) = {kl_divergence(p, q2):.4f}")  # > 0`
+P = Categorical(probs=torch.tensor([0.7, 0.2, 0.1]))
+Q = Categorical(probs=torch.tensor([0.6, 0.25, 0.15]))
+kl = kl_divergence(P, Q)
+print(f"  KL(P||Q) = {kl.item():.6f} nats  (≥ 0, = 0 iff P = Q)")`
 
 function PythonTab() {
     return (
         <>
             <p>
-                NumPy for probability, statistics, and the core ML loss functions. Cross-entropy and MLE
-                are the statistical foundations of every neural network's training loop.
+                <code>torch.distributions</code> provides every common distribution with
+                sampling, log-prob, entropy, and KL divergence — the exact building blocks
+                of MLE, Bayesian inference, and variational methods.
             </p>
             <CodeBlock code={PY_CODE} filename="probability_foundations.py" lang="python" langLabel="Python" />
             <div className="ch-callout">
-                <strong>Key insight:</strong> Every neural network classifier outputs probabilities via softmax,
-                and is trained with cross-entropy loss. This is MLE in disguise — maximising the log-likelihood
-                of correct labels. In PyTorch: <code>nn.CrossEntropyLoss()</code> combines log-softmax + NLL loss
-                in one numerically stable operation.
+                <strong>Key insight:</strong> <code>nn.CrossEntropyLoss</code> is MLE in disguise —
+                it maximises the log-likelihood of correct class labels under the model's softmax
+                distribution. Gradient ascent on log-likelihood and gradient descent on cross-entropy
+                are the same operation.
             </div>
         </>
     )
@@ -485,5 +475,5 @@ export const PROBABILITY_FOUNDATIONS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
+    python: <PythonTab />,
 }

@@ -4,6 +4,8 @@ import "./chapter-6.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
 import type { TabId, TopicId } from "./types"
 
+const TAB_IDS = TABS.map((t) => t.id)
+
 // ── Topic Tab Imports ─────────────────────────────────────────────────────────
 
 import { INTRODUCTION_TABS } from "./topics/introduction/tabs"
@@ -20,6 +22,8 @@ export function Chapter6Page() {
     const [activeTab, setActiveTab] = useState<TabId>("history")
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const contentRef = useRef<HTMLDivElement>(null)
+    const touchStartX = useRef(0)
+    const touchStartY = useRef(0)
 
     const topic = TOPIC_META[activeTopic]
     const activeTopicEntry = TOPICS.find((t) => t.id === activeTopic)
@@ -43,6 +47,20 @@ export function Chapter6Page() {
         setActiveTopic(id)
         setActiveTab("history")
         setMobileNavOpen(false)
+    }
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        touchStartX.current = e.touches[0].clientX
+        touchStartY.current = e.touches[0].clientY
+    }
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        const dx = e.changedTouches[0].clientX - touchStartX.current
+        const dy = e.changedTouches[0].clientY - touchStartY.current
+        if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return
+        const idx = TAB_IDS.indexOf(activeTab)
+        if (dx < 0 && idx < TAB_IDS.length - 1) setActiveTab(TAB_IDS[idx + 1])
+        if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
@@ -118,7 +136,7 @@ export function Chapter6Page() {
                 </div>
 
                 {/* Content */}
-                <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`}>
+                <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (
                             <div className="ch-coming-soon">

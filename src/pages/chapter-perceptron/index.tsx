@@ -1,21 +1,24 @@
 import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router"
-import "./chapter-2.css"
+import "./chapter-perceptron.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { LINEAR_REGRESSION_TABS } from "./topics/linear-regression/tabs"
-import { DECISION_TREES_TABS } from "./topics/decision-trees/tabs"
-import { SVM_TABS } from "./topics/svm/tabs"
-import { ENSEMBLES_TABS } from "./topics/ensembles/tabs"
-import { REGULARIZATION_TABS } from "./topics/regularization/tabs"
+import { MCCULLOCH_PITTS_TABS } from "./topics/mcculloch-pitts/tabs"
+import { HEBBIAN_TABS } from "./topics/hebbian/tabs"
+import { PERCEPTRON_TABS } from "./topics/perceptron/tabs"
+import { XOR_TABS } from "./topics/xor/tabs"
 import type { TabId, TopicId } from "./types"
+
+const TAB_IDS = TABS.map((t) => t.id)
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export function Chapter2Page() {
-    const [activeTopic, setActiveTopic] = useState<TopicId>("linear-regression")
+export function Chapter1Page() {
+    const [activeTopic, setActiveTopic] = useState<TopicId>("mcculloch-pitts")
     const [activeTab, setActiveTab] = useState<TabId>("history")
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const contentRef = useRef<HTMLDivElement>(null)
+    const touchStartX = useRef(0)
+    const touchStartY = useRef(0)
 
     const topic = TOPIC_META[activeTopic]
     const activeTopicEntry = TOPICS.find((t) => t.id === activeTopic)
@@ -41,12 +44,25 @@ export function Chapter2Page() {
         setMobileNavOpen(false)
     }
 
+    const handleTouchStart = (e: React.TouchEvent) => {
+        touchStartX.current = e.touches[0].clientX
+        touchStartY.current = e.touches[0].clientY
+    }
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        const dx = e.changedTouches[0].clientX - touchStartX.current
+        const dy = e.changedTouches[0].clientY - touchStartY.current
+        if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return
+        const idx = TAB_IDS.indexOf(activeTab)
+        if (dx < 0 && idx < TAB_IDS.length - 1) setActiveTab(TAB_IDS[idx + 1])
+        if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
+    }
+
     const tabContent: Record<TopicId, React.ReactNode> = {
-        "linear-regression": LINEAR_REGRESSION_TABS[activeTab],
-        "decision-trees": DECISION_TREES_TABS[activeTab],
-        svm: SVM_TABS[activeTab],
-        ensembles: ENSEMBLES_TABS[activeTab],
-        regularization: REGULARIZATION_TABS[activeTab],
+        "mcculloch-pitts": MCCULLOCH_PITTS_TABS[activeTab],
+        hebbian: HEBBIAN_TABS[activeTab],
+        perceptron: PERCEPTRON_TABS[activeTab],
+        "xor-problem": XOR_TABS[activeTab],
     }
 
     return (
@@ -55,7 +71,7 @@ export function Chapter2Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 2</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Classical ML Algorithms</span>
+                <span className="ch-header-title">The Perceptron &amp; Early Neural Concepts</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
             {/* ── Sidebar ── */}
@@ -113,7 +129,7 @@ export function Chapter2Page() {
                 </div>
 
                 {/* Content */}
-                <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`}>
+                <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (
                             <div className="ch-coming-soon">

@@ -282,94 +282,85 @@ function MathsTab() {
 }
 
 const PY_CODE = `import numpy as np
+import torch
+import time
 
-# ── Riemann sum ──────────────────────────────────────────────
-# Approximate ∫₀² x² dx = [x³/3]⁰₂ = 8/3 ≈ 2.667
+# ── 1. NumPy baseline — grid-based (cost grows as O(nᵈ) in d dims) ───────
+n = 10_000
+x = np.linspace(1e-5, 2 - 1e-5, n)
+riemann = (2.0 / n) * np.sum(x**2)
+print(f"[NumPy]  ∫₀² x² dx  Riemann (n={n:,}): {riemann:.6f}  true: {8/3:.6f}")
 
-def riemann_sum(f, a, b, n=10000):
-    """Approximate integral via Riemann sum (midpoint rule)"""
-    dx = (b - a) / n
-    x_vals = np.linspace(a + dx/2, b - dx/2, n)  # midpoints
-    return dx * np.sum(f(x_vals))
+# ── 2. PyTorch Monte Carlo — vectorised, GPU-scalable ─────────────────────
+print("\\nPyTorch MC — vectorised sampling")
 
-f = lambda x: x**2
-approx = riemann_sum(f, 0, 2)
-exact = 8/3
-print(f"Riemann sum (n=10000): {approx:.6f}")
-print(f"Exact integral:        {exact:.6f}")
-print(f"Error:                  {abs(approx - exact):.8f}")
+torch.manual_seed(0)
+N  = 1_000_000
+x  = torch.rand(N) * 2.0        # uniform on [0, 2]
+mc = 2.0 * x.pow(2).mean()      # volume × E[f(X)]
+print(f"  ∫₀² x² dx  MC (n={N:,}): {mc.item():.6f}  (true: {8/3:.6f})")
 
-# ── Trapezoidal rule ──────────────────────────────────────────
-# Better than Riemann sum: uses trapezoids instead of rectangles
+# ── 3. High-dimensional MC — O(1/√n) regardless of dimension ─────────────
+print("\\nHigh-dim MC — O(1/√n) for any dimension")
 
-def trapezoidal(f, a, b, n=1000):
-    """Trapezoidal rule: approximates area with trapezoids"""
-    x = np.linspace(a, b, n + 1)
-    y = f(x)
-    return np.trapz(y, x)  # numpy's optimised trapezoidal rule
+def mc_integral_torch(dim, n=500_000):
+    x   = torch.rand(n, dim) * 2 - 1      # uniform on [-1,1]^d
+    vol = 2.0 ** dim
+    return (vol * torch.exp(-x.pow(2).sum(dim=1)).mean()).item()
 
-approx_trap = trapezoidal(f, 0, 2)
-print(f"\\nTrapezoidal (n=1000): {approx_trap:.6f}")
+for d in [1, 5, 10, 20]:
+    val = mc_integral_torch(d)
+    print(f"  d={d:2d}  ∫_[-1,1]^d exp(-||x||²) dx ≈ {val:.4f}")
 
-# ── Simpson's rule ────────────────────────────────────────────
-# Uses parabolic arcs — even better convergence
+# ── 4. Parallel integration — 128 integrands in one shot ─────────────────
+print("\\nParallel — integrate x^k for k=1..128 simultaneously")
 
-from scipy.integrate import simpson
+torch.manual_seed(0)
+N   = 200_000
+x   = torch.rand(N)
+ks  = torch.arange(1, 129, dtype=torch.float32)
+estimates = x.unsqueeze(1).pow(ks.unsqueeze(0)).mean(dim=0)  # (N,128) → (128,)
+true_vals  = 1.0 / (ks + 1)
+max_err    = (estimates - true_vals).abs().max()
+print(f"  128 integrals (∫₀¹ x^k dx) — max error: {max_err.item():.6f}  (N={N:,})")
 
-approx_simpson = simpson(f(np.linspace(0, 2, 1001)), np.linspace(0, 2, 1001))
-print(f"Simpson (n=1000):      {approx_simpson:.6f}")
+# ── 5. Speed comparison ───────────────────────────────────────────────────
+print("\\nSpeed — NumPy vs PyTorch at 5M samples")
 
-# ── Monte Carlo integration ───────────────────────────────────
-# Dimension-independent convergence: O(1/sqrt(n))
+N_big = 5_000_000
+t0 = time.perf_counter()
+val_np = float(2.0 * np.mean(np.random.rand(N_big)**2))
+np_ms  = (time.perf_counter() - t0) * 1000
 
-def monte_carlo_integration(f, a, b, n=100000):
-    """Monte Carlo: sample uniformly, average, scale by volume"""
-    x = np.random.uniform(a, b, n)
-    volume = b - a
-    return volume * np.mean(f(x))
+t0 = time.perf_counter()
+val_pt = float(2.0 * torch.rand(N_big).pow(2).mean())
+pt_ms  = (time.perf_counter() - t0) * 1000
 
-approx_mc = monte_carlo_integration(f, 0, 2, n=100000)
-print(f"\\nMonte Carlo (n=100k): {approx_mc:.6f} ± {np.std(f(np.random.uniform(0, 2, n))) * (b-a) / np.sqrt(n):.4f}")
+print(f"  NumPy:   {np_ms:.1f} ms  →  {val_np:.6f}")
+print(f"  PyTorch: {pt_ms:.1f} ms  →  {val_pt:.6f}")
 
-# ── High-dimensional Monte Carlo (why it matters in ML) ───────
-# In d dimensions, grid-based methods have O(n^d) complexity
-# Monte Carlo stays O(n) regardless of dimension!
+# ── 6. E[softmax(z)₀] — an integral without a closed form ────────────────
+print("\\nML context — E[p₀], z ~ N(0, I₁₀)")
 
-def mc_expected_value(f, dim, n=10000):
-    """Compute E[f(X)] where X ~ Uniform([-1,1]^dim)"""
-    samples = np.random.uniform(-1, 1, (n, dim))
-    return np.mean(f(samples))
-
-# Example: integral of exp(-sum(x_i^2)) over [-1,1]^d
-d = 10
-f = lambda x: np.exp(-np.sum(x**2, axis=1))
-integral_approx = 2**d * mc_expected_value(f, d, n=100000)
-print(f"\\nMC integral in {d}D: {integral_approx:.4f} (exact is ≈ 11.64)")
-
-# ── Analytic vs numerical: when each matters ─────────────────
-# In ML, most integrals are intractable — no closed form exists.
-# Examples: normalising constants, partition functions, posterior predictive
-
-# Example: partition function of a 2D Gaussian
-# Z = ∫∫ exp(-x²/2 - y²/2) dx dy = 2π (known)
-# But for complex energy functions, Z is intractable
-
-print(f"\\nKnown result: ∫∫ exp(-x²/2 - y²/2) dxdy = 2π = {2*np.pi:.4f}")`
+torch.manual_seed(0)
+z  = torch.randn(500_000, 10)
+p0 = torch.softmax(z, dim=1)[:, 0].mean()
+print(f"  E[p₀] ≈ {p0.item():.4f}  (exact = 0.1000)  — no closed form exists")`
 
 function PythonTab() {
     return (
         <>
             <p>
-                NumPy and SciPy for numerical integration. In ML, most integrals are
-                intractable analytically, so numerical methods — especially Monte Carlo —
-                are the workhorse for computing expectations over probability distributions.
+                PyTorch's vectorised sampling makes Monte Carlo integration trivially
+                parallel — swap NumPy arrays for tensors and the same code runs on GPU,
+                or integrate 128 different functions simultaneously with a single outer product.
             </p>
             <CodeBlock code={PY_CODE} filename="integral_calculus.py" lang="python" langLabel="Python" />
             <div className="ch-callout">
-                <strong>Key insight:</strong> Monte Carlo integration's convergence rate
-                O(1/√n) is independent of dimension — which is why it remains the dominant
-                method for high-dimensional integrals in ML (parameter spaces, latent spaces,
-                partition functions). No competing method has this property.
+                <strong>Key insight:</strong> Monte Carlo's O(1/√n) convergence is
+                dimension-independent — grid methods need n<sup>d</sup> evaluations while MC
+                stays at n regardless. Every high-dimensional expectation in ML (normalising
+                constants, ELBO, posterior predictives) is estimated this way.
             </div>
         </>
     )
@@ -385,5 +376,5 @@ export const INTEGRAL_CALCULUS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
+    python: <PythonTab />,
 }

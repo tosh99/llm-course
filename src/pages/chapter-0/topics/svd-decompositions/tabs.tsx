@@ -203,56 +203,89 @@ function MathsTab() {
 }
 
 const PY_CODE = `import numpy as np
+import torch
+import time
 
-# ── SVD of a data matrix ──────────────────────────────────
+# ── 1. NumPy baseline — exact thin SVD ───────────────────────────────────
 np.random.seed(42)
-X = np.random.randn(100, 5)           # 100 samples, 5 features
-X -= X.mean(axis=0)                   # centre the data
+X_np = np.random.randn(100, 5).astype(np.float32)
+X_np -= X_np.mean(axis=0)
 
-U, S, Vt = np.linalg.svd(X, full_matrices=False)
-print("Singular values:", S.round(3))
-# -> [11.5  10.9  10.1   9.6   9.2]
+U, S, Vt = np.linalg.svd(X_np, full_matrices=False)   # thin: U(100×5), S(5,), Vt(5×5)
+var = (S**2 / (S**2).sum()).round(3)
+print(f"[NumPy]  singular values: {S.round(2)}")
+print(f"         variance explained: {var}")
 
-# Variance explained (same as PCA eigenvalues)
-var_explained = (S**2 / (S**2).sum()).round(3)
-print("Variance explained:", var_explained)
-
-# ── Low-rank approximation (rank-2) ───────────────────────
 k = 2
-X_approx = U[:, :k] @ np.diag(S[:k]) @ Vt[:k, :]
-print("Reconstruction error (Frobenius):", np.linalg.norm(X - X_approx, 'fro').round(3))
+X_k = U[:, :k] @ np.diag(S[:k]) @ Vt[:k, :]
+print(f"         rank-{k} Frobenius error: {np.linalg.norm(X_np - X_k):.4f}")
 
-# ── PCA via SVD (the numerically stable way) ──────────────
-# Principal components are the rows of Vt
-# Project data onto top-k components
-X_reduced = X @ Vt[:k].T             # (100, 5) -> (100, 2)
-print("Reduced shape:", X_reduced.shape)
+# ── 2. PyTorch — same SVD, GPU-ready ─────────────────────────────────────
+print("\\n[PyTorch] torch.linalg.svd")
 
-# ── Image compression demo ────────────────────────────────
-# Create a synthetic low-rank image
-img = np.outer(np.sin(np.linspace(0, 3*np.pi, 100)),
-               np.cos(np.linspace(0, 2*np.pi, 80)))
-U_img, S_img, Vt_img = np.linalg.svd(img, full_matrices=False)
+X = torch.from_numpy(X_np)
+U_t, S_t, Vh_t = torch.linalg.svd(X, full_matrices=False)   # Vh = Vᵀ
+X_k_t = U_t[:, :k] @ torch.diag(S_t[:k]) @ Vh_t[:k, :]
+print(f"  rank-{k} error: {torch.linalg.norm(X - X_k_t):.4f}")
+print(f"  PCA projection shape: {(X @ Vh_t[:k].T).shape}  (100 × {k})")
 
-# Keep only top 10 singular values
-k = 10
-img_compressed = U_img[:, :k] @ np.diag(S_img[:k]) @ Vt_img[:k, :]
-print("Original size:", img.size)
-print("Compressed params:", k * (img.shape[0] + img.shape[1] + 1))
-# Compression ratio: ~45x`
+# ── 3. Randomised SVD — O(mnk) vs O(mn·min(m,n)) ─────────────────────────
+print("\\n[Randomised] torch.svd_lowrank — fast for large sparse-ish matrices")
+
+torch.manual_seed(0)
+X_big = torch.randn(2000, 500)
+k     = 20
+
+t0 = time.perf_counter()
+_, S_exact, _ = torch.linalg.svd(X_big, full_matrices=False)
+exact_ms = (time.perf_counter() - t0) * 1000
+
+t0 = time.perf_counter()
+_, S_rand, _ = torch.svd_lowrank(X_big, q=k)   # rank-k randomised SVD
+rand_ms = (time.perf_counter() - t0) * 1000
+
+print(f"  Exact SVD (full):     {exact_ms:.1f} ms")
+print(f"  Randomised SVD (k={k}): {rand_ms:.1f} ms  ({exact_ms/rand_ms:.1f}× faster)")
+print(f"  Top singular values match: {torch.allclose(S_exact[:k], S_rand, atol=0.5)}")
+
+# ── 4. LoRA — low-rank weight updates for fine-tuning ────────────────────
+print("\\n[LoRA] low-rank weight updates (PEFT)")
+
+d_out, d_in, rank = 768, 768, 8
+W0 = torch.randn(d_out, d_in)      # frozen pre-trained weight
+B  = torch.zeros(d_out, rank)      # trainable, init to zero
+A  = torch.randn(rank,  d_in) * 0.02   # trainable, small init
+
+x = torch.randn(d_in)
+y = W0 @ x + B @ (A @ x)          # W₀x + ΔWx, ΔW = BA  never materialised
+
+trainable = B.numel() + A.numel()
+print(f"  Full matrix params:    {W0.numel():,}")
+print(f"  LoRA trainable params: {trainable:,}  ({trainable/W0.numel()*100:.1f}% of full)")
+
+# ── 5. Batched SVD — decompose many matrices in one call ─────────────────
+print("\\n[Parallel] batched SVD over 64 matrices")
+
+batch = torch.randn(64, 50, 20)
+U_b, S_b, Vh_b = torch.linalg.svd(batch, full_matrices=False)
+print(f"  input:  {list(batch.shape)}")
+print(f"  U: {list(U_b.shape)}, S: {list(S_b.shape)}, Vh: {list(Vh_b.shape)}")
+print(f"  64 independent SVDs computed as a single BLAS call")`
 
 function PythonTab() {
     return (
         <>
             <p>
-                SVD is implemented in every scientific computing library. NumPy's <code>linalg.svd</code>
-                calls the same LAPACK routines used by MATLAB, R, and Julia.
+                From exact SVD to randomised low-rank approximation to LoRA — PyTorch's
+                {" "}<code>torch.linalg.svd</code> and <code>torch.svd_lowrank</code> cover every
+                scale, and batched decomposition parallelises across many matrices at once.
             </p>
             <CodeBlock code={PY_CODE} filename="svd.py" lang="python" langLabel="Python" />
             <div className="ch-callout">
-                <strong>Key insight:</strong> Using <code>full_matrices=False</code> returns the thin SVD,
-                which is much more memory-efficient for tall-thin or short-wide matrices. Always use this
-                form unless you genuinely need the full square U and V matrices.
+                <strong>Key insight:</strong> LoRA (Low-Rank Adaptation) is SVD applied to
+                fine-tuning: instead of updating all W ∈ R<sup>d×d</sup>, learn only B ∈ R<sup>d×r</sup>{" "}
+                and A ∈ R<sup>r×d</sup> with r ≪ d. The update ΔW = BA has rank at most r, so
+                it is never materialised — just applied as two cheap matrix-vector products.
             </div>
         </>
     )

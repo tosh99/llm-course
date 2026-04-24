@@ -405,132 +405,110 @@ function MathsTab() {
 }
 
 const PY_CODE = `import numpy as np
+import torch
+import torch.nn as nn
+import time
 
-# ── Numerical derivatives ────────────────────────────────
-# When you don't have an analytical formula
+# ── 1. NumPy baseline — finite differences (O(n) evals, approximate) ─────
+def f(x):        return x**3 + 2*x + 1
+def df_true(x):  return 3*x**2 + 2
 
-def f(x):
-    return x**3 + 2*x + 1
+x0 = 2.0
+df_approx = (f(x0 + 1e-5) - f(x0 - 1e-5)) / (2e-5)
+print(f"[NumPy]  f'(2) ≈ {df_approx:.8f}  true = {df_true(x0)}")
+# Scales poorly: needs n+1 forward passes for n parameters
 
-def numerical_derivative(f, x, h=1e-5):
-    """Approximate f'(x) using finite difference"""
-    return (f(x + h) - f(x - h)) / (2 * h)
+# ── 2. PyTorch autograd — reverse-mode AD, exact in one backward pass ─────
+print("\\n[Autograd] exact derivatives via computation graph")
 
-x = 2.0
-print(f"f({x}) = {f(x)}")
-print(f"f'({x}) ≈ {numerical_derivative(f, x)}")
+x = torch.tensor(2.0, requires_grad=True)
+y = x**3 + 2*x + 1       # forward pass builds the graph
+y.backward()              # reverse: chain rule applied automatically
+print(f"  dy/dx at x=2:  {x.grad.item():.8f}  (true: {df_true(x0)})")
 
-# True derivative: f'(x) = 3x² + 2 = 3(4) + 2 = 14
-print(f"True f'({x}) = {3*x**2 + 2}")
+# Chain rule across arbitrary composition depth — no manual bookkeeping
+x = torch.tensor(1.0, requires_grad=True)
+z = torch.exp(torch.sin(x**2))      # d/dx exp(sin(x²))
+z.backward()
+print(f"  d/dx exp(sin(x²)) at x=1:  {x.grad.item():.6f}")
 
-# ── Partial derivatives and gradients ─────────────────────────────
+# Both partial derivatives in one backward pass
+x = torch.tensor([1.0, 2.0], requires_grad=True)
+L = x[0]**2 + 2*x[0]*x[1] + 3*x[1]**2    # L = x²+2xy+3y²
+L.backward()
+print(f"  ∇L at (1,2):  {x.grad.tolist()}  (true: [6, 14])")
 
-def loss_function(theta):
-    """A simple quadratic loss: L(θ) = θᵀθ + θ₁²"""
-    x, y = theta
-    return x**2 + y**2 + 2*x*y
+# ── 3. Jacobian & Hessian ─────────────────────────────────────────────────
+print("\\n[Higher-order] Jacobian and Hessian")
 
-def compute_gradients(f, theta, h=1e-5):
-    """Compute gradient via finite differences on each component"""
-    grad = np.zeros_like(theta)
-    for i in range(len(theta)):
-        delta = np.zeros_like(theta)
-        delta[i] = h
-        grad[i] = (f(theta + delta) - f(theta - delta)) / (2 * h)
-    return grad
+def f_vec(x):
+    return torch.stack([x[0]**2 + x[1], x[1]**3 - x[0]])
 
-theta = np.array([1.0, 2.0])
-grad = compute_gradients(loss_function, theta)
-print(f"\\nGradient at θ = {theta}:")
-print(f"∇L(θ) = {grad}")
+J = torch.autograd.functional.jacobian(f_vec, torch.tensor([1.0, 2.0]))
+print(f"  Jacobian at [1,2]:\\n{J.numpy()}")
 
-# ── Gradient descent ───────────────────────────────────────
+def loss_bowl(x):
+    return x[0]**2 + 2*x[0]*x[1] + 3*x[1]**2
 
-def f(x):
-    """Objective: f(x) = x²"""
-    return x**2
+H = torch.autograd.functional.hessian(loss_bowl, torch.tensor([1.0, 2.0]))
+print(f"  Hessian:\\n{H.numpy()}")
+# λ_max of H bounds the safe learning rate: η < 2 / λ_max
 
-def df(x):
-    """Derivative: f'(x) = 2x"""
-    return 2*x
+# ── 4. Parallel gradient descent — 4096 starts, no Python loop over batch ─
+print("\\n[Parallel] GD over 4096 starting points")
 
-def gradient_descent(f, df, x0, lr=0.1, steps=10):
-    """Simple gradient descent optimisation"""
-    x = x0
-    print("\\nGradient descent: optimising f(x) = x²")
-    print(f"Initial x = {x}, f(x) = {f(x)}")
-    for t in range(steps):
-        g = df(x)              # gradient = f'(x)
-        x = x - lr * g         # step opposite to gradient
-        if t % 2 == 0:
-            print(f"Step {t}: x = {x:.6f}, f(x) = {f(x):.6f}")
-    return x
+N      = 4096
+starts = torch.randn(N) * 4.0
 
-x_final = gradient_descent(f, df, x0=3.0, lr=0.1, steps=10)
-print(f"\\nConverged to x = {x_final:.6f} (should be ~0)")
+# Sequential baseline — Python loop, one start at a time
+t0 = time.perf_counter()
+seq_results = []
+for x0 in starts:
+    x = x0.item()
+    for _ in range(30):
+        x = x - 0.1 * (2 * x)   # GD step on f(x) = x²
+    seq_results.append(x)
+seq_ms = (time.perf_counter() - t0) * 1000
 
-# ── Chain rule in vector form (Jacobian) ─────────────────────────────
+# Batched — all 4096 points are one tensor; each step is a single BLAS call
+x = starts.clone()
+t0 = time.perf_counter()
+for _ in range(30):          # 30 outer steps, NOT 4096 × 30 inner iterations
+    x = x - 0.1 * (2 * x)
+batch_ms = (time.perf_counter() - t0) * 1000
 
-def layer1(x, W1, b1):
-    """First layer: z₁ = W₁x + b₁"""
-    return W1 @ x + b1
+print(f"  Sequential:  {seq_ms:7.1f} ms")
+print(f"  Batched:     {batch_ms:7.1f} ms   ({seq_ms/batch_ms:.0f}× faster)")
+print(f"  mean|x| after 30 steps: {x.abs().mean():.6f}  (→ 0.0)")
 
-def layer2(z, W2, b2):
-    """Second layer: z₂ = W₂z + b₂"""
-    return W2 @ z + b2
+# ── 5. Autograd through a full network — one backward for all weights ─────
+print("\\n[Network] gradients via loss.backward()")
 
-def loss(y_pred, y_true):
-    """MSE loss: L = ||y_pred - y||²"""
-    return np.sum((y_pred - y_true)**2)
+torch.manual_seed(0)
+net  = nn.Sequential(nn.Linear(4, 16), nn.ReLU(), nn.Linear(16, 1))
+x    = torch.randn(32, 4)    # batch of 32 samples, 4 features each
+y    = torch.randn(32, 1)
+loss = nn.MSELoss()(net(x), y)
+loss.backward()              # ∂loss/∂every-weight in one pass
 
-# Forward pass
-x = np.array([1.0, 2.0])
-W1 = np.array([[0.5, -0.2]])
-b1 = np.array([0.1])
-W2 = np.array([[0.3]])
-b2 = np.array([-0.1])
-y_true = np.array([1.0])
-
-z1 = layer1(x, W1, b1)
-z2 = layer2(z1, W2, b2)
-L = loss(z2, y_true)
-
-print(f"\\nForward pass:")
-print(f"z₁ = {z1}")
-print(f"z₂ = {z2}")
-print(f"Loss = {L}")
-
-# Gradients via chain rule
-# dL/dz₂ = 2(z₂ - y_true)
-dL_dz2 = 2 * (z2 - y_true)
-
-# dL/dz₁ = (dL/dz₂) · W₂  (backprop through layer 2)
-dL_dz1 = dL_dz2 @ W2
-
-# dL/dW1 = (dL/dz₁) ⊗ x
-dL_dW1 = np.outer(dL_dz1, x)
-
-print(f"\\nGradients (via chain rule):")
-print(f"∂L/∂z₁ = {dL_dz1}")
-print(f"∂L/∂W₁ = {dL_dW1}")
-
-# Update with learning rate η = 0.01
-W1 = W1 - 0.01 * dL_dW1
-print(f"\\nUpdated W₁ = {W1}")`
+for name, p in net.named_parameters():
+    print(f"  {name:25s}  {str(list(p.shape)):14s}  grad_norm={p.grad.norm():.4f}")`
 
 function PythonTab() {
     return (
         <>
             <p>
-                NumPy for numerical operations with finite difference derivatives. In practice, use PyTorch
-                or JAX for automatic differentiation — they compute exact gradients, not approximations.
+                From finite differences to autograd: PyTorch builds a computation graph on the
+                forward pass and traverses it backwards — exact chain-rule gradients for every
+                parameter in a single pass, then scaled to any batch size via vectorised tensor ops.
             </p>
             <CodeBlock code={PY_CODE} filename="derivatives_gradients.py" lang="python" langLabel="Python" />
             <div className="ch-callout">
-                <strong>Key insight:</strong> Finite difference (f(x+h) − f(x))/h approximates derivatives,
-                but it's numerically unstable and slow for many variables. Autodiff frameworks like PyTorch
-                build a computational graph and apply the chain rule efficiently — exact gradients at GPU
-                speed. Never use finite differences for training neural networks.
+                <strong>Key insight:</strong> Finite differences need n+1 forward passes and
+                accumulate floating-point error. Reverse-mode autograd builds a graph during the
+                forward pass and applies the chain rule backwards — exact gradients for all
+                parameters in a single backward pass. That is why <code>loss.backward()</code>{" "}
+                costs the same as one forward pass regardless of model size.
             </div>
         </>
     )
@@ -546,5 +524,5 @@ export const DERIVATIVES_GRADIENTS_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
+    python: <PythonTab />,
 }

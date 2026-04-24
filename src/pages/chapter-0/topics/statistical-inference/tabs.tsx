@@ -317,118 +317,92 @@ function MathsTab() {
 }
 
 const PY_CODE = `import numpy as np
+import torch
 from scipy import stats
 
-# ── Point estimation and bias-variance ─────────────────────────
+# ── 1. Point estimation — NumPy + SciPy baseline ─────────────────────────
 np.random.seed(42)
+true_mu, sigma, n = 5.0, 2.0, 100
+data_np = np.random.normal(true_mu, sigma, n)
 
-true_mu, true_sigma = 5.0, 2.0
-n_samples = 100
-n_experiments = 1000
+x_bar  = data_np.mean()
+s      = data_np.std(ddof=1)
+t_crit = stats.t.ppf(0.975, df=n - 1)
+margin = t_crit * s / np.sqrt(n)
+print(f"[SciPy]  95% CI: [{x_bar - margin:.3f}, {x_bar + margin:.3f}]  (true μ={true_mu})")
 
-# Collect sample means from many experiments
-sample_means = [
-    np.random.normal(true_mu, true_sigma, n_samples).mean()
-    for _ in range(n_experiments)
-]
-sample_means = np.array(sample_means)
+t_stat, p_val = stats.ttest_1samp(data_np, true_mu)
+print(f"         t-test p={p_val:.4f}  → {'fail to reject H₀' if p_val > 0.05 else 'reject H₀'}")
 
-print(f"True mean:              {true_mu}")
-print(f"Average of sample means: {sample_means.mean():.4f}")  # ≈ true_mu (unbiased)
-print(f"Std of sample means:     {sample_means.std():.4f}")   # ≈ sigma/sqrt(n)
-print(f"Expected std:            {true_sigma / np.sqrt(n_samples):.4f}")
+# ── 2. Two-sample t-test — comparing two models ──────────────────────────
+print("\\n[Model comparison] two-sample t-test")
 
-# ── Confidence intervals ───────────────────────────────────────
-# 95% CI for the mean: x̄ ± t_{n-1, 0.025} * s/√n
+model_a = np.array([0.82, 0.85, 0.79, 0.87, 0.84, 0.81, 0.83])
+model_b = np.array([0.78, 0.81, 0.75, 0.79, 0.77])
+t_stat, p_val = stats.ttest_ind(model_a, model_b)
+print(f"  A: {model_a.mean():.4f} ± {model_a.std(ddof=1):.4f}")
+print(f"  B: {model_b.mean():.4f} ± {model_b.std(ddof=1):.4f}")
+print(f"  p={p_val:.4f}  → {'significant' if p_val < 0.05 else 'not significant'} at α=0.05")
 
-data = np.random.normal(true_mu, true_sigma, n_samples)
-x_bar = data.mean()
-s = data.std(ddof=1)  # sample std with Bessel's correction
-t_crit = stats.t.ppf(0.975, df=n_samples - 1)
-margin = t_crit * s / np.sqrt(n_samples)
+# ── 3. PyTorch bootstrap — 10 000 resamples, no Python loop ──────────────
+print("\\n[Bootstrap] vectorised with PyTorch — 10k resamples, no Python loop")
 
-print(f"\\n95% CI for mean: [{x_bar - margin:.3f}, {x_bar + margin:.3f}]")
-print(f"True mean {true_mu} is {'in' if true_mu >= x_bar - margin and true_mu <= x_bar + margin else 'OUT OF'} the interval")
+torch.manual_seed(0)
+data   = torch.tensor(data_np, dtype=torch.float32)
+n_boot = 10_000
 
-# ── t-test: is this sample mean different from a hypothesised value?
-# H0: mu = 5.0 (true value). Is our sample mean significantly different?
-t_stat, p_value = stats.ttest_1samp(data, true_mu)
-print(f"\\nt-test H0: mu = {true_mu}")
-print(f"t-statistic: {t_stat:.4f}, p-value: {p_value:.4f}")
-print(f"Conclusion: {'Reject H0' if p_value < 0.05 else 'Fail to reject H0'} at α=0.05")
+idx          = torch.randint(0, n, (n_boot, n))   # (n_boot, n) indices
+resamples    = data[idx]                           # (n_boot, n) — all resamples at once
+boot_means   = resamples.mean(dim=1)              # (n_boot,)
 
-# ── Comparing two models (two-sample t-test) ─────────────────
-model_a_scores = np.array([0.82, 0.85, 0.79, 0.87, 0.84, 0.81, 0.83])
-model_b_scores = np.array([0.78, 0.81, 0.75, 0.79, 0.77])
+lo, hi = torch.quantile(boot_means, torch.tensor([0.025, 0.975]))
+print(f"  Bootstrap 95% CI: [{lo:.3f}, {hi:.3f}]  (n_boot={n_boot:,})")
+print(f"  Bootstrap SE: {boot_means.std():.4f}  (σ/√n = {sigma/n**0.5:.4f})")
 
-t_stat, p_value = stats.ttest_ind(model_a_scores, model_b_scores)
-print(f"\\nTwo-sample t-test:")
-print(f"Model A: {model_a_scores.mean():.4f} ± {model_a_scores.std(ddof=1):.4f}")
-print(f"Model B: {model_b_scores.mean():.4f} ± {model_b_scores.std(ddof=1):.4f}")
-print(f"t={t_stat:.3f}, p={p_value:.4f} ({'significant' if p_value < 0.05 else 'not significant'})")
+# Any statistic — just change .mean() to .median(), .std(), ...
+boot_med = resamples.median(dim=1).values
+lo_m, hi_m = torch.quantile(boot_med, torch.tensor([0.025, 0.975]))
+print(f"  Bootstrap 95% CI (median): [{lo_m:.3f}, {hi_m:.3f}]")
 
-# ── Paired t-test (better when comparing same test set) ─────────
-# Simulate paired comparisons
-np.random.seed(0)
-n_test = 50
-model_a_acc = 0.82 + 0.02 * np.random.randn(n_test)
-model_b_acc = 0.80 + 0.02 * np.random.randn(n_test)
+# ── 4. Paired comparison — batched over many test sets ───────────────────
+print("\\n[Paired bootstrap] 500 test sets simultaneously")
 
-t_stat, p_value = stats.ttest_rel(model_a_acc, model_b_acc)
-print(f"\\nPaired t-test (n={n_test}):")
-print(f"Mean difference: {(model_a_acc - model_b_acc).mean():.4f}")
-print(f"p-value: {p_value:.4f} ({'significant' if p_value < 0.05 else 'not significant'})")
+torch.manual_seed(1)
+n_sets, n_test = 500, 50
+acc_A = 0.82 + 0.03 * torch.randn(n_sets, n_test)
+acc_B = 0.80 + 0.03 * torch.randn(n_sets, n_test)
+diffs = (acc_A - acc_B).mean(dim=1)              # (500,)
+sig_rate = (diffs.abs() > 0.01).float().mean()
+print(f"  Mean Δ: {diffs.mean():.4f} ± {diffs.std():.4f}")
+print(f"  {sig_rate*100:.1f}% of test sets show |Δ| > 0.01")
 
-# ── Bootstrap confidence interval ─────────────────────────────
-# Non-parametric: doesn't assume any distribution
-def bootstrap_ci(data, stat_fn=np.mean, n_bootstrap=10000, ci=0.95):
-    """Compute bootstrap CI for any statistic."""
-    stats = [stat_fn(np.random.choice(data, size=len(data), replace=True)))
-             for _ in range(n_bootstrap)]
-    alpha = (1 - ci) / 2
-    return np.percentile(stats, [alpha * 100, (1 - alpha) * 100])
+# ── 5. Bayesian update — conjugate Gaussian ───────────────────────────────
+print("\\n[Bayesian] conjugate normal update")
 
-data = np.random.exponential(scale=2, size=100)
-ci_mean = bootstrap_ci(data, np.mean)
-ci_median = bootstrap_ci(data, np.median)
+mu_0, sigma_0, sigma_lik = 5.0, 2.0, 2.0
+data_pt = torch.normal(torch.full((n,), true_mu), torch.tensor(sigma_lik))
+x_bar_pt = data_pt.mean()
 
-print(f"\\nBootstrap 95% CI:")
-print(f"  Mean:   {ci_mean[0]:.3f} – {ci_mean[1]:.3f}")
-print(f"  Median: {ci_median[0]:.3f} – {ci_median[1]:.3f}")
-
-# ── Bayesian inference (conjugate normal) ─────────────────────
-# Prior: p(mu) = Normal(mu_0, sigma_0²)
-# Data: X_i ~ Normal(mu, sigma²) with known sigma
-# Posterior: p(mu | data) = Normal(mu_n, sigma_n²)
-
-mu_0, sigma_0 = 5.0, 2.0   # prior mean and std
-sigma = 2.0                 # known data std
-n = 20
-data = np.random.normal(true_mu, sigma, n)  # observed data
-
-x_bar = data.mean()
-mu_n = (mu_0 / sigma_0**2 + n * x_bar / sigma**2) / (1 / sigma_0**2 + n / sigma**2)
-sigma_n = np.sqrt(1 / (1 / sigma_0**2 + n / sigma**2))
-
-print(f"\\nBayesian inference (Normal-Normal):")
-print(f"Prior:     N({mu_0}, {sigma_0}²)")
-print(f"Posterior: N({mu_n:.3f}, {sigma_n:.3f}²)")
-print(f"True mu:   {true_mu}")`;
+prec_0  = 1 / sigma_0**2
+prec_n  = prec_0 + n / sigma_lik**2
+mu_n    = (prec_0 * mu_0 + (n / sigma_lik**2) * x_bar_pt) / prec_n
+sigma_n = prec_n**-0.5
+print(f"  Prior:     N({mu_0}, {sigma_0}²)")
+print(f"  Posterior: N({mu_n:.3f}, {sigma_n:.3f}²)  (true μ={true_mu})")`
 
 function PythonTab() {
     return (
         <>
             <p>
-                SciPy for statistical tests and confidence intervals. NumPy for bias-variance
-                demonstrations. These are the tools for rigorously comparing models and quantifying
-                uncertainty — essential for responsible ML reporting.
+                SciPy for parametric tests, PyTorch for vectorised bootstrap — 10 000 resamples
+                with a single index operation, no Python loop, any statistic.
             </p>
             <CodeBlock code={PY_CODE} filename="statistical_inference.py" lang="python" langLabel="Python" />
             <div className="ch-callout">
-                <strong>Key insight:</strong> The t-test and bootstrap CI are the minimum standards
-                for reporting model comparisons. Never report a single number without uncertainty
-                estimates. The bootstrap works for any statistic — accuracy, F1, AUC — with no
-                distributional assumptions.
+                <strong>Key insight:</strong> The bootstrap CI is the gold standard for reporting
+                model comparisons — it works for any statistic (accuracy, F1, AUC) with no
+                distributional assumption. PyTorch vectorises all <code>n_boot</code> resamples
+                as a single matrix index operation, making 10 k iterations nearly free.
             </div>
         </>
     )
@@ -444,5 +418,5 @@ export const STATISTICAL_INFERENCE_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
+    python: <PythonTab />,
 }

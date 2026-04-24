@@ -263,50 +263,85 @@ function MathsTab() {
 }
 
 const PY_CODE = `import numpy as np
+import torch
+import time
 
-# ── Solving a linear system ───────────────────────────────
-A = np.array([[2, 3],
-              [1, -1]], dtype=float)
-b = np.array([8, 1], dtype=float)
+# ── 1. NumPy baseline — solve and lstsq ──────────────────────────────────
+A_np = np.array([[2., 3.], [1., -1.]])
+b_np = np.array([8., 1.])
+x_np = np.linalg.solve(A_np, b_np)
+print(f"[NumPy]  x = {x_np}  residual = {np.linalg.norm(A_np @ x_np - b_np):.2e}")
 
-x = np.linalg.solve(A, b)
-print("Solution:", x)          # -> [2.2  1.2]
-
-# Verify: A @ x should equal b
-print("Residual:", A @ x - b)   # -> [0. 0.]
-
-# ── Determinants ──────────────────────────────────────────
-print("det(A):", np.linalg.det(A))   # -> -5.0
-
-# Singular matrix -> determinant is (near) zero
-S = np.array([[1, 2],
-              [2, 4]], dtype=float)
-print("det(S):", np.linalg.det(S))   # -> 0.0 (singular)
-
-# ── Least squares (overdetermined system) ─────────────────
-# Generate noisy linear data: y = 2x + 1 + noise
 np.random.seed(0)
-x_data = np.random.rand(50)
-y_data = 2 * x_data + 1 + 0.1 * np.random.randn(50)
+x_d = np.random.rand(50);  y_d = 2*x_d + 1 + 0.1*np.random.randn(50)
+A_ls_np = np.column_stack([x_d, np.ones_like(x_d)])
+m_np, c_np = np.linalg.lstsq(A_ls_np, y_d, rcond=None)[0]
+print(f"         lstsq: y = {m_np:.3f}x + {c_np:.3f}  (true: 2.000x + 1.000)")
 
-# Build design matrix A = [x  1] and solve min ||A @ [m, c] - y||^2
-A_ls = np.column_stack([x_data, np.ones_like(x_data)])
-m, c = np.linalg.lstsq(A_ls, y_data, rcond=None)[0]
-print(f"Best fit line: y = {m:.3f}x + {c:.3f}")
-# -> y = 1.965x + 1.023 (close to the true 2x + 1)`
+# ── 2. PyTorch linalg.solve — GPU-ready ──────────────────────────────────
+print("\\n[PyTorch] torch.linalg.solve")
+
+A = torch.tensor([[2., 3.], [1., -1.]])
+b = torch.tensor([8., 1.])
+x = torch.linalg.solve(A, b)
+print(f"  x = {x.tolist()}  residual = {(A @ x - b).norm():.2e}")
+print(f"  det(A)={torch.linalg.det(A).item():.2f}  cond(A)={torch.linalg.cond(A).item():.2f}")
+
+S = torch.tensor([[1., 2.], [2., 4.]])
+print(f"  singular matrix det = {torch.linalg.det(S).item():.4f}  (near 0 → ill-posed)")
+
+# ── 3. Batched solve — 256 systems in one LAPACK call ────────────────────
+print("\\n[Batched] solve 256 systems simultaneously")
+
+torch.manual_seed(0)
+batch   = 256
+A_batch, _ = torch.linalg.qr(torch.randn(batch, 4, 4))  # 256 orthogonal 4×4 matrices
+b_batch    = torch.randn(batch, 4)
+
+t0 = time.perf_counter()
+x_batch = torch.linalg.solve(A_batch, b_batch)           # (256, 4) — all at once
+ms = (time.perf_counter() - t0) * 1000
+
+residuals = (A_batch @ x_batch.unsqueeze(-1) - b_batch.unsqueeze(-1)).norm(dim=1).max()
+print(f"  {batch} systems (4×4) in {ms:.1f} ms  |  max residual = {residuals.item():.2e}")
+
+# ── 4. Least squares via PyTorch ─────────────────────────────────────────
+print("\\n[Least squares] torch.linalg.lstsq")
+
+torch.manual_seed(1)
+x_t = torch.rand(50);  y_t = 2*x_t + 1 + 0.1*torch.randn(50)
+A_ls = torch.stack([x_t, torch.ones_like(x_t)], dim=1)   # design matrix (50×2)
+sol  = torch.linalg.lstsq(A_ls, y_t.unsqueeze(1)).solution
+print(f"  y = {sol[0].item():.3f}x + {sol[1].item():.3f}")
+
+# ── 5. Linear regression via gradient descent ─────────────────────────────
+print("\\n[Gradient descent] linear regression with autograd")
+
+torch.manual_seed(0)
+w = torch.zeros(2, requires_grad=True)
+for _ in range(300):
+    loss = ((A_ls @ w - y_t)**2).mean()
+    loss.backward()
+    with torch.no_grad():
+        w -= 0.1 * w.grad
+    w.grad.zero_()
+print(f"  GD: y = {w[0].item():.3f}x + {w[1].item():.3f}  loss={loss.item():.6f}")`
 
 function PythonTab() {
     return (
         <>
             <p>
-                NumPy's linear algebra routines handle everything from small 2x2 systems to large
-                least-squares problems that arise when fitting models to data.
+                From scalar systems to batched solves over 256 matrices simultaneously —
+                PyTorch's <code>torch.linalg</code> mirrors NumPy's API at any scale,
+                and autograd turns least squares into a one-liner training loop.
             </p>
             <CodeBlock code={PY_CODE} filename="systems_equations.py" lang="python" langLabel="Python" />
             <div className="ch-callout">
-                <strong>Production tip:</strong> For least squares, prefer <code>np.linalg.lstsq</code>
-                over manually computing <code>(A.T @ A)^{-1} @ A.T @ b</code>. The built-in routine uses
-                SVD under the hood, which is numerically stable even when A.T @ A would be ill-conditioned.
+                <strong>Key insight:</strong> Gradient descent on the least-squares objective
+                converges to the same solution as <code>lstsq</code> — but GD generalises
+                to any loss and any model architecture. Linear regression is the
+                degenerate case where one step of Newton's method (the normal equations)
+                gives the exact answer.
             </div>
         </>
     )

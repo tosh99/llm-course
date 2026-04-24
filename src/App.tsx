@@ -2,8 +2,8 @@ import { Route, Routes } from "react-router"
 import { Seo } from "@/components/seo"
 import { HomePage } from "@/pages/home-page"
 import { Chapter0Page } from "@/pages/chapter-0"
-import { Chapter1Page } from "@/pages/chapter-1"
-import { Chapter2Page } from "@/pages/chapter-2"
+import { Chapter1Page } from "@/pages/chapter-perceptron"
+import { Chapter2Page } from "@/pages/chapter-classical-ml"
 import { Chapter3Page } from "@/pages/chapter-3"
 import { Chapter4Page } from "@/pages/chapter-4"
 import { Chapter5Page } from "@/pages/chapter-5"
@@ -30,8 +30,8 @@ function Layout() {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/chapter/0" element={<Chapter0Page />} />
-                <Route path="/chapter/1" element={<Chapter1Page />} />
-                <Route path="/chapter/2" element={<Chapter2Page />} />
+                <Route path="/chapter/1" element={<Chapter2Page />} />
+                <Route path="/chapter/2" element={<Chapter1Page />} />
                 <Route path="/chapter/3" element={<Chapter3Page />} />
                 <Route path="/chapter/4" element={<Chapter4Page />} />
                 <Route path="/chapter/5" element={<Chapter5Page />} />

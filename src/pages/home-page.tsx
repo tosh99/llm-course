@@ -34,20 +34,20 @@ const CURRICULUM: Part[] = [
     {
         label: "Part I",
         title: "Classical Machine Learning",
-        era: "1950s – 2000s",
+        era: "1801 – 2000s",
         chapters: [
             {
                 num: "Ch. 1",
-                title: "The Perceptron & Early Neural Concepts",
-                era: "1943 – 1969",
-                topics: ["McCulloch-Pitts Neuron", "Hebb's Rule", "Rosenblatt Perceptron", "XOR Problem"],
+                title: "Classical ML Algorithms",
+                era: "1801 – 1990s",
+                topics: ["Linear Regression", "Decision Trees", "SVM", "Ensembles", "Regularization"],
                 route: "/chapter/1",
             },
             {
                 num: "Ch. 2",
-                title: "Classical ML Algorithms",
-                era: "1960s – 1990s",
-                topics: ["Linear Regression", "Decision Trees", "SVM", "Ensembles", "Regularization"],
+                title: "The Perceptron & Early Neural Concepts",
+                era: "1943 – 1969",
+                topics: ["McCulloch-Pitts Neuron", "Hebb's Rule", "Rosenblatt Perceptron", "XOR Problem"],
                 route: "/chapter/2",
             },
             {

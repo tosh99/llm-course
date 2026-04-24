@@ -290,55 +290,86 @@ function MathsTab() {
 }
 
 const PY_CODE = `import numpy as np
+import torch
+import time
 
-# ── Eigenvalues &amp; Eigenvectors ────────────────────────────
-# Used in PCA to find directions of maximum variance
-
-cov = np.array([[3.0, 1.0],           # 2x2 covariance matrix
-                [1.0, 2.0]])
-
-eigenvalues, eigenvectors = np.linalg.eig(cov)
-print("Eigenvalues:",  eigenvalues)   # -> [3.618  1.382]
-print("Eigenvectors:", eigenvectors)  # columns are the eigenvectors
-
-# Verify: A @ v == lambda * v
-v0 = eigenvectors[:, 0]               # first eigenvector
-lam0 = eigenvalues[0]
-print(np.allclose(cov @ v0, lam0 * v0))  # -> True
-
-# ── PCA via Eigendecomposition ────────────────────────────
-# Simulated data: 100 samples, 3 features
+# ── 1. NumPy baseline — eigh for symmetric matrices ──────────────────��───
 np.random.seed(42)
-X = np.random.randn(100, 3)
-X -= X.mean(axis=0)                   # center the data
+X_np = np.random.randn(100, 4).astype(np.float32)
+X_np -= X_np.mean(axis=0)
+Sigma_np = (X_np.T @ X_np) / (X_np.shape[0] - 1)
 
-# Compute covariance matrix and eigendecompose
+eigvals_np, eigvecs_np = np.linalg.eigh(Sigma_np)    # ascending order
+eigvals_np = eigvals_np[::-1];  eigvecs_np = eigvecs_np[:, ::-1]
+var = (eigvals_np[:2] / eigvals_np.sum()).round(3)
+print(f"[NumPy]  variance explained by top-2 PCs: {var}")
+
+# ── 2. PyTorch eigh — same guarantees, GPU-ready ─────────────────────────
+print("\\n[PyTorch] torch.linalg.eigh")
+
+X = torch.from_numpy(X_np)
 Sigma = (X.T @ X) / (X.shape[0] - 1)
-eigvals, eigvecs = np.linalg.eigh(Sigma)   # eigh for symmetric matrices
 
-# Sort by eigenvalue descending
-idx = np.argsort(eigvals)[::-1]
-eigvals = eigvals[idx]
-eigvecs = eigvecs[:, idx]
+eigvals, eigvecs = torch.linalg.eigh(Sigma)   # ascending; symmetric → real
+eigvals = eigvals.flip(0);  eigvecs = eigvecs.flip(1)
 
-k = 2                                 # keep top-2 components
-X_reduced = X @ eigvecs[:, :k]       # project: (100, 3) -> (100, 2)
-print("Variance explained:",
-      (eigvals[:k] / eigvals.sum()).round(3))  # e.g. -> [0.381 0.347]`
+print(f"  eigenvalues: {eigvals.tolist()}")
+print(f"  Av = λv check: {torch.allclose(Sigma @ eigvecs[:, 0], eigvals[0] * eigvecs[:, 0])}")
+
+# ── 3. torch.pca_lowrank — randomised PCA, scales to large datasets ──────
+print("\\n[Randomised PCA] torch.pca_lowrank")
+
+torch.manual_seed(0)
+X_big = torch.randn(10_000, 256)
+X_big -= X_big.mean(dim=0)
+k = 16
+
+t0 = time.perf_counter()
+_, S_r, Vh_r = torch.pca_lowrank(X_big, q=k)   # randomised; avoids forming XᵀX
+pca_ms = (time.perf_counter() - t0) * 1000
+
+X_pca = X_big @ Vh_r                            # project: (10k, 256) → (10k, 16)
+var_r  = (S_r**2 / (S_r**2).sum() * 100).round(1)
+print(f"  10k × 256 dataset  →  {list(X_pca.shape)}  in {pca_ms:.1f} ms")
+print(f"  top-4 components explain {var_r[:4].tolist()} % variance each")
+
+# ── 4. Hessian eigenvalues — they bound the safe learning rate ────────────
+print("\\n[Hessian] curvature spectrum")
+
+A_mat = torch.tensor([[3., 1.], [1., 2.]])   # loss is L(x) = ½xᵀAx; H = A
+
+def quad_loss(x):
+    return 0.5 * x @ A_mat @ x
+
+H = torch.autograd.functional.hessian(quad_loss, torch.tensor([1.0, 2.0]))
+eigvals_H = torch.linalg.eigvalsh(H)
+print(f"  Hessian eigenvalues: {eigvals_H.tolist()}")
+print(f"  Safe learning rate η < 2/λ_max = {(2/eigvals_H.max()).item():.4f}")
+
+# ── 5. Batched eigendecomposition — many matrices in parallel ─────────────
+print("\\n[Parallel] batched eigh over 32 covariance matrices")
+
+# 32 independent (10×10) symmetric positive-definite matrices
+M = torch.randn(32, 64, 10)
+batch_covs = M.transpose(-2, -1) @ M   # XᵀX → symmetric PSD, shape (32, 10, 10)
+eigvals_b, eigvecs_b = torch.linalg.eigh(batch_covs)
+print(f"  input:   {list(batch_covs.shape)}")
+print(f"  eigvals: {list(eigvals_b.shape)}  (32 decompositions, one LAPACK call)")`
 
 function PythonTab() {
     return (
         <>
             <p>
-                NumPy makes eigendecomposition a single function call. Prefer
-                <code>np.linalg.eigh</code> for symmetric matrices (like covariance matrices) — it is
-                faster and numerically stabler than <code>np.linalg.eig</code>.
+                From exact eigendecomposition to randomised PCA on 10 k-sample datasets —
+                PyTorch's <code>torch.linalg.eigh</code> and <code>torch.pca_lowrank</code>{" "}
+                handle every scale, and batched decomposition processes many matrices in parallel.
             </p>
             <CodeBlock code={PY_CODE} filename="eigenvalues.py" lang="python" langLabel="Python" />
             <div className="ch-callout">
-                <strong>Key insight:</strong> The covariance matrix is always symmetric positive
-                semi-definite, so its eigenvalues are real and non-negative. This guarantees that PCA
-                always finds meaningful principal components with real variances.
+                <strong>Key insight:</strong> The eigenvalues of the loss Hessian directly
+                control training stability — gradient descent diverges if η &gt; 2/λ<sub>max</sub>.
+                Adaptive optimisers like Adam implicitly rescale gradients to compensate for the
+                uneven curvature spectrum.
             </div>
         </>
     )

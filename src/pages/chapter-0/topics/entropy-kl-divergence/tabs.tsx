@@ -300,84 +300,89 @@ function MathsTab() {
     )
 }
 
-const PY_CODE = `import numpy as np
-from scipy.stats import entropy
+const PY_CODE = `import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.distributions import Normal, Categorical, kl_divergence
 
-# ── Entropy ──────────────────────────────────────────────────────
-# H(X) = -Σ p(x) · log₂ p(x)
+# ── 1. Entropy via torch.distributions ───────────────────────────────────
+print("[Entropy] torch.distributions")
 
-# Fair coin
-p_fair = np.array([0.5, 0.5])
-H_fair = entropy(p_fair, base=2)
-print(f"Fair coin entropy:  {H_fair:.4f} bits")   # → 1.0000
+log2 = torch.log(torch.tensor(2.0))
+d_fair = Categorical(probs=torch.tensor([0.5, 0.5]))
+d_bias = Categorical(probs=torch.tensor([0.9, 0.1]))
+d_uni4 = Categorical(probs=torch.ones(4) / 4)
 
-# Biased coin (p(H)=0.9)
-p_biased = np.array([0.9, 0.1])
-H_biased = entropy(p_biased, base=2)
-print(f"Biased coin entropy: {H_biased:.4f} bits")  # → 0.4690
+print(f"  Fair coin:    H = {(d_fair.entropy() / log2).item():.4f} bits")
+print(f"  Biased coin:  H = {(d_bias.entropy() / log2).item():.4f} bits")
+print(f"  Uniform-4:    H = {(d_uni4.entropy() / log2).item():.4f} bits")
 
-# Four equally likely outcomes (2 bits = log₂ 4)
-p_uniform4 = np.array([0.25, 0.25, 0.25, 0.25])
-print(f"Uniform-4 entropy:   {entropy(p_uniform4, base=2):.4f} bits")  # → 2.0000
+# ── 2. KL divergence — torch.distributions.kl_divergence ─────────────────
+print("\\n[KL divergence]")
 
-# ── Cross-Entropy and KL Divergence ──────────────────────────────
-# H(P, Q) = -Σ p(x) · log₂ q(x)
-# D_KL(P||Q) = Σ p(x) · log₂(p(x)/q(x)) = H(P, Q) - H(P)
+P = Categorical(probs=torch.tensor([0.7, 0.2, 0.1]))
+Q = Categorical(probs=torch.tensor([0.6, 0.25, 0.15]))
+kl = kl_divergence(P, Q)
+print(f"  KL(P||Q) = {kl.item():.6f} nats  (≥ 0: {kl.item() >= 0})")
+print(f"  KL(Q||P) = {kl_divergence(Q, P).item():.6f} nats  (asymmetric!)")
 
-p_true = np.array([0.7, 0.2, 0.1])
-p_model = np.array([0.6, 0.25, 0.15])
+# Gaussian KL — the VAE regularisation term
+P_g = Normal(torch.tensor(0.3), torch.tensor(0.8))
+Q_g = Normal(torch.tensor(0.0), torch.tensor(1.0))   # N(0,1) prior
+kl_g = kl_divergence(P_g, Q_g)
+print(f"\\n  KL(N(0.3, 0.8) || N(0,1)) = {kl_g.item():.6f} nats")
+print(f"  (VAE ELBO minimises this to keep latents near the prior)")
 
-H_pe = entropy(p_true, qk=p_model, base=2)          # cross-entropy
-H_pr = entropy(p_true, base=2)                     # true entropy
-D_kl  = H_pe - H_pr                                  # KL divergence
+# ── 3. nn.CrossEntropyLoss — what you use every training step ─────────────
+print("\\n[CrossEntropyLoss]")
 
-print(f"Cross-entropy H(P,Q): {H_pe:.4f} bits")
-print(f"True entropy H(P):    {H_pr:.4f} bits")
-print(f"KL divergence D_KL:   {D_kl:.4f} bits")    # always ≥ 0
+logits  = torch.tensor([[2.0, 1.0, 0.1],
+                         [0.5, 2.1, 0.3],
+                         [0.1, 0.2, 3.0]])
+targets = torch.tensor([0, 1, 2])
 
-# Verify: D_KL(P||Q) ≥ 0
-print(f"D_KL ≥ 0: {D_kl >= -1e-10}")               # True
+ce = nn.CrossEntropyLoss()(logits, targets)
+print(f"  CE loss: {ce.item():.4f}")
 
-# ── KL Divergence in VAE / regularised learning ──────────────────
-# In a VAE: ELBO = E[log p(x|z)] - D_KL(q(z|x) || p(z))
-# Here we simulate the KL term between a learned Gaussian and N(0,1)
+# Manual: CE = -log p(true class) = -log(softmax(logit_true))
+manual = -F.log_softmax(logits, dim=1)[range(3), targets].mean()
+print(f"  Manual:  {manual.item():.4f}  (match: {torch.isclose(ce, manual).item()})")
 
-mu_q   = np.array([0.1, -0.05])
-sigma_q = np.array([0.8, 0.9])
-# Prior: standard normal
-mu_p   = np.array([0.0, 0.0])
-sigma_p = np.array([1.0, 1.0])
+# ── 4. Batched KL over a full vocabulary — knowledge distillation ─────────
+print("\\n[Batched KL] 32k-token vocabulary in one vectorised call")
 
-# KL(N(mu_q, sigma_q) || N(mu_p, sigma_p))
-kl = np.sum(
-    np.log(sigma_p / sigma_q)
-    + (sigma_q**2 + (mu_q - mu_p)**2) / (2 * sigma_p**2)
-    - 0.5
-)
-print(f"\nVAE KL(latent || prior): {kl:.4f} nats")
-print("(Minimising this pushes the latent posterior toward the prior)")
+vocab   = 32_000
+P_log   = F.log_softmax(torch.randn(vocab), dim=0)   # log-probs of teacher
+Q_log   = F.log_softmax(torch.randn(vocab), dim=0)   # log-probs of student
+P_probs = P_log.exp()
 
-# ── Perplexity (cross-entropy in exponent) ───────────────────────
-# perplexity = 2^{H}  — effective branching factor
-cross_ent = 2.1     # suppose cross-entropy loss is 2.1 nats on test set
-perplexity = np.exp(cross_ent)
-print(f"\nModel perplexity: {perplexity:.1f}")
-print("(A perplexity of 50 = as uncertain as a 50-sided die)")`
+# F.kl_div(input=log Q, target=P); reduction='sum' → scalar KL
+kl_vocab = F.kl_div(Q_log, P_probs, reduction='sum')
+print(f"  KL(teacher || student) = {kl_vocab.item():.4f} nats")
+print(f"  Used in: knowledge distillation, RLHF KL penalty, distilBERT")
+
+# ── 5. Perplexity from sequence cross-entropy ─────────────────────────────
+print("\\n[Perplexity]")
+
+token_nll = torch.tensor([1.8, 2.3, 1.5, 2.1, 3.0, 1.9])   # per-token NLL (nats)
+ppl = torch.exp(token_nll.mean())
+print(f"  mean NLL = {token_nll.mean():.4f}  →  PPL = {ppl:.1f}")
+print(f"  (as uncertain as a {ppl:.0f}-sided die per next token)")`
 
 function PythonTab() {
     return (
         <>
             <p>
-                NumPy and SciPy provide all the building blocks for information-theoretic computations.
-                No specialised library is required.
+                PyTorch's <code>torch.distributions</code> and <code>nn.CrossEntropyLoss</code>{" "}
+                implement the exact same quantities from the Maths tab — entropy, KL divergence,
+                cross-entropy — at training scale, with batched vectorisation built in.
             </p>
             <CodeBlock code={PY_CODE} filename="entropy_kl_divergence.py" lang="python" langLabel="Python" />
             <div className="ch-callout">
-                <strong>Key insight:</strong> <code>entropy(pk, qk=qk)</code> is cross-entropy;{" "}
-                <code>entropy(pk)</code> is Shannon entropy. The difference is the KL divergence. In
-                PyTorch, <code>nn.CrossEntropyLoss</code> is the KL divergence between the true
-                one-hot distribution and the model's softmax output — exactly as described in the Maths
-                tab.
+                <strong>Key insight:</strong> <code>nn.CrossEntropyLoss</code> is the KL divergence
+                between the true one-hot label and the model's softmax output. Minimising it
+                is equivalent to maximum-likelihood estimation under a categorical distribution —
+                the theoretical basis for training every classification model.
             </div>
         </>
     )
@@ -393,5 +398,5 @@ export const ENTROPY_KL_DIVERGENCE_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
+    python: <PythonTab />,
 }

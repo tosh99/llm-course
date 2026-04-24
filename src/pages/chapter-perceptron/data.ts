@@ -44,22 +44,22 @@ export const TOPIC_META: Record<
     { eyebrow: string; subtitle: string }
 > = {
     "mcculloch-pitts": {
-        eyebrow: "Chapter 1 · Origins",
+        eyebrow: "Chapter 2 · Origins",
         subtitle:
             "The first mathematical model of a neuron — all-or-nothing logic with thresholds",
     },
     hebbian: {
-        eyebrow: "Chapter 1 · Origins",
+        eyebrow: "Chapter 2 · Origins",
         subtitle:
             "Neurons that fire together wire together — the first learning rule",
     },
     perceptron: {
-        eyebrow: "Chapter 1 · Origins",
+        eyebrow: "Chapter 2 · Origins",
         subtitle:
             "The first working learning algorithm — and what it could and couldn't learn",
     },
     "xor-problem": {
-        eyebrow: "Chapter 1 · Limitations",
+        eyebrow: "Chapter 2 · Limitations",
         subtitle:
             "The devastating result that halted neural network research for a decade",
     },

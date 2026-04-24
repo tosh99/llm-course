@@ -225,62 +225,85 @@ function MathsTab() {
     )
 }
 
-const PY_CODE = `import numpy as np
+const PY_CODE = `import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
-# ── Creating vectors and matrices ─────────────────────────
-v = np.array([1.0, 2.0, 3.0])        # 1-D array = vector
-W = np.array([[0.5, -0.2,  0.8],     # 2D array = matrix
-              [0.1,  0.9, -0.3]])
+# ── 1. Tensors — the PyTorch equivalent of NumPy arrays ───────────────────
+W = torch.tensor([[0.5, -0.2, 0.8],
+                  [0.1,  0.9, -0.3]])   # shape (2, 3)
+x = torch.tensor([1.0, 2.0, 3.0])
+b = torch.tensor([0.1, -0.1])
 
-# ── Vector operations ─────────────────────────────────────
-a = np.array([1.0, 2.0, 3.0])
-b = np.array([4.0, 5.0, 6.0])
+y = W @ x + b                    # linear layer: y = Wx + b
+print(f"[Linear layer]  y = Wx + b: {y.tolist()}")
 
-print(a + b)                          # element-wise add  -> [5. 7. 9.]
-print(a * 2)                          # scalar multiply   -> [2. 4. 6.]
-print(np.dot(a, b))                   # dot product       -> 32.0
+# ── 2. Norms and cosine similarity ────────────────────────────────────────
+print("\\n[Norms & similarity]")
 
-# L2 norm — two equivalent ways
-print(np.linalg.norm(a))              # -> 3.7417
-print(np.sqrt(np.dot(a, a)))          # -> 3.7417
+a = torch.tensor([1.0, 2.0, 3.0])
+print(f"  L1 = {a.norm(p=1):.4f}  L2 = {a.norm(p=2):.4f}  L∞ = {a.norm(p=float('inf')):.4f}")
 
-# Cosine similarity — used everywhere in ML (attention, retrieval)
-def cosine_sim(x, y):
-    return np.dot(x, y) / (np.linalg.norm(x) * np.linalg.norm(y))
+king  = torch.tensor([0.8, 0.2, 0.1])
+queen = torch.tensor([0.7, 0.3, 0.2])
 
-king  = np.array([0.8, 0.2, 0.1])
-queen = np.array([0.7, 0.3, 0.2])
-print(f"cosine similarity: {cosine_sim(king, queen):.4f}")  # -> 0.9984
+cos = F.cosine_similarity(king.unsqueeze(0), queen.unsqueeze(0))
+print(f"  cosine_similarity(king, queen): {cos.item():.4f}")
 
-# ── Matrix operations ─────────────────────────────────────
-A = np.array([[1, 2], [3, 4]])
-B = np.array([[5, 6], [7, 8]])
+# ── 3. Matrix operations ──────────────────────────────────────────────────
+print("\\n[Matrix ops]")
 
-print(A @ B)          # matrix multiply (@ is matmul)   -> [[19 22] [43 50]]
-print(A @ v[:2])      # matrix * vector                 -> [ 5. 11.]
-print(A.T)            # transpose                       -> [[1 3] [2 4]]
+A = torch.tensor([[1., 2.], [3., 4.]])
+B = torch.tensor([[5., 6.], [7., 8.]])
+print(f"  A @ B:\\n{A @ B}")
+print(f"  A.T:\\n{A.T}")
+print(f"  trace(A): {A.trace():.0f}  det(A): {torch.linalg.det(A):.0f}")
 
-# ── Linear layer: y = Wx + b ──────────────────────────────
-# This is exactly what nn.Linear does in PyTorch
-x = np.array([1.0, 2.0, 3.0])        # input (3-dim)
-b = np.array([0.1, -0.1])            # bias (2-dim)
+# ── 4. Batched matmul — 32-sample batch in one call ───────────────────────
+print("\\n[Batched] linear layer over a full batch")
 
-y = W @ x + b                        # output (2-dim)
-print(y)                              # -> [2.5  1.9]`
+batch_x = torch.randn(32, 3)          # 32 inputs, 3 features
+batch_y = batch_x @ W.T + b           # (32, 3) @ (3, 2) → (32, 2) — all at once
+print(f"  batch_x: {list(batch_x.shape)}  →  batch_y: {list(batch_y.shape)}")
+
+# ── 5. Attention — scaled dot-product similarity ──────────────────────────
+print("\\n[Attention] scaled dot-product")
+
+seq_len, d = 8, 64
+Q = torch.randn(seq_len, d)     # queries
+K = torch.randn(seq_len, d)     # keys
+V = torch.randn(seq_len, d)     # values
+
+scores = (Q @ K.T) / d**0.5             # (seq_len, seq_len)
+attn   = torch.softmax(scores, dim=-1)  # normalise over keys
+out    = attn @ V                       # weighted sum of values
+print(f"  scores: {list(scores.shape)},  out: {list(out.shape)}")
+print(f"  attn rows sum to 1: {attn.sum(dim=-1).allclose(torch.ones(seq_len))}")
+
+# ── 6. nn.Linear — the canonical building block ───────────────────────────
+print("\\n[nn.Linear] autograd through a linear layer")
+
+layer = nn.Linear(3, 2)                  # W ∈ R^{2×3}, b ∈ R^2 — random init
+x_g   = torch.randn(16, 3, requires_grad=False)
+y_g   = layer(x_g)                       # forward
+loss  = y_g.pow(2).mean()
+loss.backward()                          # ∂loss/∂W and ∂loss/∂b computed
+print(f"  W.grad shape: {list(layer.weight.grad.shape)}")
+print(f"  b.grad shape: {list(layer.bias.grad.shape)}")`
 
 function PythonTab() {
     return (
         <>
             <p>
-                NumPy is the foundation of scientific Python. Under the hood, every operation dispatches
-                to optimised BLAS/LAPACK routines written in C and Fortran — the same code powering
-                PyTorch's CPU path.
+                PyTorch tensors are NumPy arrays with autograd. Every operation — dot products,
+                norms, matrix multiply, cosine similarity — has a native API, works on batches
+                of inputs at once, and flows gradients through for training.
             </p>
             <CodeBlock code={PY_CODE} filename="vectors_matrices.py" lang="python" langLabel="Python" />
             <div className="ch-callout">
-                <strong>Key insight:</strong> The <code>@</code> operator is matrix multiplication.
-                Cosine similarity appears everywhere in ML: attention scores, word embeddings, and
-                retrieval systems all rely on the same dot-product calculation.
+                <strong>Key insight:</strong> The attention score <code>(Q @ K.T) / √d</code> is
+                just a batched cosine similarity scaled to prevent softmax saturation. Every
+                transformer in existence reduces to this one matrix multiply.
             </div>
         </>
     )

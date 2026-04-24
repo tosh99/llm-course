@@ -299,148 +299,99 @@ function MathsTab() {
     )
 }
 
-const PY_CODE = `import numpy as np
+const PY_CODE = `import torch
+import torch.nn.functional as F
+import numpy as np
 
-# ── Mutual Information ──────────────────────────────────────────
-# I(X; Y) = H(X) - H(X|Y)  =  H(X) + H(Y) - H(X,Y)
-# Simulated: two correlated variables
+# ── 1. Empirical MI — vectorised histogram, no Python loops ──────────────
+print("[Empirical MI] vectorised binning")
 
-np.random.seed(42)
-n = 10000
-# X is random; Y is X plus noise → correlated
-X = np.random.randn(n)
-Y = 0.8 * X + 0.5 * np.random.randn(n)
+torch.manual_seed(42)
+n    = 10_000
+X    = torch.randn(n)
+Y    = 0.8 * X + 0.5 * torch.randn(n)   # correlated
 
-# Discretise to compute empirical MI
 bins = 20
-x_b = np.digitize(X, np.linspace(X.min(), X.max(), bins + 1))
-y_b = np.digitize(Y, np.linspace(Y.min(), Y.max(), bins + 1))
+x_idx = torch.bucketize(X, torch.linspace(X.min(), X.max(), bins + 1)[1:-1])
+y_idx = torch.bucketize(Y, torch.linspace(Y.min(), Y.max(), bins + 1)[1:-1])
 
-def empirical_mi(x_binned, y_binned, n_bins):
-    counts_xy = np.zeros((n_bins, n_bins))
-    for a, b in zip(x_binned, y_binned):
-        counts_xy[a - 1, b - 1] += 1
-    p_xy = counts_xy / counts_xy.sum()
-    p_x  = p_xy.sum(axis=1)
-    p_y  = p_xy.sum(axis=0)
-    mi = 0.0
-    for i in range(n_bins):
-        for j in range(n_bins):
-            if p_xy[i, j] > 0 and p_x[i] > 0 and p_y[j] > 0:
-                mi += p_xy[i, j] * np.log2(p_xy[i, j] / (p_x[i] * p_y[j]))
-    return mi
+# Joint counts — torch.bincount replaces the double Python loop
+counts  = torch.bincount(x_idx * bins + y_idx, minlength=bins*bins).float().reshape(bins, bins)
+p_xy    = counts / counts.sum()
+p_x     = p_xy.sum(dim=1, keepdim=True)
+p_y     = p_xy.sum(dim=0, keepdim=True)
+mask    = p_xy > 0
+mi_corr = (p_xy[mask] * torch.log2(p_xy[mask] / (p_x * p_y).clamp(min=1e-12)[mask])).sum()
 
-mi = empirical_mi(x_b, y_b, bins)
-print(f"Empirical mutual information I(X;Y): {mi:.4f} bits")
-print("(High MI means X and Y carry information about each other)")
+# Independent pair — MI should be near 0
+Xi    = torch.randn(n);  Yi = torch.randn(n)
+xi_idx = torch.bucketize(Xi, torch.linspace(Xi.min(), Xi.max(), bins+1)[1:-1])
+yi_idx = torch.bucketize(Yi, torch.linspace(Yi.min(), Yi.max(), bins+1)[1:-1])
+c_ind  = torch.bincount(xi_idx*bins + yi_idx, minlength=bins*bins).float().reshape(bins, bins)
+p_ind  = c_ind / c_ind.sum()
+px_i   = p_ind.sum(1, keepdim=True);  py_i = p_ind.sum(0, keepdim=True)
+m_ind  = p_ind > 0
+mi_ind = (p_ind[m_ind] * torch.log2(p_ind[m_ind] / (px_i*py_i).clamp(1e-12)[m_ind])).sum()
 
-# Independent version: product of marginals (should give MI ≈ 0)
-def joint_entropy(x_binned, y_binned, n_bins):
-    counts_xy = np.zeros((n_bins, n_bins))
-    for a, b in zip(x_binned, y_binned):
-        counts_xy[a - 1, b - 1] += 1
-    p_xy = counts_xy / counts_xy.sum()
-    return -np.sum(p_xy[p_xy > 0] * np.log2(p_xy[p_xy > 0]))
+print(f"  I(X;Y) correlated = {mi_corr.item():.4f} bits")
+print(f"  I(X;Y) independent = {mi_ind.item():.4f} bits  (near 0 ✓)")
 
-def marginal_entropy(x_binned, n_bins):
-    counts = np.zeros(n_bins)
-    for a in x_binned:
-        counts[a - 1] += 1
-    p = counts / counts.sum()
-    return -np.sum(p[p > 0] * np.log2(p[p > 0]))
+# ── 2. InfoNCE loss — PyTorch native implementation ──────────────────────
+print("\\n[InfoNCE] contrastive loss")
 
-H_x = marginal_entropy(x_b, bins)
-H_y = marginal_entropy(y_b, bins)
-H_xy = joint_entropy(x_b, y_b, bins)
-mi_from_components = H_x + H_y - H_xy
-print(f"MI via entropy: {mi_from_components:.4f} bits")
+torch.manual_seed(0)
+B, d, tau = 256, 128, 0.07   # batch size, embed dim, temperature
 
-# Verify independence: if we generate truly independent variables
-X_ind = np.random.randn(n)
-Y_ind = np.random.randn(n)
-x_ind_b = np.digitize(X_ind, np.linspace(X_ind.min(), X_ind.max(), bins + 1))
-y_ind_b = np.digitize(Y_ind, np.linspace(Y_ind.min(), Y_ind.max(), bins + 1))
-mi_indep = empirical_mi(x_ind_b, y_ind_b, bins)
-print(f"MI for independent vars: {mi_indep:.6f} bits ≈ 0 ✓")
+z1 = F.normalize(torch.randn(B, d), dim=1)
+z2 = F.normalize(z1 + 0.2 * torch.randn(B, d), dim=1)   # augmented positives
 
-# ── InfoNCE (contrastive loss) ───────────────────────────────────
-def infonce_loss(view_similarities, temperature=0.1):
-    """
-    InfoNCE loss for contrastive learning.
-    view_similarities: array of shape (batch_size,) with similarity to positive view
-    Returns scalar loss.
-    """
-    # similarities[i] = similarity between view_i and its positive pair
-    # All other pairs are negatives
-    # Loss = -E[log exp(sim_pos) / sum_exp(all_pairs)]
-    exp_sims = np.exp(view_similarities / temperature)
-    # For each i, denominator includes exp(sim_i_positive) + exp(sim_i_negative_j) for all j != i
-    # Simplified batch version (one positive per sample)
-    batch_size = len(view_similarities)
-    # Denominator: for each i, sum over all j of exp(sim_ij / tau)
-    # Assuming symmetric similarities and one positive per diagonal
-    denom = np.sum(exp_sims, axis=0)  # sum over positive pair contributions
-    # Numerator: only the diagonal (positive pair)
-    numerators = np.diag(exp_sims)
-    loss = -np.mean(np.log(numerators / denom + 1e-10))
-    return loss
+sim    = (z1 @ z2.T) / tau            # (B, B) similarity matrix
+labels = torch.arange(B)             # positive pair is on the diagonal
+loss   = F.cross_entropy(sim, labels)  # exactly the InfoNCE formula
 
-# Simulate: positive pairs have high similarity, negatives have low
-np.random.seed(0)
-batch_size = 256
-# Positive pairs: cosine similarity ~0.8 + noise
-pos_sim = 0.8 + 0.05 * np.random.randn(batch_size)
-pos_sim = np.clip(pos_sim, 0, 1)
-# Negative pairs: near-zero similarity
-neg_sim = -0.1 + 0.1 * np.random.randn(batch_size)
+recall = (sim.argmax(dim=1) == labels).float().mean()
+print(f"  B={B}, d={d}, τ={tau}  →  InfoNCE = {loss.item():.4f}")
+print(f"  top-1 recall: {recall*100:.1f}%")
 
-# Stack as [positive, negative] pairs for each sample
-all_sims = np.stack([pos_sim, neg_sim], axis=1)  # (batch, 2)
+# Lower τ → sharper distribution → harder negatives
+for temp in [0.5, 0.1, 0.05, 0.01]:
+    l = F.cross_entropy((z1 @ z2.T) / temp, labels)
+    print(f"  τ={temp}  loss={l.item():.3f}  recall={(( (z1@z2.T)/temp).argmax(1)==labels).float().mean()*100:.0f}%")
 
-# InfoNCE: each sample's loss uses its own positive similarity
-# Simpler version: each row has one positive (sim[:,0]) and one negative (sim[:,1])
-exp_sims = np.exp(all_sims / 0.1)
-numerators = exp_sims[:, 0]  # positive similarity
-denominators = exp_sims.sum(axis=1)  # positive + negative
-loss = -np.mean(np.log(numerators / denominators + 1e-10))
+# ── 3. Data Processing Inequality ─────────────────────────────────────────
+print("\\n[DPI] I(X;Z) ≤ I(X;Y) for Markov chain X → Y → Z")
 
-print(f"\\nInfoNCE loss: {loss:.4f}")
-print(f"(Lower loss = higher mutual information between positive pairs)")
+def fast_mi(a, b, bins=15):
+    ae = torch.linspace(a.min(), a.max(), bins+1)[1:-1]
+    be = torch.linspace(b.min(), b.max(), bins+1)[1:-1]
+    c  = torch.bincount(torch.bucketize(a,ae)*bins + torch.bucketize(b,be),
+                        minlength=bins*bins).float().reshape(bins, bins)
+    p  = c / c.sum()
+    px = p.sum(1, keepdim=True);  py = p.sum(0, keepdim=True)
+    m  = p > 0
+    return (p[m] * torch.log2(p[m] / (px*py).clamp(1e-12)[m])).sum().item()
 
-# ── Data Processing Inequality demo ──────────────────────────────
-# X → Y → Z chain: Z = Y + noise, Y = X + noise
-# MI(X;Z) < MI(X;Y) because Z loses some information about X
-np.random.seed(42)
-X = np.random.randn(5000)
-Y = 0.8 * X + 0.6 * np.random.randn(5000)  # X → Y
-Z = 0.8 * Y + 0.6 * np.random.randn(5000)  # Y → Z
-
-def discretised_mi(a, b, n_bins=15):
-    a_b = np.digitize(a, np.linspace(a.min(), a.max(), n_bins + 1))
-    b_b = np.digitize(b, np.linspace(b.min(), b.max(), n_bins + 1))
-    return empirical_mi(a_b, b_b, n_bins)
-
-mi_xy = discretised_mi(X, Y)
-mi_xz = discretised_mi(X, Z)
-print(f"\\nData Processing Inequality:")
-print(f"I(X; Y) = {mi_xy:.4f} bits")
-print(f"I(X; Z) = {mi_xz:.4f} bits")
-print(f"I(X; Z) ≤ I(X; Y): {'✓' if mi_xz <= mi_xy + 0.05 else '✗'}")`
+torch.manual_seed(1)
+Xd = torch.randn(5000)
+Yd = 0.8*Xd + 0.6*torch.randn(5000)
+Zd = 0.8*Yd + 0.6*torch.randn(5000)
+print(f"  I(X;Y) = {fast_mi(Xd,Yd):.4f} bits")
+print(f"  I(X;Z) = {fast_mi(Xd,Zd):.4f} bits  (≤ I(X;Y) ✓ — each layer loses info)")`
 
 function PythonTab() {
     return (
         <>
             <p>
-                NumPy for empirical mutual information estimation and InfoNCE. The discretisation
-                approach is simple but shows the core idea. In practice, use parameterised estimators
-                (e.g., neural network critic) for high-dimensional data.
+                PyTorch's <code>torch.bincount</code> vectorises mutual information estimation
+                — no Python loops over samples. InfoNCE reduces to a single cross-entropy call,
+                exactly as used in CLIP, SimCLR, and MoCo.
             </p>
             <CodeBlock code={PY_CODE} filename="mutual_information.py" lang="python" langLabel="Python" />
             <div className="ch-callout">
-                <strong>Key insight:</strong> InfoNCE is the workhorse of modern contrastive learning
-                (CLIP, SimCLR, MoCo). It maximises a lower bound on I(view₁; view₂) — the mutual
-                information between different views of the same data point. The temperature τ
-                controls how peaked the distribution is: lower τ focuses on the hardest negatives.
+                <strong>Key insight:</strong> InfoNCE is <code>F.cross_entropy(sim / τ, labels)</code>
+                where <code>sim</code> is the B×B cosine similarity matrix. Temperature τ controls
+                hardness: lower τ concentrates probability on the nearest negatives, providing
+                stronger training signal but risking collapse.
             </div>
         </>
     )
@@ -456,5 +407,5 @@ export const MUTUAL_INFORMATION_TABS: Record<TabId, React.ReactNode> = {
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
     maths: <MathsTab />,
-    python: <PythonTab />,
+    python: <PythonTab />,
 }
