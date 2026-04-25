@@ -59,31 +59,10 @@ export const TOPICS: {
         ready: true,
     },
     {
-        id: "statistical-inference",
-        label: "Statistical Inference",
-        icon: "σ",
-        category: "Mathematics",
-        ready: true,
-    },
-    {
-        id: "entropy-kl-divergence",
-        label: "Entropy & KL Divergence",
-        icon: "ℍ",
-        category: "Mathematics",
-        ready: true,
-    },
-    {
         id: "computing",
         label: "Computing",
         icon: "⚙",
         category: "Computing",
-        ready: true,
-    },
-    {
-        id: "mutual-information",
-        label: "Mutual Information",
-        icon: "I",
-        category: "Mathematics",
         ready: true,
     },
     {
@@ -99,15 +78,28 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    "vectors-matrices": {
+    "integral-calculus": {
+        eyebrow: "Prerequisites · Mathematics",
+        subtitle: "Areas, volumes, and the fundamental theorem of calculus",
+    },
+    "derivatives-gradients": {
         eyebrow: "Prerequisites · Mathematics",
         subtitle:
-            "Vectors, matrices, dot products, and transformations — the language of data",
+            "Derivatives, chain rule, gradients, and the mechanics of learning",
     },
     "systems-equations": {
         eyebrow: "Prerequisites · Mathematics",
         subtitle:
             "Gaussian elimination, determinants, and solving linear systems",
+    },
+    "probability-foundations": {
+        eyebrow: "Prerequisites · Mathematics",
+        subtitle: "Probability spaces, distributions, Bayes, and uncertainty",
+    },
+    "vectors-matrices": {
+        eyebrow: "Prerequisites · Mathematics",
+        subtitle:
+            "Vectors, matrices, dot products, and transformations — the language of data",
     },
     eigenvalues: {
         eyebrow: "Prerequisites · Mathematics",
@@ -118,41 +110,13 @@ export const TOPIC_META: Record<
         subtitle:
             "Singular value decomposition and low-rank matrix approximations",
     },
-    "derivatives-gradients": {
-        eyebrow: "Prerequisites · Mathematics",
-        subtitle:
-            "Derivatives, chain rule, gradients, and the mechanics of learning",
-    },
-    "integral-calculus": {
-        eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Areas, volumes, and the fundamental theorem of calculus",
-    },
-    "probability-foundations": {
-        eyebrow: "Prerequisites · Mathematics",
-        subtitle: "Probability spaces, distributions, Bayes, and uncertainty",
-    },
-    "statistical-inference": {
-        eyebrow: "Prerequisites · Mathematics",
-        subtitle:
-            "Estimation, hypothesis testing, and connecting statistics to ML",
-    },
-    "entropy-kl-divergence": {
-        eyebrow: "Prerequisites · Mathematics",
-        subtitle:
-            "Entropy, cross-entropy, KL divergence, and measuring distributional distance",
-    },
-    "mutual-information": {
-        eyebrow: "Prerequisites · Mathematics",
-        subtitle:
-            "Shared information, channel capacity, and applications in ML",
+    computing: {
+        eyebrow: "Prerequisites · Computing",
+        subtitle: "CPU vs GPU, vectorised operations, memory layout — the hardware story of deep learning",
     },
     python: {
         eyebrow: "Prerequisites · Programming",
-        subtitle: "NumPy, Pandas, Matplotlib — the scientific stack",
-    },
-    computing: {
-        eyebrow: "Prerequisites · Computing",
-        subtitle: "CPU vs GPU, vectorised operations, memory layout",
+        subtitle: "NumPy, PyTorch, Matplotlib — the scientific stack that runs every algorithm in this course",
     },
 }
 
@@ -160,5 +124,4 @@ export const TABS: { id: TabId; label: string }[] = [
     { id: "history", label: "History" },
     { id: "kid", label: "Kid Explanation" },
     { id: "highschool", label: "High School" },
-
 ]

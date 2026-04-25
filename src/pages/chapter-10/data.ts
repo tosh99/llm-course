@@ -1,93 +1,88 @@
-import type { TabId, TopicId } from "./types"
+import type { TabId } from "./types"
 
-// ── Data ─────────────────────────────────────────────────────────────────────
+// ── Topics Data ──────────────────────────────────────────────────────────────
 
-export const TOPICS: {
-    id: TopicId
+export interface TopicMeta {
+    id: string
     label: string
     icon: string
     category: string
+    eyebrow: string
+    subtitle: string
     ready: boolean
-}[] = [
+}
+
+export const TOPICS: TopicMeta[] = [
     {
-        id: "word2vec",
-        label: "Word2Vec",
-        icon: "⊙",
-        category: "Word Representations",
+        id: "alexnet",
+        label: "AlexNet",
+        icon: "◆",
+        category: "Breakthrough Architectures",
+        eyebrow: "2012 · ImageNet Winner",
+        subtitle: "The deep learning revolution begins",
         ready: true,
     },
     {
-        id: "glove",
-        label: "GloVe",
-        icon: "⋯",
-        category: "Word Representations",
+        id: "vggnet",
+        label: "VGGNet",
+        icon: "≡",
+        category: "Breakthrough Architectures",
+        eyebrow: "2014 · Simplicity",
+        subtitle: "Depth through repetition",
         ready: true,
     },
     {
-        id: "fasttext",
-        label: "FastText",
-        icon: "⊂",
-        category: "Word Representations",
+        id: "googlenet",
+        label: "GoogLeNet",
+        icon: "⊛",
+        category: "Efficiency",
+        eyebrow: "2014 · Inception",
+        subtitle: "Multi-scale processing",
         ready: true,
     },
     {
-        id: "embeddings",
-        label: "Geometry of Meaning",
-        icon: "↗",
-        category: "Geometry of Meaning",
+        id: "resnet",
+        label: "ResNet",
+        icon: "⊃",
+        category: "Efficiency",
+        eyebrow: "2015 · Residual Learning",
+        subtitle: "Skip connections enable 152+ layers",
         ready: true,
     },
     {
-        id: "language-modeling",
-        label: "Language Modeling",
-        icon: "→",
-        category: "Language Models",
-        ready: true,
-    },
-    {
-        id: "perplexity",
-        label: "Perplexity",
-        icon: "?",
-        category: "Evaluation",
+        id: "densenet",
+        label: "DenseNet",
+        icon: "⊠",
+        category: "Advanced Architectures",
+        eyebrow: "2017 · Dense Connections",
+        subtitle: "Extreme feature reuse",
         ready: true,
     },
 ]
 
-export const TOPIC_META: Record<
-    TopicId,
-    { eyebrow: string; subtitle: string }
-> = {
-    word2vec: {
-        eyebrow: "Chapter 10 · Word Representations",
-        subtitle:
-            "Skip-gram and CBOW — learning dense word vectors from distributional context at scale",
-    },
-    glove: {
-        eyebrow: "Chapter 10 · Word Representations",
-        subtitle:
-            "Global co-occurrence statistics meet local context — the Stanford approach to word vectors",
-    },
-    fasttext: {
-        eyebrow: "Chapter 10 · Word Representations",
-        subtitle:
-            "Subword character n-grams — representations for morphologically rich languages and OOV words",
-    },
-    embeddings: {
-        eyebrow: "Chapter 10 · Geometry of Meaning",
-        subtitle:
-            "Analogy arithmetic, semantic subspaces, and the geometry of learned representation spaces",
-    },
-    "language-modeling": {
-        eyebrow: "Chapter 10 · Language Models",
-        subtitle:
-            "Predicting the next word — the objective that unifies RNNs, Transformers, and GPT",
-    },
-    perplexity: {
-        eyebrow: "Chapter 10 · Evaluation",
-        subtitle:
-            "Measuring how surprised a language model is by real text — the standard metric for LM benchmarking",
-    },
-}
+export const TOPIC_META: Record<string, { eyebrow: string; subtitle: string }> =
+    {
+        alexnet: {
+            eyebrow: "2012 · ImageNet Winner",
+            subtitle: "The deep learning revolution begins",
+        },
+        vggnet: {
+            eyebrow: "2014 · Simplicity",
+            subtitle: "Depth through repetition",
+        },
+        googlenet: {
+            eyebrow: "2014 · Inception",
+            subtitle: "Multi-scale processing",
+        },
+        resnet: {
+            eyebrow: "2015 · Residual Learning",
+            subtitle: "Skip connections enable 152+ layers",
+        },
+        densenet: {
+            eyebrow: "2017 · Dense Connections",
+            subtitle: "Extreme feature reuse",
+        },
+    }
 
 export const TABS: { id: TabId; label: string }[] = [
     { id: "history", label: "History" },

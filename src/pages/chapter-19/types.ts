@@ -2,10 +2,11 @@
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
 export type TopicId =
-    | "gpt3"
-    | "incontext"
-    | "fewshot"
-    | "prompt"
+    | "bert"
+    | "mlm"
+    | "nsp"
+    | "roberta"
+    | "encoder-only"
 
 declare global {
     interface Window {

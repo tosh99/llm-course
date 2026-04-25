@@ -1,114 +1,69 @@
-import type { TabId } from "./types"
+import type { TabId, TopicId } from "./types"
 
-// ── Topics Data ──────────────────────────────────────────────────────────────
+// ── Data ─────────────────────────────────────────────────────────────────────
 
-export interface TopicMeta {
-    id: string
+export const TOPICS: {
+    id: TopicId
     label: string
     icon: string
     category: string
-    eyebrow: string
-    subtitle: string
     ready: boolean
-}
-
-export const TOPICS: TopicMeta[] = [
+}[] = [
     {
-        id: "alexnet",
-        label: "AlexNet",
-        icon: "◆",
-        category: "Breakthrough Architectures",
-        eyebrow: "2012 · ImageNet Winner",
-        subtitle: "The deep learning revolution begins",
+        id: "svm",
+        label: "SVM & Kernel Trick",
+        icon: "⊥",
+        category: "Supervised Learning",
         ready: true,
     },
     {
-        id: "vggnet",
-        label: "VGGNet",
-        icon: "≡",
-        category: "Breakthrough Architectures",
-        eyebrow: "2014 · Simplicity",
-        subtitle: "Depth through repetition",
+        id: "adaboost",
+        label: "AdaBoost",
+        icon: "⬆",
+        category: "Ensemble Methods",
         ready: true,
     },
     {
-        id: "googlenet",
-        label: "GoogLeNet",
-        icon: "⊛",
-        category: "Efficiency",
-        eyebrow: "2014 · Inception",
-        subtitle: "Multi-scale processing",
+        id: "random-forests",
+        label: "Random Forests",
+        icon: "⋃",
+        category: "Ensemble Methods",
         ready: true,
     },
     {
-        id: "resnet",
-        label: "ResNet",
-        icon: "⊃",
-        category: "Efficiency",
-        eyebrow: "2015 · Residual Learning",
-        subtitle: "Skip connections enable 152+ layers",
-        ready: true,
-    },
-    {
-        id: "densenet",
-        label: "DenseNet",
-        icon: "⊠",
-        category: "Advanced Architectures",
-        eyebrow: "2017 · Dense Connections",
-        subtitle: "Extreme feature reuse",
-        ready: true,
-    },
-    {
-        id: "gans",
-        label: "GANs",
-        icon: "⚡",
-        category: "Generative Models",
-        eyebrow: "2014 · Adversarial Training",
-        subtitle: "The forger and the detective",
-        ready: true,
-    },
-    {
-        id: "vit",
-        label: "ViT",
-        icon: "◈",
-        category: "Modern Architectures",
-        eyebrow: "2020 · Transformers for Vision",
-        subtitle: "An image is worth 16×16 words",
+        id: "regularization",
+        label: "Regularization",
+        icon: "∥∥",
+        category: "Generalization",
         ready: true,
     },
 ]
 
-export const TOPIC_META: Record<string, { eyebrow: string; subtitle: string }> =
-    {
-        alexnet: {
-            eyebrow: "2012 · ImageNet Winner",
-            subtitle: "The deep learning revolution begins",
-        },
-        vggnet: {
-            eyebrow: "2014 · Simplicity",
-            subtitle: "Depth through repetition",
-        },
-        googlenet: {
-            eyebrow: "2014 · Inception",
-            subtitle: "Multi-scale processing",
-        },
-        resnet: {
-            eyebrow: "2015 · Residual Learning",
-            subtitle: "Skip connections enable 152+ layers",
-        },
-        densenet: {
-            eyebrow: "2017 · Dense Connections",
-            subtitle: "Extreme feature reuse",
-        },
-        gans: {
-            eyebrow: "2014 · Adversarial Training",
-            subtitle: "The forger and the detective",
-        },
-        vit: {
-            eyebrow: "2020 · Transformers for Vision",
-            subtitle: "An image is worth 16×16 words",
-        },
-    }
+export const TOPIC_META: Record<
+    TopicId,
+    { eyebrow: string; subtitle: string }
+> = {
+    svm: {
+        eyebrow: "Chapter 8 · Supervised Learning",
+        subtitle:
+            "Vapnik & Boser (1963 / 1992) — maximum-margin classification and the kernel trick",
+    },
+    adaboost: {
+        eyebrow: "Chapter 8 · Ensemble Methods",
+        subtitle:
+            "Freund & Schapire (1996) — boosting weak learners into a strong classifier by reweighting mistakes",
+    },
+    "random-forests": {
+        eyebrow: "Chapter 8 · Ensemble Methods",
+        subtitle:
+            "Breiman (2001) — averaging many decorrelated trees to slash variance without sacrificing accuracy",
+    },
+    regularization: {
+        eyebrow: "Chapter 8 · Generalization",
+        subtitle:
+            "Ridge, Lasso & Elastic Net — the bias-variance tradeoff made operational through penalty terms",
+    },
+}
 
 export const TABS: { id: TabId; label: string }[] = [
     { id: "history", label: "History" },

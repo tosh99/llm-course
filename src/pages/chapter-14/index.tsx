@@ -1,14 +1,19 @@
-import { useEffect, useRef, useState } from "react"
+﻿import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-14.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { SCALED_DOT_PRODUCT_TABS } from "./topics/scaled-dot-product/tabs"
-import { MULTI_HEAD_TABS } from "./topics/multi-head/tabs"
-import { POSITIONAL_ENCODING_TABS } from "./topics/positional-encoding/tabs"
-import { ENCODER_DECODER_TABS } from "./topics/encoder-decoder/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
+
+// ── Topic Tab Imports ─────────────────────────────────────────────────────────
+
+import { SEQ2SEQ_TABS } from "./topics/seq2seq/tabs"
+import { GRU_TABS } from "./topics/gru/tabs"
+import { LSTM_ENCODER_DECODER_TABS } from "./topics/lstm-encoder-decoder/tabs"
+import { MACHINE_TRANSLATION_TABS } from "./topics/machine-translation/tabs"
+import { TEACHER_FORCING_TABS } from "./topics/teacher-forcing/tabs"
+import { EVALUATION_METRICS_TABS } from "./topics/evaluation-metrics/tabs"
 
 // ── Main component ────────────────────────────────────────────────────────────
 
@@ -65,7 +70,7 @@ export function Chapter14Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -76,10 +81,12 @@ export function Chapter14Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        "scaled-dot-product": SCALED_DOT_PRODUCT_TABS[activeTab],
-        "multi-head":         MULTI_HEAD_TABS[activeTab],
-        "positional-encoding": POSITIONAL_ENCODING_TABS[activeTab],
-        "encoder-decoder":    ENCODER_DECODER_TABS[activeTab],
+        "seq2seq":              SEQ2SEQ_TABS[activeTab],
+        "gru":                  GRU_TABS[activeTab],
+        "lstm-encoder-decoder": LSTM_ENCODER_DECODER_TABS[activeTab],
+        "machine-translation":  MACHINE_TRANSLATION_TABS[activeTab],
+        "teacher-forcing":      TEACHER_FORCING_TABS[activeTab],
+        "evaluation-metrics":   EVALUATION_METRICS_TABS[activeTab],
     }
 
     return (
@@ -88,10 +95,8 @@ export function Chapter14Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 14</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">The Transformer</span>
-                <Link to="/" style={{ textDecoration: "none" }}>
-                    <span className="ch-header-badge">ML → LLM Course</span>
-                </Link>
+                <span className="ch-header-title">Seq2Seq &amp; GRU</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
             {/* ── Sidebar ── */}
             <nav className="ch-sidebar" aria-label="Chapter topics">
@@ -148,13 +153,7 @@ export function Chapter14Page() {
                 </div>
 
                 {/* Content */}
-                <article
-                    className="ch-content ch-fade"
-                    ref={contentRef}
-                    key={`${activeTopic}-${activeTab}`}
-                    onTouchStart={handleTouchStart}
-                    onTouchEnd={handleTouchEnd}
-                >
+                <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (
                             <div className="ch-coming-soon">

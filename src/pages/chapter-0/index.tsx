@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-0.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
 import { COMPUTING_TABS } from "./topics/computing/tabs"
-import { MUTUAL_INFORMATION_TABS } from "./topics/mutual-information/tabs"
 import { PYTHON_TABS } from "./topics/python/tabs"
 import { VECTORS_MATRICES_TABS } from "./topics/vectors-matrices/tabs"
 import { SYSTEMS_EQUATIONS_TABS } from "./topics/systems-equations/tabs"
@@ -12,8 +11,6 @@ import { SVD_DECOMPOSITIONS_TABS } from "./topics/svd-decompositions/tabs"
 import { DERIVATIVES_GRADIENTS_TABS } from "./topics/derivatives-gradients/tabs"
 import { INTEGRAL_CALCULUS_TABS } from "./topics/integral-calculus/tabs"
 import { PROBABILITY_FOUNDATIONS_TABS } from "./topics/probability-foundations/tabs"
-import { STATISTICAL_INFERENCE_TABS } from "./topics/statistical-inference/tabs"
-import { ENTROPY_KL_DIVERGENCE_TABS } from "./topics/entropy-kl-divergence/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -83,18 +80,15 @@ export function Chapter0Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        "vectors-matrices": VECTORS_MATRICES_TABS[activeTab],
-        "systems-equations": SYSTEMS_EQUATIONS_TABS[activeTab],
-        "eigenvalues": EIGENVALUES_TABS[activeTab],
-        "svd-decompositions": SVD_DECOMPOSITIONS_TABS[activeTab],
-        "derivatives-gradients": DERIVATIVES_GRADIENTS_TABS[activeTab],
         "integral-calculus": INTEGRAL_CALCULUS_TABS[activeTab],
+        "derivatives-gradients": DERIVATIVES_GRADIENTS_TABS[activeTab],
+        "systems-equations": SYSTEMS_EQUATIONS_TABS[activeTab],
         "probability-foundations": PROBABILITY_FOUNDATIONS_TABS[activeTab],
-        "statistical-inference": STATISTICAL_INFERENCE_TABS[activeTab],
-        "entropy-kl-divergence": ENTROPY_KL_DIVERGENCE_TABS[activeTab],
-        "mutual-information": MUTUAL_INFORMATION_TABS[activeTab],
-        python: PYTHON_TABS[activeTab],
+        "vectors-matrices": VECTORS_MATRICES_TABS[activeTab],
+        eigenvalues: EIGENVALUES_TABS[activeTab],
+        "svd-decompositions": SVD_DECOMPOSITIONS_TABS[activeTab],
         computing: COMPUTING_TABS[activeTab],
+        python: PYTHON_TABS[activeTab],
     }
 
     return (

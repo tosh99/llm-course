@@ -1,84 +1,79 @@
-import type { TabId, TopicId } from "./types"
+import type { TopicId, TabId } from "./types"
 
-// ── Data ─────────────────────────────────────────────────────────────────────
-
-export const TOPICS: {
+type TopicConfig = {
     id: TopicId
     label: string
-    icon: string
     category: string
+    icon: string
     ready: boolean
-}[] = [
-    {
-        id: "momentum",
-        label: "Momentum & Nesterov",
-        icon: "∇",
-        category: "First-Order Methods",
-        ready: true,
-    },
-    {
-        id: "adam",
-        label: "Adam Optimizer",
-        icon: "∂",
-        category: "First-Order Methods",
-        ready: true,
-    },
-    {
-        id: "batch-normalization",
-        label: "Batch Normalization",
-        icon: "μ",
-        category: "Normalization",
-        ready: true,
-    },
-    {
-        id: "layer-normalization",
-        label: "Layer Normalization",
-        icon: "σ",
-        category: "Normalization",
-        ready: true,
-    },
-    {
-        id: "lr-schedules",
-        label: "LR Schedules",
-        icon: "↝",
-        category: "Schedules",
-        ready: true,
-    },
-]
-
-export const TOPIC_META: Record<
-    TopicId,
-    { eyebrow: string; subtitle: string }
-> = {
-    momentum: {
-        eyebrow: "Chapter 9 · First-Order Methods",
-        subtitle:
-            "Accumulate past gradients to accelerate through ravines and dampen oscillations",
-    },
-    adam: {
-        eyebrow: "Chapter 9 · First-Order Methods",
-        subtitle:
-            "Adaptive per-parameter learning rates via first and second moment estimates",
-    },
-    "batch-normalization": {
-        eyebrow: "Chapter 9 · Normalization",
-        subtitle:
-            "Normalize layer inputs per mini-batch — enabling higher learning rates and stable deep training",
-    },
-    "layer-normalization": {
-        eyebrow: "Chapter 9 · Normalization",
-        subtitle:
-            "Normalize over the feature dimension — the standard for Transformers and RNNs",
-    },
-    "lr-schedules": {
-        eyebrow: "Chapter 9 · Schedules",
-        subtitle:
-            "Warmup, cosine annealing, and cyclical rates — how learning rate shapes convergence",
-    },
 }
 
-export const TABS: { id: TabId; label: string }[] = [
+type TabConfig = {
+    id: TabId
+    label: string
+}
+
+type TopicMeta = {
+    eyebrow: string
+    subtitle: string
+}
+
+// ── Topic Configuration ───────────────────────────────────────────────────────
+
+export const TABS: TabConfig[] = [
     { id: "history", label: "History" },
     { id: "kid", label: "Kid Explanation" },
     { id: "highschool", label: "High School" },
 ]
+
+export const TOPICS: TopicConfig[] = [
+    {
+        id: "deep-belief-networks",
+        label: "Deep Belief Networks",
+        category: "Pretraining",
+        icon: "⬡",
+        ready: true,
+    },
+    {
+        id: "relu",
+        label: "ReLU Activation",
+        category: "Activation",
+        icon: "∧",
+        ready: true,
+    },
+    {
+        id: "dropout",
+        label: "Dropout Regularization",
+        category: "Regularization",
+        icon: "⊘",
+        ready: true,
+    },
+    {
+        id: "initialization",
+        label: "Weight Initialization",
+        category: "Training",
+        icon: "∇",
+        ready: true,
+    },
+]
+
+// ── Topic Metadata ─────────────────────────────────────────────────────────────
+
+export const TOPIC_META: Record<TopicId, TopicMeta> = {
+    "deep-belief-networks": {
+        eyebrow: "2006",
+        subtitle: "Hinton's unsupervised pretraining strategy that made training deep networks feasible",
+    },
+    "relu": {
+        eyebrow: "2010",
+        subtitle: "Rectified Linear Units eliminate the vanishing gradient problem with simple computation",
+    },
+    "dropout": {
+        eyebrow: "2014",
+        subtitle: "Randomly dropping neurons during training as a powerful regularization technique",
+    },
+    "initialization": {
+        eyebrow: "2010",
+        subtitle: "Xavier and He initialization strategies for stable gradient flow in deep networks",
+    },
+}

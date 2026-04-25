@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from "react"
+﻿import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-12.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { BAHDANAU_TABS } from "./topics/bahdanau/tabs"
-import { ALIGNMENT_SCORES_TABS } from "./topics/alignment-scores/tabs"
-import { LUONG_TABS } from "./topics/luong/tabs"
-import { SOFT_HARD_TABS } from "./topics/soft-hard/tabs"
+import { MOMENTUM_TABS } from "./topics/momentum/tabs"
+import { ADAM_TABS } from "./topics/adam/tabs"
+import { BATCH_NORMALIZATION_TABS } from "./topics/batch-normalization/tabs"
+import { LAYER_NORMALIZATION_TABS } from "./topics/layer-normalization/tabs"
+import { LR_SCHEDULES_TABS } from "./topics/lr-schedules/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -65,7 +66,7 @@ export function Chapter12Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -76,10 +77,11 @@ export function Chapter12Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        bahdanau:          BAHDANAU_TABS[activeTab],
-        "alignment-scores": ALIGNMENT_SCORES_TABS[activeTab],
-        luong:             LUONG_TABS[activeTab],
-        "soft-hard":       SOFT_HARD_TABS[activeTab],
+        momentum:             MOMENTUM_TABS[activeTab],
+        adam:                 ADAM_TABS[activeTab],
+        "batch-normalization": BATCH_NORMALIZATION_TABS[activeTab],
+        "layer-normalization": LAYER_NORMALIZATION_TABS[activeTab],
+        "lr-schedules":       LR_SCHEDULES_TABS[activeTab],
     }
 
     return (
@@ -88,10 +90,8 @@ export function Chapter12Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 12</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Attention Mechanism</span>
-                <Link to="/" style={{ textDecoration: "none" }}>
-                    <span className="ch-header-badge">ML → LLM Course</span>
-                </Link>
+                <span className="ch-header-title">Optimization &amp; Training Techniques</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
             {/* ── Sidebar ── */}
             <nav className="ch-sidebar" aria-label="Chapter topics">
@@ -148,13 +148,7 @@ export function Chapter12Page() {
                 </div>
 
                 {/* Content */}
-                <article
-                    className="ch-content ch-fade"
-                    ref={contentRef}
-                    key={`${activeTopic}-${activeTab}`}
-                    onTouchStart={handleTouchStart}
-                    onTouchEnd={handleTouchEnd}
-                >
+                <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (
                             <div className="ch-coming-soon">

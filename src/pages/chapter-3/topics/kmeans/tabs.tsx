@@ -9,7 +9,7 @@ function HistoryTab() {
         {
             year: "1957",
             title: "Stuart Lloyd — Least-Squares Quantisation",
-            challenge: "Bell Labs engineers needed a way to compress speech signals for telephone transmission. The challenge was to represent a continuous distribution of voice amplitudes using only a small finite set of codewords, minimising the overall distortion.",
+            challenge: "The year is 1957 — the same year Rosenblatt demonstrated the perceptron. But at Bell Labs, Stuart Lloyd was working on a problem with no labels: given a stream of speech amplitudes, how do you represent them compactly? There are no categories to learn, no right answers to correct toward. The algorithm had to discover structure on its own. Lloyd needed a way to represent a continuous distribution of voice amplitudes using only a small finite set of codewords, minimising the overall distortion.",
             what: "Stuart Lloyd derived an iterative algorithm for optimal scalar quantisation: alternate between (1) assigning each input value to its nearest codeword and (2) replacing each codeword with the mean of all inputs assigned to it. He noted convergence to a local minimum but did not publish the result until 1982 due to internal Bell Labs review processes.",
             impact: "Lloyd's algorithm is the mathematical foundation of k-means. Every modern implementation of k-means is, in essence, Lloyd's algorithm applied to vector-valued data. The same alternating assignment-update structure appears in dozens of unsupervised learning methods.",
         },
@@ -58,6 +58,10 @@ function KidTab() {
     return (
         <>
             <h2>Sorting things into piles by moving the middle</h2>
+
+            <p className="ch-story-intro">
+                Chapter 2 ended with the AI Winter: Minsky's 1969 proof that perceptrons couldn't learn XOR froze neural network research for nearly two decades. But there was a completely parallel universe of algorithms — ones that never needed labels to begin with. While the neural network field slept, statisticians and engineers were building methods for finding structure in unlabeled data. k-Means is the oldest of them.
+            </p>
 
             <Analogy label="What k-means does">
                 Imagine you have a bag of mixed candy — red, blue, and yellow ones — scattered on a table. You want to sort them into three groups, but nobody told you which group each candy belongs to. <strong>k-means</strong> lets the computer figure it out automatically.

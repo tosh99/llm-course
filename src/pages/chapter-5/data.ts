@@ -10,31 +10,45 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "simple-rnn",
-        label: "Simple RNNs",
-        icon: "⟳",
+        id: "backpropagation",
+        label: "Backpropagation",
+        icon: "⇄",
+        category: "Core Algorithm",
+        ready: true,
+    },
+    {
+        id: "mlp",
+        label: "Multi-layer Perceptrons",
+        icon: "◎",
         category: "Architecture",
         ready: true,
     },
     {
-        id: "bptt",
-        label: "Backpropagation Through Time",
-        icon: "⤵",
+        id: "activation-functions",
+        label: "Activation Functions",
+        icon: "∿",
+        category: "Architecture",
+        ready: true,
+    },
+    {
+        id: "gradient-descent",
+        label: "Gradient Descent",
+        icon: "∇",
         category: "Training",
         ready: true,
     },
     {
-        id: "vanishing-gradient",
-        label: "Vanishing Gradient Problem",
+        id: "vanishing-gradients",
+        label: "Vanishing / Exploding Gradients",
         icon: "↘",
         category: "Training",
         ready: true,
     },
     {
-        id: "lstm",
-        label: "Long Short-Term Memory",
-        icon: "⊡",
-        category: "Architecture",
+        id: "autoencoders",
+        label: "Autoencoders",
+        icon: "⊃",
+        category: "Application",
         ready: true,
     },
 ]
@@ -43,25 +57,34 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    "simple-rnn": {
+    backpropagation: {
+        eyebrow: "Chapter 5 · Core Algorithm",
+        subtitle:
+            "The chain rule of calculus applied recursively — how networks actually learn",
+    },
+    mlp: {
+        eyebrow: "Chapter 5 · Architecture",
+        subtitle: "Stacking hidden layers to break the perceptron's limits",
+    },
+    "activation-functions": {
         eyebrow: "Chapter 5 · Architecture",
         subtitle:
-            "Adding memory to neural networks — Elman and Jordan recurrent architectures",
+            "Sigmoid, tanh, and why non-linearity is the soul of deep networks",
     },
-    bptt: {
+    "gradient-descent": {
         eyebrow: "Chapter 5 · Training",
         subtitle:
-            "Unrolling time: how gradients flow backwards through sequence steps",
+            "Batch, stochastic, and mini-batch — three ways to follow the slope downhill",
     },
-    "vanishing-gradient": {
+    "vanishing-gradients": {
         eyebrow: "Chapter 5 · Training",
         subtitle:
-            "Why RNNs forget: the curse of exponentially decaying gradients in deep sequences",
+            "The training instability that stalled deep networks for two decades",
     },
-    lstm: {
-        eyebrow: "Chapter 5 · Architecture",
+    autoencoders: {
+        eyebrow: "Chapter 5 · Application",
         subtitle:
-            "Hochreiter & Schmidhuber's gating solution — letting the network decide what to remember",
+            "Train an MLP to compress and reconstruct its input — unsupervised representation learning",
     },
 }
 

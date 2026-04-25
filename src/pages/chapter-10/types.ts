@@ -1,13 +1,7 @@
 // ── Types ────────────────────────────────────────────────────────────────────
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
-export type TopicId =
-    | "word2vec"
-    | "glove"
-    | "fasttext"
-    | "embeddings"
-    | "language-modeling"
-    | "perplexity"
+export type TopicId = "alexnet" | "vggnet" | "googlenet" | "resnet" | "densenet"
 
 declare global {
     interface Window {

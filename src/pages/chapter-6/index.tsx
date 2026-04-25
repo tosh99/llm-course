@@ -2,20 +2,16 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-6.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
+import { SIMPLE_RNN_TABS } from "./topics/simple-rnn/tabs"
+import { BPTT_TABS } from "./topics/bptt/tabs"
+import { VANISHING_GRADIENT_TABS } from "./topics/vanishing-gradient/tabs"
+import { LSTM_TABS } from "./topics/lstm/tabs"
+import { BIDIRECTIONAL_TABS } from "./topics/bidirectional/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
 
-// ── Topic Tab Imports ─────────────────────────────────────────────────────────
-
-import { INTRODUCTION_TABS } from "./topics/introduction/tabs"
-import { WEIGHT_SHARING_TABS } from "./topics/weight-sharing/tabs"
-import { LENET_TABS } from "./topics/lenet/tabs"
-import { BUILDING_BLOCKS_TABS } from "./topics/building-blocks/tabs"
-import { FEATURE_HIERARCHIES_TABS } from "./topics/feature-hierarchies/tabs"
-import { WHY_CNNS_STALLED_TABS } from "./topics/why-cnns-stalled/tabs"
-
-// ── Main component ─────────────────────────────────────────────────────────────
+// ── Main component ────────────────────────────────────────────────────────────
 
 export function Chapter6Page() {
     const navigate = useNavigate()
@@ -70,7 +66,7 @@ export function Chapter6Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -81,12 +77,11 @@ export function Chapter6Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        introduction: INTRODUCTION_TABS[activeTab],
-        "weight-sharing": WEIGHT_SHARING_TABS[activeTab],
-        lenet: LENET_TABS[activeTab],
-        "building-blocks": BUILDING_BLOCKS_TABS[activeTab],
-        "feature-hierarchies": FEATURE_HIERARCHIES_TABS[activeTab],
-        "why-cnns-stalled": WHY_CNNS_STALLED_TABS[activeTab],
+        "simple-rnn": SIMPLE_RNN_TABS[activeTab],
+        bptt: BPTT_TABS[activeTab],
+        "vanishing-gradient": VANISHING_GRADIENT_TABS[activeTab],
+        lstm: LSTM_TABS[activeTab],
+        bidirectional: BIDIRECTIONAL_TABS[activeTab],
     }
 
     return (
@@ -95,7 +90,7 @@ export function Chapter6Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 6</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Convolutional Neural Networks</span>
+                <span className="ch-header-title">Recurrent Neural Networks</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
             {/* ── Sidebar ── */}

@@ -1,4 +1,4 @@
-import type { TabId, TopicId } from "./types"
+﻿import type { TabId, TopicId } from "./types"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -10,31 +10,31 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "ulmfit",
-        label: "ULMFiT",
-        icon: "↻",
-        category: "Transfer Learning",
+        id: "bahdanau",
+        label: "Bahdanau Attention",
+        icon: "α",
+        category: "Attention Foundations",
         ready: true,
     },
     {
-        id: "elmo",
-        label: "ELMo",
-        icon: "⇄",
-        category: "Transfer Learning",
+        id: "alignment-scores",
+        label: "Alignment Scores",
+        icon: "∝",
+        category: "Attention Foundations",
         ready: true,
     },
     {
-        id: "gpt1",
-        label: "GPT-1",
-        icon: "▦",
-        category: "Pre-training",
+        id: "luong",
+        label: "Luong Attention",
+        icon: "⊙",
+        category: "Attention Variants",
         ready: true,
     },
     {
-        id: "pretrain-finetune",
-        label: "Pre-train → Fine-tune",
-        icon: "⧉",
-        category: "Pre-training",
+        id: "soft-hard",
+        label: "Soft vs Hard",
+        icon: "⇒",
+        category: "Attention Variants",
         ready: true,
     },
 ]
@@ -43,25 +43,25 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    ulmfit: {
-        eyebrow: "Chapter 15 · Transfer Learning",
+    bahdanau: {
+        eyebrow: "Chapter 15 · Attention Foundations",
         subtitle:
-            "Universal Language Model Fine-tuning — a disciplined three-stage recipe for adapting LMs to any NLP task",
+            "Additive attention that jointly learns to align and translate — breaking the fixed-context bottleneck",
     },
-    elmo: {
-        eyebrow: "Chapter 15 · Transfer Learning",
+    "alignment-scores": {
+        eyebrow: "Chapter 15 · Attention Foundations",
         subtitle:
-            "Deep contextualized word representations that change meaning based on surrounding context",
+            "Scoring functions that measure compatibility — additive, dot-product, and general variants compared",
     },
-    gpt1: {
-        eyebrow: "Chapter 15 · Pre-training",
+    luong: {
+        eyebrow: "Chapter 15 · Attention Variants",
         subtitle:
-            "Generative pre-training with unsupervised multi-task learning — the decoder-only revolution begins",
+            "Multiplicative global and local attention — simpler formulations with competitive performance",
     },
-    "pretrain-finetune": {
-        eyebrow: "Chapter 15 · Pre-training",
+    "soft-hard": {
+        eyebrow: "Chapter 15 · Attention Variants",
         subtitle:
-            "The paradigm shift: train once on massive unlabeled data, then adapt to any downstream task",
+            "Soft attention blends all positions; hard attention samples one — differentiability vs interpretability",
     },
 }
 

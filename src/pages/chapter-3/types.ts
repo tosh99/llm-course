@@ -4,7 +4,6 @@ export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
 export type TopicId =
     | "kmeans"
     | "hierarchical"
-    | "pca"
     | "gmm-em"
 
 declare global {

@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-9.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { MOMENTUM_TABS } from "./topics/momentum/tabs"
-import { ADAM_TABS } from "./topics/adam/tabs"
-import { BATCH_NORMALIZATION_TABS } from "./topics/batch-normalization/tabs"
-import { LAYER_NORMALIZATION_TABS } from "./topics/layer-normalization/tabs"
-import { LR_SCHEDULES_TABS } from "./topics/lr-schedules/tabs"
+import { DEEP_BELIEF_NETWORKS_TABS } from "./topics/deep-belief-networks/tabs"
+import { RELU_TABS } from "./topics/relu/tabs"
+import { DROPOUT_TABS } from "./topics/dropout/tabs"
+import { INITIALIZATION_TABS } from "./topics/initialization/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -66,7 +65,7 @@ export function Chapter9Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -77,11 +76,10 @@ export function Chapter9Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        momentum:             MOMENTUM_TABS[activeTab],
-        adam:                 ADAM_TABS[activeTab],
-        "batch-normalization": BATCH_NORMALIZATION_TABS[activeTab],
-        "layer-normalization": LAYER_NORMALIZATION_TABS[activeTab],
-        "lr-schedules":       LR_SCHEDULES_TABS[activeTab],
+        "deep-belief-networks": DEEP_BELIEF_NETWORKS_TABS[activeTab],
+        "relu": RELU_TABS[activeTab],
+        "dropout": DROPOUT_TABS[activeTab],
+        "initialization": INITIALIZATION_TABS[activeTab],
     }
 
     return (
@@ -90,7 +88,7 @@ export function Chapter9Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 9</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Optimization &amp; Training</span>
+                <span className="ch-header-title">Deep Learning Reignition</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
             {/* ── Sidebar ── */}

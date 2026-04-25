@@ -64,7 +64,7 @@ function HistoryTab() {
             what:
                 "PyTorch adopted a dynamic computation graph: operations execute immediately (eager mode), tensors behave like NumPy arrays that happen to track gradients, and you can mix regular Python control flow (loops, conditionals, print statements) with tensor operations. It felt like writing NumPy code that automatically differentiated.",
             impact:
-                "PyTorch became the dominant framework for ML research. Its Python-first philosophy means the language you use for data loading (Pandas), numerical computing (NumPy), and model training (PyTorch) are the same. Autograd — automatic differentiation — tracks every operation on a tensor and computes gradients with .backward(). This is Leibniz's chain rule (from derivatives & gradients), applied to a computation graph, implemented in C++/CUDA, and called from a single Python line. Chapter 0 ends here: the tools are in your hands.",
+                "PyTorch became the dominant framework for ML research. Its Python-first philosophy means the language you use for data loading (Pandas), numerical computing (NumPy), and model training (PyTorch) are the same. Autograd — automatic differentiation — tracks every operation on a tensor and computes gradients with .backward(). This is Leibniz's chain rule (from derivatives & gradients), applied to a computation graph, implemented in C++/CUDA, and called from a single Python line. Chapter 0's mathematical foundations are now code. Chapter 1 begins the historical story of how these tools were discovered — starting with Gauss in 1801.",
         },
     ]
 
@@ -83,7 +83,7 @@ function KidTab() {
             <h2>Teaching computers with recipes</h2>
 
             <p className="ch-story-intro">
-                Chapter 0 has covered eleven mathematical topics: integration, differentiation, linear systems, probability, vectors, eigenvalues, SVD, statistical inference, entropy, computing hardware, and mutual information. Every one of these concepts is a formula on paper — until you write it in code. Python is the language that collapses the gap between mathematical idea and running experiment.
+                Chapter 0 has covered the mathematical foundations in eight topics: integration, differentiation, linear systems, probability, vectors and matrices, eigenvalues, singular value decomposition, and computing hardware. Every one of these concepts is a formula on paper — until you write it in code. Python is the language that collapses the gap between mathematical idea and running experiment.
             </p>
 
             <Analogy label="Python = A language designed for ideas, not just instructions">
@@ -132,10 +132,10 @@ function KidTab() {
                 Python is the <em>language</em> of AI. When researchers discover a new technique, they write it in Python. When companies deploy AI models, they use Python. The three tools you'll use most — <strong>NumPy</strong> (numbers and matrix operations from linear algebra), <strong>Pandas</strong> (tables and data cleaning), and <strong>PyTorch</strong> (neural networks with automatic differentiation) — are all Python libraries that directly implement the mathematics from this chapter.
             </Analogy>
 
-            <Analogy label="Chapter 0 is complete — everything is in your hands">
-                You started with integration (measuring accumulated totals). You learned differentiation (measuring rates of change). You learned how to solve systems of equations, reason under probability and uncertainty, organise data with vectors and matrices, find natural structure with eigenvalues and SVD, test statistical significance, measure information with entropy, run fast computations on GPUs, and quantify what two variables share with mutual information.
+            <Analogy label="Chapter 0 is complete — the scaffold is ready">
+                You started with integration (measuring accumulated totals). You learned differentiation (measuring rates of change). You learned how to solve systems of equations, reason under probability and uncertainty, organise data with vectors and matrices, find natural structure with eigenvalues and SVD, and run fast computations on GPUs.
                 <br /><br />
-                Every one of those topics is now a Python function away. <code>torch.linalg.svd()</code>. <code>torch.distributions.Normal()</code>. <code>F.cross_entropy()</code>. <code>loss.backward()</code>. Chapter 1 uses all of them — in the first actual neural network.
+                Every one of those tools is now a Python function away. <code>torch.linalg.svd()</code>. <code>torch.distributions.Normal()</code>. <code>loss.backward()</code>. Chapter 1 begins the historical story: starting in 1801, with Gauss's method of least squares and the first statistical learning algorithm. The mathematics you built in Chapter 0 is exactly what he used.
             </Analogy>
         </>
     )

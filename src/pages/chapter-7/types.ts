@@ -1,11 +1,20 @@
 // ── Types ────────────────────────────────────────────────────────────────────
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
+
 export type TopicId =
-    | "deep-belief-networks"
-    | "relu"
-    | "dropout"
-    | "initialization"
+    | "introduction"
+    | "weight-sharing"
+    | "lenet"
+    | "building-blocks"
+    | "feature-hierarchies"
+    | "why-cnns-stalled"
+
+export interface Section {
+    key: TopicId
+    label: string
+    icon: string
+}
 
 declare global {
     interface Window {

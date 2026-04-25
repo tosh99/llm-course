@@ -2,12 +2,10 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-4.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { BACKPROPAGATION_TABS } from "./topics/backpropagation/tabs"
-import { MLP_TABS } from "./topics/mlp/tabs"
-import { ACTIVATION_FUNCTIONS_TABS } from "./topics/activation-functions/tabs"
-import { GRADIENT_DESCENT_TABS } from "./topics/gradient-descent/tabs"
-import { VANISHING_GRADIENTS_TABS } from "./topics/vanishing-gradients/tabs"
-import { AUTOENCODERS_TABS } from "./topics/autoencoders/tabs"
+import { ID3_TABS } from "./topics/id3/tabs"
+import { CART_TABS } from "./topics/cart/tabs"
+import { GINI_ENTROPY_TABS } from "./topics/gini-entropy/tabs"
+import { PRUNING_TABS } from "./topics/pruning/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -17,7 +15,7 @@ const TAB_IDS = TABS.map((t) => t.id)
 export function Chapter4Page() {
     const navigate = useNavigate()
     const location = useLocation()
-    const chapterNum = parseInt(location.pathname.split('/').pop() ?? '1')
+    const chapterNum = parseInt(location.pathname.split('/').pop() ?? '4')
     const [activeTopic, setActiveTopic] = useState<TopicId>(() =>
         (location.state as { startAtLastTopic?: boolean })?.startAtLastTopic
             ? TOPICS[TOPICS.length - 1].id
@@ -67,7 +65,7 @@ export function Chapter4Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -78,12 +76,10 @@ export function Chapter4Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        backpropagation: BACKPROPAGATION_TABS[activeTab],
-        mlp: MLP_TABS[activeTab],
-        "activation-functions": ACTIVATION_FUNCTIONS_TABS[activeTab],
-        "gradient-descent": GRADIENT_DESCENT_TABS[activeTab],
-        "vanishing-gradients": VANISHING_GRADIENTS_TABS[activeTab],
-        autoencoders: AUTOENCODERS_TABS[activeTab],
+        id3:           ID3_TABS[activeTab],
+        cart:          CART_TABS[activeTab],
+        "gini-entropy": GINI_ENTROPY_TABS[activeTab],
+        pruning:       PRUNING_TABS[activeTab],
     }
 
     return (
@@ -92,9 +88,10 @@ export function Chapter4Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 4</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Backpropagation &amp; MLPs</span>
+                <span className="ch-header-title">Decision Trees</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
+
             {/* ── Sidebar ── */}
             <nav className="ch-sidebar" aria-label="Chapter topics">
                 <button
@@ -129,13 +126,11 @@ export function Chapter4Page() {
 
             {/* ── Main ── */}
             <main className="ch-main">
-                {/* Topic header */}
                 <div className="ch-topic-header">
                     <div className="ch-eyebrow">{topic.eyebrow}</div>
                     <h1 className="ch-topic-title">{topicLabel}</h1>
                     <div className="ch-topic-subtitle">{topic.subtitle}</div>
 
-                    {/* Tabs */}
                     <div className="ch-tabs">
                         {TABS.map((tab) => (
                             <button
@@ -149,7 +144,6 @@ export function Chapter4Page() {
                     </div>
                 </div>
 
-                {/* Content */}
                 <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (

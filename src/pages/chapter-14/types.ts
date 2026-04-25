@@ -1,11 +1,13 @@
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Types ────────────────────────────────────────────────────────────────────
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
 export type TopicId =
-    | "scaled-dot-product"
-    | "multi-head"
-    | "positional-encoding"
-    | "encoder-decoder"
+    | "seq2seq"
+    | "gru"
+    | "lstm-encoder-decoder"
+    | "machine-translation"
+    | "teacher-forcing"
+    | "evaluation-metrics"
 
 declare global {
     interface Window {

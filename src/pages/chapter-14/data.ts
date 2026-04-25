@@ -1,4 +1,4 @@
-import type { TabId, TopicId } from "./types"
+﻿import type { TabId, TopicId } from "./types"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -10,31 +10,39 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "scaled-dot-product",
-        label: "Scaled Dot-Product",
-        icon: "⊙",
-        category: "Attention",
+        id: "seq2seq",
+        label: "Sequence-to-Sequence",
+        icon: "⇌",
+        category: "Architecture",
         ready: true,
     },
+    { id: "gru", label: "Gated Recurrent Unit", icon: "⟳", category: "Architecture", ready: true },
     {
-        id: "multi-head",
-        label: "Multi-Head Attention",
-        icon: "⧉",
-        category: "Attention",
-        ready: true,
-    },
-    {
-        id: "positional-encoding",
-        label: "Positional Encoding",
-        icon: "⌖",
+        id: "lstm-encoder-decoder",
+        label: "LSTM Encoder-Decoder",
+        icon: "⧖",
         category: "Architecture",
         ready: true,
     },
     {
-        id: "encoder-decoder",
-        label: "Encoder / Decoder",
-        icon: "⇄",
-        category: "Architecture",
+        id: "machine-translation",
+        label: "Machine Translation",
+        icon: "◈",
+        category: "Application",
+        ready: true,
+    },
+    {
+        id: "teacher-forcing",
+        label: "Teacher Forcing",
+        icon: "↵",
+        category: "Training",
+        ready: true,
+    },
+    {
+        id: "evaluation-metrics",
+        label: "BLEU / ROUGE",
+        icon: "★",
+        category: "Evaluation",
         ready: true,
     },
 ]
@@ -43,25 +51,31 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    "scaled-dot-product": {
-        eyebrow: "Chapter 14 · Attention",
-        subtitle:
-            "The core operation that replaced recurrence with direct pairwise comparison",
-    },
-    "multi-head": {
-        eyebrow: "Chapter 14 · Attention",
-        subtitle:
-            "Running attention in parallel subspaces to capture diverse relational patterns",
-    },
-    "positional-encoding": {
+    seq2seq: {
         eyebrow: "Chapter 14 · Architecture",
         subtitle:
-            "Injecting order information into a permutation-invariant architecture",
+            "The 2014 breakthrough: mapping any-length input sequences to any-length output sequences",
     },
-    "encoder-decoder": {
+    gru: { eyebrow: "Chapter 14 · Architecture", subtitle: "Cho et al. (2014) — the same paper as Seq2Seq, gating without separate cell state" },
+    "lstm-encoder-decoder": {
         eyebrow: "Chapter 14 · Architecture",
         subtitle:
-            "The full Transformer stack: self-attention, cross-attention, and feed-forward layers",
+            "LSTM cells as the encoder–decoder backbone — and Sutskever's source-reversal trick",
+    },
+    "machine-translation": {
+        eyebrow: "Chapter 14 · Application",
+        subtitle:
+            "The task that drove seq2seq — and where neural MT first surpassed statistical baselines",
+    },
+    "teacher-forcing": {
+        eyebrow: "Chapter 14 · Training",
+        subtitle:
+            "Feeding ground truth inputs during training and managing the resulting exposure bias",
+    },
+    "evaluation-metrics": {
+        eyebrow: "Chapter 14 · Evaluation",
+        subtitle:
+            "Automatic n-gram metrics for machine translation and summarization — and their modern successors",
     },
 }
 

@@ -24,13 +24,6 @@ export const TOPICS: {
         ready: true,
     },
     {
-        id: "pca",
-        label: "Principal Component Analysis",
-        icon: "↗",
-        category: "Dimensionality Reduction",
-        ready: true,
-    },
-    {
         id: "gmm-em",
         label: "Gaussian Mixtures & EM",
         icon: "≋",
@@ -44,22 +37,17 @@ export const TOPIC_META: Record<
     { eyebrow: string; subtitle: string }
 > = {
     kmeans: {
-        eyebrow: "Unsupervised Learning · Clustering",
+        eyebrow: "Chapter 3 · Clustering",
         subtitle:
             "Partition data into K groups by iteratively moving centroids toward cluster means",
     },
     hierarchical: {
-        eyebrow: "Unsupervised Learning · Clustering",
+        eyebrow: "Chapter 3 · Clustering",
         subtitle:
             "Build a tree of nested clusters — no need to specify K in advance",
     },
-    pca: {
-        eyebrow: "Unsupervised Learning · Dimensionality Reduction",
-        subtitle:
-            "Find the directions of maximum variance to compress high-dimensional data",
-    },
     "gmm-em": {
-        eyebrow: "Unsupervised Learning · Density Estimation",
+        eyebrow: "Chapter 3 · Density Estimation",
         subtitle:
             "Model data as a mixture of Gaussians and learn them with the EM algorithm",
     },

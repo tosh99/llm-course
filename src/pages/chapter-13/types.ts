@@ -1,11 +1,13 @@
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Types ────────────────────────────────────────────────────────────────────
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
 export type TopicId =
-    | "gru"
-    | "bidirectional"
-    | "deep-rnns"
-    | "sequential-parallelism"
+    | "word2vec"
+    | "glove"
+    | "fasttext"
+    | "embeddings"
+    | "language-modeling"
+    | "perplexity"
 
 declare global {
     interface Window {

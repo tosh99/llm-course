@@ -1,4 +1,4 @@
-import type { TabId, TopicId } from "./types"
+﻿import type { TabId, TopicId } from "./types"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -10,26 +10,25 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "instructgpt",
-        label: "InstructGPT",
-        icon: "◈",
-        category: "Alignment",
+        id: "gpt2",
+        label: "GPT-2",
+        icon: "▦",
+        category: "Scaling Up",
         ready: true,
     },
-    { id: "sft", label: "SFT", icon: "▤", category: "Alignment", ready: true },
     {
-        id: "reward-model",
-        label: "Reward Model",
-        icon: "★",
-        category: "RLHF",
+        id: "scaling-laws",
+        label: "Scaling Laws",
+        icon: "↗",
+        category: "Scaling Up",
         ready: true,
     },
-    { id: "ppo", label: "PPO", icon: "↯", category: "RLHF", ready: true },
+    { id: "t5", label: "T5", icon: "⇄", category: "Text-to-Text", ready: true },
     {
-        id: "constitutional-ai",
-        label: "Constitutional AI",
-        icon: "⚖",
-        category: "Safety",
+        id: "zero-shot",
+        label: "Zero-Shot",
+        icon: "◉",
+        category: "Capabilities",
         ready: true,
     },
 ]
@@ -38,30 +37,25 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    instructgpt: {
-        eyebrow: "Chapter 20 · Alignment",
+    gpt2: {
+        eyebrow: "Chapter 20 · Scaling Up",
         subtitle:
-            "Training language models to follow instructions with human feedback — the InstructGPT recipe",
+            "1.5 billion parameters, zero-shot task performance, and the beginning of the scaling era",
     },
-    sft: {
-        eyebrow: "Chapter 20 · Alignment",
+    "scaling-laws": {
+        eyebrow: "Chapter 20 · Scaling Up",
         subtitle:
-            "Supervised Fine-Tuning — teaching the model the shape of helpful, honest, harmless responses",
+            "Predictable power laws that govern how loss improves with model size, data, and compute",
     },
-    "reward-model": {
-        eyebrow: "Chapter 20 · RLHF",
+    t5: {
+        eyebrow: "Chapter 20 · Text-to-Text",
         subtitle:
-            "Learning to rank model outputs by training a reward model on human preferences",
+            "A unified encoder-decoder framework that casts every NLP task as text-to-text translation",
     },
-    ppo: {
-        eyebrow: "Chapter 20 · RLHF",
+    "zero-shot": {
+        eyebrow: "Chapter 20 · Capabilities",
         subtitle:
-            "Proximal Policy Optimization — stabilizing reinforcement learning for language model updates",
-    },
-    "constitutional-ai": {
-        eyebrow: "Chapter 20 · Safety",
-        subtitle:
-            "Self-supervised alignment through constitutional principles and AI feedback",
+            "Emergent ability to perform tasks without any task-specific training or gradient updates",
     },
 }
 

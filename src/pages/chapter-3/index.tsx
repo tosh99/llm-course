@@ -4,7 +4,6 @@ import "./chapter-3.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
 import { KMEANS_TABS } from "./topics/kmeans/tabs"
 import { HIERARCHICAL_TABS } from "./topics/hierarchical/tabs"
-import { PCA_TABS } from "./topics/pca/tabs"
 import { GMM_EM_TABS } from "./topics/gmm-em/tabs"
 import type { TabId, TopicId } from "./types"
 
@@ -78,7 +77,6 @@ export function Chapter3Page() {
     const tabContent: Record<TopicId, React.ReactNode> = {
         kmeans:       KMEANS_TABS[activeTab],
         hierarchical: HIERARCHICAL_TABS[activeTab],
-        pca:          PCA_TABS[activeTab],
         "gmm-em":     GMM_EM_TABS[activeTab],
     }
 

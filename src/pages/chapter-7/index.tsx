@@ -2,15 +2,20 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-7.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { DEEP_BELIEF_NETWORKS_TABS } from "./topics/deep-belief-networks/tabs"
-import { RELU_TABS } from "./topics/relu/tabs"
-import { DROPOUT_TABS } from "./topics/dropout/tabs"
-import { INITIALIZATION_TABS } from "./topics/initialization/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
 
-// ── Main component ────────────────────────────────────────────────────────────
+// ── Topic Tab Imports ─────────────────────────────────────────────────────────
+
+import { INTRODUCTION_TABS } from "./topics/introduction/tabs"
+import { WEIGHT_SHARING_TABS } from "./topics/weight-sharing/tabs"
+import { LENET_TABS } from "./topics/lenet/tabs"
+import { BUILDING_BLOCKS_TABS } from "./topics/building-blocks/tabs"
+import { FEATURE_HIERARCHIES_TABS } from "./topics/feature-hierarchies/tabs"
+import { WHY_CNNS_STALLED_TABS } from "./topics/why-cnns-stalled/tabs"
+
+// ── Main component ─────────────────────────────────────────────────────────────
 
 export function Chapter7Page() {
     const navigate = useNavigate()
@@ -65,7 +70,7 @@ export function Chapter7Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -76,10 +81,12 @@ export function Chapter7Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        "deep-belief-networks": DEEP_BELIEF_NETWORKS_TABS[activeTab],
-        "relu": RELU_TABS[activeTab],
-        "dropout": DROPOUT_TABS[activeTab],
-        "initialization": INITIALIZATION_TABS[activeTab],
+        introduction: INTRODUCTION_TABS[activeTab],
+        "weight-sharing": WEIGHT_SHARING_TABS[activeTab],
+        lenet: LENET_TABS[activeTab],
+        "building-blocks": BUILDING_BLOCKS_TABS[activeTab],
+        "feature-hierarchies": FEATURE_HIERARCHIES_TABS[activeTab],
+        "why-cnns-stalled": WHY_CNNS_STALLED_TABS[activeTab],
     }
 
     return (
@@ -88,7 +95,7 @@ export function Chapter7Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 7</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Deep Learning Reignition</span>
+                <span className="ch-header-title">Convolutional Neural Networks</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
             {/* ── Sidebar ── */}

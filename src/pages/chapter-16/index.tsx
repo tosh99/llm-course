@@ -1,12 +1,9 @@
-import { useEffect, useRef, useState } from "react"
+﻿import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-16.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { BERT_TABS } from "./topics/bert/tabs"
-import { MLM_TABS } from "./topics/mlm/tabs"
-import { NSP_TABS } from "./topics/nsp/tabs"
-import { ROBERTA_TABS } from "./topics/roberta/tabs"
-import { ENCODER_ONLY_TABS } from "./topics/encoder-only/tabs"
+import { DEEP_RNNS_TABS } from "./topics/deep-rnns/tabs"
+import { SEQUENTIAL_PARALLELISM_TABS } from "./topics/sequential-parallelism/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -66,7 +63,7 @@ export function Chapter16Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -77,11 +74,10 @@ export function Chapter16Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        bert:          BERT_TABS[activeTab],
-        mlm:           MLM_TABS[activeTab],
-        nsp:           NSP_TABS[activeTab],
-        roberta:       ROBERTA_TABS[activeTab],
-        "encoder-only": ENCODER_ONLY_TABS[activeTab],
+        "deep-rnns":           DEEP_RNNS_TABS[activeTab],
+        "sequential-parallelism": SEQUENTIAL_PARALLELISM_TABS[activeTab],
+        "pointer-networks":    undefined,
+        "wavenet":             undefined,
     }
 
     return (
@@ -90,7 +86,7 @@ export function Chapter16Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 16</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">BERT &amp; Masked Language Modeling</span>
+                <span className="ch-header-title">Advanced RNNs</span>
                 <Link to="/" style={{ textDecoration: "none" }}>
                     <span className="ch-header-badge">ML → LLM Course</span>
                 </Link>

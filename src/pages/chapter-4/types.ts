@@ -2,12 +2,10 @@
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
 export type TopicId =
-    | "backpropagation"
-    | "mlp"
-    | "activation-functions"
-    | "gradient-descent"
-    | "vanishing-gradients"
-    | "autoencoders"
+    | "id3"
+    | "cart"
+    | "gini-entropy"
+    | "pruning"
 
 declare global {
     interface Window {

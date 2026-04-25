@@ -2,10 +2,10 @@
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
 export type TopicId =
-    | "gpt2"
-    | "scaling-laws"
-    | "t5"
-    | "zero-shot"
+    | "scaled-dot-product"
+    | "multi-head"
+    | "positional-encoding"
+    | "encoder-decoder"
 
 declare global {
     interface Window {

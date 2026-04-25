@@ -108,3 +108,8 @@ export function DiagramBlock({ title, children }: { title: string; children: Rea
         </div>
     )
 }
+
+/** Maps math coords (y-up) → SVG pixel coords (y-down) */
+export function pt(cx: number, cy: number, s: number) {
+    return (mx: number, my: number) => ({ x: cx + mx * s, y: cy - my * s })
+}

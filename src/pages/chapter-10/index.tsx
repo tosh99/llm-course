@@ -2,13 +2,12 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-10.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { WORD2VEC_TABS } from "./topics/word2vec/tabs"
-import { GLOVE_TABS } from "./topics/glove/tabs"
-import { FASTTEXT_TABS } from "./topics/fasttext/tabs"
-import { EMBEDDINGS_TABS } from "./topics/embeddings/tabs"
-import { LANGUAGE_MODELING_TABS } from "./topics/language-modeling/tabs"
-import { PERPLEXITY_TABS } from "./topics/perplexity/tabs"
-import type { TabId, TopicId } from "./types"
+import { ALEXNET_TABS } from "./topics/alexnet/tabs"
+import { VGGNET_TABS } from "./topics/vggnet/tabs"
+import { GOOGLENET_TABS } from "./topics/googlenet/tabs"
+import { RESNET_TABS } from "./topics/resnet/tabs"
+import { DENSENET_TABS } from "./topics/densenet/tabs"
+import type { TabId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
 
@@ -18,11 +17,7 @@ export function Chapter10Page() {
     const navigate = useNavigate()
     const location = useLocation()
     const chapterNum = parseInt(location.pathname.split('/').pop() ?? '1')
-    const [activeTopic, setActiveTopic] = useState<TopicId>(() =>
-        (location.state as { startAtLastTopic?: boolean })?.startAtLastTopic
-            ? TOPICS[TOPICS.length - 1].id
-            : TOPICS[0].id
-    )
+    const [activeTopic, setActiveTopic] = useState<string>("alexnet")
     const [activeTab, setActiveTab] = useState<TabId>("history")
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const contentRef = useRef<HTMLDivElement>(null)
@@ -47,7 +42,7 @@ export function Chapter10Page() {
 
     const categories = [...new Set(TOPICS.map((t) => t.category))]
 
-    const selectTopic = (id: TopicId) => {
+    const selectTopic = (id: string) => {
         setActiveTopic(id)
         setActiveTab("history")
         setMobileNavOpen(false)
@@ -67,7 +62,7 @@ export function Chapter10Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -77,13 +72,12 @@ export function Chapter10Page() {
         }
     }
 
-    const tabContent: Record<TopicId, React.ReactNode> = {
-        word2vec:          WORD2VEC_TABS[activeTab],
-        glove:             GLOVE_TABS[activeTab],
-        fasttext:          FASTTEXT_TABS[activeTab],
-        embeddings:        EMBEDDINGS_TABS[activeTab],
-        "language-modeling": LANGUAGE_MODELING_TABS[activeTab],
-        perplexity:        PERPLEXITY_TABS[activeTab],
+    const tabContent: Record<string, React.ReactNode> = {
+        alexnet: ALEXNET_TABS[activeTab],
+        vggnet: VGGNET_TABS[activeTab],
+        googlenet: GOOGLENET_TABS[activeTab],
+        resnet: RESNET_TABS[activeTab],
+        densenet: DENSENET_TABS[activeTab],
     }
 
     return (
@@ -92,7 +86,7 @@ export function Chapter10Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 10</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Word Representations</span>
+                <span className="ch-header-title">CNN Architectures</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
             {/* ── Sidebar ── */}

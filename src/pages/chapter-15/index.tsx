@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react"
+﻿import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-15.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { ULMFIT_TABS } from "./topics/ulmfit/tabs"
-import { ELMO_TABS } from "./topics/elmo/tabs"
-import { GPT1_TABS } from "./topics/gpt1/tabs"
-import { PRETRAIN_FINETUNE_TABS } from "./topics/pretrain-finetune/tabs"
+import { BAHDANAU_TABS } from "./topics/bahdanau/tabs"
+import { ALIGNMENT_SCORES_TABS } from "./topics/alignment-scores/tabs"
+import { LUONG_TABS } from "./topics/luong/tabs"
+import { SOFT_HARD_TABS } from "./topics/soft-hard/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -65,7 +65,7 @@ export function Chapter15Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -76,10 +76,10 @@ export function Chapter15Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        ulmfit:            ULMFIT_TABS[activeTab],
-        elmo:              ELMO_TABS[activeTab],
-        gpt1:              GPT1_TABS[activeTab],
-        "pretrain-finetune": PRETRAIN_FINETUNE_TABS[activeTab],
+        bahdanau:          BAHDANAU_TABS[activeTab],
+        "alignment-scores": ALIGNMENT_SCORES_TABS[activeTab],
+        luong:             LUONG_TABS[activeTab],
+        "soft-hard":       SOFT_HARD_TABS[activeTab],
     }
 
     return (
@@ -88,7 +88,7 @@ export function Chapter15Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 15</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Transfer Learning &amp; Pre-training</span>
+                <span className="ch-header-title">Attention Mechanism</span>
                 <Link to="/" style={{ textDecoration: "none" }}>
                     <span className="ch-header-badge">ML → LLM Course</span>
                 </Link>

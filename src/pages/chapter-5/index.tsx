@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-5.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { SIMPLE_RNN_TABS } from "./topics/simple-rnn/tabs"
-import { BPTT_TABS } from "./topics/bptt/tabs"
-import { VANISHING_GRADIENT_TABS } from "./topics/vanishing-gradient/tabs"
-import { LSTM_TABS } from "./topics/lstm/tabs"
+import { BACKPROPAGATION_TABS } from "./topics/backpropagation/tabs"
+import { MLP_TABS } from "./topics/mlp/tabs"
+import { ACTIVATION_FUNCTIONS_TABS } from "./topics/activation-functions/tabs"
+import { GRADIENT_DESCENT_TABS } from "./topics/gradient-descent/tabs"
+import { VANISHING_GRADIENTS_TABS } from "./topics/vanishing-gradients/tabs"
+import { AUTOENCODERS_TABS } from "./topics/autoencoders/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -65,7 +67,7 @@ export function Chapter5Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -76,10 +78,12 @@ export function Chapter5Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        "simple-rnn": SIMPLE_RNN_TABS[activeTab],
-        bptt: BPTT_TABS[activeTab],
-        "vanishing-gradient": VANISHING_GRADIENT_TABS[activeTab],
-        lstm: LSTM_TABS[activeTab],
+        backpropagation: BACKPROPAGATION_TABS[activeTab],
+        mlp: MLP_TABS[activeTab],
+        "activation-functions": ACTIVATION_FUNCTIONS_TABS[activeTab],
+        "gradient-descent": GRADIENT_DESCENT_TABS[activeTab],
+        "vanishing-gradients": VANISHING_GRADIENTS_TABS[activeTab],
+        autoencoders: AUTOENCODERS_TABS[activeTab],
     }
 
     return (
@@ -88,7 +92,7 @@ export function Chapter5Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 5</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Recurrent Neural Networks</span>
+                <span className="ch-header-title">Backpropagation &amp; MLPs</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
             {/* ── Sidebar ── */}

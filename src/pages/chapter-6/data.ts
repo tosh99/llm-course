@@ -10,83 +10,61 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "introduction",
-        label: "Introduction",
-        icon: "◈",
-        category: "Foundations",
-        ready: true,
-    },
-    {
-        id: "weight-sharing",
-        label: "Weight Sharing",
-        icon: "◦",
-        category: "Foundations",
-        ready: true,
-    },
-    {
-        id: "lenet",
-        label: "LeNet-5",
-        icon: "◦",
+        id: "simple-rnn",
+        label: "Simple RNNs",
+        icon: "⟳",
         category: "Architecture",
         ready: true,
     },
     {
-        id: "building-blocks",
-        label: "CNN Building Blocks",
-        icon: "◦",
+        id: "bptt",
+        label: "Backpropagation Through Time",
+        icon: "⤵",
+        category: "Training",
+        ready: true,
+    },
+    {
+        id: "vanishing-gradient",
+        label: "Vanishing Gradient Problem",
+        icon: "↘",
+        category: "Training",
+        ready: true,
+    },
+    {
+        id: "lstm",
+        label: "Long Short-Term Memory",
+        icon: "⊡",
         category: "Architecture",
         ready: true,
     },
-    {
-        id: "feature-hierarchies",
-        label: "Feature Hierarchies",
-        icon: "◦",
-        category: "Concepts",
-        ready: true,
-    },
-    {
-        id: "why-cnns-stalled",
-        label: "Why CNNs Stalled",
-        icon: "◦",
-        category: "Historical Context",
-        ready: true,
-    },
+    { id: "bidirectional", label: "Bidirectional RNN", icon: "⇄", category: "Architecture", ready: true },
 ]
 
 export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    introduction: {
-        eyebrow: "Chapter 6 · Foundations",
-        subtitle:
-            "From biological inspiration to LeNet-5: how convolutions revolutionized visual recognition",
-    },
-    "weight-sharing": {
-        eyebrow: "Chapter 6 · Foundations",
-        subtitle:
-            "Sparse interactions, parameter sharing, and the convolution operation",
-    },
-    lenet: {
+    "simple-rnn": {
         eyebrow: "Chapter 6 · Architecture",
         subtitle:
-            "The landmark 1998 architecture that established the CNN blueprint",
+            "Adding memory to neural networks — Elman and Jordan recurrent architectures",
     },
-    "building-blocks": {
+    bptt: {
+        eyebrow: "Chapter 6 · Training",
+        subtitle:
+            "Unrolling time: how gradients flow backwards through sequence steps",
+    },
+    "vanishing-gradient": {
+        eyebrow: "Chapter 6 · Training",
+        subtitle:
+            "Why RNNs forget: the curse of exponentially decaying gradients in deep sequences",
+    },
+    lstm: {
         eyebrow: "Chapter 6 · Architecture",
         subtitle:
-            "Conv, Pool, Flatten, FC — the fundamental operations of CNNs",
+            "Hochreiter & Schmidhuber's gating solution — letting the network decide what to remember",
     },
-    "feature-hierarchies": {
-        eyebrow: "Chapter 6 · Concepts",
-        subtitle:
-            "Edge detectors to object parts: emergent hierarchical representations",
-    },
-    "why-cnns-stalled": {
-        eyebrow: "Chapter 6 · Historical Context",
-        subtitle:
-            "Compute limits, data scarcity, and why CNNs fell into obscurity through the 2000s",
-    },
+    bidirectional: { eyebrow: "Chapter 6 · Architecture", subtitle: "Schuster & Paliwal (1997) — processing sequences in both directions for richer context" },
 }
 
 export const TABS: { id: TabId; label: string }[] = [

@@ -2,18 +2,15 @@
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
 export type TopicId =
-    | "vectors-matrices"
+    | "integral-calculus"
+    | "derivatives-gradients"
     | "systems-equations"
+    | "probability-foundations"
+    | "vectors-matrices"
     | "eigenvalues"
     | "svd-decompositions"
-    | "derivatives-gradients"
-    | "integral-calculus"
-    | "probability-foundations"
-    | "statistical-inference"
-    | "entropy-kl-divergence"
-    | "mutual-information"
-    | "python"
     | "computing"
+    | "python"
 
 declare global {
     interface Window {

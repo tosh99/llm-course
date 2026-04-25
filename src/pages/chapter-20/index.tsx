@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from "react"
+﻿import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-20.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { INSTRUCTGPT_TABS } from "./topics/instructgpt/tabs"
-import { SFT_TABS } from "./topics/sft/tabs"
-import { REWARD_MODEL_TABS } from "./topics/reward-model/tabs"
-import { PPO_TABS } from "./topics/ppo/tabs"
-import { CONSTITUTIONAL_AI_TABS } from "./topics/constitutional-ai/tabs"
+import { GPT2_TABS } from "./topics/gpt2/tabs"
+import { SCALING_LAWS_TABS } from "./topics/scaling-laws/tabs"
+import { T5_TABS } from "./topics/t5/tabs"
+import { ZERO_SHOT_TABS } from "./topics/zero-shot/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -66,7 +65,7 @@ export function Chapter20Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -77,11 +76,10 @@ export function Chapter20Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        instructgpt:       INSTRUCTGPT_TABS[activeTab],
-        sft:               SFT_TABS[activeTab],
-        "reward-model":    REWARD_MODEL_TABS[activeTab],
-        ppo:               PPO_TABS[activeTab],
-        "constitutional-ai": CONSTITUTIONAL_AI_TABS[activeTab],
+        gpt2:         GPT2_TABS[activeTab],
+        "scaling-laws": SCALING_LAWS_TABS[activeTab],
+        t5:           T5_TABS[activeTab],
+        "zero-shot":  ZERO_SHOT_TABS[activeTab],
     }
 
     return (
@@ -90,7 +88,7 @@ export function Chapter20Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 20</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Instruction Tuning &amp; RLHF</span>
+                <span className="ch-header-title">GPT-2 &amp; T5</span>
                 <Link to="/" style={{ textDecoration: "none" }}>
                     <span className="ch-header-badge">ML → LLM Course</span>
                 </Link>

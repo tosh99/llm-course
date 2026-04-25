@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react"
+﻿import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-17.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { GPT2_TABS } from "./topics/gpt2/tabs"
-import { SCALING_LAWS_TABS } from "./topics/scaling-laws/tabs"
-import { T5_TABS } from "./topics/t5/tabs"
-import { ZERO_SHOT_TABS } from "./topics/zero-shot/tabs"
+import { SCALED_DOT_PRODUCT_TABS } from "./topics/scaled-dot-product/tabs"
+import { MULTI_HEAD_TABS } from "./topics/multi-head/tabs"
+import { POSITIONAL_ENCODING_TABS } from "./topics/positional-encoding/tabs"
+import { ENCODER_DECODER_TABS } from "./topics/encoder-decoder/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -65,7 +65,7 @@ export function Chapter17Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -76,10 +76,10 @@ export function Chapter17Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        gpt2:         GPT2_TABS[activeTab],
-        "scaling-laws": SCALING_LAWS_TABS[activeTab],
-        t5:           T5_TABS[activeTab],
-        "zero-shot":  ZERO_SHOT_TABS[activeTab],
+        "scaled-dot-product": SCALED_DOT_PRODUCT_TABS[activeTab],
+        "multi-head":         MULTI_HEAD_TABS[activeTab],
+        "positional-encoding": POSITIONAL_ENCODING_TABS[activeTab],
+        "encoder-decoder":    ENCODER_DECODER_TABS[activeTab],
     }
 
     return (
@@ -88,7 +88,7 @@ export function Chapter17Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 17</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Scaling Up: GPT-2 &amp; T5</span>
+                <span className="ch-header-title">The Transformer</span>
                 <Link to="/" style={{ textDecoration: "none" }}>
                     <span className="ch-header-badge">ML → LLM Course</span>
                 </Link>

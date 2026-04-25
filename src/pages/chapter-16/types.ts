@@ -2,11 +2,10 @@
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
 export type TopicId =
-    | "bert"
-    | "mlm"
-    | "nsp"
-    | "roberta"
-    | "encoder-only"
+    | "deep-rnns"
+    | "sequential-parallelism"
+    | "pointer-networks"
+    | "wavenet"
 
 declare global {
     interface Window {

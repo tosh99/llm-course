@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react"
+﻿import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-18.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { SCALING_LAWS_TABS } from "./topics/scaling-laws/tabs"
-import { POWER_LAWS_TABS } from "./topics/power-laws/tabs"
-import { EMERGENT_ABILITIES_TABS } from "./topics/emergent-abilities/tabs"
-import { CHINCHILLA_TABS } from "./topics/chinchilla/tabs"
+import { ULMFIT_TABS } from "./topics/ulmfit/tabs"
+import { ELMO_TABS } from "./topics/elmo/tabs"
+import { GPT1_TABS } from "./topics/gpt1/tabs"
+import { PRETRAIN_FINETUNE_TABS } from "./topics/pretrain-finetune/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -65,7 +65,7 @@ export function Chapter18Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -76,10 +76,10 @@ export function Chapter18Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        "scaling-laws":      SCALING_LAWS_TABS[activeTab],
-        "power-laws":        POWER_LAWS_TABS[activeTab],
-        "emergent-abilities": EMERGENT_ABILITIES_TABS[activeTab],
-        "chinchilla":        CHINCHILLA_TABS[activeTab],
+        ulmfit:            ULMFIT_TABS[activeTab],
+        elmo:              ELMO_TABS[activeTab],
+        gpt1:              GPT1_TABS[activeTab],
+        "pretrain-finetune": PRETRAIN_FINETUNE_TABS[activeTab],
     }
 
     return (
@@ -88,7 +88,7 @@ export function Chapter18Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 18</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">The Scaling Hypothesis</span>
+                <span className="ch-header-title">Transfer Learning &amp; Pre-training</span>
                 <Link to="/" style={{ textDecoration: "none" }}>
                     <span className="ch-header-badge">ML → LLM Course</span>
                 </Link>

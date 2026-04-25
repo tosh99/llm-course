@@ -2,14 +2,11 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-8.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { ALEXNET_TABS } from "./topics/alexnet/tabs"
-import { VGGNET_TABS } from "./topics/vggnet/tabs"
-import { GOOGLENET_TABS } from "./topics/googlenet/tabs"
-import { RESNET_TABS } from "./topics/resnet/tabs"
-import { DENSENET_TABS } from "./topics/densenet/tabs"
-import { GAN_TABS } from "./topics/gans/tabs"
-import { VIT_TABS } from "./topics/vit/tabs"
-import type { TabId } from "./types"
+import { SVM_TABS } from "./topics/svm/tabs"
+import { ADABOOST_TABS } from "./topics/adaboost/tabs"
+import { RANDOM_FORESTS_TABS } from "./topics/random-forests/tabs"
+import { REGULARIZATION_TABS } from "./topics/regularization/tabs"
+import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
 
@@ -18,8 +15,12 @@ const TAB_IDS = TABS.map((t) => t.id)
 export function Chapter8Page() {
     const navigate = useNavigate()
     const location = useLocation()
-    const chapterNum = parseInt(location.pathname.split('/').pop() ?? '1')
-    const [activeTopic, setActiveTopic] = useState<string>("alexnet")
+    const chapterNum = parseInt(location.pathname.split('/').pop() ?? '8')
+    const [activeTopic, setActiveTopic] = useState<TopicId>(() =>
+        (location.state as { startAtLastTopic?: boolean })?.startAtLastTopic
+            ? TOPICS[TOPICS.length - 1].id
+            : TOPICS[0].id
+    )
     const [activeTab, setActiveTab] = useState<TabId>("history")
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const contentRef = useRef<HTMLDivElement>(null)
@@ -44,7 +45,7 @@ export function Chapter8Page() {
 
     const categories = [...new Set(TOPICS.map((t) => t.category))]
 
-    const selectTopic = (id: string) => {
+    const selectTopic = (id: TopicId) => {
         setActiveTopic(id)
         setActiveTab("history")
         setMobileNavOpen(false)
@@ -64,7 +65,7 @@ export function Chapter8Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -74,14 +75,11 @@ export function Chapter8Page() {
         }
     }
 
-    const tabContent: Record<string, React.ReactNode> = {
-        alexnet: ALEXNET_TABS[activeTab],
-        vggnet: VGGNET_TABS[activeTab],
-        googlenet: GOOGLENET_TABS[activeTab],
-        resnet: RESNET_TABS[activeTab],
-        densenet: DENSENET_TABS[activeTab],
-        gans: GAN_TABS[activeTab],
-        vit: VIT_TABS[activeTab],
+    const tabContent: Record<TopicId, React.ReactNode> = {
+        svm:             SVM_TABS[activeTab],
+        adaboost:        ADABOOST_TABS[activeTab],
+        "random-forests": RANDOM_FORESTS_TABS[activeTab],
+        regularization:  REGULARIZATION_TABS[activeTab],
     }
 
     return (
@@ -90,9 +88,10 @@ export function Chapter8Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 8</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">CNN Architectures</span>
+                <span className="ch-header-title">Classical ML Maturation</span>
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
+
             {/* ── Sidebar ── */}
             <nav className="ch-sidebar" aria-label="Chapter topics">
                 <button
@@ -127,13 +126,11 @@ export function Chapter8Page() {
 
             {/* ── Main ── */}
             <main className="ch-main">
-                {/* Topic header */}
                 <div className="ch-topic-header">
                     <div className="ch-eyebrow">{topic.eyebrow}</div>
                     <h1 className="ch-topic-title">{topicLabel}</h1>
                     <div className="ch-topic-subtitle">{topic.subtitle}</div>
 
-                    {/* Tabs */}
                     <div className="ch-tabs">
                         {TABS.map((tab) => (
                             <button
@@ -147,7 +144,6 @@ export function Chapter8Page() {
                     </div>
                 </div>
 
-                {/* Content */}
                 <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (

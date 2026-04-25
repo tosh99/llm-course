@@ -1,4 +1,4 @@
-import type { TabId, TopicId } from "./types"
+﻿import type { TabId, TopicId } from "./types"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -10,31 +10,38 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "bahdanau",
-        label: "Bahdanau Attention",
-        icon: "α",
-        category: "Attention Foundations",
+        id: "momentum",
+        label: "Momentum & Nesterov",
+        icon: "∇",
+        category: "First-Order Methods",
         ready: true,
     },
     {
-        id: "alignment-scores",
-        label: "Alignment Scores",
-        icon: "∝",
-        category: "Attention Foundations",
+        id: "adam",
+        label: "Adam Optimizer",
+        icon: "∂",
+        category: "First-Order Methods",
         ready: true,
     },
     {
-        id: "luong",
-        label: "Luong Attention",
-        icon: "⊙",
-        category: "Attention Variants",
+        id: "batch-normalization",
+        label: "Batch Normalization",
+        icon: "μ",
+        category: "Normalization",
         ready: true,
     },
     {
-        id: "soft-hard",
-        label: "Soft vs Hard",
-        icon: "⇒",
-        category: "Attention Variants",
+        id: "layer-normalization",
+        label: "Layer Normalization",
+        icon: "σ",
+        category: "Normalization",
+        ready: true,
+    },
+    {
+        id: "lr-schedules",
+        label: "LR Schedules",
+        icon: "↝",
+        category: "Schedules",
         ready: true,
     },
 ]
@@ -43,25 +50,30 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    bahdanau: {
-        eyebrow: "Chapter 12 · Attention Foundations",
+    momentum: {
+        eyebrow: "Chapter 12 · First-Order Methods",
         subtitle:
-            "Additive attention that jointly learns to align and translate — breaking the fixed-context bottleneck",
+            "Accumulate past gradients to accelerate through ravines and dampen oscillations",
     },
-    "alignment-scores": {
-        eyebrow: "Chapter 12 · Attention Foundations",
+    adam: {
+        eyebrow: "Chapter 12 · First-Order Methods",
         subtitle:
-            "Scoring functions that measure compatibility — additive, dot-product, and general variants compared",
+            "Adaptive per-parameter learning rates via first and second moment estimates",
     },
-    luong: {
-        eyebrow: "Chapter 12 · Attention Variants",
+    "batch-normalization": {
+        eyebrow: "Chapter 12 · Normalization",
         subtitle:
-            "Multiplicative global and local attention — simpler formulations with competitive performance",
+            "Normalize layer inputs per mini-batch — enabling higher learning rates and stable deep training",
     },
-    "soft-hard": {
-        eyebrow: "Chapter 12 · Attention Variants",
+    "layer-normalization": {
+        eyebrow: "Chapter 12 · Normalization",
         subtitle:
-            "Soft attention blends all positions; hard attention samples one — differentiability vs interpretability",
+            "Normalize over the feature dimension — the standard for Transformers and RNNs",
+    },
+    "lr-schedules": {
+        eyebrow: "Chapter 12 · Schedules",
+        subtitle:
+            "Warmup, cosine annealing, and cyclical rates — how learning rate shapes convergence",
     },
 }
 

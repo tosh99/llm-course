@@ -45,7 +45,7 @@ export function InlineMath({ tex }: { tex: string }) {
 export function CodeBlock({
     code,
     filename,
-    lang = "typescript",
+    lang = "python",
     langLabel,
 }: {
     code: string
@@ -96,6 +96,14 @@ export function DefBlock({ label, children }: { label: string; children: React.R
         <div className="ch-def-block">
             <div className="ch-def-label">{label}</div>
             <p>{children}</p>
+        </div>
+    )
+}
+
+export function Callout({ children }: { children: React.ReactNode }) {
+    return (
+        <div className="ch-callout">
+            {children}
         </div>
     )
 }

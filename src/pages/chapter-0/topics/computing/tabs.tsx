@@ -77,7 +77,7 @@ function HistoryTab() {
             what:
                 "The Tensor Processing Unit (TPU) is an ASIC (Application-Specific Integrated Circuit) designed exclusively for matrix multiply. Its core is a 256×256 systolic array: a mesh of multiply-accumulate units where data flows through like water in a pipe — each unit multiplies two values, accumulates the result, and passes outputs to the next unit. No cache hierarchy, no branch prediction, no wasted logic.",
             impact:
-                "TPU v1 achieved 92 TOPS with a fraction of the power of a contemporary GPU — 30–80× more efficient for inference. This proved that hardware-software co-design crushes general-purpose hardware for known workloads. Google's LLMs (PaLM, Gemini) train on pods of thousands of TPUs. Fast, programmable hardware didn't just make existing algorithms faster — it made previously impossible algorithms practical. Contrastive learning (our next topic) maximises mutual information over 400 million image pairs: the mathematics existed in 1961; the hardware made it tractable in 2021.",
+                "TPU v1 achieved 92 TOPS with a fraction of the power of a contemporary GPU — 30–80× more efficient for inference. This proved that hardware-software co-design crushes general-purpose hardware for known workloads. Google's LLMs (PaLM, Gemini) train on pods of thousands of TPUs. Fast, programmable hardware didn't just make existing algorithms faster — it made previously impossible algorithms practical. Every algorithm in every chapter that follows runs on descendants of this hardware. The mathematical story starts in Chapter 1 — with Gauss, a missing planet, and the first regression.",
         },
     ]
 
@@ -141,8 +141,8 @@ function KidTab() {
                 Good AI code loads all the data into the kitchen at the start (move tensors to GPU once) and keeps cooking without running back to the pantry (avoid CPU↔GPU transfers in hot loops). When you see <code>tensor.cuda()</code> in PyTorch, that is the carry trip. Do it once per batch, not once per operation.
             </Analogy>
 
-            <Analogy label="What comes next — using GPUs to maximise mutual information">
-                With fast GPUs, an algorithm that maximises the mutual information between 400 million image-text pairs — once theoretically possible but computationally out of reach — became a weekend experiment. That algorithm is CLIP, and the concept it exploits — mutual information — is our next topic.
+            <Analogy label="What comes next — the mathematical tools meet history">
+                These hardware foundations are prerequisites, not history in themselves. Chapter 1 begins the story of machine learning as a historical discipline — starting in 1801, with a German mathematician trying to find a missing planet. Every formula in that story will eventually run on the hardware described here.
             </Analogy>
         </>
     )

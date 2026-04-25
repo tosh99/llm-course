@@ -32,7 +32,7 @@ function HistoryTab() {
             title: "Variational Autoencoders and the VAE–GMM Connection",
             challenge: "Researchers wanted a generative model that could both learn flexible latent representations (like autoencoders) and enable tractable sampling and density estimation. Standard autoencoders had no probabilistic interpretation.",
             what: "Kingma & Welling (2013) and Rezende et al. (2014) independently developed the Variational Autoencoder (VAE). The prior p(z) over the latent space is typically a standard Gaussian or a GMM. The encoder learns q(z|x) ≈ p(z|x) and the decoder learns p(x|z). Training maximises the ELBO — evidence lower bound — using reparameterised gradients.",
-            impact: "VAEs unified the GMM probabilistic framework with the deep learning representation learning framework. They directly enabled controllable image generation, and the ELBO optimisation technique is now used across nearly all probabilistic deep learning.",
+            impact: "VAEs unified the GMM probabilistic framework with the deep learning representation learning framework. They directly enabled controllable image generation, and the ELBO optimisation technique is now used across nearly all probabilistic deep learning. But VAEs belong to 2013 — far ahead in the story. The next chapter returns to 1979, where a completely different tradition was maturing: algorithms that learned decision rules from labeled data, one question at a time. Decision trees.",
         },
     ]
 
@@ -86,6 +86,10 @@ function KidTab() {
             <DiagramBlock title="EM algorithm — the iterative E-step/M-step cycle">
                 <EMStepsDiagram />
             </DiagramBlock>
+
+            <Analogy label="What comes next — learning with labels">
+                k-Means and EM work with unlabeled data — no one tells the algorithm which group is which. But many real problems come with labels: this email is spam, this patient survived, this loan defaulted. Starting in 1979, a new generation of algorithms learned to discover decision rules from labeled examples, one yes/no question at a time. That is Chapter 4: Decision Trees.
+            </Analogy>
         </>
     )
 }

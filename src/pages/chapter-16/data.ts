@@ -1,4 +1,4 @@
-import type { TabId, TopicId } from "./types"
+﻿import type { TabId, TopicId } from "./types"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -10,71 +10,39 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "bert",
-        label: "BERT",
-        icon: "⇋",
-        category: "Architecture",
-        ready: true,
-    },
-    {
-        id: "mlm",
-        label: "Masked LM",
-        icon: "◌",
-        category: "Training",
-        ready: true,
-    },
-    {
-        id: "nsp",
-        label: "Next Sentence",
-        icon: "⇒",
-        category: "Training",
-        ready: true,
-    },
-    {
-        id: "roberta",
-        label: "RoBERTa",
-        icon: "↻",
-        category: "Improvements",
-        ready: true,
-    },
-    {
-        id: "encoder-only",
-        label: "Encoder-Only",
+        id: "deep-rnns",
+        label: "Deep RNNs",
         icon: "▦",
-        category: "Family",
+        category: "Architectures",
         ready: true,
     },
+    {
+        id: "sequential-parallelism",
+        label: "Sequential Parallelism",
+        icon: "⧉",
+        category: "Architectures",
+        ready: true,
+    },
+    { id: "pointer-networks", label: "Pointer Networks", icon: "→", category: "Advanced Architectures", ready: false },
+    { id: "wavenet",          label: "WaveNet",           icon: "∿", category: "Advanced Architectures", ready: false },
 ]
 
 export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    bert: {
-        eyebrow: "Chapter 16 · BERT",
+    "deep-rnns": {
+        eyebrow: "Chapter 16 · Architectures",
         subtitle:
-            "Bidirectional Encoder Representations from Transformers — the model that made context flow both ways",
+            "Stacking recurrent layers for hierarchical representations — depth in the time domain",
     },
-    mlm: {
-        eyebrow: "Chapter 16 · Training",
+    "sequential-parallelism": {
+        eyebrow: "Chapter 16 · Architectures",
         subtitle:
-            "Masked Language Modeling — teaching a model to fill in the blanks by understanding all surrounding words",
+            "Techniques for training and inference parallelism in inherently sequential models",
     },
-    nsp: {
-        eyebrow: "Chapter 16 · Training",
-        subtitle:
-            "Next Sentence Prediction — learning discourse and logical coherence between sentence pairs",
-    },
-    roberta: {
-        eyebrow: "Chapter 16 · Improvements",
-        subtitle:
-            "A Robustly Optimized BERT Pretraining Approach — removing NSP, training longer, and going bigger",
-    },
-    "encoder-only": {
-        eyebrow: "Chapter 16 · Family",
-        subtitle:
-            "The encoder-only lineage — from BERT to DistilBERT, ALBERT, and ELECTRA",
-    },
+    "pointer-networks": { eyebrow: "Chapter 16 · Advanced Architectures", subtitle: "Vinyals et al. (2015) — attention over the input to produce variable-length outputs" },
+    "wavenet":          { eyebrow: "Chapter 16 · Advanced Architectures", subtitle: "van den Oord et al. (2016) — dilated causal convolutions for autoregressive audio generation" },
 }
 
 export const TABS: { id: TabId; label: string }[] = [

@@ -1,4 +1,4 @@
-import type { TabId, TopicId } from "./types"
+﻿import type { TabId, TopicId } from "./types"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -10,31 +10,31 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "scaling-laws",
-        label: "Kaplan Scaling Laws",
-        icon: "📈",
-        category: "Scaling",
+        id: "ulmfit",
+        label: "ULMFiT",
+        icon: "↻",
+        category: "Transfer Learning",
         ready: true,
     },
     {
-        id: "power-laws",
-        label: "Power Laws",
-        icon: "∿",
-        category: "Scaling",
+        id: "elmo",
+        label: "ELMo",
+        icon: "⇄",
+        category: "Transfer Learning",
         ready: true,
     },
     {
-        id: "emergent-abilities",
-        label: "Emergent Abilities",
-        icon: "✨",
-        category: "Behavior",
+        id: "gpt1",
+        label: "GPT-1",
+        icon: "▦",
+        category: "Pre-training",
         ready: true,
     },
     {
-        id: "chinchilla",
-        label: "Chinchilla",
-        icon: "🐭",
-        category: "Optimal Training",
+        id: "pretrain-finetune",
+        label: "Pre-train → Fine-tune",
+        icon: "⧉",
+        category: "Pre-training",
         ready: true,
     },
 ]
@@ -43,25 +43,25 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    "scaling-laws": {
-        eyebrow: "Chapter 18 · Scaling",
+    ulmfit: {
+        eyebrow: "Chapter 18 · Transfer Learning",
         subtitle:
-            "OpenAI's 2020 discovery that loss predictably improves with model size, data, and compute",
+            "Universal Language Model Fine-tuning — a disciplined three-stage recipe for adapting LMs to any NLP task",
     },
-    "power-laws": {
-        eyebrow: "Chapter 18 · Scaling",
+    elmo: {
+        eyebrow: "Chapter 18 · Transfer Learning",
         subtitle:
-            "The mathematical relationships governing how language models improve with scale",
+            "Deep contextualized word representations that change meaning based on surrounding context",
     },
-    "emergent-abilities": {
-        eyebrow: "Chapter 18 · Behavior",
+    gpt1: {
+        eyebrow: "Chapter 18 · Pre-training",
         subtitle:
-            "Capabilities that appear suddenly and unpredictably as models grow larger",
+            "Generative pre-training with unsupervised multi-task learning — the decoder-only revolution begins",
     },
-    chinchilla: {
-        eyebrow: "Chapter 18 · Optimal Training",
+    "pretrain-finetune": {
+        eyebrow: "Chapter 18 · Pre-training",
         subtitle:
-            "DeepMind's 2022 finding that most models are under-trained — and how to fix it",
+            "The paradigm shift: train once on massive unlabeled data, then adapt to any downstream task",
     },
 }
 

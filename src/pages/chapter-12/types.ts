@@ -1,11 +1,12 @@
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Types ────────────────────────────────────────────────────────────────────
 
 export type TabId = "history" | "kid" | "highschool" | "maths" | "python"
 export type TopicId =
-    | "bahdanau"
-    | "alignment-scores"
-    | "luong"
-    | "soft-hard"
+    | "momentum"
+    | "adam"
+    | "batch-normalization"
+    | "layer-normalization"
+    | "lr-schedules"
 
 declare global {
     interface Window {

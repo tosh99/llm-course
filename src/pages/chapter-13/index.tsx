@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from "react"
+﻿import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
 import "./chapter-13.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { GRU_TABS } from "./topics/gru/tabs"
-import { BIDIRECTIONAL_TABS } from "./topics/bidirectional/tabs"
-import { DEEP_RNNS_TABS } from "./topics/deep-rnns/tabs"
-import { SEQUENTIAL_PARALLELISM_TABS } from "./topics/sequential-parallelism/tabs"
+import { WORD2VEC_TABS } from "./topics/word2vec/tabs"
+import { GLOVE_TABS } from "./topics/glove/tabs"
+import { FASTTEXT_TABS } from "./topics/fasttext/tabs"
+import { EMBEDDINGS_TABS } from "./topics/embeddings/tabs"
+import { LANGUAGE_MODELING_TABS } from "./topics/language-modeling/tabs"
+import { PERPLEXITY_TABS } from "./topics/perplexity/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -65,7 +67,7 @@ export function Chapter13Page() {
         else if (dx < 0 && idx === TAB_IDS.length - 1) {
             const topicIdx = TOPICS.findIndex(t => t.id === activeTopic)
             if (topicIdx < TOPICS.length - 1) selectTopic(TOPICS[topicIdx + 1].id)
-            else if (chapterNum < 21) navigate(`/chapter/${chapterNum + 1}`)
+            else if (chapterNum < 38) navigate(`/chapter/${chapterNum + 1}`)
         }
         if (dx > 0 && idx > 0) setActiveTab(TAB_IDS[idx - 1])
         else if (dx > 0 && idx === 0) {
@@ -76,10 +78,12 @@ export function Chapter13Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        gru:                   GRU_TABS[activeTab],
-        bidirectional:         BIDIRECTIONAL_TABS[activeTab],
-        "deep-rnns":           DEEP_RNNS_TABS[activeTab],
-        "sequential-parallelism": SEQUENTIAL_PARALLELISM_TABS[activeTab],
+        word2vec:          WORD2VEC_TABS[activeTab],
+        glove:             GLOVE_TABS[activeTab],
+        fasttext:          FASTTEXT_TABS[activeTab],
+        embeddings:        EMBEDDINGS_TABS[activeTab],
+        "language-modeling": LANGUAGE_MODELING_TABS[activeTab],
+        perplexity:        PERPLEXITY_TABS[activeTab],
     }
 
     return (
@@ -88,10 +92,8 @@ export function Chapter13Page() {
             <header className="ch-header">
                 <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 13</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Gated Units &amp; Advanced RNNs</span>
-                <Link to="/" style={{ textDecoration: "none" }}>
-                    <span className="ch-header-badge">ML → LLM Course</span>
-                </Link>
+                <span className="ch-header-title">Word Representations</span>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-badge">ML → LLM Course</span></Link>
             </header>
             {/* ── Sidebar ── */}
             <nav className="ch-sidebar" aria-label="Chapter topics">
@@ -148,13 +150,7 @@ export function Chapter13Page() {
                 </div>
 
                 {/* Content */}
-                <article
-                    className="ch-content ch-fade"
-                    ref={contentRef}
-                    key={`${activeTopic}-${activeTab}`}
-                    onTouchStart={handleTouchStart}
-                    onTouchEnd={handleTouchEnd}
-                >
+                <article className="ch-content ch-fade" ref={contentRef} key={`${activeTopic}-${activeTab}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     {isReady ? (
                         tabContent[activeTopic] ?? (
                             <div className="ch-coming-soon">

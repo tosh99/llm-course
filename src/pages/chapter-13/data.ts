@@ -1,4 +1,4 @@
-import type { TabId, TopicId } from "./types"
+﻿import type { TabId, TopicId } from "./types"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -10,31 +10,45 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "gru",
-        label: "GRU",
-        icon: "↻",
-        category: "Gated Units",
+        id: "word2vec",
+        label: "Word2Vec",
+        icon: "⊙",
+        category: "Word Representations",
         ready: true,
     },
     {
-        id: "bidirectional",
-        label: "Bidirectional RNN",
-        icon: "⇄",
-        category: "Gated Units",
+        id: "glove",
+        label: "GloVe",
+        icon: "⋯",
+        category: "Word Representations",
         ready: true,
     },
     {
-        id: "deep-rnns",
-        label: "Deep RNNs",
-        icon: "▦",
-        category: "Architectures",
+        id: "fasttext",
+        label: "FastText",
+        icon: "⊂",
+        category: "Word Representations",
         ready: true,
     },
     {
-        id: "sequential-parallelism",
-        label: "Sequential Parallelism",
-        icon: "⧉",
-        category: "Architectures",
+        id: "embeddings",
+        label: "Geometry of Meaning",
+        icon: "↗",
+        category: "Geometry of Meaning",
+        ready: true,
+    },
+    {
+        id: "language-modeling",
+        label: "Language Modeling",
+        icon: "→",
+        category: "Language Models",
+        ready: true,
+    },
+    {
+        id: "perplexity",
+        label: "Perplexity",
+        icon: "?",
+        category: "Evaluation",
         ready: true,
     },
 ]
@@ -43,25 +57,35 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    gru: {
-        eyebrow: "Chapter 13 · Gated Units",
+    word2vec: {
+        eyebrow: "Chapter 13 · Word Representations",
         subtitle:
-            "A streamlined gating mechanism that matches LSTM performance with fewer parameters and faster computation",
+            "Skip-gram and CBOW — learning dense word vectors from distributional context at scale",
     },
-    bidirectional: {
-        eyebrow: "Chapter 13 · Gated Units",
+    glove: {
+        eyebrow: "Chapter 13 · Word Representations",
         subtitle:
-            "Reading sequences in both directions to capture future and past context simultaneously",
+            "Global co-occurrence statistics meet local context — the Stanford approach to word vectors",
     },
-    "deep-rnns": {
-        eyebrow: "Chapter 13 · Architectures",
+    fasttext: {
+        eyebrow: "Chapter 13 · Word Representations",
         subtitle:
-            "Stacking recurrent layers for hierarchical representations — depth in the time domain",
+            "Subword character n-grams — representations for morphologically rich languages and OOV words",
     },
-    "sequential-parallelism": {
-        eyebrow: "Chapter 13 · Architectures",
+    embeddings: {
+        eyebrow: "Chapter 13 · Geometry of Meaning",
         subtitle:
-            "Techniques for training and inference parallelism in inherently sequential models",
+            "Analogy arithmetic, semantic subspaces, and the geometry of learned representation spaces",
+    },
+    "language-modeling": {
+        eyebrow: "Chapter 13 · Language Models",
+        subtitle:
+            "Predicting the next word — the objective that unifies RNNs, Transformers, and GPT",
+    },
+    perplexity: {
+        eyebrow: "Chapter 13 · Evaluation",
+        subtitle:
+            "Measuring how surprised a language model is by real text — the standard metric for LM benchmarking",
     },
 }
 

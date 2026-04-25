@@ -1,4 +1,4 @@
-import type { TabId, TopicId } from "./types"
+﻿import type { TabId, TopicId } from "./types"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -10,31 +10,38 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "gpt3",
-        label: "GPT-3 (175B)",
+        id: "bert",
+        label: "BERT",
+        icon: "⇋",
+        category: "Architecture",
+        ready: true,
+    },
+    {
+        id: "mlm",
+        label: "Masked LM",
+        icon: "◌",
+        category: "Training",
+        ready: true,
+    },
+    {
+        id: "nsp",
+        label: "Next Sentence",
+        icon: "⇒",
+        category: "Training",
+        ready: true,
+    },
+    {
+        id: "roberta",
+        label: "RoBERTa",
+        icon: "↻",
+        category: "Improvements",
+        ready: true,
+    },
+    {
+        id: "encoder-only",
+        label: "Encoder-Only",
         icon: "▦",
-        category: "The Model",
-        ready: true,
-    },
-    {
-        id: "incontext",
-        label: "In-Context Learning",
-        icon: "⇄",
-        category: "The Model",
-        ready: true,
-    },
-    {
-        id: "fewshot",
-        label: "Zero / One / Few-Shot",
-        icon: "⧉",
-        category: "Paradigms",
-        ready: true,
-    },
-    {
-        id: "prompt",
-        label: "Prompt Engineering",
-        icon: "✎",
-        category: "Paradigms",
+        category: "Family",
         ready: true,
     },
 ]
@@ -43,25 +50,30 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    gpt3: {
-        eyebrow: "Chapter 19 · The Model",
+    bert: {
+        eyebrow: "Chapter 19 · BERT",
         subtitle:
-            "A 175-billion-parameter autoregressive language model that demonstrated emergent few-shot capabilities at scale",
+            "Bidirectional Encoder Representations from Transformers — the model that made context flow both ways",
     },
-    incontext: {
-        eyebrow: "Chapter 19 · The Model",
+    mlm: {
+        eyebrow: "Chapter 19 · Training",
         subtitle:
-            "Learning from examples embedded directly in the prompt — no gradient updates required",
+            "Masked Language Modeling — teaching a model to fill in the blanks by understanding all surrounding words",
     },
-    fewshot: {
-        eyebrow: "Chapter 19 · Paradigms",
+    nsp: {
+        eyebrow: "Chapter 19 · Training",
         subtitle:
-            "The spectrum from zero-shot generalization to few-shot adaptation without parameter updates",
+            "Next Sentence Prediction — learning discourse and logical coherence between sentence pairs",
     },
-    prompt: {
-        eyebrow: "Chapter 19 · Paradigms",
+    roberta: {
+        eyebrow: "Chapter 19 · Improvements",
         subtitle:
-            "The art and science of crafting instructions and context to steer large language model behavior",
+            "A Robustly Optimized BERT Pretraining Approach — removing NSP, training longer, and going bigger",
+    },
+    "encoder-only": {
+        eyebrow: "Chapter 19 · Family",
+        subtitle:
+            "The encoder-only lineage — from BERT to DistilBERT, ALBERT, and ELECTRA",
     },
 }
 

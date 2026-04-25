@@ -1,4 +1,4 @@
-import type { TabId, TopicId } from "./types"
+﻿import type { TabId, TopicId } from "./types"
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -10,25 +10,31 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "gpt2",
-        label: "GPT-2",
-        icon: "▦",
-        category: "Scaling Up",
+        id: "scaled-dot-product",
+        label: "Scaled Dot-Product",
+        icon: "⊙",
+        category: "Attention",
         ready: true,
     },
     {
-        id: "scaling-laws",
-        label: "Scaling Laws",
-        icon: "↗",
-        category: "Scaling Up",
+        id: "multi-head",
+        label: "Multi-Head Attention",
+        icon: "⧉",
+        category: "Attention",
         ready: true,
     },
-    { id: "t5", label: "T5", icon: "⇄", category: "Text-to-Text", ready: true },
     {
-        id: "zero-shot",
-        label: "Zero-Shot",
-        icon: "◉",
-        category: "Capabilities",
+        id: "positional-encoding",
+        label: "Positional Encoding",
+        icon: "⌖",
+        category: "Architecture",
+        ready: true,
+    },
+    {
+        id: "encoder-decoder",
+        label: "Encoder / Decoder",
+        icon: "⇄",
+        category: "Architecture",
         ready: true,
     },
 ]
@@ -37,25 +43,25 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    gpt2: {
-        eyebrow: "Chapter 17 · Scaling Up",
+    "scaled-dot-product": {
+        eyebrow: "Chapter 17 · Attention",
         subtitle:
-            "1.5 billion parameters, zero-shot task performance, and the beginning of the scaling era",
+            "The core operation that replaced recurrence with direct pairwise comparison",
     },
-    "scaling-laws": {
-        eyebrow: "Chapter 17 · Scaling Up",
+    "multi-head": {
+        eyebrow: "Chapter 17 · Attention",
         subtitle:
-            "Predictable power laws that govern how loss improves with model size, data, and compute",
+            "Running attention in parallel subspaces to capture diverse relational patterns",
     },
-    t5: {
-        eyebrow: "Chapter 17 · Text-to-Text",
+    "positional-encoding": {
+        eyebrow: "Chapter 17 · Architecture",
         subtitle:
-            "A unified encoder-decoder framework that casts every NLP task as text-to-text translation",
+            "Injecting order information into a permutation-invariant architecture",
     },
-    "zero-shot": {
-        eyebrow: "Chapter 17 · Capabilities",
+    "encoder-decoder": {
+        eyebrow: "Chapter 17 · Architecture",
         subtitle:
-            "Emergent ability to perform tasks without any task-specific training or gradient updates",
+            "The full Transformer stack: self-attention, cross-attention, and feed-forward layers",
     },
 }
 

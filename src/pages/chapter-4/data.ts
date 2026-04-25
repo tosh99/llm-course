@@ -10,45 +10,31 @@ export const TOPICS: {
     ready: boolean
 }[] = [
     {
-        id: "backpropagation",
-        label: "Backpropagation",
-        icon: "⇄",
-        category: "Core Algorithm",
+        id: "id3",
+        label: "ID3 Algorithm",
+        icon: "↬",
+        category: "Decision Trees",
         ready: true,
     },
     {
-        id: "mlp",
-        label: "Multi-layer Perceptrons",
-        icon: "◎",
-        category: "Architecture",
+        id: "cart",
+        label: "CART",
+        icon: "⿿",
+        category: "Decision Trees",
         ready: true,
     },
     {
-        id: "activation-functions",
-        label: "Activation Functions",
-        icon: "∿",
-        category: "Architecture",
+        id: "gini-entropy",
+        label: "Gini vs Entropy Splitting",
+        icon: "ℍ",
+        category: "Decision Trees",
         ready: true,
     },
     {
-        id: "gradient-descent",
-        label: "Gradient Descent",
-        icon: "∇",
-        category: "Training",
-        ready: true,
-    },
-    {
-        id: "vanishing-gradients",
-        label: "Vanishing / Exploding Gradients",
-        icon: "↘",
-        category: "Training",
-        ready: true,
-    },
-    {
-        id: "autoencoders",
-        label: "Autoencoders",
-        icon: "⊃",
-        category: "Application",
+        id: "pruning",
+        label: "Pruning",
+        icon: "✂",
+        category: "Decision Trees",
         ready: true,
     },
 ]
@@ -57,34 +43,25 @@ export const TOPIC_META: Record<
     TopicId,
     { eyebrow: string; subtitle: string }
 > = {
-    backpropagation: {
-        eyebrow: "Chapter 4 · Core Algorithm",
+    id3: {
+        eyebrow: "Chapter 4 · Decision Trees",
         subtitle:
-            "The chain rule of calculus applied recursively — how networks actually learn",
+            "Quinlan (1979 / 1986) — learning rules from labeled examples using information gain",
     },
-    mlp: {
-        eyebrow: "Chapter 4 · Architecture",
-        subtitle: "Stacking hidden layers to break the perceptron's limits",
-    },
-    "activation-functions": {
-        eyebrow: "Chapter 4 · Architecture",
+    cart: {
+        eyebrow: "Chapter 4 · Decision Trees",
         subtitle:
-            "Sigmoid, tanh, and why non-linearity is the soul of deep networks",
+            "Breiman, Friedman, Olshen & Stone (1984) — binary recursive partitioning for classification and regression",
     },
-    "gradient-descent": {
-        eyebrow: "Chapter 4 · Training",
+    "gini-entropy": {
+        eyebrow: "Chapter 4 · Decision Trees",
         subtitle:
-            "Batch, stochastic, and mini-batch — three ways to follow the slope downhill",
+            "Shannon's entropy and Gini impurity — the information-theoretic basis of every splitting criterion",
     },
-    "vanishing-gradients": {
-        eyebrow: "Chapter 4 · Training",
+    pruning: {
+        eyebrow: "Chapter 4 · Decision Trees",
         subtitle:
-            "The training instability that stalled deep networks for two decades",
-    },
-    autoencoders: {
-        eyebrow: "Chapter 4 · Application",
-        subtitle:
-            "Train an MLP to compress and reconstruct its input — unsupervised representation learning",
+            "Cost-complexity pruning — how decision trees escape overfitting by learning to forget",
     },
 }
 
