@@ -61,19 +61,19 @@ export const TOPICS: TopicConfig[] = [
 
 export const TOPIC_META: Record<TopicId, TopicMeta> = {
     "deep-belief-networks": {
-        eyebrow: "2006",
+        eyebrow: "Chapter 9 · Pretraining",
         subtitle: "Hinton's unsupervised pretraining strategy that made training deep networks feasible",
     },
-    "relu": {
-        eyebrow: "2010",
+    relu: {
+        eyebrow: "Chapter 9 · Activation",
         subtitle: "Rectified Linear Units eliminate the vanishing gradient problem with simple computation",
     },
-    "dropout": {
-        eyebrow: "2014",
+    dropout: {
+        eyebrow: "Chapter 9 · Regularization",
         subtitle: "Randomly dropping neurons during training as a powerful regularization technique",
     },
-    "initialization": {
-        eyebrow: "2010",
+    initialization: {
+        eyebrow: "Chapter 9 · Training",
         subtitle: "Xavier and He initialization strategies for stable gradient flow in deep networks",
     },
 }

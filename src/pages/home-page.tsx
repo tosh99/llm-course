@@ -124,7 +124,7 @@ const CURRICULUM: Part[] = [
                 num: "Ch. 9",
                 title: "Deep Learning Reignition",
                 era: "2006 – 2012",
-                topics: ["Deep Belief Networks", "ReLU", "Weight Initialization", "Dropout", "AlexNet"],
+                topics: ["Deep Belief Networks", "ReLU", "Dropout", "Weight Initialization"],
                 route: "/chapter/9",
             },
             {
@@ -139,6 +139,7 @@ const CURRICULUM: Part[] = [
                 title: "Generative Models",
                 era: "2013 – 2014",
                 topics: ["Variational Autoencoders", "GANs", "Conditional GANs"],
+                route: "/chapter/11",
             },
             {
                 num: "Ch. 12",

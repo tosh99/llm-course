@@ -8,69 +8,108 @@ function HistoryTab() {
         <>
             <h2>From additive scores to scaled dot-products</h2>
             <p>
-                The attention mechanism is parameterized by a scoring function — a way of
-                measuring how compatible a decoder state is with a given encoder state. Bahdanau's
-                original choice was not the only option. Over 2014–2017, a progression of scoring
-                functions emerged, each trading off expressiveness, computation, and stability.
-                The final form — scaled dot-product attention — became the foundation of the
-                Transformer.
+                The attention mechanism is parameterized by a scoring function — a way of measuring how compatible a decoder state is with a given encoder state. Bahdanau's original choice was not the only option. Over 2014–2017, a progression of scoring functions emerged, each trading off expressiveness, computation, and numerical stability. The final form — scaled dot-product attention — became the foundation of the Transformer and every LLM built since.
             </p>
 
             <div className="ch-timeline">
                 <div className="ch-tl-item">
                     <div className="ch-tl-year">2014</div>
-                    <div className="ch-tl-section-label">First Scoring Function</div>
+                    <div className="ch-tl-section-label">First scoring function</div>
                     <div className="ch-tl-title">Additive (MLP) Attention — Bahdanau et al.</div>
                     <div className="ch-tl-body">
-                        Bahdanau's energy function e<sub>tj</sub> = v<sub>a</sub><sup>T</sup> tanh(W<sub>a</sub>s + U<sub>a</sub>h)
-                        uses a one-hidden-layer MLP to compute compatibility. This is sometimes called
-                        "concat" attention because it concatenates (or projects and adds) the two
-                        vectors before scoring. It requires three weight matrices and a nonlinearity
-                        but is very flexible — the MLP can learn arbitrary compatibility functions
-                        between states of different dimensionality.
+                        <p>
+                            Bahdanau's energy function e<sub>tj</sub> = v<sub>a</sub><sup>T</sup> tanh(W<sub>a</sub>s + U<sub>a</sub>h) uses a one-hidden-layer MLP to compute compatibility. It is called "additive" because it adds the projected decoder state and the projected encoder state before passing through tanh. It is also called "concat" attention because some implementations concatenate s and h before projecting, which is mathematically equivalent.
+                        </p>
+                        <p>
+                            The design is parameter-efficient: W<sub>a</sub> projects the decoder state from its dimensionality to the attention dimension d; U<sub>a</sub> projects the encoder state. Since U<sub>a</sub>H can be precomputed once before decoding, only the W<sub>a</sub>s<sub>t-1</sub> term must be computed at each decoder step — reducing per-step cost. The tanh nonlinearity gives the scoring function expressive power to capture complex compatibility relationships between encoder and decoder states.
+                        </p>
+                        <p>
+                            The additive scoring function works when encoder and decoder states have different dimensionalities — W<sub>a</sub> and U<sub>a</sub> can project them into a shared attention space of dimension d regardless of their original sizes. This flexibility is important in architectures where the encoder and decoder have different hidden dimensions. However, the tanh saturation can cause gradients to vanish for very well-aligned (high-confidence) pairs.
+                        </p>
                     </div>
-                    <div className="ch-tl-impact">Impact: Most expressive scoring function; standard for years</div>
+                    <div className="ch-tl-impact">Impact: Most expressive and flexible scoring function; the standard from 2014–2015; still used in architectures with mismatched encoder/decoder dims</div>
                 </div>
 
                 <div className="ch-tl-item">
                     <div className="ch-tl-year">2015</div>
                     <div className="ch-tl-section-label">Simplification</div>
-                    <div className="ch-tl-title">Dot-Product and General — Luong et al.</div>
+                    <div className="ch-tl-title">Dot-Product and General — Luong, Pham &amp; Manning</div>
                     <div className="ch-tl-body">
-                        Minh-Thang Luong, Hieu Pham, and Christopher Manning proposed two simpler
-                        alternatives in "Effective Approaches to Attention-based Neural Machine
-                        Translation" (EMNLP 2015). The <em>dot</em> score s<sup>T</sup>h requires
-                        no parameters at all — just a dot product. The <em>general</em> score
-                        s<sup>T</sup>Wh introduces a single bilinear weight matrix W. Both are far
-                        cheaper to compute than additive attention. Empirically they performed
-                        comparably or better despite the simplicity.
+                        <p>
+                            Minh-Thang Luong, Hieu Pham, and Christopher Manning proposed two simpler alternatives in "Effective Approaches to Attention-based Neural Machine Translation" (EMNLP 2015). The <em>dot</em> scoring function — s<sup>T</sup>h — requires no parameters at all. It computes compatibility as the dot product between the decoder state and encoder state: two vectors pointing in the same direction (high dot product) are considered compatible. The requirement is that s and h have the same dimensionality.
+                        </p>
+                        <p>
+                            The <em>general</em> (bilinear) scoring function — s<sup>T</sup>Wh — introduces a single learnable weight matrix W that transforms h before the dot product with s. This generalizes the dot product (when W = I it reduces exactly to dot scoring) and works when s and h have different dimensions if W is rectangular. The bilinear form can learn to emphasize certain dimensions of the encoder state more than others, capturing structured compatibility.
+                        </p>
+                        <p>
+                            Empirically, both dot and general scoring functions performed comparably or better than additive attention across multiple language pairs while being significantly cheaper to compute. This was a surprising result — the more expressive additive scoring function did not consistently outperform simpler alternatives. The finding suggested that the attention weights themselves (not the scoring function's expressiveness) were the key to the mechanism's power, and that a simpler scoring function that produces the right distribution is sufficient.
+                        </p>
                     </div>
-                    <div className="ch-tl-impact">Impact: Showed that simpler scoring was sufficient; reduced attention overhead significantly</div>
+                    <div className="ch-tl-impact">Impact: Showed simpler scoring was sufficient; reduced attention overhead significantly; dot and general became standard alternatives to additive</div>
+                </div>
+
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2015</div>
+                    <div className="ch-tl-section-label">Pointer networks</div>
+                    <div className="ch-tl-title">Vinyals et al. — Dot-Product Attention for Copying</div>
+                    <div className="ch-tl-body">
+                        <p>
+                            Vinyals, Fortunato, and Jaitly's "Pointer Networks" (NeurIPS 2015) used dot-product attention in a novel way: not to compute a context vector, but to select one input element directly. The model learned to "point" to an input position by computing attention scores and treating the argmax as a hard selection. This enabled the model to solve tasks requiring copying or selection from the input — convex hull, traveling salesman, sorting — where the output is a permutation of input elements.
+                        </p>
+                        <p>
+                            Pointer networks established that the same scoring mechanism could serve both soft (weighted combination) and hard (selection) objectives depending on how the attention weights were used. The dot-product scoring function was key to this flexibility: it required no parameters and could be directly interpreted as a relevance score for pointing. Copy mechanisms in subsequent MT systems (Gu et al., 2016) used similar ideas to handle rare words by copying them directly from the source.
+                        </p>
+                        <p>
+                            The pointer network framework also showed that attention scores could represent a probability distribution over discrete choices — a property that would be exploited in neural reading comprehension (pointing to the answer span in a document) and extraction-based summarization (pointing to summary sentences). The scoring function was doing double duty: measuring compatibility for soft attention and providing a probability for discrete selection.
+                        </p>
+                    </div>
+                    <div className="ch-tl-impact">Impact: Extended attention scoring to hard selection / copying; influenced copy mechanisms in MT and extraction-based NLP</div>
                 </div>
 
                 <div className="ch-tl-item">
                     <div className="ch-tl-year">2017</div>
-                    <div className="ch-tl-section-label">Scaling Insight</div>
+                    <div className="ch-tl-section-label">Scaling insight</div>
                     <div className="ch-tl-title">Scaled Dot-Product — Vaswani et al. (Transformer)</div>
                     <div className="ch-tl-body">
-                        The Transformer introduced one critical modification: divide the dot product
-                        by √d<sub>k</sub> before softmax. The reasoning: for large embedding
-                        dimensions d<sub>k</sub>, the dot product e = q<sup>T</sup>k tends to grow
-                        proportionally to √d<sub>k</sub> (by the variance of a sum of d<sub>k</sub>
-                        products of unit-variance variables). Without scaling, large dot products push
-                        softmax into its saturation regime where gradients vanish. Dividing by
-                        √d<sub>k</sub> keeps the variance of e at approximately 1, regardless of
-                        dimension, preserving healthy gradient magnitudes.
+                        <p>
+                            The Transformer introduced one critical modification to dot-product attention: divide the dot product by √d<sub>k</sub> before softmax. The reasoning is probabilistic: if q and k are random vectors with zero mean and unit variance, each of the d<sub>k</sub> terms in the dot product q<sup>T</sup>k has unit variance. Their sum has variance d<sub>k</sub>, so the standard deviation grows as √d<sub>k</sub>. For d<sub>k</sub> = 64, typical scores have magnitude ~8; for d<sub>k</sub> = 512, scores have magnitude ~22.
+                        </p>
+                        <p>
+                            The problem with large scores: when softmax receives inputs of magnitude 22, its output is nearly one-hot — all weight concentrates on one position, and the gradient through softmax (which depends on the soft distribution, not a hard selection) becomes nearly zero. Training stalls. Dividing by √d<sub>k</sub> normalizes the variance of the inputs to softmax to approximately 1 regardless of dimensionality, maintaining the soft distribution that allows meaningful gradient flow.
+                        </p>
+                        <p>
+                            The Transformer also introduced multi-head attention: instead of one set of Q/K/V projections, use h independent sets and concatenate their outputs. Each "head" can attend to different aspects of the input simultaneously — one head might attend to syntactic relationships, another to semantic similarity, another to positional proximity. This parallelism in the attention computation gives the Transformer vastly more representational power than single-head attention at the same computational cost.
+                        </p>
                     </div>
-                    <div className="ch-tl-impact">Impact: The scaling trick made deep stacks of attention layers trainable at high dimensions</div>
+                    <div className="ch-tl-impact">Impact: The √d<sub>k</sub> scaling trick made deep stacks of attention layers trainable; multi-head attention became the foundation of every modern LLM</div>
+                </div>
+
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2020 – present</div>
+                    <div className="ch-tl-section-label">Efficient attention</div>
+                    <div className="ch-tl-title">FlashAttention, Sparse Attention, and Linear Attention</div>
+                    <div className="ch-tl-body">
+                        <p>
+                            As Transformers scaled to handle sequences of thousands or millions of tokens, the O(n²) complexity of full dot-product attention became a bottleneck. Researchers explored two directions: algorithmic improvements to exact attention and approximations that sacrifice some expressiveness for efficiency.
+                        </p>
+                        <p>
+                            FlashAttention (Dao et al., 2022) keeps the exact attention computation but reorganizes it to minimize memory bandwidth — the actual bottleneck on modern GPUs. By computing attention in tiles that fit in fast on-chip SRAM rather than reading/writing the n×n attention matrix to slow HBM, FlashAttention achieves 2–4× speedup over naive scaled dot-product attention while producing identical results. FlashAttention-2 and FlashAttention-3 extended these ideas and are now standard in all major LLM training frameworks.
+                        </p>
+                        <p>
+                            Sparse attention (Longformer, BigBird, 2020) restricts each token to attend to a local window of neighbors plus a few global tokens, reducing complexity from O(n²) to O(n). Linear attention (Performers, 2020) approximates the softmax attention with kernel methods, achieving O(n) complexity but with approximation error. State space models (Mamba, 2023) take the different approach of replacing attention with efficient linear recurrences — architecturally descending from GRU rather than from dot-product attention, but achieving similar quality with linear complexity.
+                        </p>
+                    </div>
+                    <div className="ch-tl-impact">Impact: FlashAttention made scaled dot-product attention practical at long contexts; sparse and linear attention extend it to sequences of millions of tokens</div>
                 </div>
             </div>
 
             <div className="ch-callout">
                 <strong>The progression in one line:</strong> additive (expressive, expensive) →
-                dot-product (cheap, unstable at high d) → scaled dot-product (cheap, stable).
-                This convergence on scaled dot-product attention is why every Transformer
-                from BERT to GPT-4 uses the same core operation.
+                dot-product (cheap, unstable at high d) → scaled dot-product (cheap, stable) →
+                multi-head scaled dot-product (parallel, powerful) → efficient variants for long
+                contexts. Each step traded a little expressiveness for a lot of practical tractability.
+                The convergence on scaled dot-product attention is why every Transformer from BERT
+                to GPT-4 uses the same core operation.
             </div>
         </>
     )
@@ -86,6 +125,8 @@ function KidTab() {
                 "How relevant are you right now?" The scoring function is the specific way it
                 asks that question. Different scoring functions ask the question differently —
                 some are more expensive, some are cheaper, and they have different strengths.
+                The choice of scoring function turns out to matter less than you'd expect —
+                all four major variants work well in practice.
             </Analogy>
 
             <Analogy label="Additive Score — Ask a Tiny Network">
@@ -94,22 +135,57 @@ function KidTab() {
                 brain and tell me how well they match." The small brain (one layer + tanh)
                 can learn complicated notions of compatibility. But it's slower, because you
                 have to run this brain for every encoder position at every decoder step.
+                <br /><br />
+                The advantage: the brain can work with decoder and encoder states of different
+                sizes, because it projects both into a common "attention space" before comparing.
             </Analogy>
 
             <Analogy label="Dot-Product Score — Check Direction">
                 The simpler approach: just multiply the two vectors together element-by-element
-                and add up. This is a dot product. Two vectors with a high dot product are
-                "pointing in the same direction" — they're similar. No extra parameters needed.
-                The weakness: it only works well when the encoder and decoder use the same
-                dimensional space naturally.
+                and add up. This is a dot product. Two vectors pointing in the same direction
+                have a high dot product — they're similar. No extra parameters needed.
+                <br /><br />
+                Think of it like checking if two arrows point the same direction: if your decoder
+                is looking for a "subject noun" and the encoder has encoded a subject noun at
+                position 3, their vector representations will point in similar directions, giving
+                a high dot product. The decoder naturally finds what it's looking for.
+            </Analogy>
+
+            <Analogy label="General Score — A Learnable Lens">
+                The bilinear score (general scoring) sits between additive and dot-product.
+                It's like putting a learnable lens between the two vectors before taking their
+                dot product. The lens (a weight matrix W) can stretch or shrink certain dimensions,
+                teaching the model to emphasize the dimensions that matter most for alignment.
+                <br /><br />
+                When W = identity matrix, general scoring reduces to dot-product scoring.
+                So dot-product is a special case of general scoring. The W matrix gives extra
+                flexibility — but in practice, dot-product often works just as well.
             </Analogy>
 
             <Analogy label="Scaled Dot-Product — Fix the Volume Knob">
                 As vectors get longer (higher dimension), their dot products get larger and
                 larger by chance, even for random vectors. Before feeding into softmax, huge
-                scores cause the softmax to become almost one-hot — all attention collapses
-                onto one position. Dividing by the square root of the dimension is like turning
-                down the volume so the softmax stays soft and gradients can flow.
+                scores cause softmax to become almost one-hot — all attention collapses
+                onto one position. The gradient through this near-one-hot softmax is nearly
+                zero: training stalls.
+                <br /><br />
+                Dividing by the square root of the dimension is like turning down the volume
+                so the softmax stays soft and informative. For d = 512, you divide by √512 ≈ 22.6.
+                This keeps the pre-softmax scores at a magnitude of around 1 regardless of how
+                large d is, preserving healthy gradients throughout training.
+            </Analogy>
+
+            <Analogy label="Multi-Head Attention — Many Perspectives">
+                Instead of asking one question ("does this encoder position match?"), the Transformer
+                asks many questions in parallel — 8, 12, or 16 separate "heads," each with its own
+                Q/K/V projection matrices. One head might ask "are these syntactically related?"
+                Another might ask "do these refer to the same entity?" A third might ask "are these
+                close in position?"
+                <br /><br />
+                Each head produces its own attention pattern and context vector; they're concatenated
+                and projected to form the final output. Multi-head attention is like reading a
+                document through 8 different colored filters simultaneously — each filter highlights
+                different aspects, and you combine all 8 views for a richer understanding.
             </Analogy>
         </>
     )
@@ -123,44 +199,62 @@ function HighSchoolTab() {
             <h3>1 — Additive (Bahdanau)</h3>
             <MathBlock tex="\text{score}(\mathbf{s}, \mathbf{h}) = \mathbf{v}_a^\top \tanh\!\left(\mathbf{W}_a \mathbf{s} + \mathbf{U}_a \mathbf{h}\right)" />
             <p>
-                Parameters: W<sub>a</sub> ∈ ℝ<sup>d×n</sup>, U<sub>a</sub> ∈ ℝ<sup>d×2n</sup>,
+                Parameters: W<sub>a</sub> ∈ ℝ<sup>d×n_s</sup>, U<sub>a</sub> ∈ ℝ<sup>d×n_h</sup>,
                 v<sub>a</sub> ∈ ℝ<sup>d</sup>. Works when s and h have different dimensions.
-                Most expressive. Cost: O(d·n) per (s, h) pair.
+                Most expressive. Cost: O(d · n) per (s, h) pair.
             </p>
 
             <h3>2 — Dot-Product (Luong)</h3>
             <MathBlock tex="\text{score}(\mathbf{s}, \mathbf{h}) = \mathbf{s}^\top \mathbf{h}" />
             <p>
                 No parameters. Requires dim(s) = dim(h). Cheapest possible.
-                Works surprisingly well in practice when both encoder and decoder states
-                live in the same space.
+                Works well in practice when encoder and decoder share the same representation space.
             </p>
 
             <h3>3 — General / Bilinear (Luong)</h3>
             <MathBlock tex="\text{score}(\mathbf{s}, \mathbf{h}) = \mathbf{s}^\top \mathbf{W}_a \mathbf{h}" />
             <p>
                 One weight matrix W<sub>a</sub> ∈ ℝ<sup>n×n</sup>. Generalizes the dot product —
-                when W<sub>a</sub> = I it reduces to the dot score. Allows s and h to have different
-                dimensions if W<sub>a</sub> is rectangular.
+                when W<sub>a</sub> = I it reduces to the dot score. Allows different dimensions
+                if W<sub>a</sub> is rectangular.
             </p>
 
             <h3>4 — Scaled Dot-Product (Transformer)</h3>
             <MathBlock tex="\text{score}(\mathbf{q}, \mathbf{k}) = \frac{\mathbf{q}^\top \mathbf{k}}{\sqrt{d_k}}" />
             <p>
-                The queries q and keys k are linear projections of the input:
-                q = W<sub>Q</sub>x, k = W<sub>K</sub>x. Dividing by √d<sub>k</sub> prevents
-                softmax saturation. This is the operation in every Transformer layer.
+                Queries q and keys k are linear projections of the input: q = W<sub>Q</sub>x,
+                k = W<sub>K</sub>x. Dividing by √d<sub>k</sub> prevents softmax saturation.
+                This is the operation in every Transformer layer.
+            </p>
+
+            <h3>Multi-Head Attention</h3>
+            <MathBlock tex="\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)\, W^O" />
+            <MathBlock tex="\text{head}_i = \text{Attention}(QW_i^Q,\, KW_i^K,\, VW_i^V)" />
+            <p>
+                h parallel attention heads, each with independent projection matrices.
+                The outputs are concatenated and projected back to the model dimension.
+            </p>
+
+            <h3>Batch Matrix Multiplication Efficiency</h3>
+            <p>
+                For the full attention computation over T encoder positions and a batch of B examples,
+                scaled dot-product can be computed as a batch matrix multiply:
+            </p>
+            <MathBlock tex="\text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right) V" />
+            <p>
+                Q ∈ ℝ<sup>B×T<sub>q</sub>×d<sub>k</sub></sup>, K ∈ ℝ<sup>B×T<sub>k</sub>×d<sub>k</sub></sup>,
+                V ∈ ℝ<sup>B×T<sub>k</sub>×d<sub>v</sub></sup>. The matrix multiply QK<sup>T</sup>
+                produces B attention matrices of shape T<sub>q</sub> × T<sub>k</sub> in one GPU operation.
             </p>
 
             <hr className="ch-sep" />
             <div className="ch-callout">
-                <strong>Summary table:</strong>
-                additive: best for mismatched dims, O(d) params;
-                dot: zero params, requires same dim;
-                general: O(n²) params, flexible dims;
-                scaled dot: zero extra params, √d<sub>k</sub> normalization, Transformer standard.
+                <strong>Summary comparison:</strong>
+                additive scoring handles mismatched dims, has O(d) attention-specific params, and includes a tanh nonlinearity;
+                dot-product scoring has zero attention params but requires same dims and risks saturation;
+                general scoring has O(n²) params and handles different dims;
+                scaled dot-product has zero extra params, normalizes by √d<sub>k</sub>, and is the Transformer standard — now used in every production LLM.
             </div>
-
 
             <details className="ch-expandable">
                 <summary>
@@ -208,28 +302,18 @@ function MathsContent() {
             </p>
             <MathBlock tex="\text{Var}(e) = \text{Var}\!\left(\sum_{i=1}^{d_k} q_i k_i\right) = d_k \cdot \text{Var}(q_i k_i) = d_k" />
             <p>
-                So the standard deviation of e grows as √d<sub>k</sub>. For d<sub>k</sub> = 512,
-                typical dot products have magnitude ~22. The softmax of values in this range
-                becomes extremely peaked:
+                So std(e) = √d<sub>k</sub>. For d<sub>k</sub> = 512, typical dot products have magnitude ~22.
+                Dividing by √d<sub>k</sub> restores Var(e/√d<sub>k</sub>) = 1, preventing softmax saturation:
             </p>
-            <MathBlock tex="\text{softmax}\!\left(\frac{\mathbf{e}}{\sqrt{d_k}}\right) \approx \text{one-hot}\!\left(\arg\max \mathbf{e}\right)\quad \text{for large } d_k \text{ without scaling}" />
-            <p>
-                The gradient of softmax near a one-hot is near zero — training stalls.
-                Dividing by √d<sub>k</sub> restores the variance of the pre-softmax inputs
-                to approximately 1, regardless of d<sub>k</sub>.
-            </p>
+            <MathBlock tex="\text{softmax}\!\left(\frac{\mathbf{e}}{\sqrt{d_k}}\right) \approx \text{one-hot}\!\left(\arg\max \mathbf{e}\right)\quad \text{without scaling, as } d_k \to \infty" />
 
-            <h3>Bahdanau vs Luong — What the Gradient Sees</h3>
-            <p>
-                For additive attention, the gradient of the score w.r.t. s passes through
-                a tanh, which saturates for large inputs (derivative → 0). The saturation
-                region corresponds to high-confidence alignment — when the model is very
-                sure, gradients through the score to s and h become tiny. Dot-product
-                attention has no tanh; its gradient w.r.t. q is simply k. This is more
-                gradient-friendly but less expressive.
-            </p>
+            <h3>Gradient Comparison — Additive vs Scaled Dot-Product</h3>
             <MathBlock tex="\frac{\partial}{\partial \mathbf{s}} \mathbf{v}^\top \tanh(\mathbf{W}\mathbf{s} + \mathbf{U}\mathbf{h}) = \mathbf{W}^\top \left(\mathbf{v} \odot \text{sech}^2(\mathbf{W}\mathbf{s} + \mathbf{U}\mathbf{h})\right)" />
             <MathBlock tex="\frac{\partial}{\partial \mathbf{q}}\, \mathbf{q}^\top \mathbf{k} / \sqrt{d_k} = \mathbf{k} / \sqrt{d_k}" />
+            <p>
+                The additive gradient includes sech²(·) — saturating for large pre-tanh values (high-confidence alignments).
+                The scaled dot-product gradient is constant: k/√d<sub>k</sub>. No saturation regardless of score magnitude.
+            </p>
 
             <div className="ch-callout">
                 <strong>Empirical finding from Luong et al.:</strong> The <em>general</em> scoring
@@ -280,7 +364,7 @@ U_a_add = rng.normal(0, 0.1, (attn_dim, dim))
 v_a_add = rng.normal(0, 0.1, attn_dim)
 W_a_gen = rng.normal(0, 0.1, (dim, dim))
 
-print("Alignment weights — four scoring functions")
+print("Alignment weights -- four scoring functions")
 print("=" * 60)
 print(f"{'pos':<5}  {'additive':>10}  {'dot':>10}  {'general':>10}  {'scaled_dot':>12}")
 print("-" * 60)
@@ -346,6 +430,6 @@ export const ALIGNMENT_SCORES_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      null,
-    python:     null,
+    maths:      <MathsContent />,
+    python:     <PythonContent />,
 }

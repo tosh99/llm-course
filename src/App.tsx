@@ -12,6 +12,7 @@ import { Chapter7Page } from "@/pages/chapter-7"
 import { Chapter8Page } from "@/pages/chapter-8"
 import { Chapter9Page } from "@/pages/chapter-9"
 import { Chapter10Page } from "@/pages/chapter-10"
+import { Chapter11Page } from "@/pages/chapter-11"
 import { Chapter12Page } from "@/pages/chapter-12"
 import { Chapter13Page } from "@/pages/chapter-13"
 import { Chapter14Page } from "@/pages/chapter-14"
@@ -42,7 +43,7 @@ function Layout() {
                 <Route path="/chapter/8" element={<Chapter8Page />} />
                 <Route path="/chapter/9" element={<Chapter9Page />} />
                 <Route path="/chapter/10" element={<Chapter10Page />} />
-                {/* Ch.11 Generative Models — coming soon */}
+                <Route path="/chapter/11" element={<Chapter11Page />} />
                 <Route path="/chapter/12" element={<Chapter12Page />} />
                 <Route path="/chapter/13" element={<Chapter13Page />} />
                 <Route path="/chapter/14" element={<Chapter14Page />} />

@@ -4,6 +4,8 @@ import "./chapter-16.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
 import { DEEP_RNNS_TABS } from "./topics/deep-rnns/tabs"
 import { SEQUENTIAL_PARALLELISM_TABS } from "./topics/sequential-parallelism/tabs"
+import { POINTER_NETWORKS_TABS } from "./topics/pointer-networks/tabs"
+import { WAVENET_TABS } from "./topics/wavenet/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
@@ -76,8 +78,8 @@ export function Chapter16Page() {
     const tabContent: Record<TopicId, React.ReactNode> = {
         "deep-rnns":           DEEP_RNNS_TABS[activeTab],
         "sequential-parallelism": SEQUENTIAL_PARALLELISM_TABS[activeTab],
-        "pointer-networks":    undefined,
-        "wavenet":             undefined,
+        "pointer-networks":    POINTER_NETWORKS_TABS[activeTab],
+        "wavenet":             WAVENET_TABS[activeTab],
     }
 
     return (

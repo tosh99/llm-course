@@ -23,8 +23,8 @@ export const TOPICS: {
         category: "Architectures",
         ready: true,
     },
-    { id: "pointer-networks", label: "Pointer Networks", icon: "→", category: "Advanced Architectures", ready: false },
-    { id: "wavenet",          label: "WaveNet",           icon: "∿", category: "Advanced Architectures", ready: false },
+    { id: "pointer-networks", label: "Pointer Networks", icon: "→", category: "Advanced Architectures", ready: true },
+    { id: "wavenet",          label: "WaveNet",           icon: "∿", category: "Advanced Architectures", ready: true },
 ]
 
 export const TOPIC_META: Record<

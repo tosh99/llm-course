@@ -1,6 +1,8 @@
 import { Analogy, CodeBlock, DefBlock, MathBlock } from "../../shared"
 import type { TabId } from "../../types"
 
+// ── Tab content ───────────────────────────────────────────────────────────────
+
 interface TlItem {
     year: string
     title: string
@@ -27,34 +29,64 @@ function TimelineItem({ item }: { item: TlItem }) {
 function HistoryTab() {
     const items: TlItem[] = [
         {
-            year: "2010",
-            title: "Xavier Initialization—Glorot & Bengio",
+            year: "Pre-2010",
+            title: "The Initialisation Problem — Why Small Random Weights Failed",
             challenge:
-                "Deep networks failed to train because of poor weight initialization. Small random values led to vanishing gradients; large values led to exploding gradients and saturation.",
+                "The standard initialisation prescription before 2010 was simple: draw weights from N(0, 0.01) and biases from zero. This had worked for shallow networks and seemed conservative. For deep networks, it was catastrophic. With many layers and weights of magnitude 0.01, the forward pass multiplied activations by small numbers at every layer — pre-activations shrank to near zero by layer 5, and sigmoid/tanh activations were identically near 0.5 (for near-zero pre-activations), producing nearly zero gradients throughout. The network was effectively untrained regardless of how long you ran SGD. Hinton's solution (DBN pretraining) worked around the problem by providing better initialisation via unsupervised training. But what was the principled mathematical solution?",
             what:
-                "Xavier Glorot and Yoshua Bengio proposed 'Understanding the difficulty of training deep feedforward neural networks,' introducing a principled initialization based on preserving variance through layers. Weights should be drawn from a distribution with variance inversely proportional to the average of input and output dimensions.",
+                "The research question was: what statistical properties must weight initialisation have so that a deep network can train from random starting points? The intuitive answer — scale weights so that signals neither vanish nor explode — needed to be made precise. This required tracking how the distribution of activations and gradients evolved layer by layer as a function of weight distribution, depth, and activation function.",
             impact:
-                "Xavier initialization became the default for sigmoid and tanh networks. Training became more stable, and deeper networks (8+ layers) became trainable without pre-training.",
+                "The demand for a principled initialisation theory was the catalyst for signal propagation analysis — a mathematical framework that tracks how distributions evolve through deep networks. This framework, developed by Glorot & Bengio (2010) and He et al. (2015), is the ancestor of every modern initialisation scheme and of the mean field analysis of deep networks developed by Poole, Lahiri, Raghu, Sohl-Dickstein, and Ganguli (2016) that proved deep networks can represent exponentially complex functions.",
+        },
+        {
+            year: "2010",
+            title: "Glorot & Bengio — Xavier Initialisation",
+            challenge:
+                "Xavier Glorot and Yoshua Bengio at the Université de Montréal recognised that the initialisation problem could be stated precisely: find Var(W) such that the variance of activations remains approximately constant across layers, preventing both vanishing and exploding signals. They analysed the forward pass (signal propagation) and backward pass (gradient propagation) separately and found they imposed conflicting requirements on Var(W).",
+            what:
+                "Published as 'Understanding the Difficulty of Training Deep Feedforward Neural Networks' at AISTATS 2010, the paper derived that for linear or approximately linear activations (sigmoid near zero, tanh near zero): the forward pass requires Var(W) = 1/n_in to preserve activation variance, while the backward pass requires Var(W) = 1/n_out to preserve gradient variance. Since n_in and n_out typically differ, neither requirement can be exactly satisfied. The Xavier (Glorot) compromise: Var(W) = 2/(n_in + n_out), the harmonic mean. For uniform distribution: W ~ U[-sqrt(6/(n_in + n_out)), sqrt(6/(n_in + n_out))]. For Gaussian: W ~ N(0, sqrt(2/(n_in + n_out))).",
+            impact:
+                "Xavier initialisation became the default for sigmoid and tanh networks immediately. Training became dramatically more stable: 4-6 layer networks that previously required DBN pretraining could now be trained from scratch. The paper also introduced the concept of 'effective' learning rates per layer (gradients scaled by layer width) that shaped the development of learning rate warmup schedules and adaptive optimisers (Adam, Chapter 11). PyTorch uses Xavier initialisation as the default for linear layers with tanh activation (torch.nn.init.xavier_uniform_).",
         },
         {
             year: "2015",
-            title: "He Initialization—Kaiming He et al.",
+            title: "He, Zhang, Ren & Sun — He (Kaiming) Initialisation for ReLU",
             challenge:
-                "As ReLU became the dominant activation, Xavier initialization turned out to be suboptimal. ReLU zeros out half the inputs, so variance wasn't preserved properly.",
+                "As ReLU became the dominant activation (Nair & Hinton 2010, Glorot et al. 2011, AlexNet 2012), Xavier initialisation became suboptimal. The Xavier derivation assumed activations were approximately linear near zero — a good assumption for sigmoid and tanh, but wrong for ReLU. ReLU sets all negative pre-activations to zero, which eliminates half the activation variance at each layer. A network with Xavier initialisation and ReLU activations lost half its signal per layer — vanishing in log_2(n) layers.",
             what:
-                "Kaiming He et al. (Microsoft Research) proposed He initialization in 'Delving Deep into Rectifiers.' Specifically designed for ReLU activations, the variance should be 2/n_in rather than 1/n_avg, accounting for ReLU's sparsity.",
+                "Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun at Microsoft Research Asia published 'Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification' at ICCV 2015. The key derivation: for ReLU, the variance of the output of a layer is Var(y) = (n_in / 2) * Var(W) * Var(x), because ReLU zeros out the negative half of the input (reducing variance by exactly half compared to the full input). To preserve variance, Var(W) = 2/n_in. For the backward pass, the symmetric derivation gives Var(W) = 2/n_out. The recommendation: use forward-mode Var(W) = 2/n_in (the He/Kaiming normal initialisation). For Gaussian: W ~ N(0, sqrt(2/n_in)). For uniform: W ~ U[-sqrt(6/n_in), sqrt(6/n_in)].",
             impact:
-                "He initialization enabled training of very deep networks (ResNet-152, DenseNet). Modern deep learning frameworks use He initialization as the default for convolutional layers with ReLU.",
+                "He initialisation enabled training very deep networks from random initialisation without any pretraining. The paper demonstrated a 22-layer fully convolutional network trained from scratch with He init, outperforming all previous methods on ImageNet. This directly enabled ResNet: without He initialisation, ResNet-152 (152 layers) could not be trained from scratch at all. PyTorch uses He initialisation (torch.nn.init.kaiming_normal_) as the default for convolutional and linear layers with ReLU activation.",
         },
         {
-            year: "2015–2018",
-            title: "Modern Initialization Practices",
+            year: "2015",
+            title: "Mishkin & Matas — LSUV: Layer-Sequential Unit Variance",
             challenge:
-                "As architectures became more varied (ResNets with skip connections, attention mechanisms), initialization strategies needed adaptation.",
+                "Xavier and He initialisation were derived under simplifying assumptions: linear layers, no biases, no normalisation, independent inputs. For complex modern architectures with non-standard connectivity — skip connections, attention layers, grouped convolutions — the theoretical assumptions might not hold. Could there be a more empirical, data-driven initialisation that guaranteed unit variance at every layer without requiring a closed-form derivation?",
             what:
-                "Researchers developed initialization schemes for specific cases: orthogonal initialization for RNNs, LSUV (Layer-Sequential Unit Variance) for automatic tuning, and scaling factors for residual branches.",
+                "Dmytro Mishkin and Jiri Matas proposed Layer-Sequential Unit Variance (LSUV) initialisation: (1) initialise all weights with orthogonal initialisation; (2) for each layer in sequence, do one forward pass with a mini-batch of data; (3) measure the variance of the layer's output; (4) scale the layer's weights by 1/sqrt(variance) so the output has unit variance. Repeat until all layers have unit-variance outputs. This is an empirical algorithm that does not require any assumptions about the network architecture or activation function.",
             impact:
-                "Proper initialization is now taken for granted in deep learning. It enables training networks with hundreds of layers (ResNet, DenseNet, Transformer) without the instability that plagued early deep networks.",
+                "LSUV outperformed Xavier and He initialisation on several benchmarks in 2015 and demonstrated that data-dependent initialisation could be superior to theory-derived initialisation. The idea of using data to calibrate initialisation directly prefigures modern techniques: MetaInit (2019), GradInit (2021), and the per-layer learning rate schemes in modern Adam optimisers. LSUV also introduced the orthogonal weight matrix as a starting point — a separately important development for RNN training.",
+        },
+        {
+            year: "2016",
+            title: "Orthogonal Initialisation for RNNs and Deep Linear Networks",
+            challenge:
+                "Recurrent neural networks (RNNs, Chapter 12) face an extreme version of the initialisation problem. The same weight matrix W is multiplied by itself T times during the forward pass (once per time step) — so the effective depth is the sequence length T, which might be hundreds or thousands. Xavier or He initialisation produced weights with singular values scattered around 1 — but any deviation from exactly 1 compounded over T steps. The singular values of W^T either exploded (if any eigenvalue &gt; 1) or vanished (if any eigenvalue &lt; 1).",
+            what:
+                "Saxe, McClelland, and Ganguli (2013, published ICLR 2014) analysed deep linear networks and proved that orthogonal weight matrices — with all singular values exactly equal to 1 — were optimal for signal propagation. They showed that random orthogonal matrices (drawn from the Haar distribution over the orthogonal group) preserved both activation variance and gradient variance exactly through any depth, with no assumptions about the activation function. For RNNs, Le et al. (2015) showed that initialising the recurrent weight matrix as the identity matrix (a special case of orthogonal) enabled training RNNs on tasks requiring memory of 1,000+ steps.",
+            impact:
+                "Orthogonal initialisation became the standard for RNNs and the foundation for understanding why residual connections work (ResNets are approximately identity-initialised in the residual branch). The analysis of deep linear networks by Saxe et al. produced exact solutions for gradient flow and learning dynamics that became the mathematical foundation for the 'mean field theory of deep learning' developed by the Google Brain team in 2016–2018, which explained why deep networks have more expressive power than shallow ones.",
+        },
+        {
+            year: "2017 – present",
+            title: "Transformer Initialisation — Small Weights, Residual Scaling, and Warmup",
+            challenge:
+                "Transformer architectures (Chapter 19) introduced new initialisation challenges. The architecture has residual connections at every layer, attention mechanisms that compute dot products of queries and keys (which can have large variance for high-dimensional embeddings), and layer normalisation that interacts with initialisation in non-obvious ways. Naive application of Xavier or He initialisation to Transformers caused instability — particularly in the early training steps where large gradient updates could cause attention weights to collapse to near-uniform or near-one-hot distributions.",
+            what:
+                "The Transformer paper (Vaswani et al. 2017) used Xavier uniform initialisation with a learning rate warmup schedule: linearly increase the learning rate for the first 4,000 steps, then decay proportionally to 1/sqrt(step). The warmup allowed the model to find a reasonable gradient direction before taking large steps. GPT-2 introduced 'scaled initialisation of residual projections': divide the weights in residual connections by sqrt(2 * n_layers), so the residual branch adds less variance at initialisation and the network starts closer to the identity function. This prevents early training instability from residual accumulation.",
+            impact:
+                "Residual branch scaling became the standard for Transformer initialisation. GPT-3, PaLM, LLaMA, and every major language model uses a version of this approach. The learning rate warmup schedule — ubiquitous in Transformer training — is a direct consequence of initialisation sensitivity: without warmup, the large early learning rates destabilise the initialisation and cause training divergence. Initialisation and learning rate schedule are now understood as coupled: you cannot design one without considering the other.",
         },
     ]
 
@@ -67,27 +99,196 @@ function HistoryTab() {
     )
 }
 
+// ── Kid Tab ──────────────────────────────────────────────────────────────────
+
 function KidTab() {
     return (
         <>
-            <h2>Why does weight initialization matter?</h2>
+            <h2>Starting in the right place — why the first step matters most</h2>
 
-            <Analogy label="The Balance Beam">
-                Imagine walking on a balance beam. Start too far to one side, and you fall off immediately. Start in the middle, and you can adjust as you walk.
+            <Analogy label="The treasure hunt analogy">
+                Imagine you are searching for treasure buried somewhere in a vast desert. You start at a random position and walk in the direction the ground slopes downhill. If you start in a good location — near the treasure — you find it quickly. If you start at the edge of the desert, you might walk for years in the wrong direction before finding the right valley.
                 <br /><br />
-                Neural networks are similar. Bad initialization is like starting skewed—gradients explode (become huge) or vanish (become tiny), and the network can't learn.
+                Neural network training is exactly this. The weights are your position, the loss function is the terrain height, and SGD is the downhill walker. Bad initialisation means starting at the wrong end of the desert — and sometimes in terrain so flat or so steep that you can never move at all.
             </Analogy>
 
-            <Analogy label="The Telephone Game">
-                In a game of telephone, a message passed through many people gets distorted. Some people whisper (vanishing), others shout (exploding).
+            <Analogy label="The telephone game — why scale matters">
+                In the telephone game, each person whispers the message to the next. If everyone whispers very quietly, the message fades to silence after a few people. If everyone shouts, the message distorts into noise. The goal is for each person to pass the message at exactly the same volume.
                 <br /><br />
-                Good initialization ensures everyone speaks at the right volume—the signal passes clearly through all layers.
+                Weight initialisation is the same problem. If weights are too small, signals shrink to zero as they pass through layers. If too large, signals explode to infinity. The activation variance must stay roughly constant from layer to layer — neither shrinking nor growing. Glorot and Bengio (2010) derived exactly what weight scale achieves this.
             </Analogy>
 
-            <Analogy label="Lighting a Candle">
-                Xavier and He initialization are like carefully adjusting the wick before lighting. Get it wrong, and the flame sputters out (vanishing) or explodes.
-                Get it right, and the flame burns steadily through the entire network.
+            <Analogy label="Why ReLU changes everything">
+                Glorot's formula worked for sigmoid and tanh networks. But ReLU throws away half the signal — everything below zero becomes zero. It's like whispering half the message at each step: the signal halves at every layer.
+                <br /><br />
+                He initialisation fixes this by starting twice as loud. If half the signal will be thrown away at each layer, start with twice the variance so the surviving half has the right amount. W ~ N(0, sqrt(2/n_in)) rather than sqrt(1/n_in). Doubling the starting variance compensates exactly for ReLU's halving effect.
             </Analogy>
+
+            <Analogy label="Orthogonal initialisation — the identity shortcut">
+                RNNs are even harder: the same weight matrix is applied T times (T = sequence length). Even a slight deviation from "preserve all information" compounds over T steps. Start with a weight matrix that maps every input to an output of the same size without any distortion — an orthogonal matrix, where every singular value is exactly 1.
+                <br /><br />
+                This is not just mathematically convenient. An orthogonal matrix is the continuous analogue of a perfect relay: it passes everything through at the same volume without adding or removing energy. At step 1 of training, the RNN is essentially the identity function — it passes information forward unchanged — giving gradient descent a maximally informative starting position.
+            </Analogy>
+
+            <Analogy label="What comes next — putting it all together">
+                Chapter 9 gave neural networks four new tools: Deep Belief Networks proved depth was possible, ReLU solved vanishing gradients from the activation side, Dropout solved overfitting with implicit ensembles, and Xavier/He initialisation solved the starting point problem. In 2012, Alex Krizhevsky assembled all four on two gaming GPUs. The result — AlexNet — cut ImageNet error from 26% to 15% in a single year, shocking the computer vision community and launching the modern AI era. Chapter 10 tells that story.
+            </Analogy>
+        </>
+    )
+}
+
+// ── High School Tab ──────────────────────────────────────────────────────────
+
+function MathsContent() {
+    return (
+        <>
+            <h3>Signal Propagation Analysis — Variance Through Layers</h3>
+            <p>
+                For a linear layer y = Wx, with x having variance Var(x) and W having i.i.d. elements with variance Var(W), and n_in inputs:
+            </p>
+            <MathBlock tex="\text{Var}(y_j) = \sum_{i=1}^{n_{in}} \text{Var}(W_{ij}) \cdot \text{Var}(x_i) = n_{in} \cdot \text{Var}(W) \cdot \text{Var}(x)" />
+            <p>
+                For variance to be preserved (Var(y) = Var(x)): Var(W) = 1/n_in. For the backward pass with gradient g = W^T delta: Var(delta_prev) = n_out * Var(W) * Var(delta), requiring Var(W) = 1/n_out. The Xavier compromise: Var(W) = 2/(n_in + n_out).
+            </p>
+
+            <h3>He Initialisation — ReLU Variance Correction</h3>
+            <p>
+                For a ReLU layer y = ReLU(Wx), assuming Wx ~ N(0, sigma^2):
+            </p>
+            <MathBlock tex="\text{Var}(\text{ReLU}(z)) = \frac{1}{2}\,\text{Var}(z) \quad \text{for } z \sim \mathcal{N}(0,\, \sigma^2)" />
+            <p>
+                Proof: E[ReLU(z)^2] = E[z^2 * 1_&#123;z&gt;0&#125;] = (1/2) E[z^2] = sigma^2/2 by symmetry of the Gaussian. To compensate, use Var(W) = 2/n_in:
+            </p>
+            <MathBlock tex="\text{Var}(y) = n_{in} \cdot \frac{2}{n_{in}} \cdot \text{Var}(x) \cdot \frac{1}{2} = \text{Var}(x) \quad \checkmark" />
+
+            <h3>Orthogonal Initialisation and Singular Value Analysis</h3>
+            <p>
+                For a weight matrix W with SVD W = U S V^T, the singular values of W^L are S^L. For S = I (orthogonal matrix), W^L = U I V^T — singular values remain 1 at all depths. For S near I with small perturbation epsilon, (1 + epsilon)^L grows as e^&#123;epsilon * L&#125; — exponentially in depth. Hence even small deviations from unit singular values compound rapidly in deep or RNN networks.
+            </p>
+        </>
+    )
+}
+
+const PY_INIT = `import numpy as np
+
+# ── Initialisation Schemes ────────────────────────────────────────────────────
+def glorot_normal(n_in, n_out):
+    """Xavier/Glorot (2010): optimal for sigmoid/tanh, variance = 2/(n_in+n_out)"""
+    std = np.sqrt(2.0 / (n_in + n_out))
+    return np.random.normal(0, std, (n_in, n_out))
+
+def glorot_uniform(n_in, n_out):
+    limit = np.sqrt(6.0 / (n_in + n_out))
+    return np.random.uniform(-limit, limit, (n_in, n_out))
+
+def he_normal(n_in, n_out):
+    """He/Kaiming (2015): optimal for ReLU, variance = 2/n_in"""
+    std = np.sqrt(2.0 / n_in)
+    return np.random.normal(0, std, (n_in, n_out))
+
+def orthogonal(n_in, n_out):
+    """Saxe et al. (2014): orthogonal matrix preserves singular values."""
+    flat = np.random.randn(max(n_in, n_out), min(n_in, n_out))
+    U, _, Vt = np.linalg.svd(flat, full_matrices=False)
+    Q = U if n_in >= n_out else Vt
+    return Q[:n_in, :n_out]
+
+def small_random(n_in, n_out):
+    """Naive: N(0, 0.01) — causes vanishing activations in deep networks"""
+    return np.random.normal(0, 0.01, (n_in, n_out))
+
+def large_random(n_in, n_out):
+    """Naive: N(0, 1) — causes exploding activations"""
+    return np.random.normal(0, 1.0, (n_in, n_out))
+
+
+# ── Activation Functions ──────────────────────────────────────────────────────
+def relu(x):
+    return np.maximum(0, x)
+
+def tanh(x):
+    return np.tanh(x)
+
+
+# ── Signal Propagation Simulation ─────────────────────────────────────────────
+def trace_signal_propagation(init_fn, activation, n_layers=30, n_units=512,
+                              batch_size=128):
+    """
+    Trace the standard deviation of activations through a deep network.
+    Returns std at each layer.
+    """
+    x = np.random.randn(batch_size, n_units)
+    stds = [x.std()]
+
+    for _ in range(n_layers):
+        W = init_fn(n_units, n_units)
+        x = activation(x @ W)
+        stds.append(x.std())
+
+    return np.array(stds)
+
+
+# ── Compare Initialisations ───────────────────────────────────────────────────
+configs = [
+    ("He normal + ReLU",       he_normal,     relu),
+    ("Glorot normal + ReLU",   glorot_normal, relu),
+    ("Small random + ReLU",    small_random,  relu),
+    ("Large random + ReLU",    large_random,  relu),
+    ("Glorot normal + tanh",   glorot_normal, tanh),
+    ("Small random + tanh",    small_random,  tanh),
+]
+
+print("Signal propagation through 30-layer networks")
+print(f"{'Configuration':<30} | {'Layer 1 std':>11} | {'Layer 15 std':>12} | {'Layer 30 std':>12} | {'Status':>10}")
+print("-" * 90)
+
+for name, init_fn, act_fn in configs:
+    np.random.seed(42)
+    stds = trace_signal_propagation(init_fn, act_fn, n_layers=30)
+    s1, s15, s30 = stds[1], stds[15], stds[30]
+
+    if s30 < 1e-5:
+        status = "VANISHED"
+    elif s30 > 100:
+        status = "EXPLODED"
+    else:
+        status = "Stable"
+
+    print(f"{name:<30} | {s1:>11.5f} | {s15:>12.5f} | {s30:>12.5f} | {status:>10}")
+
+
+# ── Verify He Initialisation Derivation ──────────────────────────────────────
+print("\n\nHe initialisation: theoretical vs empirical variance")
+print("=" * 55)
+
+np.random.seed(42)
+n_in = 512
+n_out = 256
+batch = 1000
+
+W = he_normal(n_in, n_out)
+x = np.random.randn(batch, n_in)
+z = x @ W
+y = relu(z)
+
+print(f"n_in = {n_in}, n_out = {n_out}")
+print(f"Input variance:      {x.var():.4f} (expected 1.0)")
+print(f"Pre-ReLU variance:   {z.var():.4f} (expected 1.0 with He init)")
+print(f"Post-ReLU variance:  {y.var():.4f} (expected 0.5, then next layer's")
+print(f"                                    He init compensates for the halving)")
+print(f"\nHe init std = sqrt(2/{n_in}) = {np.sqrt(2/n_in):.5f}")
+print(f"Actual W std =               {W.std():.5f}")`
+
+function PythonContent() {
+    return (
+        <>
+            <p>
+                NumPy implementation comparing six initialisation schemes on a 30-layer network, tracing activation standard deviation through depth. Demonstrates how He initialisation maintains stable signal propagation for ReLU networks while all other schemes either vanish or explode.
+            </p>
+            <CodeBlock code={PY_INIT} filename="initialization_demo.py" lang="python" langLabel="Python" />
+            <div className="ch-callout">
+                <strong>Key observation:</strong> Only He normal + ReLU maintains a stable standard deviation through 30 layers. All other combinations either vanish (signal reaches zero) or explode (signal grows to infinity). This is why He initialisation was a prerequisite for training ResNet-152 — without it, the 152-layer network was untrainable regardless of any other architectural choice.
+            </div>
         </>
     )
 }
@@ -95,50 +296,44 @@ function KidTab() {
 function HighSchoolTab() {
     return (
         <>
-            <h2>Weight Initialization: Starting on the right foot</h2>
+            <h2>Weight initialisation — principled signal propagation</h2>
 
-            <h3>The problem: exploding and vanishing gradients</h3>
+            <h3>The Signal Propagation Framework</h3>
             <p>
-                When you have a deep network with many layers, small initialization differences compound.
-                If weights are slightly too large, activations grow exponentially (exploding).
-                If slightly too small, activations shrink to near zero (vanishing).
-                Both make learning impossible.
+                For a layer y = activation(Wx) with n_in inputs, if x has variance Var(x) and W has i.i.d. entries with variance Var(W), then Var(Wx) = n_in * Var(W) * Var(x). For variance to be preserved at every layer, we need n_in * Var(W) = 1 per layer. This simple requirement, applied to both the forward and backward passes, determines the initialisation scale.
             </p>
 
-            <h3>Variance preservation</h3>
+            <h3>Xavier/Glorot Initialisation — For Sigmoid/Tanh</h3>
+            <MathBlock tex="\text{Var}(W) = \frac{2}{n_{in} + n_{out}} \quad \Longleftrightarrow \quad W \sim \mathcal{N}\!\left(0,\; \sqrt{\frac{2}{n_{in}+n_{out}}}\right)" />
             <p>
-                The key insight: we want the variance of activations to stay roughly constant across layers.
-                If input to layer l has variance σ², output should also have variance σ².
+                Compromise between forward (requires 1/n_in) and backward (requires 1/n_out) variance preservation. Derived under the assumption that activations are approximately linear at initialisation — true for tanh and sigmoid near zero but not for ReLU.
             </p>
 
-            <h3>Xavier/Glorot Initialization</h3>
+            <h3>He (Kaiming) Initialisation — For ReLU</h3>
+            <MathBlock tex="\text{Var}(W) = \frac{2}{n_{in}} \quad \Longleftrightarrow \quad W \sim \mathcal{N}\!\left(0,\; \sqrt{\frac{2}{n_{in}}}\right)" />
             <p>
-                For sigmoid/tanh activations, Xavier initialization uses:
-            </p>
-            <MathBlock tex="W \\sim \\mathcal{U}\\left[-\\sqrt{\\frac{6}{n_{in} + n_{out}}}, \\sqrt{\\frac{6}{n_{in} + n_{out}}}\\right]" />
-            <p>
-                Or equivalently, Normal distribution with variance 2/(n_in + n_out).
-                This preserves variance for activations that saturate at both ends.
+                The factor of 2 accounts for ReLU setting negative values to zero — reducing the effective variance by half at each layer. The derivation: E[ReLU(z)^2] = E[z^2]/2 = Var(W) * n_in * Var(x) / 2. Setting this equal to Var(x) gives Var(W) = 2/n_in. Used by default in PyTorch for Conv2d and Linear layers with ReLU (torch.nn.init.kaiming_normal_).
             </p>
 
-            <h3>He Initialization for ReLU</h3>
+            <h3>Orthogonal Initialisation — For RNNs</h3>
+            <MathBlock tex="W = U\Sigma V^\top \text{ from SVD of random Gaussian},\;\; \text{then rescale so all singular values} = 1" />
             <p>
-                ReLU zeros out negative values, so the standard Xavier formula doesn't work.
-                He initialization uses:
-            </p>
-            <MathBlock tex="W \\sim \\mathcal{N}\\left(0, \\sqrt{\\frac{2}{n_{in}}}\\right)" />
-            <p>
-                The factor of 2 accounts for ReLU setting half the values to zero.
-                Using Xavier with ReLU leads to vanishing activations in deep networks.
+                An orthogonal weight matrix has all singular values equal to 1. W^T applied T times (T = sequence length in an RNN) preserves all singular values: 1^T = 1. Prevents both vanishing and exploding gradients in recurrent networks regardless of sequence length. Draw from the Haar distribution: generate random Gaussian, take SVD, set singular values to 1, reconstruct. Used in PyTorch as torch.nn.init.orthogonal_.
             </p>
 
             <hr className="ch-sep" />
 
             <div className="ch-callout">
-                <strong>Modern default:</strong> PyTorch and TensorFlow use Kaiming (He)
-                initialization by default for Conv2d and Linear layers with ReLU.
+                <strong>Chapter 9 complete. The four ingredients assembled:</strong> Deep Belief Networks (2006) proved that training deep networks was possible via layer-wise pretraining. ReLU (2010–2011) solved vanishing gradients for positive inputs. Dropout (2012–2014) solved overfitting by implicit ensemble learning. He initialisation (2015) solved the starting point problem for ReLU networks. In 2012, AlexNet combined these ingredients and trained an 8-layer CNN on two gaming GPUs, cutting ImageNet error from 26% to 15%. Chapter 10 tells the story of that experiment and its consequences for the entire technology industry.
             </div>
 
+            <DefBlock label="Initialisation Scheme Selection Guide">
+                Xavier uniform/normal: default for linear layers with tanh or sigmoid; PyTorch default for nn.Linear<br /><br />
+                He normal (Kaiming): default for layers followed by ReLU or Leaky ReLU; PyTorch default for nn.Conv2d<br /><br />
+                Orthogonal: default for recurrent weight matrices (nn.RNN, nn.LSTM hidden-to-hidden weights)<br /><br />
+                Residual branch scaling (1/sqrt(2*n_layers)): for Transformer residual projections; prevents residual accumulation<br /><br />
+                Zero: biases are initialised to zero (or small constant) by default in all frameworks
+            </DefBlock>
 
             <details className="ch-expandable">
                 <summary>
@@ -165,213 +360,12 @@ function HighSchoolTab() {
     )
 }
 
-function MathsContent() {
-    return (
-        <>
-            <h2>Weight initialization: Mathematical derivation</h2>
-
-            <DefBlock label="Variance Preservation Principle">
-                For a linear layer y = Wx + b with inputs x having variance Var(x),
-                we want Var(y) ≈ Var(x). Under assumptions of zero-mean, independent inputs:
-                <MathBlock tex="\\text{Var}(y) = n_{in} \\cdot \\text{Var}(W) \\cdot \\text{Var}(x)" />
-                For variance to be preserved, we need Var(W) = 1/n_in.
-            </DefBlock>
-
-            <h3>Xavier/Glorot initialization</h3>
-            <p>
-                Glorot and Bengio considered both forward and backward passes.
-                For the forward pass, we need Var(W) = 1/n_in.
-                For the backward pass, we need Var(W) = 1/n_out.
-            </p>
-            <p>
-                The Xavier compromise averages these:
-            </p>
-            <MathBlock tex="\\text{Var}(W) = \\frac{2}{n_{in} + n_{out}}" />
-            <p>
-                Uniform initialization: W ~ U[-√(6/(n_in + n_out)), √(6/(n_in + n_out))]
-                <br />
-                Normal initialization: W ~ N(0, √(2/(n_in + n_out)))
-            </p>
-
-            <h3>He initialization for ReLU</h3>
-            <p>
-                For ReLU: y = max(0, x), the negative half of inputs is zeroed.
-                Assuming symmetric pre-activation, this means effectively:
-            </p>
-            <MathBlock tex="\\mathbb{E}[\\text{ReLU}(x)^2] = \\frac{1}{2} \\mathbb{E}[x^2]" />
-            <p>
-                To compensate for losing half the variance, we need twice the initial variance:
-            </p>
-            <MathBlock tex="\\text{Var}(W) = \\frac{2}{n_{in}}" />
-
-            <h3>Derivation sketch</h3>
-            <p>
-                For a single neuron: y = Σ W_i x_i. Assuming independence:
-            </p>
-            <MathBlock tex="\\text{Var}(y) = \\sum_{i=1}^{n_{in}} \\text{Var}(W_i x_i) = n_{in} \\cdot \\text{Var}(W) \\cdot \\text{Var}(x)" />
-            <p>
-                Setting Var(y) = Var(x) gives Var(W) = 1/n_in for linear activations.
-                For ReLU which passes only positive values, multiply by 2.
-            </p>
-
-            <div className="ch-callout">
-                <strong>Why not always use He?</strong> For activations that don't zero
-                out values (tanh, sigmoid), Xavier is still appropriate. But for ReLU
-                and its variants, He initialization is essential for deep networks.
-            </div>
-        </>
-    )
-}
-
-const PY_CODE = `import numpy as np
-import matplotlib.pyplot as plt
-
-# ── Initialization Schemes ───────────────────────────────────────────────────
-def glorot_uniform(n_in, n_out):
-    """Xavier/Glorot uniform initialization"""
-    limit = np.sqrt(6.0 / (n_in + n_out))
-    return np.random.uniform(-limit, limit, (n_out, n_in))
-
-def glorot_normal(n_in, n_out):
-    """Xavier/Glorot normal initialization"""
-    std = np.sqrt(2.0 / (n_in + n_out))
-    return np.random.normal(0, std, (n_out, n_in))
-
-def he_uniform(n_in, n_out):
-    """He/Kaiming uniform initialization for ReLU"""
-    limit = np.sqrt(6.0 / n_in)
-    return np.random.uniform(-limit, limit, (n_out, n_in))
-
-def he_normal(n_in, n_out):
-    """He/Kaiming normal initialization for ReLU"""
-    std = np.sqrt(2.0 / n_in)
-    return np.random.normal(0, std, (n_out, n_in))
-
-def bad_small_init(n_in, n_out):
-    """Too small - causes vanishing gradients"""
-    return np.random.randn(n_out, n_in) * 0.01
-
-def bad_large_init(n_in, n_out):
-    """Too large - causes exploding gradients"""
-    return np.random.randn(n_out, n_in) * 2.0
-
-# ── Activation Functions ─────────────────────────────────────────────────────
-def relu(x):
-    return np.maximum(0, x)
-
-def tanh(x):
-    return np.tanh(x)
-
-# ── Simulate Forward Pass Through Deep Network ───────────────────────────────
-def forward_deep(W_init_fn, activation_fn, n_layers=20, n_units=500):
-    """Forward pass through a deep network, track layer statistics"""
-    x = np.random.randn(1000, n_units)  # Input batch
-    means = []
-    stds = []
-
-    for layer in range(n_layers):
-        W = W_init_fn(n_units, n_units)
-        x = activation_fn(x @ W.T)
-        means.append(np.mean(x))
-        stds.append(np.std(x))
-
-    return means, stds
-
-# Compare different initializations with ReLU
-print("Comparing initialization schemes with ReLU activation:")
-print("=" * 60)
-
-inits = [
-    ("He (correct)", he_normal),
-    ("Glorot (suboptimal)", glorot_normal),
-    ("Too small", bad_small_init),
-    ("Too large", bad_large_init),
-]
-
-for name, init_fn in inits:
-    means, stds = forward_deep(init_fn, relu, n_layers=20)
-    final_std = stds[-1]
-    print(f"\n{name}:")
-    print(f"  Layer 1 std:  {stds[0]:.4f}")
-    print(f"  Layer 10 std: {stds[9]:.4f}")
-    print(f"  Layer 20 std: {final_std:.4f}")
-    if final_std < 0.01:
-        print(f"  -> VANISHING! (std → 0)")
-    elif final_std > 10:
-        print(f"  -> EXPLODING! (std → ∞)")
-    else:
-        print(f"  -> Stable! ✓")
-
-# ── Visualize Activation Flow ────────────────────────────────────────────────
-def compare_init_viz():
-    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
-
-    inits_viz = [
-        ("He (correct)", he_normal),
-        ("Glorot", glorot_normal),
-        ("Too small", bad_small_init),
-        ("Too large", bad_large_init),
-    ]
-
-    for idx, (name, init_fn) in enumerate(inits_viz):
-        ax = axes[idx // 2, idx % 2]
-        means, stds = forward_deep(init_fn, relu, n_layers=30)
-        ax.plot(range(1, 31), stds, 'b-', linewidth=2, label='Std dev')
-        ax.axhline(y=1, color='r', linestyle='--', alpha=0.5, label='Target')
-        ax.set_xlabel('Layer')
-        ax.set_ylabel('Standard Deviation')
-        ax.set_title(f'{name} - ReLU')
-        ax.legend()
-        ax.set_ylim(0, 5)
-
-    plt.tight_layout()
-    plt.savefig('init_comparison.png', dpi=150)
-    print("\nVisualization saved to init_comparison.png")
-
-# Uncomment to generate visualization:
-# compare_init_viz()
-
-# ── Concrete Example: Initializing a Layer ───────────────────────────────────
-n_in, n_out = 784, 256
-
-print("\n" + "=" * 60)
-print("Example: Initializing a layer (784 → 256)")
-print("=" * 60)
-
-W_he = he_normal(n_in, n_out)
-W_glorot = glorot_normal(n_in, n_out)
-
-print(f"\nHe initialization:")
-print(f"  Std: {np.std(W_he):.4f} (theoretical: {np.sqrt(2/n_in):.4f})")
-print(f"  Range: [{np.min(W_he):.4f}, {np.max(W_he):.4f}]")
-
-print(f"\nGlorot initialization:")
-print(f"  Std: {np.std(W_glorot):.4f} (theoretical: {np.sqrt(2/(n_in+n_out)):.4f})")
-print(f"  Range: [{np.min(W_glorot):.4f}, {np.max(W_glorot):.4f}]")`;
-
-function PythonContent() {
-    return (
-        <>
-            <p>
-                NumPy implementation of Xavier and He initialization, demonstrating
-                the vanishing/exploding gradient problem with different schemes.
-            </p>
-            <CodeBlock code={PY_CODE} filename="initialization_demo.py" lang="python" langLabel="Python" />
-            <div className="ch-callout">
-                <strong>Experiment:</strong> Run this code to see how different
-                initializations affect signal propagation through 20+ layers.
-            </div>
-        </>
-    )
-}
-
-
-
+// ── Tab content map ─────────────────────────────────────────────────────────
 
 export const INITIALIZATION_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      null,
-    python:     null,
+    maths: null,
+    python: null,
 }

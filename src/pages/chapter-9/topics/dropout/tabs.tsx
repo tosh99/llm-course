@@ -1,6 +1,8 @@
 import { Analogy, CodeBlock, DefBlock, MathBlock } from "../../shared"
 import type { TabId } from "../../types"
 
+// ── Tab content ───────────────────────────────────────────────────────────────
+
 interface TlItem {
     year: string
     title: string
@@ -28,33 +30,63 @@ function HistoryTab() {
     const items: TlItem[] = [
         {
             year: "2012",
-            title: "Early Observations — Hinton et al.",
+            title: "The Overfitting Problem — Why Regularisation Was Urgent",
             challenge:
-                "Deep networks were powerful but prone to overfitting. With millions of parameters and limited training data, they simply memorized the training set instead of learning general patterns.",
+                "AlexNet had 60 million parameters and was trained on 1.2 million ImageNet images — roughly 50 parameters per training example. Classical statistics said this ratio guaranteed severe overfitting: the model would memorise training examples rather than learn generalisable features. L2 weight decay alone was insufficient at this scale. SVMs and Random Forests had theoretical reasons for not overfitting; deep networks had no such guarantee. The question was not whether AlexNet would overfit, but how badly — and whether any regularisation technique could control it.",
             what:
-                "Geoffrey Hinton's team noticed that randomly dropping out neurons during training forced the network to learn redundant representations. If one path was blocked, another had to take over.",
+                "Hinton's group at the University of Toronto had been experimenting with randomly dropping neurons during training since at least 2010. The idea appeared in early unpublished technical reports and in Krizhevsky's AlexNet implementation (submitted to ImageNet competition in 2012) before the formal paper. Dropout was applied to the two fully connected layers (4,096 neurons each) with dropout probability p = 0.5, halving the effective number of parameters in those layers on each forward pass.",
             impact:
-                "This observation led to the formalization of dropout as a regularization technique. The key insight: training with stochastic noise creates an implicit ensemble of many sub-networks.",
+                "The AlexNet paper reported that without dropout, the network substantially overfitted the training data — the gap between training and validation accuracy was unacceptably large. With dropout, the network achieved a top-5 error rate of 15.3%, compared to 26.2% for the second-best submission (using SVMs). Dropout was directly responsible for making this margin possible. The technique worked so well that it became the standard regularisation method for deep learning within a year of the paper's publication.",
         },
         {
             year: "2014",
-            title: "Dropout—Srivastava et al.",
+            title: "Srivastava, Hinton, Krizhevsky, Sutskever & Salakhutdinov — The JMLR Paper",
             challenge:
-                "Despite architectural advances, deep networks still overfit on medium-sized datasets. Existing regularization (L2 weight decay) wasn't sufficient for the emerging deep CNNs.",
+                "Despite dropout's success in AlexNet, the technique lacked formal mathematical analysis. How exactly did random neuron masking act as regularisation? What was the relationship between dropout and Bayesian model averaging? Was there a principled way to choose the dropout probability p? And could the heuristic of multiplying activations by (1 − p) at test time be justified theoretically?",
             what:
-                "Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov published 'Dropout: A Simple Way to Prevent Neural Networks from Overfitting' in JMLR. During training, randomly set each neuron's output to zero with probability p (typically 0.5), and scale activations by 1/(1-p) during testing.",
+                "Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov published 'Dropout: A Simple Way to Prevent Neural Networks from Overfitting' in JMLR 2014 — the most thorough analysis of the technique. Key contributions: (1) The ensemble interpretation: a network with n units has 2^n possible subnetworks; training with dropout is equivalent to training an exponentially large ensemble where weights are shared. At test time, using the full network with scaled weights approximates the geometric mean of ensemble predictions. (2) Inverted dropout: scale activations by 1/(1−p) during training so test time requires no scaling. (3) Empirical results on 7 datasets showing dropout reduced error rates by 10-25% relative across vision, speech, and text tasks.",
             impact:
-                "Dropout became the standard regularization technique for deep learning. It reduced error rates on ImageNet, MNIST, and many other benchmarks. AlexNet already used dropout to achieve its breakthrough results.",
+                "The JMLR paper gave dropout the theoretical foundation it had lacked. The ensemble interpretation was particularly powerful: dropout was not just a heuristic noise injection — it was principled approximate Bayesian model averaging over exponentially many architectures. This framework enabled subsequent work on variational dropout (Gal & Ghahramani 2016) and Monte Carlo dropout for uncertainty estimation. The paper remains one of the most cited ML papers of all time (60,000+ citations).",
         },
         {
-            year: "2014–2016",
-            title: "Dropout Variants and Adoption",
+            year: "2016",
+            title: "Gal & Ghahramani — Variational Dropout and Bayesian Deep Learning",
             challenge:
-                "Standard dropout worked well for fully-connected layers, but convolutional layers needed different treatment. Also, some tasks needed structured dropout.",
+                "Deep learning networks produced predictions but not uncertainty estimates. A network might predict 'dog' with 95% confidence on an out-of-distribution image of a cat — a catastrophic failure for safety-critical applications like medical diagnosis or autonomous driving. Bayesian neural networks could provide uncertainty estimates but were computationally intractable for large networks. Could dropout be repurposed to approximate Bayesian inference at training scale?",
             what:
-                "Spatial Dropout: drops entire feature maps (better for CNNs). DropConnect: drops weights instead of activations. Variational Dropout: learned dropout rates. Monte Carlo Dropout: using dropout at test time for uncertainty estimation.",
+                "Yarin Gal and Zoubin Ghahramani proved that a neural network with dropout applied before every weight layer is mathematically equivalent to a deep Gaussian process — specifically, to variational inference in a Bayesian neural network with a specific weight prior. The result: running dropout at test time (applying dropout masks during inference, not just training) and averaging over multiple stochastic forward passes gives an approximation to the Bayesian posterior predictive distribution. Prediction variance across MC-dropout samples measures model uncertainty.",
             impact:
-                "Dropout became ubiquitous in deep learning pipelines. Modern architectures still use it, though techniques like Batch Normalization have partially reduced its necessity in some cases.",
+                "Monte Carlo dropout became the standard uncertainty estimation method for deep learning applications. Medical AI systems use it to flag uncertain predictions for human review. Robotic planning systems use it to distinguish aleatoric uncertainty (noise in the data) from epistemic uncertainty (model ignorance). The Bayesian interpretation showed that dropout was not just a regularisation trick — it was a computationally tractable approximation to Bayesian inference, connecting deep learning to its probabilistic foundations in Chapter 1.",
+        },
+        {
+            year: "2015",
+            title: "Batch Normalisation — Dropout's Complement and Competitor",
+            challenge:
+                "As networks grew deeper (VGG with 16-19 layers, ResNet with 50-152 layers), training instability increased. Internal covariate shift — the change in layer input distribution as weights of preceding layers changed — slowed convergence and required careful learning rate tuning. Dropout was effective but slowed training (because dropped neurons reduced information flow). Could a normalisation technique stabilise training without the noise penalty?",
+            what:
+                "Sergey Ioffe and Christian Szegedy introduced Batch Normalisation (2015): normalise each layer's inputs to have zero mean and unit variance over the mini-batch, then apply learnable scale and shift parameters gamma and beta. BN acts as a regulariser by adding noise to activations (the mini-batch statistics are noisy estimates of the true statistics), reducing the need for dropout in convolutional layers. BN became standard in CNNs: VGG16 trained with BN and no dropout in convolutional layers, only dropout in fully connected layers.",
+            impact:
+                "Batch Normalisation partially replaced dropout in convolutional architectures but complemented it in fully connected layers. Modern vision networks (ResNet, EfficientNet, ViT) use BN (or Layer Normalisation in Transformers) in conv layers and often no dropout in those layers. The interaction between BN and dropout is complex: using both in the same layer can cause variance shifts at test time. The practical guidance: BN in convolutional layers, dropout in fully connected layers, attention dropout in Transformers.",
+        },
+        {
+            year: "2015 – 2017",
+            title: "Dropout Variants — Spatial Dropout, DropConnect, and Variational Dropout",
+            challenge:
+                "Standard dropout was designed for fully connected layers. Convolutional layers presented a different challenge: neighbouring pixels are highly correlated, so dropping individual pixels provided little decorrelation between the kept and dropped information. Dropping entire feature maps (channels) at once would be more effective. Similarly, applying dropout to weights rather than activations offered a different trade-off.",
+            what:
+                "Spatial Dropout (Tompson et al. 2015): drop entire feature maps from a convolutional layer rather than individual units. If a feature map is dropped, all spatial positions in that channel are zero — producing genuine independence between channels. DropConnect (Wan et al. 2013): drop individual weight connections rather than neuron activations, providing a more granular form of the ensemble approximation. Variational Dropout (Kingma, Salimans, Welling 2015): learned dropout rates per weight, derived from a variational Bayesian objective, producing sparse networks where many weights are effectively pruned.",
+            impact:
+                "Spatial Dropout became the standard for convolutional networks. DropConnect showed that the unit of stochastic masking could be weights rather than activations without sacrificing the regularisation benefit. Variational Dropout connected dropout to network pruning: networks trained with variational dropout often had 90%+ of weights effectively zeroed, producing compressed models without separate pruning steps. These ideas anticipate the sparse attention and weight pruning techniques used in efficient Transformers (Chapter 31).",
+        },
+        {
+            year: "2017 – present",
+            title: "Attention Dropout and Dropout in Transformers",
+            challenge:
+                "Transformer architectures (Chapter 19) introduced self-attention, a fundamentally different computation from feedforward layers. How should dropout be applied to attention weights? Should full attention heads be dropped? Should individual tokens be masked? Each choice had different regularisation properties and training stability implications.",
+            what:
+                "Standard Transformers apply dropout in three places: (1) embedding dropout — applied to the token embeddings before the first layer; (2) attention dropout — applied to the attention weight matrix after softmax, zeroing some attention connections; (3) residual dropout — applied to the output of each sub-layer before adding the residual connection. Typical rates: 0.1 for smaller models, 0 for very large models (GPT-3: no dropout, regularised by weight decay and data scale alone). Stochastic Depth (Huang et al. 2016) randomly drops entire Transformer blocks, equivalent to random depth sampling.",
+            impact:
+                "The experience with Transformers showed that at sufficient scale (billions of parameters, trillions of tokens), dropout becomes unnecessary — data scale alone acts as the regulariser. GPT-3 trained without dropout at all. This scale threshold for regularisation-free training is one of the defining properties of modern foundation models and remains an active research question: how large is 'large enough' that dropout provides no benefit?",
         },
     ]
 
@@ -67,26 +99,190 @@ function HistoryTab() {
     )
 }
 
+// ── Kid Tab ──────────────────────────────────────────────────────────────────
+
 function KidTab() {
     return (
         <>
-            <h2>What is Dropout and why does it work?</h2>
+            <h2>Benching random players — and why it makes the team better</h2>
 
-            <Analogy label="The Team Sport">
-                Imagine a basketball team where during practice, random players have to sit out each play. This forces every player to be ready to step up at any time—and prevents the team from relying too heavily on one star player.
+            <Analogy label="The team sport analogy">
+                Imagine a basketball team where during practice, the coach randomly benches players — a different random set each play. This forces every player to learn every role and prevents the team from becoming too reliant on one star. When all five start together in the real game, each is more versatile and the team is more resilient.
                 <br /><br />
-                Dropout does the same thing. During training, random neurons are "benched," forcing the network to develop redundant skills and not rely too heavily on any single neuron.
+                Dropout does exactly this. During training, random neurons are "benched" (set to zero) each forward pass. The network cannot rely on any single neuron — because that neuron might not be present in the next mini-batch. Every neuron must learn to be independently useful.
             </Analogy>
 
-            <Analogy label="The Cramming Student">
-                A student who memorizes every detail of their notes will fail a test with slightly different questions. A student who truly understands the concepts will generalize better.
+            <Analogy label="Preventing the cramming student">
+                A student who memorises every fact verbatim fails the moment a question is phrased differently. A student who genuinely understands the material can answer questions they have never seen before.
                 <br /><br />
-                Dropout prevents the network from "cramming" (memorizing the training data) by constantly changing what's available to memorize from.
+                Dropout prevents the network from "cramming" the training data. Because different neurons are active each time, the network cannot memorise which specific combination of neurons fires for each training example. Instead, it learns more robust, distributed representations that generalise.
             </Analogy>
 
-            <Analogy label="The Implicit Ensemble">
-                It's like training 1000 different smaller networks and averaging their answers. Dropout during training approximates this—each dropped-out configuration is a different "expert."
+            <Analogy label="The implicit ensemble — millions of models for the price of one">
+                A network with 1,000 neurons and 50% dropout can produce 2^{1000} different sub-networks — each the result of a different random masking. During training, we sample from this vast ensemble. At test time, we use the full network — which effectively averages the predictions of the entire ensemble at once.
+                <br /><br />
+                This geometric mean over exponentially many models is a powerful regulariser. AdaBoost explicitly trained multiple classifiers; dropout implicitly trains an exponentially large ensemble by weight sharing, for essentially the same computational cost as training one model.
             </Analogy>
+
+            <Analogy label="Inverted dropout — the engineering trick">
+                During training with 50% dropout, only half the neurons are active. Their outputs are twice as large on average than at test time (when all neurons are active). If we don't correct for this, the network will be biased at test time.
+                <br /><br />
+                The fix (inverted dropout): during training, scale up surviving activations by 1/(1-p). This keeps expected activation values the same between training and test time, so no correction is needed at inference. All modern frameworks (PyTorch, TensorFlow, JAX) implement inverted dropout — the test-time code looks identical to training code (just without the masking).
+            </Analogy>
+
+            <Analogy label="Uncertainty estimation — a surprising bonus">
+                Gal and Ghahramani (2016) discovered something unexpected: if you keep dropout active at test time and run the network many times with different random masks, the variance of the predictions measures uncertainty. High variance: the model is unsure. Low variance: the model is confident.
+                <br /><br />
+                This Monte Carlo dropout gives neural networks a way to say "I don't know" — essential for medical AI, robotic planning, and any safety-critical application where overconfident predictions are dangerous.
+            </Analogy>
+        </>
+    )
+}
+
+// ── High School Tab ──────────────────────────────────────────────────────────
+
+function MathsContent() {
+    return (
+        <>
+            <h3>Dropout as Approximate Model Averaging</h3>
+            <p>
+                A network with n units has 2^n possible subnetworks (by including or excluding each unit). Let m denote a binary mask (m_i ~ Bernoulli(1-p)). The dropout training objective is:
+            </p>
+            <MathBlock tex="\min_W \mathbb{E}_{m \sim \text{Bern}(1-p)} \bigl[\mathcal{L}(W,\, m)\bigr]" />
+            <p>
+                Training with SGD on this expectation samples a new m for each mini-batch. The expected loss is a regularised objective. At test time, using the full network with all units active and multiplying outputs by (1-p) approximates the geometric mean over all 2^n subnetworks — a consequence of the weight sharing across all masks.
+            </p>
+
+            <h3>Inverted Dropout — Variance Correction</h3>
+            <MathBlock tex="y_{\text{train}} = \frac{m \odot x}{1 - p} \quad m_i \sim \text{Bernoulli}(1-p)" />
+            <MathBlock tex="\mathbb{E}[y_{\text{train}}] = \frac{(1-p) \cdot x}{1-p} = x = y_{\text{test}}" />
+            <p>
+                Dividing by (1−p) during training preserves the expected activation magnitude. At test time, no scaling is needed — the full network with all units active produces the same expected output as the dropout network. This is why PyTorch's nn.Dropout applies scaling during training, not test time.
+            </p>
+
+            <h3>MC-Dropout Uncertainty Estimation</h3>
+            <p>
+                Run T forward passes with dropout at test time. The MC estimate of the predictive mean and variance:
+            </p>
+            <MathBlock tex="\hat{y} = \frac{1}{T}\sum_{t=1}^T f_{\hat{W},\, m_t}(x) \qquad \hat{\sigma}^2 = \frac{1}{T}\sum_{t=1}^T f_{\hat{W},\, m_t}(x)^2 - \hat{y}^2" />
+            <p>
+                Gal &amp; Ghahramani (2016) showed this is mathematically equivalent to variational inference in a Bayesian neural network with a specific prior, making MC-dropout a principled (though approximate) uncertainty estimator.
+            </p>
+        </>
+    )
+}
+
+const PY_DROPOUT = `import numpy as np
+
+# ── Dropout Implementation ────────────────────────────────────────────────────
+def dropout(x, p=0.5, training=True):
+    """
+    Inverted dropout: scale surviving activations by 1/(1-p) during training
+    so no correction is needed at test time.
+
+    x: input array (any shape)
+    p: probability of dropping each unit (p=0.5 is the standard default)
+    training: apply dropout only during training
+    """
+    if not training:
+        return x   # No dropout, no scaling — test time is clean
+
+    keep_prob = 1.0 - p
+    mask = (np.random.rand(*x.shape) < keep_prob).astype(float)
+    # Inverted dropout: divide by keep_prob to maintain expected value
+    return x * mask / keep_prob
+
+
+# ── Verify Expected Value Invariance ─────────────────────────────────────────
+np.random.seed(42)
+x = np.ones((10000,)) * 2.0   # All 2.0
+
+train_outputs = np.array([dropout(x, p=0.5, training=True) for _ in range(100)])
+test_output = dropout(x, p=0.5, training=False)
+
+print("Expected value invariance check:")
+print(f"  Input mean:          {x.mean():.4f}")
+print(f"  Training mean (avg): {train_outputs.mean():.4f}  (should be 2.0)")
+print(f"  Test output mean:    {test_output.mean():.4f}  (should be 2.0)")
+
+
+# ── Dropout Layer with Backprop ────────────────────────────────────────────────
+class DropoutLayer:
+    """
+    Stateful dropout layer that saves the mask for backpropagation.
+    Gradient only flows through active neurons.
+    """
+
+    def __init__(self, p=0.5):
+        self.p = p
+        self.mask = None
+
+    def forward(self, x, training=True):
+        if training:
+            keep_prob = 1.0 - self.p
+            self.mask = (np.random.rand(*x.shape) < keep_prob).astype(float)
+            return x * self.mask / keep_prob
+        return x   # No mask at test time
+
+    def backward(self, dL_dout):
+        """Gradient flows only through active (non-dropped) neurons."""
+        if self.mask is None:
+            return dL_dout
+        return dL_dout * self.mask / (1.0 - self.p)
+
+
+# ── Monte Carlo Dropout for Uncertainty Estimation ───────────────────────────
+class MCDropoutNetwork:
+    """
+    Simple feedforward network that supports MC-Dropout uncertainty estimation.
+    """
+
+    def __init__(self, n_in, n_hidden, n_out, p=0.5):
+        self.W1 = np.random.randn(n_in, n_hidden) * 0.1
+        self.W2 = np.random.randn(n_hidden, n_out) * 0.1
+        self.p = p
+
+    def forward(self, x, training=True):
+        h = np.maximum(0, x @ self.W1)   # ReLU
+        h = dropout(h, p=self.p, training=training)
+        return h @ self.W2   # Linear output
+
+    def predict_with_uncertainty(self, x, n_samples=100):
+        """MC-Dropout: run n_samples forward passes with dropout active."""
+        preds = np.array([self.forward(x, training=True) for _ in range(n_samples)])
+        # preds shape: (n_samples, batch, n_out)
+        mean = preds.mean(axis=0)
+        variance = preds.var(axis=0)
+        return mean, variance
+
+
+# ── Demo: Uncertainty on In vs Out-of-Distribution Data ──────────────────────
+np.random.seed(42)
+net = MCDropoutNetwork(n_in=10, n_hidden=64, n_out=1, p=0.5)
+
+# In-distribution: data similar to training data
+x_in = np.random.randn(5, 10) * 1.0
+# Out-of-distribution: data far from training distribution
+x_out = np.random.randn(5, 10) * 10.0
+
+mean_in, var_in = net.predict_with_uncertainty(x_in, n_samples=200)
+mean_out, var_out = net.predict_with_uncertainty(x_out, n_samples=200)
+
+print("\nMC-Dropout uncertainty estimation:")
+print(f"In-distribution  — mean var: {var_in.mean():.4f}")
+print(f"Out-of-distribution — mean var: {var_out.mean():.4f}")
+print(f"Uncertainty ratio: {var_out.mean() / var_in.mean():.1f}x higher OOD")`
+
+function PythonContent() {
+    return (
+        <>
+            <p>
+                NumPy implementation of inverted dropout with backpropagation support, plus Monte Carlo dropout for uncertainty estimation — demonstrating how a single technique serves both regularisation and Bayesian uncertainty goals.
+            </p>
+            <CodeBlock code={PY_DROPOUT} filename="dropout_demo.py" lang="python" langLabel="Python" />
+            <div className="ch-callout">
+                <strong>Key observation:</strong> The inverted dropout implementation produces the same expected activation value during training and test — no test-time correction needed. MC-Dropout shows higher variance on out-of-distribution inputs, providing a practical uncertainty signal without any architectural changes.
+            </div>
         </>
     )
 }
@@ -94,49 +290,42 @@ function KidTab() {
 function HighSchoolTab() {
     return (
         <>
-            <h2>Dropout: Randomness as regularization</h2>
+            <h2>Dropout — randomness as regularisation and approximate Bayesian inference</h2>
 
-            <h3>The overfitting problem</h3>
+            <h3>The Overfitting Problem at Scale</h3>
             <p>
-                Modern neural networks have millions or billions of parameters. With limited training data, they can easily memorize every example instead of learning general patterns.
-                This is overfitting: perfect on training data, terrible on new data.
+                AlexNet had 60 million parameters trained on 1.2 million examples — 50 parameters per training example. Without regularisation, the network memorised training examples and failed to generalise. L2 weight decay was insufficient alone. Dropout was the additional regulariser that made AlexNet's generalisation performance possible.
             </p>
 
-            <h3>How dropout works</h3>
+            <h3>Forward Pass with Dropout</h3>
+            <MathBlock tex="y = \frac{1}{1-p} \cdot (m \odot x), \quad m_i \sim \text{Bernoulli}(1-p), \quad \mathbb{E}[y] = x" />
             <p>
-                During training, for each forward pass:
-            </p>
-            <ol>
-                <li>For each neuron, flip a coin (with probability p, typically 0.5)</li>
-                <li>If heads, set that neuron's output to zero</li>
-                <li>Backpropagate through the remaining active neurons</li>
-            </ol>
-            <p>
-                This means every training example sees a different, smaller network.
-                The network learns to work even when parts are missing—forcing robust representations.
+                During training: sample mask m (each element is 1 with probability 1−p, 0 with probability p). Scale surviving activations by 1/(1−p) to preserve expected value. During test time: use full network without masking or scaling. Gradient flows only through active neurons: dL/dx = dL/dy * m / (1−p).
             </p>
 
-            <h3>Test time: scaling</h3>
+            <h3>Ensemble Interpretation</h3>
             <p>
-                At test time, we use the full network—but we need to compensate for having more active neurons than during training. We multiply all activations by the keep probability (1-p):
+                A network with n neurons has 2^n possible dropout masks. Training with dropout approximates training this ensemble with shared weights. The ensemble prediction is the geometric mean over all 2^n subnetwork outputs — which the test-time full network (with scaled weights) approximates. This is why dropout generalises: the implicit ensemble reduces variance, just as Random Forests reduce variance by averaging correlated trees.
             </p>
-            <MathBlock tex="y_{\\text{test}} = (1-p) \\cdot W x = p_{\\text{keep}} \\cdot W x" />
 
-            <h3>Why it prevents overfitting</h3>
-            <ul>
-                <li><strong>Prevents co-adaptation:</strong> Neurons can't rely on specific other neurons being present</li>
-                <li><strong>Implicit ensemble:</strong> Training with dropout is like training 2^n sub-networks</li>
-                <li><strong>Stochastic averaging:</strong> The final network averages predictions from many configurations</li>
-            </ul>
+            <h3>MC-Dropout for Uncertainty</h3>
+            <MathBlock tex="\hat{\sigma}^2_{\text{MC}}(x) = \frac{1}{T}\sum_{t=1}^T f_t(x)^2 - \left(\frac{1}{T}\sum_{t=1}^T f_t(x)\right)^2" />
+            <p>
+                Run T stochastic forward passes with dropout active at test time. The variance of predictions over the T passes estimates epistemic uncertainty (model uncertainty from lack of knowledge) — distinct from aleatoric uncertainty (inherent data noise). High epistemic uncertainty signals out-of-distribution inputs where the model should not be trusted.
+            </p>
 
             <hr className="ch-sep" />
 
             <div className="ch-callout">
-                <strong>AlexNet used dropout:</strong> Krizhevsky et al. applied dropout to the
-                fully-connected layers of AlexNet with p=0.5. This was crucial for achieving
-                their ImageNet breakthrough.
+                <strong>Dropout vs Batch Normalisation:</strong> BN and Dropout both regularise, but differently. BN normalises activations within each mini-batch (reducing internal covariate shift), which already acts as a regulariser. Using both in the same layer can cause a "variance shift" problem at test time. Modern practice: BN in convolutional layers (no dropout), dropout in fully connected layers and Transformer feed-forward sub-layers at 0.1 rate.
             </div>
 
+            <DefBlock label="Dropout Probability p — Practical Guidance">
+                p = 0.5 (original AlexNet default): appropriate for large fully-connected layers; halves the effective width<br /><br />
+                p = 0.1 to 0.3: standard for Transformers (BERT, GPT-2); conservative to avoid instability in attention layers<br /><br />
+                p = 0.0 at large scale: GPT-3 and larger models use no dropout — data scale is sufficient regularisation<br /><br />
+                Spatial Dropout for CNNs: drop entire feature maps (channels) rather than individual spatial units; more effective decorrelation for spatially correlated feature maps
+            </DefBlock>
 
             <details className="ch-expandable">
                 <summary>
@@ -163,166 +352,12 @@ function HighSchoolTab() {
     )
 }
 
-function MathsContent() {
-    return (
-        <>
-            <h2>Dropout: Mathematical formulation</h2>
-
-            <DefBlock label="Dropout Operation">
-                Given a layer input x, dropout creates a masked version:
-                <MathBlock tex="y = m \\odot x" />
-                where m is a mask vector with elements drawn from Bernoulli(p), i.e., m_i ~ Bernoulli(p) independently. At test time:
-                <MathBlock tex="y_{\\text{test}} = p \\cdot x = \\mathbb{E}[m] \\odot x" />
-            </DefBlock>
-
-            <h3>Training as ensemble learning</h3>
-            <p>
-                Consider a network with n neurons. Dropout creates 2^n possible sub-networks.
-                During training, each mini-batch samples from this ensemble. The expected output is:
-            </p>
-            <MathBlock tex="\\mathbb{E}[y] = \\sum_{m} P(m) \\cdot f(x; m \\odot W)" />
-            <p>
-                where f is the network function and the sum is over all 2^n possible masks.
-                At test time, using the full network with scaling approximates this expectation.
-            </p>
-
-            <h3>Regularization effect</h3>
-            <p>
-                Dropout can be viewed as adding noise to the learning process. The effective objective becomes:
-            </p>
-            <MathBlock tex="L_{\\text{dropout}}(W) = \\mathbb{E}_{m \\sim \\text{Bernoulli}(p)} [L(W, m)]" />
-            <p>
-                This expectation acts as a form of data augmentation—it's harder to fit noise when the
-                network structure keeps changing.
-            </p>
-
-            <h3>Inverse dropout (modern practice)</h3>
-            <p>
-                Rather than scaling at test time, many frameworks now use "inverse dropout" where activations
-                are scaled by 1/(1-p) during training:
-            </p>
-            <MathBlock tex="y_{\\text{train}} = \\frac{1}{1-p} \\cdot (m \\odot x)" />
-            <p>
-                This means no scaling is needed at test time—the test code looks identical to training code
-                (except without dropout).
-            </p>
-
-            <div className="ch-callout">
-                <strong>Connection to Bayesian learning:</strong> Gal and Ghahramani (2016) showed
-                that dropout can be interpreted as approximate Bayesian inference, with the dropout
-                mask acting as a variational distribution over network weights.
-            </div>
-        </>
-    )
-}
-
-const PY_CODE = `import numpy as np
-
-# ── Dropout Implementation ───────────────────────────────────────────────────
-def dropout(x, p=0.5, training=True):
-    """
-    Apply dropout to input x.
-
-    x: input array
-    p: dropout probability (fraction of units to drop)
-    training: if True, apply dropout; if False, return scaled input
-    """
-    if not training:
-        # At test time, scale by keep probability
-        return x * (1 - p)
-
-    # Training: create mask and apply
-    mask = (np.random.rand(*x.shape) > p).astype(float)
-    # Inverse dropout: scale during training
-    return x * mask / (1 - p)
-
-# ── Demonstration ────────────────────────────────────────────────────────────
-np.random.seed(42)
-
-# Simulate layer activations
-x = np.random.randn(10)
-print("Original activations:", x.round(3))
-
-# Apply dropout multiple times to see different masks
-print("\nDropout samples (p=0.5):")
-for i in range(3):
-    dropped = dropout(x, p=0.5, training=True)
-    print(f"Sample {i+1}: {dropped.round(3)}")
-
-# Test time (no dropout, just scaling)
-test_out = dropout(x, p=0.5, training=False)
-print(f"\nTest time (scaled by 0.5): {test_out.round(3)}")
-
-# ── Expected value comparison ────────────────────────────────────────────────
-print("\n" + "="*50)
-print("Testing: E[dropout(x)] should ≈ x * (1-p)")
-print("="*50)
-
-x = np.ones(1000) * 2.0  # All 2s
-num_trials = 1000
-total = np.zeros_like(x)
-
-for _ in range(num_trials):
-    total += dropout(x, p=0.5, training=True)
-
-empirical_mean = total / num_trials
-theoretical_mean = x * 0.5
-
-print(f"Input: all 2.0")
-print(f"Empirical mean of dropout outputs: {empirical_mean[0]:.4f}")
-print(f"Theoretical mean (x * 0.5): {theoretical_mean[0]:.4f}")
-
-# ── Dropout in a layer ───────────────────────────────────────────────────────
-class DropoutLayer:
-    def __init__(self, p=0.5):
-        self.p = p
-        self.mask = None
-
-    def forward(self, x, training=True):
-        if training:
-            self.mask = (np.random.rand(*x.shape) > self.p).astype(float)
-            return x * self.mask / (1 - self.p)
-        else:
-            return x
-
-    def backward(self, dL_dout):
-        # Gradient only flows through active neurons
-        return dL_dout * self.mask / (1 - self.p)
-
-# Test in network context
-layer = DropoutLayer(p=0.3)
-x = np.random.randn(5, 10)  # Batch of 5, 10 features
-
-out_train = layer.forward(x, training=True)
-out_test = layer.forward(x, training=False)
-
-print(f"\nDropout layer test (p=0.3):")
-print(f"Input shape: {x.shape}")
-print(f"Training output sparsity: {(out_train == 0).mean()*100:.1f}%")
-print(f"Test output sparsity: {(out_test == 0).mean()*100:.1f}%")`;
-
-function PythonContent() {
-    return (
-        <>
-            <p>
-                NumPy implementation of dropout showing the masking operation and inverse dropout scaling.
-            </p>
-            <CodeBlock code={PY_CODE} filename="dropout_demo.py" lang="python" langLabel="Python" />
-            <div className="ch-callout">
-                <strong>Implementation detail:</strong> Modern frameworks use "inverse dropout"
-                where scaling happens during training, making test-time code cleaner.
-            </div>
-        </>
-    )
-}
-
-
-
+// ── Tab content map ─────────────────────────────────────────────────────────
 
 export const DROPOUT_TABS: Record<TabId, React.ReactNode> = {
     history: <HistoryTab />,
     kid: <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      null,
-    python:     null,
+    maths: null,
+    python: null,
 }

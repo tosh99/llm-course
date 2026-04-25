@@ -1,28 +1,84 @@
 import { Analogy, CodeBlock, DefBlock, MathBlock } from "../../shared"
 import type { TabId } from "../../types"
 
+// ── Tab content ───────────────────────────────────────────────────────────────
+
 function HistoryTab() {
     return (
-        <div className="ch-timeline">
-            <div className="ch-tl-item">
-                <div className="ch-tl-year">2017</div>
-                <div className="ch-tl-title">Bojanowski, Grave, Joulin & Mikolov — Enriching Word Vectors with Subword Information</div>
-                <div className="ch-tl-section-label">The limitation of whole-word embeddings</div>
-                <div className="ch-tl-body">Word2Vec and GloVe treat each word as an atomic unit. "play", "playing", and "played" are three unrelated vectors with no shared parameters, despite being morphologically related. Worse, any word not seen during training — a typo, a new product name, a rare technical term — gets no representation at all. For morphologically rich languages (Finnish, Turkish, Arabic, Hungarian), this is catastrophic: a typical word may have dozens of valid inflected forms.</div>
-                <div className="ch-tl-section-label">What was introduced</div>
-                <div className="ch-tl-body">Facebook AI Research (Piotr Bojanowski, Edouard Grave, Armand Joulin, Tomas Mikolov) represented each word as the sum of its character n-gram vectors. The word "where" (n=3) decomposes into: &lt;wh, whe, her, ere, re&gt; with boundary markers. Each n-gram has its own vector. The word vector is the sum of all its n-gram vectors.</div>
-                <div className="ch-tl-section-label">Why it mattered</div>
-                <div className="ch-tl-body ch-tl-impact">FastText improved on Word2Vec for morphologically rich languages, handled OOV words gracefully (sum n-gram vectors for any word), and influenced tokenization design. The subword idea directly shaped Byte-Pair Encoding (BPE) — the tokenizer used by GPT, BERT, and all modern LLMs.</div>
+        <>
+            <h2>Subword information and the OOV problem</h2>
+            <p>
+                FastText was developed by Facebook AI Research (FAIR) between 2016 and 2017. It addressed a fundamental limitation of both Word2Vec and GloVe: both treat each word as an atomic, indivisible unit, assigning it a single vector regardless of the word's internal structure. This means "play," "playing," "played," and "player" are four completely separate entities with no shared parameters — and any word not seen during training (a typo, a rare technical term, a proper noun) gets no representation at all.
+            </p>
+
+            <div className="ch-timeline">
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2013–2016</div>
+                    <div className="ch-tl-section-label">The Problem</div>
+                    <div className="ch-tl-title">Whole-Word Embeddings and Their Failure Modes</div>
+                    <div className="ch-tl-body">
+                        Word2Vec and GloVe had two related failure modes. First: morphological blindness. "Play," "plays," "playing," "played," "player," "replay," and "display" are represented as seven completely independent vectors with no shared parameters, despite sharing morphological roots that carry semantic relationships. For morphologically rich languages — Turkish, Finnish, Arabic, Hungarian — this is catastrophic. A Turkish verb may have hundreds of valid inflected forms, most of which will never appear in training data.
+                        <br /><br />
+                        Second: the out-of-vocabulary (OOV) problem. Any word not seen during training gets no representation at all. In practice, technical documents, social media, and code are full of words that don't appear in standard training corpora: product names, abbreviations, new scientific terminology, slang, and misspellings. A word embedding system that fails silently on 10–20% of real-world text is fundamentally limited.
+                    </div>
+                    <div className="ch-tl-impact">Context: Morphological richness and OOV words were unsolvable with whole-word embeddings; affected all downstream NLP tasks</div>
+                </div>
+
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016</div>
+                    <div className="ch-tl-section-label">Text Classification</div>
+                    <div className="ch-tl-title">FastText Classifier — Joulin et al.</div>
+                    <div className="ch-tl-body">
+                        Armand Joulin, Edouard Grave, Piotr Bojanowski, and Tomas Mikolov published "Bag of Tricks for Efficient Text Classification" (2016), introducing a simple but highly effective text classifier built on top of averaged word embeddings. The FastText classifier achieved competitive accuracy with deep CNNs and LSTMs at a fraction of the computational cost — often training in seconds rather than hours.
+                        <br /><br />
+                        The key trick: represent each text as an average of its n-gram embeddings (not just word embeddings). Character n-grams at the word level capture morphological and phonetic similarity. The classifier could handle millions of classes (useful for large-scale product categorization, language identification) and trained 10,000× faster than complex neural architectures while achieving 1–2% lower accuracy — a favorable trade-off for many production applications.
+                    </div>
+                    <div className="ch-tl-impact">Impact: Made text classification practical at scale; n-gram features in averaging established the value of subword information for classification</div>
+                </div>
+
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2017</div>
+                    <div className="ch-tl-section-label">Breakthrough</div>
+                    <div className="ch-tl-title">Enriching Word Vectors with Subword Information — Bojanowski et al.</div>
+                    <div className="ch-tl-body">
+                        Piotr Bojanowski, Edouard Grave, Armand Joulin, and Tomas Mikolov published "Enriching Word Vectors with Subword Information" (TACL 2017), extending the Skip-gram model to use character n-gram embeddings. Each word is represented as the sum of its character n-gram vectors, where n-grams include boundary markers (&lt;, &gt;) to distinguish word-initial, word-internal, and word-final positions.
+                        <br /><br />
+                        For "where" (n=3): decompose into &lt;wh, whe, her, ere, re&gt;, plus the whole-word token &lt;where&gt;. The word embedding is the sum of all these n-gram embeddings. Each n-gram is a vector trained jointly with the rest. Words sharing morphological structure (share, sharing, shared, shareholder) share n-gram vectors, providing implicit parameter sharing and regularization.
+                        <br /><br />
+                        The results: large improvements over Word2Vec and GloVe on morphologically rich languages (Czech, German, Turkish) and competitive performance on English. OOV words are handled naturally: compute the n-grams of any unseen word and sum their trained vectors. The resulting embedding is semantically meaningful based on morphological similarity to known words.
+                    </div>
+                    <div className="ch-tl-impact">Impact: Solved OOV problem; major gains for morphologically rich languages; n-gram hashing enabled efficient memory-bounded training</div>
+                </div>
+
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2018</div>
+                    <div className="ch-tl-section-label">Evolution</div>
+                    <div className="ch-tl-title">BPE Tokenization Replaces Fixed N-grams in LLMs</div>
+                    <div className="ch-tl-body">
+                        FastText used fixed character n-gram ranges (3–6 characters). Byte-Pair Encoding (Sennrich et al., 2016), originally developed for neural machine translation, learned data-driven subword units by iteratively merging the most frequent character pairs in the training corpus. The resulting vocabulary of variable-length subword tokens is more efficient than fixed n-grams — common words remain whole tokens, rare words are split into meaningful pieces.
+                        <br /><br />
+                        GPT-2 uses BPE, BERT uses WordPiece (a similar algorithm), and T5 uses SentencePiece. FastText's insight — represent words as combinations of subunits — lives on in every modern tokenizer. The key difference is that BPE learns the subword vocabulary from data rather than using all possible fixed-length character substrings. This produces a more compact and semantically meaningful vocabulary.
+                    </div>
+                    <div className="ch-tl-impact">Impact: FastText's subword idea directly shaped all modern LLM tokenizers; BPE superseded fixed n-grams but inherited the same core insight</div>
+                </div>
+
+                <div className="ch-tl-item">
+                    <div className="ch-tl-year">2016–present</div>
+                    <div className="ch-tl-section-label">Multilingual Impact</div>
+                    <div className="ch-tl-title">FastText for 157 Languages</div>
+                    <div className="ch-tl-body">
+                        Facebook AI Research released pre-trained FastText word vectors for 157 languages, trained on Wikipedia. For many languages with limited NLP resources, these were the first available word embeddings of any quality. The subword approach meant that FastText could produce reasonable embeddings even for languages where individual words are rarely seen — particularly important for agglutinative languages (Turkish, Finnish, Hungarian, Swahili) where morphological productivity generates enormous vocabularies.
+                        <br /><br />
+                        FastText also released a language identification model that identifies 176 languages in a single character n-gram model — achieving state-of-the-art accuracy in milliseconds. This became the de facto standard for language identification in production NLP pipelines.
+                    </div>
+                    <div className="ch-tl-impact">Impact: Pre-trained vectors for 157 languages; enabled NLP research in low-resource languages; language identification model widely adopted in production</div>
+                </div>
             </div>
-            <div className="ch-tl-item">
-                <div className="ch-tl-year">2018</div>
-                <div className="ch-tl-title">BPE Tokenization Replaces Character N-grams in LLMs</div>
-                <div className="ch-tl-section-label">The evolution</div>
-                <div className="ch-tl-body">FastText used fixed character n-gram ranges (3-6). Byte-Pair Encoding (Sennrich et al., 2016) learned data-driven subword units by iteratively merging the most frequent character pairs in the training corpus. This produced variable-length subword tokens that are more efficient and principled than fixed n-grams.</div>
-                <div className="ch-tl-section-label">Why it mattered</div>
-                <div className="ch-tl-body ch-tl-impact">BPE tokenization is now universal in LLMs: GPT-2 uses BPE, BERT uses WordPiece (similar), T5 uses SentencePiece. FastText's insight — represent words as sub-unit combinations — lives on in every tokenizer, and thus in every modern language model.</div>
+
+            <div className="ch-callout">
+                <strong>FastText to modern tokenizers:</strong> FastText used fixed character n-gram ranges (3–6). BPE learned data-driven variable-length subword merges. BPE is more efficient and is now the standard tokenizer for GPT, BERT, and LLaMA. But the fundamental insight — that words are made of meaningful sub-parts that should share representations — originated with FastText and shapes every modern NLP system.
             </div>
-        </div>
+        </>
     )
 }
 
@@ -30,14 +86,29 @@ function KidTab() {
     return (
         <>
             <h2>Reading words by their parts</h2>
-            <Analogy label="The OOV problem">
-                Word2Vec is like a dictionary: if a word is not listed, you get nothing. FastText is like knowing how to read phonetically: even if you have never seen "supercalifragilistic" before, you recognise familiar syllables — "super", "fragile", "istic". FastText represents words as combinations of their letter-chunks, so any new word can be approximated.
+
+            <Analogy label="The OOV Problem — When the Dictionary Fails">
+                Word2Vec is like a dictionary: if a word is not listed, you get nothing. FastText is like knowing how to read phonetically: even if you have never seen "supercalifragilistic" before, you recognize familiar syllables — "super," "fragile," "istic." FastText represents words as combinations of their letter-chunks, so any new word can be approximated.
+                <br /><br />
+                This matters enormously in practice. Social media is full of misspellings and abbreviations. Scientific papers introduce new terminology. Product catalogs have brand names. All of these are "unknown words" to Word2Vec — but FastText can still produce a meaningful embedding based on the familiar pieces they contain.
             </Analogy>
-            <Analogy label="N-grams as Lego bricks">
-                Break the word "playing" into 3-letter chunks: "pla", "lay", "ayi", "yin", "ing". Each chunk has its own vector (a location in meaning-space). "Playing" is the sum of all those chunk-locations. "Played" shares "pla", "lay" with "playing" — so they end up nearby automatically, with no special rule needed.
+
+            <Analogy label="N-grams as Lego Bricks">
+                Break the word "playing" into 3-letter chunks: "pla," "lay," "ayi," "yin," "ing." Each chunk has its own vector (a location in meaning-space). "Playing" is the sum of all those chunk-locations.
+                <br /><br />
+                "Played" shares "pla," "lay" with "playing" — so they end up nearby automatically, with no special rule needed. "Replay" shares "lay" and "pla" with "play" — again, nearby. The model doesn't need to be told that play/playing/played are related; it discovers this automatically through the shared n-gram vectors.
             </Analogy>
-            <Analogy label="Bridge to modern AI">
+
+            <Analogy label="Morphologically Rich Languages — Turkish is Extreme">
+                In English, a verb has a handful of forms: play, plays, playing, played. In Turkish, a single verb root can generate hundreds of valid forms through suffixes that encode tense, person, negation, possibility, causation, and more. For Word2Vec, each Turkish word form is a separate entity — most will never appear in training data.
+                <br /><br />
+                FastText handles this elegantly: all those Turkish verb forms share character n-grams from the root. Even if a specific form appears only once (or never) in training, its embedding is meaningful because the root n-grams have been seen thousands of times in other word forms.
+            </Analogy>
+
+            <Analogy label="Bridge to Modern AI">
                 This idea — that words are made of meaningful sub-parts — is now used in every major AI language model. When you type into ChatGPT, your text is broken into "tokens" (subwords) before the model ever sees it. FastText was an early, simple version of this idea.
+                <br /><br />
+                The modern version (Byte-Pair Encoding, used by GPT-4) learns which sub-parts to use from data, rather than using fixed-length character chunks. But the core insight is the same: represent words by their parts, not as atomic wholes.
             </Analogy>
         </>
     )
@@ -46,21 +117,29 @@ function KidTab() {
 function HighSchoolTab() {
     return (
         <>
-            <h2>Subword representations</h2>
-            <p>For word w, let G_w be the set of character n-grams of w (with n in [n_min, n_max]) including boundary markers. Each n-gram g has a vector z_g. The score between word w and context word c is:</p>
+            <h2>Subword representations and hashed n-gram vocabularies</h2>
+
+            <h3>The FastText Extension of Skip-gram</h3>
+            <p>
+                For word w, let G<sub>w</sub> be the set of character n-grams of w (with n in [n_min, n_max]) including boundary markers &lt; and &gt;. Each n-gram g has a vector z<sub>g</sub>. The score between word w and context word c is:
+            </p>
             <MathBlock tex="s(w, c) = \sum_{g \in \mathcal{G}_w} z_g^\top v_c" />
-            <p>This replaces the simple dot product w · v_c in skip-gram. Training optimises the same negative sampling objective as Word2Vec, but gradients flow into each n-gram vector for every word containing that n-gram.</p>
+            <p>This replaces the simple dot product v<sub>w</sub>·v<sub>c</sub> in Skip-gram. Training optimizes the same negative sampling objective as Word2Vec, but gradients flow into each n-gram vector for every word containing that n-gram.</p>
 
-            <h3>OOV handling</h3>
-            <p>For a word not in the training vocabulary, compute its n-grams and sum their trained vectors:</p>
+            <h3>OOV Handling</h3>
+            <p>For a word not in the training vocabulary, compute its n-grams and average their trained vectors:</p>
             <MathBlock tex="v_{\text{OOV}} = \frac{1}{|\mathcal{G}_w|}\sum_{g \in \mathcal{G}_w} z_g" />
-            <p>This always produces a meaningful representation based on morphological similarity to known words. "Microwave" unseen? "micro" and "wave" and "rave" n-grams are known.</p>
+            <p>This always produces a meaningful representation based on morphological similarity to known words. "Microwave" unseen? The n-grams "micro," "wave," "icro," "cro," "rav," "ave" and others are likely known from related words.</p>
 
-            <h3>Typical settings</h3>
+            <h3>Hashed N-gram Table</h3>
+            <p>With n_min=3 and n_max=6, a word of length L has Σ(L−n+1) n-grams. For a vocabulary of 1M words, this could be billions of unique n-grams. FastText hashes all n-grams into a fixed bucket table of size B (typically 2M):</p>
+            <MathBlock tex="\text{score}(w, c) = \sum_{g \in \mathcal{G}_w} z_{h(g)}^\top v_c \quad \text{where } h(g) = \text{hash}(g) \bmod B" />
+            <p>Multiple n-grams may share buckets (hash collisions), but memory is bounded regardless of vocabulary size — a crucial property for production use.</p>
+
+            <hr className="ch-sep" />
+
             <div className="ch-callout">
-                <strong>n_min = 3, n_max = 6</strong>: covers most meaningful morphemes without explosion in n-gram count.<br /><br />
-                <strong>Bucket size = 2M</strong>: n-grams are hashed into 2M buckets to cap memory. Hash collisions are acceptable — rare n-grams share a bucket with an occasional false match.<br /><br />
-                <strong>Final vector = v_w + mean(z_g)</strong>: word and n-gram vectors are trained jointly; the final representation combines both.
+                <strong>Typical settings: n_min = 3, n_max = 6, Bucket size = 2M.</strong> Covers most meaningful morphemes without explosion in n-gram count. Hash collisions are acceptable — rare n-grams share a bucket with an occasional false match, which acts as light regularization. Final embedding = word vector + mean(n-gram vectors), combining whole-word and subword signals.
             </div>
 
 
@@ -92,19 +171,26 @@ function HighSchoolTab() {
 function MathsContent() {
     return (
         <>
-            <h2>FastText objective and hash-based vocabulary</h2>
-            <DefBlock label="Hashed N-gram Table">
-                With n_min=3 and n_max=6, a word of length L has Σ_{"{n=3}"}^6 (L−n+1) n-grams. For a vocabulary of 1M words, this could be billions of unique n-grams. FastText hashes all n-grams into a fixed bucket table of size B (typically 2M): h(g) = hash(g) mod B. Multiple n-grams share buckets, but memory is bounded regardless of vocabulary size.
+            <h2>FastText objective, hash-based vocabulary, and implicit sharing</h2>
+
+            <DefBlock label="FastText N-gram Hashing (Bojanowski et al., 2017)">
+                With n_min=3 and n_max=6, a word of length L has Σ<sub>n=3</sub><sup>6</sup>(L−n+1) n-grams. For a vocabulary of 1M words, this could be billions of unique n-grams. FastText hashes all n-grams into a fixed bucket table of size B (typically 2M): h(g) = hash(g) mod B. Multiple n-grams share buckets, but memory is bounded regardless of vocabulary size.
             </DefBlock>
 
             <MathBlock tex="\text{score}(w, c) = \sum_{g \in \mathcal{G}_w} z_{h(g)}^\top v_c" />
 
-            <h3>Negative sampling loss</h3>
+            <h3>Negative Sampling Loss</h3>
             <MathBlock tex="\mathcal{L} = \log \sigma(s(w,c)) + \sum_{k=1}^K \mathbb{E}_{n_k \sim P_n}[\log \sigma(-s(n_k, c))]" />
-            <p>Identical in form to Word2Vec negative sampling; the only change is that s(w,c) now sums over n-gram vectors instead of using a single word vector.</p>
+            <p>Identical in form to Word2Vec negative sampling; the only change is that s(w,c) now sums over n-gram vectors instead of using a single word vector. Gradients flow back to each n-gram vector in G<sub>w</sub>.</p>
 
-            <h3>Implicit parameter sharing</h3>
-            <p>Words sharing a suffix (e.g. "-ing", "-tion", "-ness") share the gradient updates from all those n-gram positions. This creates implicit regularisation: rare words with familiar morphology benefit from the statistics of their morphological relatives.</p>
+            <h3>Implicit Parameter Sharing</h3>
+            <p>Words sharing a suffix (e.g., "-ing," "-tion," "-ness") share gradient updates from all those n-gram positions. This creates implicit regularization: rare words with familiar morphology benefit from the statistics of their morphological relatives. Formally, the gradient update for n-gram g is:</p>
+            <MathBlock tex="\frac{\partial \mathcal{L}}{\partial z_g} = \sum_{w : g \in \mathcal{G}_w} \frac{\partial \mathcal{L}_w}{\partial s(w,c)} \cdot v_c" />
+            <p>The sum is over all words containing n-gram g — so every occurrence of the suffix "-ing" in any word contributes to the gradient of the "-ing" n-gram vector.</p>
+
+            <div className="ch-callout">
+                <strong>FastText vs BPE:</strong> FastText uses fixed-width character n-grams (3–6). BPE (Byte-Pair Encoding) learns data-driven variable-length subword merges. BPE is more efficient and is now the standard tokenizer for GPT, BERT, and LLaMA. But the foundational insight — that words should be represented as compositions of sub-units — originated with FastText and shapes every modern NLP system.
+            </div>
         </>
     )
 }
@@ -112,6 +198,7 @@ function MathsContent() {
 const PY_CODE = `import numpy as np
 
 def get_ngrams(word: str, min_n: int = 3, max_n: int = 6) -> list:
+    """Get character n-grams with boundary markers."""
     w = f"<{word}>"
     ngrams = []
     for n in range(min_n, max_n + 1):
@@ -119,26 +206,34 @@ def get_ngrams(word: str, min_n: int = 3, max_n: int = 6) -> list:
             ngrams.append(w[i:i+n])
     return ngrams
 
-# Demonstrate morphological overlap
+# ── Demonstrate morphological overlap ─────────────────────────────────────────
 words = ["play", "playing", "played", "player", "replay", "display"]
-print("N-gram sets (n=3,4):")
+print("=" * 60)
+print("N-gram sets (n=3,4) showing morphological overlap:")
+print("=" * 60)
 ngram_sets = {}
 for w in words:
     ngram_sets[w] = set(get_ngrams(w, 3, 4))
-    print(f"  {w:10s}: {sorted(ngram_sets[w])}")
+    print(f"  {w:10s}: {sorted(ngram_sets[w])[:6]}...")  # show first 6
 
-print("\\nShared n-gram counts:")
+print()
+print("Shared n-gram counts:")
 for i, w1 in enumerate(words):
     for w2 in words[i+1:]:
         shared = len(ngram_sets[w1] & ngram_sets[w2])
         if shared > 0:
-            print(f"  {w1} ∩ {w2}: {shared} shared n-grams")
+            common = sorted(ngram_sets[w1] & ngram_sets[w2])[:3]
+            print(f"  {w1} intersect {w2}: {shared} shared -> e.g. {common}")
 
 # ── OOV representation ────────────────────────────────────────────────────────
+print()
+print("OOV handling via n-gram composition:")
+print("-" * 40)
+
 DIM     = 16
 BUCKETS = 1000
 np.random.seed(42)
-ngram_table = np.random.randn(BUCKETS, DIM) * 0.01  # trained vectors
+ngram_table = np.random.randn(BUCKETS, DIM) * 0.01  # would be trained in practice
 
 def hash_ngram(s: str, buckets: int = BUCKETS) -> int:
     h = 5381
@@ -148,23 +243,53 @@ def hash_ngram(s: str, buckets: int = BUCKETS) -> int:
 
 def get_word_vector(word: str) -> np.ndarray:
     ngrams = get_ngrams(word)
-    vecs   = [ngram_table[hash_ngram(g)] for g in ngrams]
-    return np.mean(vecs, axis=0) if vecs else np.zeros(DIM)
+    if not ngrams:
+        return np.zeros(DIM)
+    vecs = [ngram_table[hash_ngram(g)] for g in ngrams]
+    return np.mean(vecs, axis=0)
 
 # OOV words get vectors based on their n-grams
-oov_words = ["microservices", "unplayable", "anticlimactic"]
-print("\\nOOV word vectors (first 4 dims):")
+oov_words = ["microservices", "unplayable", "anticlimactic", "bioengineering"]
+print("OOV word vectors (first 4 dims) -- computed from n-gram hashes:")
 for w in oov_words:
     v = get_word_vector(w)
-    print(f"  {w:20s}: [{', '.join(f'{x:.3f}' for x in v[:4])}...]")`
+    print(f"  {w:22s}: [{', '.join(f'{x:.3f}' for x in v[:4])}...]")
+
+# ── Cosine similarity between morphologically related OOV words ─────────────
+print()
+print("Cosine similarity between OOV word pairs:")
+def cosine(a, b):
+    na, nb = np.linalg.norm(a), np.linalg.norm(b)
+    if na == 0 or nb == 0:
+        return 0.0
+    return float(a @ b / (na * nb))
+
+pairs = [
+    ("playing", "played"),
+    ("playing", "display"),
+    ("playing", "elephant"),
+    ("microservice", "microservices"),
+]
+for w1, w2 in pairs:
+    v1, v2 = get_word_vector(w1), get_word_vector(w2)
+    sim = cosine(v1, v2)
+    print(f"  sim({w1:15s}, {w2:15s}) = {sim:.4f}")
+
+# ── N-gram count statistics ────────────────────────────────────────────────────
+print()
+print("N-gram count per word (n=3..6):")
+for w in ["go", "going", "playing", "antiestablishment"]:
+    ngrams = get_ngrams(w)
+    print(f"  {w:20s}: {len(ngrams)} n-grams")
+`
 
 function PythonContent() {
     return (
         <>
-            <CodeBlock code={PY_CODE} filename="fasttext.py" lang="python" langLabel="Python" />
-            <div className="ch-callout">
-                <strong>FastText to BPE:</strong> FastText uses fixed-width character n-grams. BPE (Byte-Pair Encoding) learns data-driven variable-length subword merges. BPE is more efficient and is now the standard tokenizer for GPT, BERT, and LLaMA.
-            </div>
+            <p>
+                Character n-gram extraction showing morphological overlap between related words, OOV representation via n-gram composition, cosine similarity between OOV word pairs, and n-gram count statistics. Demonstrates the core FastText idea without requiring a trained model.
+            </p>
+            <CodeBlock code={PY_CODE} filename="fasttext_demo.py" lang="python" langLabel="Python" />
         </>
     )
 }
@@ -175,6 +300,6 @@ export const FASTTEXT_TABS: Record<TabId, React.ReactNode> = {
     history:    <HistoryTab />,
     kid:        <KidTab />,
     highschool: <HighSchoolTab />,
-    maths:      null,
-    python:     null,
+    maths:      <MathsContent />,
+    python:     <PythonContent />,
 }
