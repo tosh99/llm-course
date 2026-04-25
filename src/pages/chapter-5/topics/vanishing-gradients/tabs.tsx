@@ -140,11 +140,11 @@ function HighSchoolTab() {
 
             <h3>The chain rule in deep networks</h3>
             <p>
-                For a network with <em>L</em> layers, the gradient of the loss w.r.t. the first layer's pre-activation is a product of <em>L</em> terms:
+                For a network with <em>L</em> layers, the gradient of the loss w.r.t. the first layer's pre-activation involves <em>L</em> factors of the activation derivative:
             </p>
-            <MathBlock tex="\frac{\partial L}{\partial z^{(1)}} = \frac{\partial L}{\partial a^{(L)}} \prod_{l=1}^{L} \left(W^{(l+1)\top}\, \text{diag}\!\left(\sigma'(z^{(l)})\right)\right)" />
+            <MathBlock tex="\frac{\partial L}{\partial z^{(1)}} = \prod_{l=1}^{L-1} \left(\text{diag}\!\left(\sigma'(z^{(l)})\right) W^{(l+1)\top}\right) \cdot \delta^{(L)}" />
             <p>
-                Each factor contains <InlineMath tex="\sigma'(z^{(l)})" /> — the local gradient of the activation function. For sigmoid, <InlineMath tex="\sigma'(x) \leq 0.25" /> everywhere. For <InlineMath tex="L = 10" /> layers: the gradient is bounded by <InlineMath tex="0.25^{10} \approx 10^{-6}" /> of the output gradient — effectively zero.
+                where <InlineMath tex="\delta^{(L)} = \text{diag}(\sigma'(z^{(L)}))\,\nabla_{a^{(L)}} L" /> is the output-layer error signal — contributing the <em>L</em>-th factor of <InlineMath tex="\sigma'" />. For sigmoid, <InlineMath tex="\sigma'(x) \leq 0.25" /> everywhere. For <InlineMath tex="L = 10" /> layers: the gradient is bounded by <InlineMath tex="0.25^{10} \approx 10^{-6}" /> of the output gradient — effectively zero.
             </p>
 
             <h3>Numerical consequences by depth</h3>

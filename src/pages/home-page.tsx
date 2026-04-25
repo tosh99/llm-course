@@ -265,6 +265,7 @@ const CURRICULUM: Part[] = [
                 title: "Emergent Abilities & Chinchilla",
                 era: "2022",
                 topics: ["Emergent Abilities", "Chinchilla Scaling", "Phase Transitions"],
+                route: "/chapter/24",
             },
             {
                 num: "Ch. 25",
@@ -278,12 +279,14 @@ const CURRICULUM: Part[] = [
                 title: "Multimodal Models — Vision & Language",
                 era: "2021 – 2022",
                 topics: ["CLIP", "DALL-E", "Flamingo"],
+                route: "/chapter/26",
             },
             {
                 num: "Ch. 27",
                 title: "Retrieval-Augmented Generation",
                 era: "2020 – 2022",
                 topics: ["RAG", "Dense Passage Retrieval", "Vector Databases", "Chunking & Re-ranking"],
+                route: "/chapter/27",
             },
         ],
     },

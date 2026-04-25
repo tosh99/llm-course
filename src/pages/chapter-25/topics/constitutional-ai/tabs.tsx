@@ -75,11 +75,23 @@ function HistoryTab() {
 
             <div className="ch-callout">
                 <strong>The constitutional insight:</strong> Explicit principles generalize better
-                than implicit preferences. Rather than learning "don't say X" from thousands of
-                labeled examples, a model with a constitution learns "be respectful, be honest,
-                be harmless" — principles that transfer to novel situations the training data
+                than implicit preferences. Rather than learning &ldquo;don&rsquo;t say X&rdquo; from thousands of
+                labeled examples, a model with a constitution learns &ldquo;be respectful, be honest,
+                be harmless&rdquo; &mdash; principles that transfer to novel situations the training data
                 never covered.
             </div>
+
+            <Analogy label="What comes next &mdash; Multimodal Models">
+                Instruction tuning and RLHF solved the alignment problem for text &mdash; teaching
+                models to follow instructions helpfully and safely. But throughout 2021 and 2022, a
+                parallel revolution was unfolding: teaching models to understand and generate images
+                alongside text. CLIP showed that a single model could align vision and language
+                representations through contrastive learning on 400 million image-text pairs.
+                DALL-E demonstrated that text descriptions could drive image generation at a quality
+                that surprised the research community. And Flamingo showed that a frozen language
+                model could be extended to multimodal tasks with just a few bridging cross-attention
+                layers. Chapter 26 traces these three milestones and the multimodal era they launched.
+            </Analogy>
         </>
     )
 }

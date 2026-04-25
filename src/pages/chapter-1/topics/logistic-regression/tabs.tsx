@@ -1,4 +1,4 @@
-import { Analogy, CodeBlock, DefBlock, MathBlock } from "../../shared"
+import { Analogy, CodeBlock, DefBlock, InlineMath, MathBlock } from "../../shared"
 import type { TabId } from "../../types"
 
 // ── Tab content ───────────────────────────────────────────────────────────────
@@ -236,8 +236,8 @@ function MathsContent() {
 
             <DefBlock label="Convexity of the Cross-Entropy Loss">
                 The negative log-likelihood (cross-entropy loss) for logistic regression is:
-                L(w, b) = minus the sum over i of [y-i times log sigma(z-i) + (1 minus y-i) times log(1 minus sigma(z-i))], where z-i = w-transpose x-i + b.
-                The Hessian of L with respect to w is X-transpose times diag(p-i times (1 minus p-i)) times X, which is positive semidefinite for all w. Therefore L is convex — gradient descent converges to the global minimum.
+                <MathBlock tex="L(\mathbf{w},b) = -\sum_{i=1}^n \bigl[y_i \log\sigma(z_i) + (1-y_i)\log(1-\sigma(z_i))\bigr], \quad z_i = \mathbf{w}^\top x_i + b" />
+                The Hessian of L with respect to <InlineMath tex="\mathbf{w}" /> is <InlineMath tex="X^\top \operatorname{diag}(p_i(1-p_i)) X" />, which is positive semidefinite for all <InlineMath tex="\mathbf{w}" />. Therefore L is convex — gradient descent converges to the global minimum.
             </DefBlock>
 
             <h3>Newton's Method (IRLS)</h3>

@@ -223,9 +223,9 @@ function MathsContent() {
 
             <h3>Gradient magnitudes in deep sigmoid networks</h3>
             <p>
-                For a network with <em>L</em> hidden layers and sigmoid activations, the gradient of the loss w.r.t. the first layer is the product of <em>L</em> Jacobians:
+                For a network with <em>L</em> hidden layers and sigmoid activations, the gradient of the loss w.r.t. the first layer is a product of <em>L</em> Jacobian factors:
             </p>
-            <MathBlock tex="\frac{\partial L}{\partial z^{(1)}} = \frac{\partial L}{\partial a^{(L)}} \prod_{l=1}^{L} \text{diag}\!\left(\sigma'(z^{(l)})\right) W^{(l+1)\top}" />
+            <MathBlock tex="\frac{\partial L}{\partial z^{(1)}} = \prod_{l=1}^{L} \left(\text{diag}\!\left(\sigma'(z^{(l)})\right) W^{(l+1)\top}\right) \cdot \frac{\partial L}{\partial z^{\text{out}}}" />
             <p>
                 Since <InlineMath tex="0 < \sigma'(x) \leq 0.25" /> for sigmoid, each factor of <InlineMath tex="\text{diag}(\sigma')" /> contracts the gradient by at least 4×. After 10 layers: gradient ≤ (0.25)<sup>10</sup> ≈ 10<sup>-6</sup>. The first layer receives essentially no learning signal.
             </p>

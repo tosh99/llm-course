@@ -7,10 +7,20 @@ function HistoryTab() {
     return (
         <>
             <h2>Aligning language models with human intent</h2>
+            <p className="ch-story-intro">
+                Chapter 24 uncovered a disquieting pattern: as language models scaled past critical
+                thresholds, certain capabilities appeared without warning &mdash; and Chinchilla showed
+                that most frontier models were dramatically under-trained relative to their parameter
+                counts. But even a perfectly trained, maximally capable model was still a <em>next-token
+                predictor</em>, not a helpful assistant. It would continue a harmful sentence as readily
+                as a helpful one. Aligning model capability with human intent &mdash; making it actually
+                want to be useful, honest, and safe &mdash; was an entirely separate problem. OpenAI&rsquo;s
+                InstructGPT (March 2022) introduced the three-step recipe that became the industry answer.
+            </p>
             <p>
                 By 2020, GPT-3 had demonstrated remarkable few-shot capabilities, but it was also
                 unpredictable, prone to generating toxic or unhelpful text, and poorly aligned with
-                what users actually wanted. OpenAI's InstructGPT (March 2022) introduced a three-step
+                what users actually wanted. OpenAI&rsquo;s InstructGPT (March 2022) introduced a three-step
                 recipe that would become the industry standard for building helpful AI assistants.
             </p>
 

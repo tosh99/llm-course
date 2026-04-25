@@ -1,4 +1,4 @@
-import { Analogy, CodeBlock, DefBlock, DiagramBlock, MathBlock } from "../../shared"
+import { Analogy, CodeBlock, DefBlock, DiagramBlock, InlineMath, MathBlock } from "../../shared"
 import { SVMDiagram } from "./diagrams"
 import type { TabId } from "../../types"
 
@@ -169,9 +169,9 @@ function MathsContent() {
             <h2>Structural Risk Minimisation</h2>
 
             <DefBlock label="Definition — Support Vector Machine">
-                Given training data (x_1, y_1), ..., (x_n, y_n) with y_i in &#123;-1, +1&#125;, an SVM with kernel K finds the maximum-margin separating hyperplane in the Reproducing Kernel Hilbert Space induced by K. The decision function is:
-                <br /><br />
-                f(x) = sign( sum_i alpha_i * y_i * K(x_i, x) + b ),  where only support vectors have alpha_i &gt; 0.
+                Given training data <InlineMath tex="(x_1,y_1),\ldots,(x_n,y_n)" /> with <InlineMath tex="y_i\in\{-1,+1\}" />, an SVM with kernel K finds the maximum-margin separating hyperplane in the Reproducing Kernel Hilbert Space induced by K. The decision function is:
+                <MathBlock tex="f(x) = \operatorname{sign}\!\left(\sum_i \alpha_i\,y_i\,K(x_i, x) + b\right)" />
+                where only support vectors have <InlineMath tex="\alpha_i > 0" />.
             </DefBlock>
 
             <h3>Generalisation Bound (VC Dimension)</h3>
