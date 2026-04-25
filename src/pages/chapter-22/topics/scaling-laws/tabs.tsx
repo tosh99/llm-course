@@ -7,10 +7,20 @@ function HistoryTab() {
     return (
         <>
             <h2>Predictability at scale</h2>
+            <p className="ch-story-intro">
+                Chapter 21 settled a fundamental question in computer vision: the Transformer architecture,
+                given enough data, can outperform CNNs even without their built-in spatial inductive biases.
+                But this raised a harder follow-on question that applied to every architecture &mdash; language
+                models, vision models, and everything in between. How much data is &ldquo;enough&rdquo;?
+                How large must the model be? Is there a formula for predicting the return on a billion-dollar
+                training run <em>before</em> you spend it? In 2020, Jared Kaplan and colleagues at OpenAI
+                published a set of empirical findings &mdash; the scaling laws &mdash; that answered these
+                questions with surprising precision and changed how every major AI lab planned its experiments.
+            </p>
             <p>
                 Before 2020, training large language models was an art form. Researchers would
                 guess hyperparameters, train for a while, and hope the loss went down. There was
-                no reliable way to predict whether a 10× larger model would be worth the cost.
+                no reliable way to predict whether a 10&times; larger model would be worth the cost.
                 Then Jared Kaplan and his colleagues at OpenAI showed something remarkable: the
                 test loss of language models follows precise, predictable curves as a function
                 of model size, dataset size, and compute.

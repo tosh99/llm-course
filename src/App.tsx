@@ -22,7 +22,9 @@ import { Chapter17Page } from "@/pages/chapter-17"
 import { Chapter18Page } from "@/pages/chapter-18"
 import { Chapter19Page } from "@/pages/chapter-19"
 import { Chapter20Page } from "@/pages/chapter-20"
+import { Chapter21Page } from "@/pages/chapter-21"
 import { Chapter22Page } from "@/pages/chapter-22"
+import { Chapter23Page } from "@/pages/chapter-23"
 import { Chapter25Page } from "@/pages/chapter-25"
 import { Chapter31Page } from "@/pages/chapter-31"
 
@@ -53,9 +55,10 @@ function Layout() {
                 <Route path="/chapter/18" element={<Chapter18Page />} />
                 <Route path="/chapter/19" element={<Chapter19Page />} />
                 <Route path="/chapter/20" element={<Chapter20Page />} />
-                {/* Ch.21 ViT — coming soon */}
+                <Route path="/chapter/21" element={<Chapter21Page />} />
                 <Route path="/chapter/22" element={<Chapter22Page />} />
-                {/* Ch.23 LoRA, Ch.24 Emergent — coming soon */}
+                <Route path="/chapter/23" element={<Chapter23Page />} />
+                {/* Ch.24 Emergent — coming soon */}
                 <Route path="/chapter/25" element={<Chapter25Page />} />
                 {/* Ch.26-30 — coming soon */}
                 <Route path="/chapter/31" element={<Chapter31Page />} />

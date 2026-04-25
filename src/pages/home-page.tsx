@@ -237,6 +237,7 @@ const CURRICULUM: Part[] = [
                 title: "Vision Transformers",
                 era: "2020 – 2021",
                 topics: ["ViT", "Patch Embeddings", "DeiT", "ViT vs CNN"],
+                route: "/chapter/21",
             },
             {
                 num: "Ch. 22",
@@ -257,6 +258,7 @@ const CURRICULUM: Part[] = [
                 title: "LoRA & Efficient Adaptation",
                 era: "2021",
                 topics: ["LoRA", "Adapter Layers", "PEFT Taxonomy", "Prompt Tuning"],
+                route: "/chapter/23",
             },
             {
                 num: "Ch. 24",

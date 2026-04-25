@@ -1,22 +1,18 @@
-﻿import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router"
-import "./chapter-22.css"
+import "./chapter-21.css"
 import { TABS, TOPIC_META, TOPICS } from "./data"
-import { SCALING_LAWS_TABS } from "./topics/scaling-laws/tabs"
-import { POWER_LAWS_TABS } from "./topics/power-laws/tabs"
-import { EMERGENT_ABILITIES_TABS } from "./topics/emergent-abilities/tabs"
-import { CHINCHILLA_TABS } from "./topics/chinchilla/tabs"
-import { GPT3_TABS } from "./topics/gpt3/tabs"
-import { INCONTEXT_TABS } from "./topics/incontext/tabs"
-import { FEWSHOT_TABS } from "./topics/fewshot/tabs"
-import { PROMPT_TABS } from "./topics/prompt/tabs"
+import { VIT_TABS } from "./topics/vit/tabs"
+import { PATCH_EMBEDDINGS_TABS } from "./topics/patch-embeddings/tabs"
+import { DEIT_TABS } from "./topics/deit/tabs"
+import { VIT_VS_CNN_TABS } from "./topics/vit-vs-cnn/tabs"
 import type { TabId, TopicId } from "./types"
 
 const TAB_IDS = TABS.map((t) => t.id)
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export function Chapter22Page() {
+export function Chapter21Page() {
     const navigate = useNavigate()
     const location = useLocation()
     const chapterNum = parseInt(location.pathname.split('/').pop() ?? '1')
@@ -80,23 +76,19 @@ export function Chapter22Page() {
     }
 
     const tabContent: Record<TopicId, React.ReactNode> = {
-        "scaling-laws":      SCALING_LAWS_TABS[activeTab],
-        "power-laws":        POWER_LAWS_TABS[activeTab],
-        "emergent-abilities": EMERGENT_ABILITIES_TABS[activeTab],
-        "chinchilla":        CHINCHILLA_TABS[activeTab],
-        "gpt3":              GPT3_TABS[activeTab],
-        "incontext":         INCONTEXT_TABS[activeTab],
-        "fewshot":           FEWSHOT_TABS[activeTab],
-        "prompt":            PROMPT_TABS[activeTab],
+        "vit":              VIT_TABS[activeTab],
+        "patch-embeddings": PATCH_EMBEDDINGS_TABS[activeTab],
+        "deit":             DEIT_TABS[activeTab],
+        "vit-vs-cnn":       VIT_VS_CNN_TABS[activeTab],
     }
 
     return (
         <div className="ch">
             {/* ── Header ── */}
             <header className="ch-header">
-                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 22</span></Link>
+                <Link to="/" style={{ textDecoration: 'none' }}><span className="ch-header-chapter">Ch. 21</span></Link>
                 <div className="ch-header-sep" />
-                <span className="ch-header-title">Scaling Laws &amp; GPT-3</span>
+                <span className="ch-header-title">Vision Transformers</span>
                 <Link to="/" style={{ textDecoration: "none" }}>
                     <span className="ch-header-badge">ML → LLM Course</span>
                 </Link>
