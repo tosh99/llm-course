@@ -1,4 +1,4 @@
-import { Analogy, CodeBlock, DefBlock, MathBlock } from "../../shared"
+import { Analogy, CodeBlock, DefBlock, InlineMath, MathBlock } from "../../shared"
 import type { TabId } from "../../types"
 
 // ── Tab content ───────────────────────────────────────────────────────────────
@@ -218,12 +218,9 @@ function MathsContent() {
 
             <DefBlock label="Skip-Gram Objective (Mikolov et al., 2013)">
                 Let T = corpus length, m = context window, V = vocabulary.
-                Center word embedding: v<sub>c</sub> ∈ ℝ<sup>d</sup>; context word embedding: u<sub>o</sub> ∈ ℝ<sup>d</sup>.
-                <br /><br />
-                Maximize:
-                J(θ) = (1/T) Σ<sub>t=1</sub><sup>T</sup> Σ<sub>-m≤j≤m, j≠0</sub> log P(w<sub>t+j</sub> | w<sub>t</sub>; θ)
-                <br /><br />
-                P(w<sub>o</sub> | w<sub>c</sub>) = exp(u<sub>o</sub>·v<sub>c</sub>) / Σ<sub>w</sub> exp(u<sub>w</sub>·v<sub>c</sub>)
+                Center word embedding: <InlineMath tex="v_c \in \mathbb{R}^d" />; context word embedding: <InlineMath tex="u_o \in \mathbb{R}^d" />.
+                <MathBlock tex="J(\theta) = \frac{1}{T}\sum_{t=1}^{T}\sum_{\substack{-m \le j \le m \\ j \neq 0}} \log P(w_{t+j} \mid w_t;\,\theta)" />
+                <MathBlock tex="P(w_o \mid w_c) = \frac{\exp(\mathbf{u}_{w_o}^\top \mathbf{v}_{w_c})}{\sum_{w=1}^{V}\exp(\mathbf{u}_w^\top \mathbf{v}_{w_c})}" />
             </DefBlock>
 
             <h3>Gradients of the Softmax Objective</h3>

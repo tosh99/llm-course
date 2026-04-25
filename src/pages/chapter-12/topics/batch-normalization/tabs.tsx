@@ -1,4 +1,4 @@
-import { Analogy, CodeBlock, DefBlock, MathBlock } from "../../shared"
+import { Analogy, CodeBlock, DefBlock, InlineMath, MathBlock } from "../../shared"
 import type { TabId } from "../../types"
 
 // ── Tab content ───────────────────────────────────────────────────────────────
@@ -200,15 +200,9 @@ function MathsContent() {
             <h2>Gradients through BatchNorm, landscape smoothing, and variants</h2>
 
             <DefBlock label="Batch Normalization (Ioffe and Szegedy, 2015)">
-                For mini-batch B = &#123; x₁, ..., x<sub>m</sub> &#125; and learnable parameters γ, β:
-                <br /><br />
-                μ<sub>B</sub> = (1/m)Σx<sub>i</sub>
-                <br />
-                σ²<sub>B</sub> = (1/m)Σ(x<sub>i</sub> − μ<sub>B</sub>)²
-                <br />
-                x̂<sub>i</sub> = (x<sub>i</sub> − μ<sub>B</sub>) / √(σ²<sub>B</sub> + ε)
-                <br />
-                y<sub>i</sub> = γ x̂<sub>i</sub> + β
+                For mini-batch <InlineMath tex="\mathcal{B} = \{x_1,\ldots,x_m\}" /> and learnable parameters γ, β:
+                <MathBlock tex="\mu_B = \tfrac{1}{m}\sum_{i=1}^m x_i, \qquad \sigma^2_B = \tfrac{1}{m}\sum_{i=1}^m (x_i - \mu_B)^2" />
+                <MathBlock tex="\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma^2_B + \varepsilon}}, \qquad y_i = \gamma\,\hat{x}_i + \beta" />
             </DefBlock>
 
             <h3>Gradients Through BatchNorm (Chain Rule)</h3>

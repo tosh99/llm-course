@@ -1,4 +1,4 @@
-import { Analogy, CodeBlock, DefBlock, MathBlock } from "../../shared"
+import { Analogy, CodeBlock, DefBlock, InlineMath, MathBlock } from "../../shared"
 import type { TabId } from "../../types"
 
 // ── Tab content ───────────────────────────────────────────────────────────────
@@ -202,11 +202,9 @@ function MathsContent() {
             <DefBlock label="Kaplan Scaling Law — Parameter Scaling">
                 For a non-parametrically-bottlenecked model trained on ample data, the test loss
                 scales with parameter count N as:
-                <br /><br />
-                L(N) = (N<sub>c</sub> / N)<sup>α<sub>N</sub></sup> + L<sub>∞</sub>
-                <br /><br />
-                where α<sub>N</sub> ≈ 0.073–0.076, N<sub>c</sub> ≈ 8.8 × 10<sup>13</sup>, and
-                L<sub>∞</sub> ≈ 1.69 nats/token for WebText2.
+                <MathBlock tex="L(N) = \left(\frac{N_c}{N}\right)^{\!\alpha_N} + L_\infty" />
+                where <InlineMath tex="\alpha_N \approx 0.073\text{–}0.076" />, <InlineMath tex="N_c \approx 8.8 \times 10^{13}" />, and
+                <InlineMath tex="L_\infty \approx 1.69" /> nats/token for WebText2.
             </DefBlock>
 
             <h3>Data scaling</h3>

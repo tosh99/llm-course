@@ -398,8 +398,7 @@ function MathsContent() {
             <DefBlock label="The GAN Value Function">
                 For fixed G, the optimal discriminator D* is derived by maximising V(D, G)
                 pointwise for each x:
-                <br /><br />
-                D*(x) = p_data(x) / (p_data(x) + p_G(x))
+                <MathBlock tex="D^*(x) = \frac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_G(x)}" />
             </DefBlock>
 
             <h3>Substituting D* Back</h3>

@@ -300,12 +300,14 @@ const CURRICULUM: Part[] = [
                 title: "Transformer Architecture Advances",
                 era: "2021 – 2023",
                 topics: ["RoPE", "Flash Attention", "GQA / MQA", "Mixture of Experts", "KV Cache"],
+                route: "/chapter/28",
             },
             {
                 num: "Ch. 29",
                 title: "Reasoning & Chain-of-Thought",
                 era: "2022 – 2023",
                 topics: ["Chain-of-Thought", "Self-Consistency", "Tree of Thoughts", "Process Rewards"],
+                route: "/chapter/29",
             },
             {
                 num: "Ch. 30",

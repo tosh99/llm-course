@@ -1,4 +1,4 @@
-import { Analogy, CodeBlock, DefBlock, MathBlock } from "../../shared"
+import { Analogy, CodeBlock, DefBlock, InlineMath, MathBlock } from "../../shared"
 import type { TabId } from "../../types"
 
 // ── Tab content ───────────────────────────────────────────────────────────────
@@ -197,10 +197,9 @@ function MathsContent() {
             <h2>Log-bilinear model, PMI connection, and optimization</h2>
 
             <DefBlock label="GloVe Objective (Pennington et al., 2014)">
-                Co-occurrence matrix X ∈ ℝ<sup>V×V</sup>, word vectors w<sub>i</sub> ∈ ℝ<sup>d</sup>,
-                context vectors w̃<sub>j</sub> ∈ ℝ<sup>d</sup>, biases b<sub>i</sub>, b̃<sub>j</sub> ∈ ℝ.
-                <br /><br />
-                Minimize: J = Σ<sub>i,j: X<sub>ij</sub>&gt;0</sub> f(X<sub>ij</sub>) (w<sub>i</sub>·w̃<sub>j</sub> + b<sub>i</sub> + b̃<sub>j</sub> − log X<sub>ij</sub>)²
+                Co-occurrence matrix <InlineMath tex="X \in \mathbb{R}^{V \times V}" />, word vectors <InlineMath tex="w_i \in \mathbb{R}^d" />,
+                context vectors <InlineMath tex="\tilde{w}_j \in \mathbb{R}^d" />, biases <InlineMath tex="b_i, \tilde{b}_j \in \mathbb{R}" />.
+                <MathBlock tex="J = \sum_{\substack{i,j=1 \\ X_{ij}>0}}^{V} f(X_{ij})\,\bigl(w_i^\top \tilde{w}_j + b_i + \tilde{b}_j - \log X_{ij}\bigr)^2" />
             </DefBlock>
 
             <h3>PMI Connection</h3>

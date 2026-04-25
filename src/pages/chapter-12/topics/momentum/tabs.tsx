@@ -1,4 +1,4 @@
-import { Analogy, CodeBlock, DefBlock, MathBlock } from "../../shared"
+import { Analogy, CodeBlock, DefBlock, InlineMath, MathBlock } from "../../shared"
 import type { TabId } from "../../types"
 
 // ── Tab content ───────────────────────────────────────────────────────────────
@@ -237,12 +237,10 @@ function MathsContent() {
             <h2>Convergence theory, effective step size, and implementation</h2>
 
             <DefBlock label="SGD with Momentum (Polyak, 1964)">
-                Let η &gt; 0 be the learning rate, γ ∈ [0,1) the momentum coefficient,
-                ∇L(θ) the gradient of loss at θ. Define velocity v<sub>0</sub> = 0. Then:
-                <br /><br />
-                v<sub>t</sub> = γ · v<sub>t-1</sub> + η · ∇L(θ<sub>t-1</sub>)
-                <br />
-                θ<sub>t</sub> = θ<sub>t-1</sub> − v<sub>t</sub>
+                Let <InlineMath tex="\eta > 0" /> be the learning rate, <InlineMath tex="\gamma \in [0,1)" /> the momentum coefficient,
+                <InlineMath tex="\nabla L(\theta)" /> the gradient of loss at θ. Define velocity <InlineMath tex="v_0 = 0" />. Then:
+                <MathBlock tex="v_t = \gamma\, v_{t-1} + \eta\, \nabla L(\theta_{t-1})" />
+                <MathBlock tex="\theta_t = \theta_{t-1} - v_t" />
             </DefBlock>
 
             <h3>Expanding the Velocity</h3>

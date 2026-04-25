@@ -1,4 +1,4 @@
-import { Analogy, CodeBlock, DefBlock, MathBlock } from "../../shared"
+import { Analogy, CodeBlock, DefBlock, InlineMath, MathBlock } from "../../shared"
 import type { TabId } from "../../types"
 
 // ── Tab content ───────────────────────────────────────────────────────────────
@@ -325,10 +325,10 @@ function MathsContent() {
             <h2>REINFORCE derivation and the Gumbel-Softmax reparameterization</h2>
 
             <DefBlock label="Soft Attention — Objective and Gradient">
-                Objective: L = log p(y|x) = Σ<sub>t</sub> log p(y<sub>t</sub> | y<sub>&lt;t</sub>, ẑ<sub>t</sub>)
-                where ẑ<sub>t</sub> = H<sup>T</sup>α<sub>t</sub> is the soft context vector.
-                Gradient ∂L/∂θ flows through ẑ<sub>t</sub> via chain rule with no special treatment.
-                The softmax Jacobian ∂α/∂e and the linear weighted sum ∂ẑ/∂α are both well-defined.
+                <MathBlock tex="\mathcal{L} = \log p(y \mid x) = \sum_t \log p(y_t \mid y_{<t},\, \hat{z}_t)" />
+                where <InlineMath tex="\hat{z}_t = H^\top \alpha_t" /> is the soft context vector.
+                The gradient <InlineMath tex="\partial\mathcal{L}/\partial\theta" /> flows through <InlineMath tex="\hat{z}_t" /> via chain rule with no special treatment —
+                the softmax Jacobian <InlineMath tex="\partial\alpha/\partial e" /> and the weighted sum <InlineMath tex="\partial\hat{z}/\partial\alpha" /> are both well-defined.
             </DefBlock>
 
             <h3>Hard Attention — Marginal Likelihood</h3>
